@@ -5,7 +5,7 @@ import { LoaderDots } from '@/components/aiAssistant/components/LoaderDots/Loade
 import { cn } from '@/ui/lib/utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import React, { memo } from 'react';
+import { memo } from 'react';
 import { type FC } from 'react';
 
 interface AssistantMessageProps {
@@ -43,7 +43,7 @@ const ChatMessageContainer: FC<AssistantMessageProps> = ({
     return (
       <div
         className={cn(
-          'mtw:border mtw:border-solid mtw:border-danger-40 mtw:bg-danger-95',
+          'mtw:border mtw:border-solid mtw:border-danger-50 mtw:bg-danger-100',
           'mtw:rounded-lg mtw:px-4 mtw:py-3 mtw:mb-4'
         )}
       >

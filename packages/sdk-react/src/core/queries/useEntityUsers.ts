@@ -40,3 +40,16 @@ export const useEntityUserRoleByAuthToken = () => {
     }
   );
 };
+
+export const useEntityUsersByIds = (ids: string[]) => {
+  const { api } = useMoniteContext();
+
+  return api.entityUsers.getEntityUsers.useQuery(
+    {
+      query: { id__in: ids },
+    },
+    {
+      enabled: ids.length > 0,
+    }
+  );
+};

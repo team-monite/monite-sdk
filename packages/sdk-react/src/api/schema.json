@@ -38807,7 +38807,7 @@
     "/receipts": {
       "get": {
         "tags": ["Receipts"],
-        "summary": "Lists all receipts from the connected entity.",
+        "summary": "Get receipts",
         "operationId": "get_receipts",
         "parameters": [
           {
@@ -38946,6 +38946,21 @@
             "required": false,
             "schema": { "type": "boolean" },
             "name": "has_transaction",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": { "type": "string", "format": "uuid" },
+            "name": "transaction_id",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "items": { "type": "string", "format": "uuid" },
+              "type": "array"
+            },
+            "name": "transaction_id__in",
             "in": "query"
           },
           {
@@ -39141,7 +39156,7 @@
       "post": {
         "tags": ["Receipts"],
         "summary": "Upload a receipt from a file",
-        "description": "Upload an incoming receipt in PDF, PNG, or JPEG format and scan its contents. The maximum file size is 20MB.",
+        "description": "Upload an incoming receipt in the PDF, PNG, or JPEG format and scan its contents. The maximum file size is 20 MB.",
         "operationId": "post_receipts_upload_from_file",
         "parameters": [
           {
@@ -39257,7 +39272,7 @@
     "/receipts/{receipt_id}": {
       "get": {
         "tags": ["Receipts"],
-        "summary": "Retrieves information about a specific receipt with the given ID.",
+        "summary": "Get a receipt by ID",
         "operationId": "get_receipts_id",
         "parameters": [
           {
@@ -39359,7 +39374,7 @@
       },
       "delete": {
         "tags": ["Receipts"],
-        "summary": "Deletes a specific receipt.",
+        "summary": "Delete a receipt",
         "operationId": "delete_receipts_id",
         "parameters": [
           {
@@ -39462,7 +39477,7 @@
       },
       "patch": {
         "tags": ["Receipts"],
-        "summary": "Updates the information about a specific receipt.",
+        "summary": "Update a receipt",
         "operationId": "patch_receipts_id",
         "parameters": [
           {
@@ -39575,7 +39590,7 @@
       "post": {
         "tags": ["Receipts"],
         "summary": "Attach a file to a receipt",
-        "description": "Attach file to receipt without existing attachment.",
+        "description": "Attach a file to a receipt without an existing attachment.",
         "operationId": "post_receipts_id_attach_file",
         "parameters": [
           {
@@ -65900,6 +65915,12 @@
             "description": "Currency code used in the receipt.",
             "example": "EUR"
           },
+          "description": {
+            "type": "string",
+            "maxLength": 1024,
+            "description": "Short transaction description.",
+            "example": "Payment for lunch with clients"
+          },
           "document_id": {
             "type": "string",
             "maxLength": 255,
@@ -65922,6 +65943,10 @@
             "maxLength": 128,
             "description": "Name of the merchant.",
             "example": "Tesco"
+          },
+          "partner_metadata": {
+            "type": "object",
+            "description": "Metadata for partner needs"
           },
           "total_amount": {
             "type": "integer",
@@ -65951,10 +65976,10 @@
             "format": "uuid",
             "description": "Cost center ID."
           },
-          "general_ledger_id": {
+          "ledger_account_id": {
             "type": "string",
             "format": "uuid",
-            "description": "General ledger ID."
+            "description": "Ledger account ID."
           },
           "name": {
             "type": "string",
@@ -66004,6 +66029,11 @@
             "format": "uuid",
             "description": "Created by user."
           },
+          "ledger_account_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Ledger account ID."
+          },
           "name": { "type": "string", "description": "Line item name." },
           "receipt_id": {
             "type": "string",
@@ -66028,10 +66058,10 @@
             "format": "uuid",
             "description": "Cost center ID."
           },
-          "general_ledger_id": {
+          "ledger_account_id": {
             "type": "string",
             "format": "uuid",
-            "description": "General ledger ID."
+            "description": "Ledger account ID."
           },
           "name": {
             "type": "string",
@@ -66066,6 +66096,7 @@
         "type": "object",
         "required": ["data"]
       },
+      "ReceiptOriginEnum": { "type": "string", "enum": ["upload", "email"] },
       "ReceiptPaginationResponse": {
         "properties": {
           "data": {
@@ -66115,6 +66146,12 @@
             "type": "object",
             "description": "Currency exchange details."
           },
+          "description": {
+            "type": "string",
+            "maxLength": 1024,
+            "description": "Short transaction description.",
+            "example": "Payment for lunch with clients"
+          },
           "document_id": {
             "type": "string",
             "maxLength": 255,
@@ -66151,9 +66188,19 @@
             "description": "OCR request id."
           },
           "ocr_status": { "type": "string", "description": "OCR status." },
+          "origin": {
+            "allOf": [{ "$ref": "#/components/schemas/ReceiptOriginEnum" }],
+            "description": "Specifies how this receipt was created in Monite."
+          },
           "partner_metadata": {
             "type": "object",
             "description": "Partner metadata."
+          },
+          "sender": {
+            "type": "string",
+            "format": "email",
+            "description": "The email address from which the invoice was sent to the entity.",
+            "example": "hello@example.com"
           },
           "source_of_data": {
             "allOf": [
@@ -66172,7 +66219,7 @@
           }
         },
         "type": "object",
-        "required": ["id", "created_at", "updated_at"]
+        "required": ["id", "created_at", "updated_at", "origin"]
       },
       "ReceiptUpdateSchema": {
         "properties": {
@@ -66183,6 +66230,12 @@
           "currency": {
             "allOf": [{ "$ref": "#/components/schemas/CurrencyEnum" }],
             "description": "Currency code."
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 1024,
+            "description": "Short transaction description.",
+            "example": "Payment for lunch with clients"
           },
           "document_id": {
             "type": "string",
@@ -66203,6 +66256,10 @@
             "type": "string",
             "maxLength": 128,
             "description": "Merchant name."
+          },
+          "partner_metadata": {
+            "type": "object",
+            "description": "Metadata for partner needs"
           },
           "total_amount": {
             "type": "integer",

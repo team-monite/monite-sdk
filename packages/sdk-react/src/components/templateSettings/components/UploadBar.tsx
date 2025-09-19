@@ -45,7 +45,7 @@ export const UploadBar = ({
 
   if (isError) {
     return (
-      <div className="mtw:w-[262px] mtw:h-[6px] mtw:bg-danger-90 mtw:rounded-md" />
+      <div className="mtw:w-[262px] mtw:h-[6px] mtw:bg-danger-100 mtw:rounded-md" />
     );
   }
 
