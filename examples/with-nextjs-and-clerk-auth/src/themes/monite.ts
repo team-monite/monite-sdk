@@ -6,7 +6,8 @@ import type {
 } from '@mui/material/styles/createPalette.js';
 import type { Theme } from '@mui/material/styles/createTheme.js';
 import type { TypographyOptions } from '@mui/material/styles/createTypography.js';
-import '@mui/x-data-grid/themeAugmentation';
+
+// import '@mui/x-data-grid/themeAugmentation';
 
 interface MonitePaletteColorOptions extends SimplePaletteColorOptions {
   '90': string;
