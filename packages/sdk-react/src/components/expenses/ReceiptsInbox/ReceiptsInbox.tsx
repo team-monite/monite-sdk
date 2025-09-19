@@ -6,6 +6,7 @@ import { components } from '@/api/schema';
 import { useDebounce } from '@/core/hooks';
 import { useEntityUserByAuthToken, useEntityUsersByIds } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
+import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
 import { ResponsiveGrid, useResponsiveGridState } from '@/ui/ResponsiveGrid';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { Button } from '@/ui/components/button';
@@ -89,6 +90,7 @@ export const ReceiptsInbox = ({
     hasNextPage,
     isFetchingNextPage,
     fetchNextPage,
+    refetch,
     error,
   } = useInfiniteGetReceipts(
     {
@@ -284,6 +286,24 @@ export const ReceiptsInbox = ({
             autoLoadMore={true}
             error={errorState}
             scrollContainer={scrollContainerRef}
+            noItemsOverlay={() => (
+              <GetNoRowsOverlay
+                isLoading={isLoading}
+                dataLength={receipts?.length || 0}
+                isFiltering={
+                  filters[FILTER_TYPE_HAS_TRANSACTION] === 'all'
+                    ? false
+                    : !!filters[FILTER_TYPE_HAS_TRANSACTION]
+                }
+                isSearching={!!filters[FILTER_TYPE_SEARCH]}
+                isError={!!error}
+                entityName={t(i18n)`Receipts`}
+                refetch={refetch}
+                type="no-data=receipts"
+                noDataDescription1={t(i18n)`No receipts yet`}
+                noDataDescription2={t(i18n)`Uploaded receipts will appear here`}
+              />
+            )}
           />
         </div>
       </>
