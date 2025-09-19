@@ -104,6 +104,7 @@ export const ReceiptsInbox = ({
           : filters[FILTER_TYPE_HAS_TRANSACTION] === 'unmatched'
             ? false
             : undefined,
+      // created_by_entity_user_id: user?.id, // TODO: add this to filter to only show receipts for the current user. pending API to support this. See DEV-16314.
     },
     isReadReceiptsAllowed
   );
