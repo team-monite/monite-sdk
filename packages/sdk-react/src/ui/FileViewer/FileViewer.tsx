@@ -46,22 +46,24 @@ export const FileViewer = ({
 export const ImageFileViewer = ({
   url,
   name,
+  objectFit = 'contain',
 }: {
   url: string;
   name: string;
+  objectFit?: 'contain' | 'cover' | 'fill';
 }) => {
   return (
     <img
       className="Monite-ImageFileViewer"
       src={url}
+      referrerPolicy="no-referrer"
       alt={name}
       loading="lazy"
+      decoding="async"
       style={{
-        maxWidth: '100%',
-        maxHeight: '100%',
-        width: 'auto',
-        height: 'auto',
-        objectFit: 'contain',
+        width: '100%',
+        height: '100%',
+        objectFit: objectFit,
       }}
     />
   );

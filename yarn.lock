@@ -4147,6 +4147,7 @@ __metadata:
     "@radix-ui/react-popover": "npm:~1.1.14"
     "@radix-ui/react-radio-group": "npm:~1.3.7"
     "@radix-ui/react-select": "npm:~2.2.5"
+    "@radix-ui/react-separator": "npm:~1.1.7"
     "@radix-ui/react-slot": "npm:~1.2.3"
     "@radix-ui/react-tabs": "npm:~1.1.12"
     "@radix-ui/react-tooltip": "npm:~1.2.7"
