@@ -4,6 +4,7 @@ import {
   calculateTotalPriceForLineItem,
 } from '@/components/payables/PayableDetails/PayableDetailsForm/helpers';
 import type { PayableDetailsFormFields } from '@/components/payables/PayableDetails/PayableDetailsForm/types';
+import { GLCodeSelector } from '@/components/payables/PayableDetails/GLCodeSelector';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -11,7 +12,11 @@ import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
 import { Button, Grid, IconButton, TextField, Typography } from '@mui/material';
 
-export const PayableLineItemsForm = () => {
+export interface PayableLineItemsFormProps {
+  enableGLCodes?: boolean;
+}
+
+export const PayableLineItemsForm = ({ enableGLCodes }: PayableLineItemsFormProps) => {
   const { i18n } = useLingui();
   const { getSymbolFromCurrency, formatCurrencyToDisplay, formatToMinorUnits } =
     useCurrencies();
@@ -88,6 +93,31 @@ export const PayableLineItemsForm = () => {
               </IconButton>
             </Grid>
           </Grid>
+          {enableGLCodes && (
+            <Grid
+              item
+              xs={12}
+              gap={2}
+              container
+              flexWrap="nowrap"
+            >
+              <Grid item xs={11}>
+                <Controller
+                  name={`lineItems.${index}.ledger_account_id`}
+                  control={control}
+                  render={({ field, fieldState: { error } }) => (
+                    <GLCodeSelector
+                      value={field.value ?? undefined}
+                      onChange={(value) => field.onChange(value ?? undefined)}
+                      error={Boolean(error)}
+                      helperText={error?.message}
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid item xs={1} />
+            </Grid>
+          )}
           <Grid
             item
             xs={12}
@@ -111,9 +141,7 @@ export const PayableLineItemsForm = () => {
                     error={Boolean(error)}
                     helperText={error?.message}
                     fullWidth
-                    InputProps={{
-                      endAdornment: getSymbolFromCurrency(watch('currency')),
-                    }}
+                    InputProps={{ endAdornment: getSymbolFromCurrency(watch('currency')) }}
                   />
                 )}
               />
@@ -133,9 +161,7 @@ export const PayableLineItemsForm = () => {
                     error={Boolean(error)}
                     helperText={error?.message}
                     fullWidth
-                    InputProps={{
-                      endAdornment: '%',
-                    }}
+                    InputProps={{ endAdornment: '%' }}
                   />
                 )}
               />
@@ -166,7 +192,13 @@ export const PayableLineItemsForm = () => {
         <Button
           startIcon={<AddIcon />}
           onClick={() =>
-            append({ id: '', name: '', quantity: 1, price: 0, tax: 19 })
+            append({ 
+              id: '', 
+              name: '', 
+              quantity: 1, 
+              price: 0, 
+              tax: 19,
+            })
           }
         >
           {t(i18n)`Add item`}

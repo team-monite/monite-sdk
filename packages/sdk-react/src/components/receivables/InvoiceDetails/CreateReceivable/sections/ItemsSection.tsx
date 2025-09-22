@@ -9,7 +9,7 @@ import { InvoiceTotals } from './components/Items/InvoiceTotals';
 import { CUSTOM_ID, ProductItem } from './components/Items/ItemSelector';
 import { useLineItemManagement } from './hooks/useLineItemManagement';
 import type { FormLineItemPath, CurrencyEnum } from './types';
-import { VatModeMenu } from '@/components/receivables/components';
+import { VatModeMenu } from '@/components/receivables/components/VatModeMenu';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
