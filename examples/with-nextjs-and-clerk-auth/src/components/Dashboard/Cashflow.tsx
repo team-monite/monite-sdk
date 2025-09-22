@@ -3,13 +3,12 @@ import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { IconChart } from '@/icons';
 import { useMoniteContext } from '@monite/sdk-react';
+import Link from 'next/link';
 import React, { useMemo } from 'react';
 import {
   Area,
-  Bar,
   CartesianGrid,
   ComposedChart,
-  Line,
   ReferenceLine,
   ResponsiveContainer,
   Tooltip,
@@ -95,7 +94,7 @@ export const CashFlowCard = () => {
             asChild
             className="bg-[#EBEBFF] text-[#3737FF] rounded-lg h-10 text-[0.9rem] font-medium transition-colors hover:bg-[#F8F8FF]"
           >
-            <a href="/receivables">Create invoice</a>
+            <Link href="/receivables">Create invoice</Link>
           </Button>
         </div>
       </DashboardCard>
