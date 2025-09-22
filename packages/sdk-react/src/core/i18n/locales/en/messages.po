@@ -1489,11 +1489,11 @@ msgstr "Bicycle Shops"
 msgid "Bill"
 msgstr "Bill"
 
-#: src/components/payables/Payables.tsx:227
+#: src/components/payables/Payables.tsx:229
 msgid "Bill #{payableId} has been deleted"
 msgstr "Bill #{payableId} has been deleted"
 
-#: src/components/payables/Payables.tsx:175
+#: src/components/payables/Payables.tsx:173
 msgid "Bill Pay"
 msgstr "Bill Pay"
 
@@ -7215,6 +7215,7 @@ msgstr "Payable"
 #~ msgid "Payable \"{0}\" has been approved"
 #~ msgstr "Payable \"{0}\" has been approved"
 
+#. placeholder {0}: payable?.document_id ?? 'document id is unknown'
 #: src/components/payables/PayableDetails/usePayableDetails.tsx:1016
 msgid "Payable “{0}” has been approved"
 msgstr "Payable “{0}” has been approved"
@@ -7223,6 +7224,7 @@ msgstr "Payable “{0}” has been approved"
 #~ msgid "Payable \"{0}\" has been canceled"
 #~ msgstr "Payable \"{0}\" has been canceled"
 
+#. placeholder {0}: payable.document_id
 #: src/components/payables/PayableDetails/usePayableDetails.tsx:922
 msgid "Payable “{0}” has been canceled"
 msgstr "Payable “{0}” has been canceled"
@@ -7231,14 +7233,17 @@ msgstr "Payable “{0}” has been canceled"
 #~ msgid "Payable \"{0}\" has been created"
 #~ msgstr "Payable \"{0}\" has been created"
 
+#. placeholder {0}: createdPayable.document_id
 #: src/components/payables/PayableDetails/usePayableDetails.tsx:736
 msgid "Payable “{0}” has been created"
 msgstr "Payable “{0}” has been created"
 
+#. placeholder {0}: payable.document_id
 #: src/components/payables/PayableDetails/usePayableDetails.tsx:1054
 msgid "Payable “{0}” has been force approved"
 msgstr "Payable “{0}” has been force approved"
 
+#. placeholder {0}: payable.document_id
 #: src/components/payables/PayableDetails/usePayableDetails.tsx:1036
 msgid "Payable “{0}” has been force rejected"
 msgstr "Payable “{0}” has been force rejected"
@@ -7251,6 +7256,7 @@ msgstr "Payable “{0}” has been force rejected"
 #~ msgid "Payable \"{0}\" has been rejected"
 #~ msgstr "Payable \"{0}\" has been rejected"
 
+#. placeholder {0}: payable.document_id
 #: src/components/payables/PayableDetails/usePayableDetails.tsx:998
 msgid "Payable “{0}” has been rejected"
 msgstr "Payable “{0}” has been rejected"
@@ -7259,6 +7265,7 @@ msgstr "Payable “{0}” has been rejected"
 #~ msgid "Payable \"{0}\" has been reopened"
 #~ msgstr "Payable \"{0}\" has been reopened"
 
+#. placeholder {0}: payable.document_id
 #: src/components/payables/PayableDetails/usePayableDetails.tsx:1072
 msgid "Payable “{0}” has been reopened"
 msgstr "Payable “{0}” has been reopened"
@@ -7267,6 +7274,7 @@ msgstr "Payable “{0}” has been reopened"
 #~ msgid "Payable \"{0}\" has been submitted"
 #~ msgstr "Payable \"{0}\" has been submitted"
 
+#. placeholder {0}: payable.document_id
 #: src/components/payables/PayableDetails/usePayableDetails.tsx:976
 msgid "Payable “{0}” has been submitted"
 msgstr "Payable “{0}” has been submitted"
@@ -7275,10 +7283,12 @@ msgstr "Payable “{0}” has been submitted"
 #~ msgid "Payable \"{0}\" has been updated"
 #~ msgstr "Payable \"{0}\" has been updated"
 
+#. placeholder {0}: updatedPayable.document_id
 #: src/components/payables/PayableDetails/usePayableDetails.tsx:801
 msgid "Payable “{0}” has been updated"
 msgstr "Payable “{0}” has been updated"
 
+#. placeholder {0}: file.name
 #: src/components/payables/Payables.tsx:139
 msgid "Payable {0} uploaded successfully"
 msgstr "Payable {0} uploaded successfully"
@@ -10331,10 +10341,11 @@ msgid "Upload payable file"
 msgstr "Upload payable file"
 
 #: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:131
-#: src/components/payables/Payables.tsx:200
+#: src/components/payables/Payables.tsx:198
 msgid "Upload payable files"
 msgstr "Upload payable files"
 
+#. placeholder {0}: file.name
 #: src/components/payables/Payables.tsx:138
 msgid "Uploading {0}"
 msgstr "Uploading {0}"
