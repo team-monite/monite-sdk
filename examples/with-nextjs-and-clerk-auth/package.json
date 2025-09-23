@@ -8,7 +8,7 @@
     "dev": "next dev --port 3000",
     "build": "next build",
     "start": "next start --port 3000",
-    "lint": "next lint",
+    "lint": "eslint .",
     "test": "jest",
     "e2e": "playwright test",
     "e2e:ui": "playwright test --ui",
@@ -55,6 +55,7 @@
   },
   "devDependencies": {
     "@clerk/testing": "^1.7.1",
+    "@eslint/eslintrc": "^3",
     "@faker-js/faker": "~8.3.1",
     "@lingui/cli": "~5.5.0",
     "@lingui/swc-plugin": "5.6.0",

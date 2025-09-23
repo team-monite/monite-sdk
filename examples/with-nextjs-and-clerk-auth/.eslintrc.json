@@ -7,6 +7,7 @@
   "ignorePatterns": [
     "src/lib/monite-api/schema.d.ts",
     "src/locales/en/messages.d.ts",
-    "src/locales/en/messages.ts"
+    "src/locales/en/messages.ts",
+    "e2e/**/*"
   ]
 }
