@@ -16,7 +16,6 @@ import {
 import type { LineItem, PayableDetailsFormFields } from './types';
 import { usePayableDetailsForm } from './usePayableDetailsForm';
 import {
-  type PayableDetailsValidationFields,
   isFieldRequiredByValidations,
   getPayableDetailsFormSchema,
 } from './validation';
@@ -93,6 +92,7 @@ export interface PayableDetailsFormProps extends MonitePayableDetailsInfoProps {
   payableDetailsFormId: string;
   /** @see {@link CustomerTypes} */
   customerTypes?: CustomerTypes;
+  enableGLCodes?: boolean;
 }
 
 /**
@@ -155,6 +155,7 @@ const PayableDetailsFormBase = forwardRef<
       lineItems,
       payableDetailsFormId,
       customerTypes,
+      enableGLCodes,
       ...inProps
     },
     ref
@@ -380,7 +381,7 @@ const PayableDetailsFormBase = forwardRef<
                           />
                         )}
                       />
-                      <CounterpartAutocomplete<PayableDetailsValidationFields>
+                      <CounterpartAutocomplete<PayableDetailsFormFields>
                         control={control}
                         disabled={isCounterpartLoading}
                         name="counterpart"
@@ -578,10 +579,7 @@ const PayableDetailsFormBase = forwardRef<
                           />
                         )}
                       />
-                      <MoniteCurrency<
-                        PayableDetailsValidationFields,
-                        'currency'
-                      >
+                      <MoniteCurrency<PayableDetailsFormFields, 'currency'>
                         name="currency"
                         control={control}
                         required={
@@ -616,7 +614,7 @@ const PayableDetailsFormBase = forwardRef<
                     <Typography variant="subtitle2" mb={2}>
                       {t(i18n)`Items`}
                     </Typography>
-                    <PayableLineItemsForm />
+                    <PayableLineItemsForm enableGLCodes={enableGLCodes} />
                   </Paper>
                 </Grid>
                 <Grid item xs={12} className={className + '-Totals'}>
