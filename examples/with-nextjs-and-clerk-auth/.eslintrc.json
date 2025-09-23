@@ -1,10 +1,19 @@
 {
   "root": true,
-  "extends": ["next/core-web-vitals", "plugin:prettier/recommended"],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaVersion": 2022
+  },
+  "extends": [
+    "plugin:@next/next/core-web-vitals",
+    "plugin:prettier/recommended"
+  ],
   "rules": {
     "prettier/prettier": "error"
   },
   "ignorePatterns": [
+    "dist/**",
     "src/lib/monite-api/schema.d.ts",
     "src/locales/en/messages.d.ts",
     "src/locales/en/messages.ts",
