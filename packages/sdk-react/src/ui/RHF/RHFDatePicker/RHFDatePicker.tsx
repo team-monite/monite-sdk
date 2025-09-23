@@ -5,7 +5,7 @@ import { useRootElements } from '@/core/context/RootElementsProvider';
 import { Alert } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 import type { DatePickerProps } from '@mui/x-date-pickers';
-import { format as formatDate } from 'date-fns';
+import { format as formatDate, parse as parseDate } from 'date-fns';
 
 type RHFDatePickerExtraProps = {
   /**
@@ -45,8 +45,12 @@ export const RHFDatePicker = <T extends FieldValues>({
       }) => {
         const isInvalid = (isTouched || !isValid) && !isErrorCustom(error);
 
-        // new Date(null) generates "1970-01-01T00:00:00.000Z" and undefined is not acceptable because component becames uncontrolled
-        const date = field.value !== null ? new Date(field.value) : null;
+        // new Date(null) generates "1970-01-01T00:00:00.000Z" and undefined is not acceptable because component becomes uncontrolled
+        const date = field.value !== null
+          ? (typeof field.value === 'string'
+              ? parseDate(field.value, stringFormat, new Date())
+              : new Date(field.value))
+          : null;
 
         return (
           <>
