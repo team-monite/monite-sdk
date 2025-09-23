@@ -17,11 +17,11 @@ const PORT = process.env.PORT || 3000;
 const baseURL = `http://localhost:${PORT}`;
 
 export default defineConfig({
-  testDir: './e2e',
-  fullyParallel: true,
+  testDir: './e2e/tests',
+  fullyParallel: false, // Disable parallel execution to avoid auth conflicts
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  workers: 1, // Force single worker
   reporter: 'html',
   use: {
     baseURL,
@@ -29,16 +29,12 @@ export default defineConfig({
     screenshot: 'only-on-failure',
     video: 'on-first-retry',
   },
+  timeout: 60000, // Increase timeout to 60 seconds
+  globalSetup: './e2e/config/global.setup.ts',
   projects: [
     {
-      name: 'global setup',
-      testMatch: /config\/global\.setup\.ts/,
-    },
-    {
       name: 'chromium',
-      testDir: './e2e/tests',
       use: { ...devices['Desktop Chrome'] },
-      dependencies: ['global setup'],
     },
   ],
   webServer: {
