@@ -239,6 +239,7 @@ export function OnboardingPerson() {
                 label={t(i18n)`Date of birth`}
                 name="date_of_birth"
                 control={control}
+                valueAs="string"
               />
             )}
           </OnboardingStepContent>

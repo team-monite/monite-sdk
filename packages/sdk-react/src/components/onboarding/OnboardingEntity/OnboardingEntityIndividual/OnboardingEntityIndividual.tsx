@@ -64,6 +64,7 @@ export const OnboardingEntityIndividual = ({
           label={t(i18n)`Date of birth`}
           name="individual.date_of_birth"
           control={control}
+          valueAs="string"
         />
       )}
 

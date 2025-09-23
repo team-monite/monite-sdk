@@ -29,7 +29,7 @@ export const OnboardingBankAccount = ({
     onboardingForm: {
       checkValue,
       handleSubmit,
-      methods: { control, getValues, resetField, setValue, watch },
+      methods: { control, getValues, resetField, setValue, watch, clearErrors },
     },
   } = useOnboardingBankAccount();
 
@@ -51,8 +51,9 @@ export const OnboardingBankAccount = ({
         shouldDirty: false,
         shouldValidate: true,
       });
+      clearErrors('country');
     }
-  }, [countries, getValues, resetField, setValue]);
+  }, [countries, getValues, resetField, setValue, clearErrors]);
 
   const handleFormSubmit = handleSubmit(async (data) => {
     const result = await primaryAction(data);
