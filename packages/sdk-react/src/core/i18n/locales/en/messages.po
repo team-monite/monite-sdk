@@ -390,7 +390,7 @@ msgstr "Access Restricted"
 msgid "Account holder name"
 msgstr "Account holder name"
 
-#: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:114
+#: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:122
 #: src/components/receivables/validation.ts:121
 msgid "Account Holder Name"
 msgstr "Account Holder Name"
@@ -415,7 +415,7 @@ msgstr "Account holder name is required"
 msgid "Account number"
 msgstr "Account number"
 
-#: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:123
+#: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:131
 msgid "Account Number"
 msgstr "Account Number"
 
@@ -2841,7 +2841,7 @@ msgid "Cuba"
 msgstr "Cuba"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartBankView/CounterpartBankView.tsx:114
-#: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:77
+#: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:83
 #: src/components/onboarding/validators/validationSchemas.ts:109
 #: src/components/payables/PayableDetails/PayableDetailsForm/validation.ts:90
 #: src/components/products/ProductDetails/validation.ts:40
@@ -5084,7 +5084,7 @@ msgstr "I own 25% or more of the company."
 
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.tsx:145
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartBankView/CounterpartBankView.tsx:90
-#: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:105
+#: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:113
 #: src/components/onboarding/validators/validationSchemas.ts:117
 #: src/components/receivables/components/BankAccountCustomFields.tsx:197
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewLegacy.tsx:415
@@ -8471,7 +8471,7 @@ msgstr "Roofing/Siding, Sheet Metal"
 msgid "Routing number"
 msgstr "Routing number"
 
-#: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:132
+#: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:140
 msgid "Routing Number"
 msgstr "Routing Number"
 
@@ -9053,7 +9053,7 @@ msgstr "Something went wrong. Please try again"
 msgid "Sort code"
 msgstr "Sort code"
 
-#: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:141
+#: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:149
 msgid "Sort Code"
 msgstr "Sort Code"
 
@@ -9810,15 +9810,15 @@ msgstr "This invoice will change its status, and you won't be able to receive or
 msgid "This month"
 msgstr "This month"
 
-#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:278
+#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:279
 msgid "This person is a member of the governing board of the company."
 msgstr "This person is a member of the governing board of the company."
 
-#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:282
+#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:283
 msgid "This person is an executive or senior manager with significant management responsibility."
 msgstr "This person is an executive or senior manager with significant management responsibility."
 
-#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:276
+#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:277
 msgid "This person owns 25% or more of the company."
 msgstr "This person owns 25% or more of the company."
 
@@ -10666,7 +10666,7 @@ msgstr "Vendors"
 msgid "Venezuela"
 msgstr "Venezuela"
 
-#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:249
+#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:250
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingPersonView/OnboardingPersonView.tsx:83
 msgid "Verify identity"
 msgstr "Verify identity"
