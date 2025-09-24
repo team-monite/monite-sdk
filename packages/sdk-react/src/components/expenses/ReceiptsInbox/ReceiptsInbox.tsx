@@ -350,6 +350,12 @@ const DialogAndHeader = ({
       fullScreen
       showCloseButton={false}
       className="mtw:flex mtw:flex-col mtw:h-screen mtw:p-0"
+      onInteractOutside={(e) => {
+        if (isReceiptDetailsOpen) {
+          e.preventDefault();
+          return;
+        }
+      }}
     >
       <div className="mtw:flex mtw:flex-col mtw:gap-4 mtw:px-6 mtw:h-full">
         <DialogHeader className="mtw:py-4">
