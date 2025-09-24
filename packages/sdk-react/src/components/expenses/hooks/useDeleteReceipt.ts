@@ -5,7 +5,7 @@ import { useLingui } from '@lingui/react';
 import { toast } from 'react-hot-toast';
 
 export const useDeleteReceipt = (receipt_id: string) => {
-  const { api } = useMoniteContext();
+  const { api, queryClient } = useMoniteContext();
   const { i18n } = useLingui();
 
   return api.receipts.deleteReceiptsId.useMutation(
@@ -16,6 +16,8 @@ export const useDeleteReceipt = (receipt_id: string) => {
     },
     {
       onSuccess: () => {
+        api.receipts.getReceipts.invalidateQueries(queryClient);
+        api.receipts.getReceiptsId.invalidateQueries(queryClient);
         toast.success(t(i18n)`Receipt has been moved to trash.`);
       },
       onError: (error) => {
