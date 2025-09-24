@@ -158,8 +158,8 @@ export const ReceiptsInbox = ({
     isReadReceiptsAllowed
   );
 
-  const { data: mailboxexData } = useGetMailboxes(isReadReceiptsAllowed);
-  const receiptsEmailAddress = mailboxexData?.data?.find(
+  const { data: mailboxesData } = useGetMailboxes(isReadReceiptsAllowed);
+  const receiptsEmailAddress = mailboxesData?.data?.find(
     (mailbox) =>
       mailbox.related_object_type === 'receipt' && mailbox.status === 'active'
   )?.mailbox_full_address;
@@ -219,7 +219,7 @@ export const ReceiptsInbox = ({
           <div className="mtw:space-y-4">
             <div className="mtw:flex mtw:w-full mtw:relative">
               <TabBar
-                defaultValue="all"
+                value={filters[FILTER_TYPE_HAS_TRANSACTION] ?? 'all'}
                 onValueChange={(value: string) =>
                   handleChangeTab(value as HasTransactionFilterValue)
                 }
@@ -230,12 +230,11 @@ export const ReceiptsInbox = ({
                   <TabBarTrigger value="unmatched">
                     <div className="mtw:flex mtw:items-center">
                       {t(i18n)`Unmatched`}
-                      {unmatchedReceipts?.length &&
-                      unmatchedReceipts?.length > 0 ? (
+                      {(unmatchedReceipts?.length ?? 0) > 0 && (
                         <div className="mtw:ml-1 mtw:rounded-2xl mtw:w-3 mtw:h-3 mtw:bg-primary">
                           &nbsp;
                         </div>
-                      ) : null}
+                      )}
                     </div>
                   </TabBarTrigger>
                   <TabBarTrigger value="matched">{t(
