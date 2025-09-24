@@ -10,6 +10,7 @@ import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useEntityUserById } from '@/core/queries';
 import { getUserDisplayName } from '@/core/utils';
 import { getMimetypeFromUrl } from '@/core/utils/files';
+import { ConfirmationModal } from '@/ui/ConfirmationModal/ConfirmationModal';
 import { ImageFileViewer } from '@/ui/FileViewer';
 import { RHFTextField } from '@/ui/RHF/RHFTextField';
 import { Button } from '@/ui/components/button';
@@ -85,6 +86,7 @@ export const ReceiptDetails = ({
   } = useCurrencies();
 
   const [isReceiptViewerOpen, setIsReceiptViewerOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const { data: receiptUser } = useEntityUserById(
     receipt.created_by_entity_user_id
@@ -145,9 +147,15 @@ export const ReceiptDetails = ({
     reset(values);
   });
 
-  const handleReceiptDelete = () => {
+  const handleReceiptDelete = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleConfirmDelete = () => {
     deleteReceipt(undefined, {
       onSuccess: () => {
+        setIsDeleteModalOpen(false);
         onClose?.();
       },
     });
@@ -158,7 +166,7 @@ export const ReceiptDetails = ({
       <Sheet
         open={open}
         onOpenChange={(isOpen) => {
-          if (!isOpen && !isReceiptViewerOpen) {
+          if (!isOpen && !isReceiptViewerOpen && !isDeleteModalOpen) {
             onClose?.();
           }
         }}
@@ -442,7 +450,7 @@ export const ReceiptDetails = ({
             <div className="mtw:flex mtw:justify-between mtw:items-center">
               <Button
                 variant="destructiveGhost"
-                onClick={handleReceiptDelete}
+                onClick={(event) => handleReceiptDelete(event)}
                 disabled={isDeleteReceiptPending}
               >
                 <Trash2Icon className="mtw:size-4" />
@@ -464,6 +472,17 @@ export const ReceiptDetails = ({
         receipt={receipt}
         isOpen={isReceiptViewerOpen}
         setIsOpen={setIsReceiptViewerOpen}
+      />
+
+      <ConfirmationModal
+        open={isDeleteModalOpen}
+        title={t(i18n)`Delete receipt`}
+        message={t(i18n)`This action can't be undone.`}
+        confirmLabel={t(i18n)`Delete`}
+        cancelLabel={t(i18n)`Cancel`}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={handleConfirmDelete}
+        isLoading={isDeleteReceiptPending}
       />
     </>
   );
