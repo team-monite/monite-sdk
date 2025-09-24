@@ -55,13 +55,13 @@ const getValidationSchema = (i18n: I18n) =>
     merchantName: z
       .string()
       .min(1, t(i18n)`Required`)
-      .max(255, t(i18n)`Value must be at most '255' characters`),
+      .max(255, t(i18n)`Value must be at most 255 characters`),
     merchantLocation: z
       .string()
       .min(1, t(i18n)`Required`)
-      .max(255, t(i18n)`Value must be at most '255' characters`),
-    totalAmount: z.number().min(1, t(i18n)`Required`),
-    date: z.date(),
+      .max(255, t(i18n)`Value must be at most 255 characters`),
+    totalAmount: z.number().min(1, t(i18n)`Value must be greater than 1`),
+    date: z.date(t(i18n)`Select a valid date and time`),
   });
 
 type FormFields = z.infer<ReturnType<typeof getValidationSchema>>;
@@ -110,7 +110,7 @@ export const ReceiptDetails = ({
           receipt.total_amount || 0,
           receipt.currency ?? 'EUR'
         ) ?? 0,
-      date: new Date(receipt.issued_at || ''),
+      date: new Date(receipt.issued_at ?? receipt.created_at ?? Date.now()),
     },
   });
   const {
@@ -198,7 +198,7 @@ export const ReceiptDetails = ({
                           {t(i18n)`Employee`}
                         </td>
                         <td className="mtw:p-3 mtw:font-medium">
-                          {getUserDisplayName({ ...receiptUser }) || '-'}
+                          {receiptUser ? getUserDisplayName(receiptUser) : '-'}
                         </td>
                       </tr>
                       {receipt.sender && (
@@ -348,7 +348,7 @@ export const ReceiptDetails = ({
                             label={t(i18n)`Total amount`}
                             variant="standard"
                             type="number"
-                            inputProps={{ min: 0 }}
+                            inputProps={{ min: 1 }}
                             error={Boolean(error)}
                             helperText={error?.message}
                             fullWidth
