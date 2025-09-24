@@ -115,7 +115,6 @@
     "@swc/plugin-emotion": "~11.1.0",
     "@tailwindcss/postcss": "~4.1.11",
     "@tanstack/react-query-devtools": "~5.28.6",
-    "@team-monite/eslint-plugin": "workspace:~",
     "@testing-library/dom": "~9.3.1",
     "@testing-library/jest-dom": "~5.16.5",
     "@testing-library/react": "~14.1.0",
