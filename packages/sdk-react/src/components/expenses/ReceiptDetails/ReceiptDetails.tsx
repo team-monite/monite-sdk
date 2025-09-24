@@ -48,7 +48,7 @@ import {
 } from 'lucide-react';
 import { useState, useId } from 'react';
 import { useForm } from 'react-hook-form';
-import z from 'zod';
+import { z } from 'zod';
 
 const getValidationSchema = (i18n: I18n) =>
   z.object({
