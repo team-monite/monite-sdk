@@ -1,3 +1,4 @@
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { type CounterpartIndividualFields } from '../../CounterpartForm';
 import { InlineSuggestionFill } from '../InlineSuggestionFill';
 import {
@@ -70,6 +71,7 @@ export const CounterpartIndividualForm = ({
 }: CounterpartIndividualFormProps) => {
   const { i18n } = useLingui();
   const dialogContext = useDialog();
+  const { componentSettings } = useMoniteContext();
 
   const {
     id: counterpartId,
@@ -118,7 +120,8 @@ export const CounterpartIndividualForm = ({
         ? defaultValuesOCR.counterpart
         : prepareCounterpartIndividual(
             individualCounterpart?.individual,
-            defaultValues
+            defaultValues,
+            componentSettings?.onboarding?.allowedCountries && componentSettings?.onboarding?.allowedCountries.length === 1 ? componentSettings?.onboarding?.allowedCountries[0] : undefined
           ),
     },
   });
@@ -185,7 +188,8 @@ export const CounterpartIndividualForm = ({
         ? defaultValuesOCR.counterpart
         : prepareCounterpartIndividual(
             individualCounterpart?.individual,
-            defaultValues
+            defaultValues,
+            componentSettings?.onboarding?.allowedCountries && componentSettings?.onboarding?.allowedCountries.length === 1 ? componentSettings?.onboarding?.allowedCountries[0] : undefined
           ),
     });
   }, [
@@ -195,6 +199,7 @@ export const CounterpartIndividualForm = ({
     individualCounterpart?.tax_id,
     reset,
     defaultValuesOCR,
+    componentSettings?.onboarding?.allowedCountries,
   ]);
 
   if (!isCreateAllowed && !counterpartId) {

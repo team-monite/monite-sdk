@@ -1,3 +1,4 @@
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { CounterpartOrganizationFields } from '../../CounterpartForm';
 import { InlineSuggestionFill } from '../InlineSuggestionFill';
 import {
@@ -69,6 +70,7 @@ export const CounterpartOrganizationForm = (
   props: CounterpartOrganizationFormProps
 ) => {
   const { i18n } = useLingui();
+  const { componentSettings } = useMoniteContext();
   const dialogContext = useDialog();
 
   const {
@@ -119,7 +121,8 @@ export const CounterpartOrganizationForm = (
           ? defaultValuesOCR.counterpart
           : prepareCounterpartOrganization(
               organizationCounterpart?.organization,
-              defaultValues
+              defaultValues,
+              componentSettings?.onboarding?.allowedCountries && componentSettings?.onboarding?.allowedCountries.length === 1 ? componentSettings?.onboarding?.allowedCountries[0] : undefined
             ),
       }),
       [
@@ -128,6 +131,7 @@ export const CounterpartOrganizationForm = (
         organizationCounterpart?.organization,
         defaultValues,
         defaultValuesOCR,
+        componentSettings?.onboarding?.allowedCountries,
       ]
     ),
   });
@@ -201,7 +205,8 @@ export const CounterpartOrganizationForm = (
         ? defaultValuesOCR.counterpart
         : prepareCounterpartOrganization(
             organizationCounterpart?.organization,
-            defaultValues
+            defaultValues,
+            componentSettings?.onboarding?.allowedCountries && componentSettings?.onboarding?.allowedCountries.length === 1 ? componentSettings?.onboarding?.allowedCountries[0] : undefined
           ),
     });
   }, [
@@ -211,6 +216,7 @@ export const CounterpartOrganizationForm = (
     organizationCounterpart?.tax_id,
     organizationCounterpart?.reminders_enabled,
     reset,
+    componentSettings?.onboarding?.allowedCountries,
   ]);
 
   if (!isCreateAllowed && !counterpartId) {

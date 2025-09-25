@@ -16,7 +16,8 @@ export interface CounterpartOrganizationFields
  */
 export const prepareCounterpartOrganization = (
   organization?: components['schemas']['CounterpartOrganizationResponse'],
-  defaultValues?: CounterpartDefaultValues
+  defaultValues?: CounterpartDefaultValues,
+  country?: components['schemas']['AllowedCountries']
 ): CounterpartOrganizationFields => {
   const isCustomer = !!(defaultValues?.isCustomer ?? organization?.is_customer);
 
@@ -40,7 +41,7 @@ export const prepareCounterpartOrganization = (
      */
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    country: '',
+    country: country ?? '',
   };
 };
 

@@ -1,5 +1,11 @@
 # @monite/sdk-react
 
+## 4.6.3
+
+### Patch Changes
+
+- d78c732: Fixed issue with country selection when creating a counterpart
+
 ## 4.6.2
 
 ### Patch Changes
