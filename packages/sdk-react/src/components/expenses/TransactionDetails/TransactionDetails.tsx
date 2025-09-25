@@ -5,6 +5,7 @@ import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useCurrencies } from '@/core/hooks';
 import { useEntityUserById } from '@/core/queries/useEntityUsers';
+import { OcrFileType } from '@/core/types/filetypes';
 import { getMimetypeFromUrl } from '@/core/utils/files';
 import { getUserDisplayName } from '@/core/utils/userUtils';
 import { ImageFileViewer } from '@/ui/FileViewer';
@@ -179,7 +180,7 @@ const TransactionDetailsBase = ({
                       >
                         {/* // TODO: only show image if not pdf; once PDF image previews are implemented, refactor the condition */}
                         {getMimetypeFromUrl(receipt.file_url) !==
-                          'application/pdf' && (
+                          OcrFileType.PDF && (
                           <ImageFileViewer
                             url={receipt.file_url}
                             name={receipt.document_id || ''}

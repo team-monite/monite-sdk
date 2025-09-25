@@ -1,10 +1,10 @@
-import { ReactNode } from 'react';
-
 import { OnboardingFileDescription } from '@/components/onboarding/OnboardingFile/OnboardingFileDescription';
 import { useFileById } from '@/core/queries';
+import { OcrFileType } from '@/core/types/filetypes';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Alert, Button, Typography } from '@mui/material';
+import { ReactNode } from 'react';
 
 type OnboardingFileViewerProps = {
   label: string;
@@ -26,7 +26,7 @@ export const OnboardingFileViewer = ({
   const { i18n } = useLingui();
   const { data } = useFileById(value);
 
-  const isPDF = data?.mimetype === 'application/pdf';
+  const isPDF = data?.mimetype === OcrFileType.PDF;
 
   return (
     <>

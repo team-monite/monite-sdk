@@ -1,6 +1,7 @@
 import { components } from '@/api/schema';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
+import { OcrFileType } from '@/core/types/filetypes';
 import { getMimetypeFromUrl } from '@/core/utils/files';
 import { getUserDisplayName } from '@/core/utils/userUtils';
 import { ImageFileViewer } from '@/ui/FileViewer/FileViewer';
@@ -25,7 +26,7 @@ export const ReceiptCard = ({ receipt, user }: ReceiptCardProps) => {
   const isMatched = !!receipt.transaction_id;
   const isImageFile =
     receipt.file_url &&
-    getMimetypeFromUrl(receipt.file_url) !== 'application/pdf';
+    getMimetypeFromUrl(receipt.file_url) !== OcrFileType.PDF;
 
   const NBSP = '\u00A0'; // non-breaking space
   const formattedDate = i18n.date(receipt.created_at, locale.dateFormat);

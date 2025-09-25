@@ -1,8 +1,7 @@
 import { components } from '@/api';
-import { OCR_SUPPORTED_FORMATS } from '@/core/hooks/useFileInput';
+import { OcrFileType, OcrFileTypesValues } from '@/core/types/filetypes';
 import { getRandomItemFromArray } from '@/utils/storybook-utils';
 import { faker } from '@faker-js/faker';
-
 import { http, HttpResponse, delay } from 'msw';
 
 type CreateFileParams = { fileId: string };
@@ -20,8 +19,8 @@ const filePath = `*/files`;
 const fileIdPath = `${filePath}/:fileId`;
 
 const fileFixture = (): FileResponse => {
-  const mimetype = getRandomItemFromArray(OCR_SUPPORTED_FORMATS);
-  const isPdf = mimetype === 'application/pdf';
+  const mimetype = getRandomItemFromArray(OcrFileTypesValues);
+  const isPdf = mimetype === OcrFileType.PDF;
 
   return {
     id: faker.string.uuid(),
