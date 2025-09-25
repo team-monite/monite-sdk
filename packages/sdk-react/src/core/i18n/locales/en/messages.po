@@ -14,6 +14,11 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. js-lingui-explicit-id
+#: src/core/context/MoniteI18nProvider.test.tsx:29
+msgid "Delete {type} “{name}”?"
+msgstr "Delete {type} “{name}”?"
+
+#. js-lingui-explicit-id
 #: src/components/receivables/components/ReminderSectionContent.tsx:56
 msgid "Payment reminders are disabled for this customer. Please enable them in the customer details or turn them off."
 msgstr "Payment reminders are disabled for this customer. Please enable them in the customer details or turn them off."
@@ -37,11 +42,6 @@ msgstr "Edit customer"
 #: src/components/receivables/components/ReminderSectionContent.tsx:112
 msgid "You can change it in the customer profile."
 msgstr "You can change it in the customer profile."
-
-#. js-lingui-explicit-id
-#: src/core/context/MoniteI18nProvider.test.tsx:29
-msgid "Delete {type} “{name}”?"
-msgstr "Delete {type} “{name}”?"
 
 #. js-lingui-explicit-id
 #: src/components/payables/PayablesTable/components/PayablesTableAction.tsx:108
