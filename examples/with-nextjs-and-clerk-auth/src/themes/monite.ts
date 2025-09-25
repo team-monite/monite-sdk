@@ -251,7 +251,10 @@ const typographyLight = Object.assign({}, defaultMoniteTypography, {
 
 const filterControlWidth = '160px';
 
-const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
+const defaultMoniteComponents: Components<Omit<Theme, 'components'>> & {
+  MoniteApprovalRequestStatusChip?: any;
+  MoniteInvoiceStatusChip?: any;
+} = {
   MuiAlert: {
     styleOverrides: {
       standardInfo: {

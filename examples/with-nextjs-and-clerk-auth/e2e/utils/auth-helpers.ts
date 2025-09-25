@@ -24,7 +24,7 @@ export async function signInUser(
   }
 
   try {
-    await page.goto('/sign-in');
+    await page.goto('/sign-in', { waitUntil: 'domcontentloaded' });
 
     await setupClerkTestingToken({ page });
 
@@ -38,7 +38,31 @@ export async function signInUser(
       },
     });
 
-    await page.goto('/');
+    // Wait a bit for clerk to process
+    await page.waitForTimeout(2000);
+
+    // Wait for sign-in to complete and redirect away from sign-in page
+    try {
+      await page.waitForURL(/^(?!.*sign-in).*/, { timeout: 15000 });
+    } catch {
+      // If we're still on sign-in page after timeout, force navigation
+      console.log('Still on sign-in page, forcing navigation to home');
+    }
+
+    // Always navigate to home page to ensure we're in the right place
+    await page.goto('/', { waitUntil: 'domcontentloaded', timeout: 30000 });
+
+    // Wait for the page to actually be loaded and not redirect back to sign-in
+    try {
+      await page.waitForURL('/', { timeout: 10000 });
+    } catch {
+      // If we're not exactly on "/", that's okay as long as we're not on sign-in
+      if (!page.url().includes('sign-in')) {
+        console.log('Authentication successful, redirected to:', page.url());
+      } else {
+        throw new Error('Still on sign-in page after authentication attempt');
+      }
+    }
 
     return { success: true };
   } catch (error) {
