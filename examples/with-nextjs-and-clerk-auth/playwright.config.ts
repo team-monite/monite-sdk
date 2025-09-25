@@ -41,7 +41,8 @@ export default defineConfig({
   webServer: {
     command: 'yarn dev',
     url: baseURL,
-    // reuseExistingServer: !process.env.CI,
+    timeout: 120_000, // Increase timeout to 120 seconds for CI environments
+    reuseExistingServer: !process.env.CI,
     stdout: 'pipe',
     stderr: 'pipe',
   },
