@@ -5,7 +5,6 @@ import { useGetTransaction } from '../hooks/useGetTransaction';
 import { useUpdateReceipt } from '../hooks/useUpdateReceipt';
 import { components } from '@/api/schema';
 import { useMoniteContext } from '@/core/context/MoniteContext';
-import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useEntityUserById } from '@/core/queries';
 import { getUserDisplayName } from '@/core/utils';
@@ -77,7 +76,6 @@ export const ReceiptDetails = ({
 }) => {
   const { i18n } = useLingui();
   const { locale } = useMoniteContext();
-  const { root } = useRootElements();
   const {
     formatCurrencyToDisplay,
     getSymbolFromCurrency,
@@ -172,7 +170,7 @@ export const ReceiptDetails = ({
         }}
         modal={false}
       >
-        <SheetContent container={root} className="mtw:flex mtw:flex-col">
+        <SheetContent className="mtw:flex mtw:flex-col">
           <SheetHeader>
             <SheetTitle className="mtw:flex mtw:justify-start mtw:items-center mtw:gap-2">
               {formattedReceiptDate}
