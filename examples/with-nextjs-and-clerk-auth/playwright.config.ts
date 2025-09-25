@@ -18,10 +18,11 @@ const baseURL = `http://localhost:${PORT}`;
 
 export default defineConfig({
   testDir: './e2e/tests',
-  fullyParallel: false, // Disable parallel execution to avoid auth conflicts
+  fullyParallel: false,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
-  workers: 1, // Force single worker
+  retries: 2,
+  workers: 1,
+
   reporter: 'html',
   use: {
     baseURL,
