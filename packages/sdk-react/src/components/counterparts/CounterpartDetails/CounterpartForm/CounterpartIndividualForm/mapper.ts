@@ -17,7 +17,8 @@ export interface CounterpartIndividualFields
  */
 export const prepareCounterpartIndividual = (
   individual?: components['schemas']['CounterpartIndividualResponse'],
-  defaultValues?: CounterpartDefaultValues
+  defaultValues?: CounterpartDefaultValues,
+  country?: components['schemas']['AllowedCountries']
 ): CounterpartIndividualFields => {
   const isCustomer = !!(defaultValues?.isCustomer ?? individual?.is_customer);
   const isVendor = !!(defaultValues?.isVendor ?? individual?.is_vendor);
@@ -34,7 +35,7 @@ export const prepareCounterpartIndividual = (
     city: '',
     state: '',
     postalCode: '',
-    country: '',
+    country: country ?? '',
   };
 };
 

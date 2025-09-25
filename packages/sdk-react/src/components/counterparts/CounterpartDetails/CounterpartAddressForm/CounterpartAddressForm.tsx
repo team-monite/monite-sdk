@@ -1,3 +1,4 @@
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import type { CounterpartAddressFormFields } from './validation';
 import { MoniteCountry } from '@/ui/Country';
 import { t } from '@lingui/macro';
@@ -11,6 +12,7 @@ export const CounterpartAddressForm = ({
   parentField?: string;
 }) => {
   const { i18n } = useLingui();
+  const { componentSettings } = useMoniteContext();
 
   type Form = typeof parentField extends string
     ? { [key in typeof parentField]: CounterpartAddressFormFields }
@@ -116,6 +118,7 @@ export const CounterpartAddressForm = ({
           control={control}
           required
           fullWidth
+          allowedCountries={componentSettings?.onboarding?.allowedCountries}
         />
       </Stack>
     </Paper>
