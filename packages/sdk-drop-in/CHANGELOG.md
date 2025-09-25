@@ -1,5 +1,11 @@
 # @monite/sdk-drop-in
 
+## 2.5.3
+
+### Patch Changes
+
+- d78c732: Fixed issue with country selection when creating a counterpart
+
 ## 2.5.2
 
 ### Patch Changes
