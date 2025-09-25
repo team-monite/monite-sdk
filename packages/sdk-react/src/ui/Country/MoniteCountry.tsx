@@ -110,7 +110,8 @@ export const MoniteCountry = <
       rules={rules}
       shouldUnregister={shouldUnregister}
       onChange={customOnChange}
-      disabled={countryOptions?.length === 1 || disabled}
+      disabled={disabled}
+      readOnly={countryOptions?.length === 1}
       className={`Monite-Country ${hideLabel ? 'Monite-Label-Hidden' : ''}`}
       label={countryLabel}
       options={countryOptions}
