@@ -1,5 +1,12 @@
 # @monite/sdk-react
 
+## 4.6.2
+
+### Patch Changes
+
+- def4a1a: Fixed onboarding logic for country selection and representative requirements
+- ca0ceff: Added GL codes selection for payables
+
 ## 4.6.1
 
 ### Patch Changes
