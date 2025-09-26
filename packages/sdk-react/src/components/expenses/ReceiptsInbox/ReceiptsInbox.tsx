@@ -1,3 +1,4 @@
+import { ReceiptDetails } from '../ReceiptDetails';
 import { useGetMailboxes } from '../hooks/useGetMailboxes';
 import { useGetReceipts } from '../hooks/useGetReceipts';
 import { useInfiniteGetReceipts } from '../hooks/useInfiniteGetReceipts';
@@ -43,6 +44,11 @@ export const ReceiptsInbox = ({
   const { i18n } = useLingui();
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  const [isReceiptDetailsOpen, setIsReceiptDetailsOpen] = useState(false);
+  const [selectedReceipt, setSelectedReceipt] = useState<
+    components['schemas']['ReceiptResponseSchema'] | undefined
+  >(undefined);
 
   const { data: user } = useEntityUserByAuthToken();
 
@@ -152,22 +158,24 @@ export const ReceiptsInbox = ({
     isReadReceiptsAllowed
   );
 
-  const { data: mailboxexData } = useGetMailboxes(isReadReceiptsAllowed);
-  const receiptsEmailAddress = mailboxexData?.data?.find(
+  const { data: mailboxesData } = useGetMailboxes(isReadReceiptsAllowed);
+  const receiptsEmailAddress = mailboxesData?.data?.find(
     (mailbox) =>
       mailbox.related_object_type === 'receipt' && mailbox.status === 'active'
   )?.mailbox_full_address;
 
   const handleReceiptClick = useCallback(
-    (
-      receipt: components['schemas']['ReceiptResponseSchema'],
-      index: number
-    ) => {
-      console.log('Clicked receipt:', receipt, 'at index:', index);
-      // TODO: Handle receipt click - open details modal
+    (receipt: components['schemas']['ReceiptResponseSchema']) => {
+      setSelectedReceipt(receipt);
+      setIsReceiptDetailsOpen(true);
     },
     []
   );
+
+  const handleReceiptClose = useCallback(() => {
+    setSelectedReceipt(undefined);
+    setIsReceiptDetailsOpen(false);
+  }, []);
 
   const handleChangeTab = useCallback(
     (value: HasTransactionFilterValue) => {
@@ -201,123 +209,138 @@ export const ReceiptsInbox = ({
   }
 
   return (
-    <DialogAndHeader setIsOpen={setIsOpen}>
-      <>
-        {/* Fixed Tabs and Search Section */}
-        <div className="mtw:space-y-4">
-          <div className="mtw:flex mtw:w-full mtw:relative">
-            <TabBar
-              defaultValue="all"
-              onValueChange={(value: string) =>
-                handleChangeTab(value as HasTransactionFilterValue)
-              }
-              className="mtw:flex-1"
-            >
-              <TabBarList>
-                <TabBarTrigger value="all">{t(i18n)`All`}</TabBarTrigger>
-                <TabBarTrigger value="unmatched">
-                  <div className="mtw:flex mtw:items-center">
-                    {t(i18n)`Unmatched`}
-                    {unmatchedReceipts?.length &&
-                    unmatchedReceipts?.length > 0 ? (
-                      <div className="mtw:ml-1 mtw:rounded-2xl mtw:w-3 mtw:h-3 mtw:bg-primary">
-                        &nbsp;
-                      </div>
-                    ) : null}
-                  </div>
-                </TabBarTrigger>
-                <TabBarTrigger value="matched">{t(
-                  i18n
-                )`Matched`}</TabBarTrigger>
-              </TabBarList>
-            </TabBar>
-            {receiptsEmailAddress && (
-              <div className="mtw:flex mtw:flex-col">
-                <div className="mtw:absolute mtw:-top-4 mtw:right-0 mtw:md:relative mtw:md:top-auto mtw:md:right-auto mtw:flex-1 mtw:items-center mtw:flex mtw:gap-1 mtw:text-sm mtw:md:pl-1">
-                  <span className="mtw:text-neutral-50">{t(
+    <>
+      <DialogAndHeader
+        setIsOpen={setIsOpen}
+        isReceiptDetailsOpen={isReceiptDetailsOpen}
+      >
+        <>
+          {/* Fixed Tabs and Search Section */}
+          <div className="mtw:space-y-4">
+            <div className="mtw:flex mtw:w-full mtw:relative">
+              <TabBar
+                value={filters[FILTER_TYPE_HAS_TRANSACTION] ?? 'all'}
+                onValueChange={(value: string) =>
+                  handleChangeTab(value as HasTransactionFilterValue)
+                }
+                className="mtw:flex-1"
+              >
+                <TabBarList>
+                  <TabBarTrigger value="all">{t(i18n)`All`}</TabBarTrigger>
+                  <TabBarTrigger value="unmatched">
+                    <div className="mtw:flex mtw:items-center">
+                      {t(i18n)`Unmatched`}
+                      {(unmatchedReceipts?.length ?? 0) > 0 && (
+                        <div className="mtw:ml-1 mtw:rounded-2xl mtw:w-3 mtw:h-3 mtw:bg-primary">
+                          &nbsp;
+                        </div>
+                      )}
+                    </div>
+                  </TabBarTrigger>
+                  <TabBarTrigger value="matched">{t(
                     i18n
-                  )`Inbox address:`}</span>
-                  <a href={`mailto:${receiptsEmailAddress}`}>
-                    {receiptsEmailAddress}
-                  </a>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => {
-                      navigator.clipboard.writeText(receiptsEmailAddress);
-                    }}
-                    aria-label={t(i18n)`Copy inbox email address`}
-                  >
-                    <CopyIcon />
-                  </Button>
+                  )`Matched`}</TabBarTrigger>
+                </TabBarList>
+              </TabBar>
+              {receiptsEmailAddress && (
+                <div className="mtw:flex mtw:flex-col">
+                  <div className="mtw:absolute mtw:-top-4 mtw:right-0 mtw:md:relative mtw:md:top-auto mtw:md:right-auto mtw:flex-1 mtw:items-center mtw:flex mtw:gap-1 mtw:text-sm mtw:md:pl-1">
+                    <span className="mtw:text-neutral-50">{t(
+                      i18n
+                    )`Inbox address:`}</span>
+                    <a href={`mailto:${receiptsEmailAddress}`}>
+                      {receiptsEmailAddress}
+                    </a>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => {
+                        navigator.clipboard.writeText(receiptsEmailAddress);
+                      }}
+                      aria-label={t(i18n)`Copy inbox email address`}
+                    >
+                      <CopyIcon />
+                    </Button>
+                  </div>
+                  <Separator />
                 </div>
-                <Separator />
-              </div>
-            )}
+              )}
+            </div>
+
+            <Input
+              placeholder={t(i18n)`Search by Document ID`}
+              value={searchInputValue}
+              onChange={handleSearchChange}
+              className="mtw:max-w-sm"
+            />
           </div>
 
-          <Input
-            placeholder={t(i18n)`Search by Document ID`}
-            value={searchInputValue}
-            onChange={handleSearchChange}
-            className="mtw:max-w-sm"
-          />
-        </div>
-
-        <div
-          ref={scrollContainerRef}
-          className="mtw:flex-1 mtw:overflow-auto mtw:px-6 mtw:py-4"
-        >
-          <ResponsiveGrid
-            data={receipts || []}
-            renderItem={(receipt) => (
-              <ReceiptCard
-                receipt={receipt}
-                user={userDataMap.get(receipt.created_by_entity_user_id)}
-              />
-            )}
-            onItemClick={handleReceiptClick}
-            minItemWidth={240}
-            loadingSkeleton={ReceiptCardSkeleton}
-            skeletonCount={6}
-            loading={isLoading}
-            hasNextPage={hasNextPage}
-            isFetchingNextPage={isFetchingNextPage}
-            fetchNextPage={fetchNextPage}
-            autoLoadMore={true}
-            error={errorState}
-            scrollContainer={scrollContainerRef}
-            noItemsOverlay={() => (
-              <GetNoRowsOverlay
-                isLoading={isLoading}
-                dataLength={receipts?.length || 0}
-                isFiltering={
-                  filters[FILTER_TYPE_HAS_TRANSACTION] === 'all'
-                    ? false
-                    : !!filters[FILTER_TYPE_HAS_TRANSACTION]
-                }
-                isSearching={!!filters[FILTER_TYPE_SEARCH]}
-                isError={!!error}
-                entityName={t(i18n)`Receipts`}
-                refetch={refetch}
-                type="no-data=receipts"
-                noDataDescription1={t(i18n)`No receipts yet`}
-                noDataDescription2={t(i18n)`Uploaded receipts will appear here`}
-              />
-            )}
-          />
-        </div>
-      </>
-    </DialogAndHeader>
+          <div
+            ref={scrollContainerRef}
+            className="mtw:flex-1 mtw:overflow-auto mtw:px-6 mtw:py-4"
+          >
+            <ResponsiveGrid
+              data={receipts || []}
+              renderItem={(receipt) => (
+                <ReceiptCard
+                  receipt={receipt}
+                  user={userDataMap.get(receipt.created_by_entity_user_id)}
+                />
+              )}
+              onItemClick={handleReceiptClick}
+              minItemWidth={240}
+              loadingSkeleton={ReceiptCardSkeleton}
+              skeletonCount={6}
+              loading={isLoading}
+              hasNextPage={hasNextPage}
+              isFetchingNextPage={isFetchingNextPage}
+              fetchNextPage={fetchNextPage}
+              autoLoadMore={true}
+              error={errorState}
+              scrollContainer={scrollContainerRef}
+              noItemsOverlay={() => (
+                <GetNoRowsOverlay
+                  isLoading={isLoading}
+                  dataLength={receipts?.length || 0}
+                  isFiltering={
+                    filters[FILTER_TYPE_HAS_TRANSACTION] === 'all'
+                      ? false
+                      : !!filters[FILTER_TYPE_HAS_TRANSACTION]
+                  }
+                  isSearching={!!filters[FILTER_TYPE_SEARCH]}
+                  isError={!!error}
+                  entityName={t(i18n)`Receipts`}
+                  refetch={refetch}
+                  type="no-data=receipts"
+                  noDataDescription1={t(i18n)`No receipts yet`}
+                  noDataDescription2={t(
+                    i18n
+                  )`Uploaded receipts will appear here`}
+                />
+              )}
+            />
+          </div>
+        </>
+      </DialogAndHeader>
+      {isReceiptDetailsOpen && selectedReceipt && (
+        <ReceiptDetails
+          receipt={selectedReceipt}
+          open={isReceiptDetailsOpen}
+          onClose={handleReceiptClose}
+        />
+      )}
+    </>
   );
 };
 
 const DialogAndHeader = ({
   children,
   setIsOpen,
+  isReceiptDetailsOpen,
 }: {
   children: React.ReactNode;
   setIsOpen: (open: boolean) => void;
+  isReceiptDetailsOpen?: boolean;
 }) => {
   const { i18n } = useLingui();
 
@@ -326,6 +349,12 @@ const DialogAndHeader = ({
       fullScreen
       showCloseButton={false}
       className="mtw:flex mtw:flex-col mtw:h-screen mtw:p-0"
+      onInteractOutside={(e) => {
+        if (isReceiptDetailsOpen) {
+          e.preventDefault();
+          return;
+        }
+      }}
     >
       <div className="mtw:flex mtw:flex-col mtw:gap-4 mtw:px-6 mtw:h-full">
         <DialogHeader className="mtw:py-4">

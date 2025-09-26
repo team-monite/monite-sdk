@@ -60,12 +60,15 @@ export function getIndividualNameWithFallback(user: {
 }
 
 /**
- * Gets the display name for a user based on preferences.
- * Shows email if requested, otherwise shows full name with login fallback.
+ * Gets the display name for a user with fallback priority:
+ * 1. First + last name
+ * 2. Email (unless ignoreEmail is true)
+ * 3. Login (unless ignoreLogin is true)
  *
  * @param user - User object with name, email, and login properties
- * @param showEmail - Whether to prioritize email over name
- * @returns Appropriate display name based on preferences
+ * @param ignoreEmail - If true, skip email fallback and go directly to login
+ * @param ignoreLogin - If true, skip login fallback and return empty string if no name/email
+ * @returns Display name based on priority order with fallbacks
  */
 export function getUserDisplayName(
   user: {
@@ -74,11 +77,28 @@ export function getUserDisplayName(
     email?: string | null;
     login?: string | null;
   },
-  showEmail: boolean = false
+  ignoreEmail?: boolean,
+  ignoreLogin?: boolean
 ): string {
-  if (showEmail && user.email) {
+  // 1. Try first + last name
+  const fullName = getIndividualName(
+    user.first_name || '',
+    user.last_name || ''
+  );
+  if (fullName) {
+    return fullName;
+  }
+
+  // 2. Try email
+  if (user.email && !ignoreEmail) {
     return user.email;
   }
 
-  return getIndividualNameWithFallback(user);
+  // 3. Try login
+  if (user.login && !ignoreLogin) {
+    return user.login;
+  }
+
+  // Fallback to empty string
+  return '';
 }

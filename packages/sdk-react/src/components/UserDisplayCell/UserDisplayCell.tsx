@@ -13,7 +13,6 @@ interface UserDisplayCellProps {
     login?: string | null;
     userpic_file_id?: string | null;
   };
-  showUserEmail?: boolean;
   showAvatar?: boolean;
   avatarSize?: number;
   variant?: 'inline' | 'stacked';
@@ -23,17 +22,13 @@ interface UserDisplayCellProps {
 
 export const UserDisplayCell = ({
   user,
-  showUserEmail = false,
   showAvatar = true,
   avatarSize = 24,
   variant = 'inline',
   typographyVariant = 'body2',
   sx,
 }: UserDisplayCellProps) => {
-  const displayName = useMemo(
-    () => getUserDisplayName(user, showUserEmail),
-    [user, showUserEmail]
-  );
+  const displayName = useMemo(() => getUserDisplayName(user), [user]);
   const altDisplayName = useMemo(
     () => getIndividualName(user.first_name || '', user.last_name || ''),
     [user.first_name, user.last_name]

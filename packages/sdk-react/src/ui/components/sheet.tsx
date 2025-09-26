@@ -112,7 +112,10 @@ function SheetContentWrapper({
   return (
     <div
       data-slot="sheet-content-wrapper"
-      className={cn('mtw:overflow-y-scroll mtw:p-8', className)}
+      className={cn(
+        'mtw:overflow-y-auto mtw:overflow-x-hidden mtw:p-8 mtw:flex-1',
+        className
+      )}
       {...props}
     />
   );
