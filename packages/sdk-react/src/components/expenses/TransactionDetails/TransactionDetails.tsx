@@ -97,7 +97,9 @@ const TransactionDetailsBase = ({
                             {t(i18n)`Employee`}
                           </td>
                           <td className="mtw:p-3 mtw:font-medium">
-                            {getUserDisplayName({ ...transactionUser }) || '-'}
+                            {transactionUser
+                              ? getUserDisplayName(transactionUser)
+                              : '-'}
                           </td>
                         </tr>
                       )}
