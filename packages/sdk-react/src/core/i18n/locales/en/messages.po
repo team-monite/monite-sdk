@@ -1351,7 +1351,7 @@ msgid "Bank Account “{0}” has been updated."
 msgstr "Bank Account “{0}” has been updated."
 
 #. placeholder {0}: bankAccounts?.length + 1
-#: src/components/receivables/components/BankAccountFormContent.tsx:77
+#: src/components/receivables/components/BankAccountFormContent.tsx:65
 msgid "Bank account {0}"
 msgstr "Bank account {0}"
 
@@ -1384,7 +1384,7 @@ msgstr "Bank accounts"
 #~ msgid "Bank Identifier Code for international transfers"
 #~ msgstr "Bank Identifier Code for international transfers"
 
-#: src/components/receivables/components/BankAccountFormContent.tsx:227
+#: src/components/receivables/components/BankAccountFormContent.tsx:215
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewLegacy.tsx:410
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewMonite.tsx:455
 msgid "Bank name"
@@ -3028,7 +3028,7 @@ msgstr "default"
 msgid "Default"
 msgstr "Default"
 
-#: src/components/receivables/components/BankAccountFormContent.tsx:259
+#: src/components/receivables/components/BankAccountFormContent.tsx:247
 msgid "Default currency switch"
 msgstr "Default currency switch"
 
@@ -3401,7 +3401,7 @@ msgstr "Display bank display options"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.tsx:104
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartBankView/CounterpartBankView.tsx:82
-#: src/components/receivables/components/BankAccountFormContent.tsx:210
+#: src/components/receivables/components/BankAccountFormContent.tsx:198
 msgid "Display name"
 msgstr "Display name"
 
@@ -8839,7 +8839,7 @@ msgstr "Set a VAT ID for this customer to issue invoice"
 msgid "Set as default"
 msgstr "Set as default"
 
-#: src/components/receivables/components/BankAccountFormContent.tsx:261
+#: src/components/receivables/components/BankAccountFormContent.tsx:249
 msgid "Set as default for this currency"
 msgstr "Set as default for this currency"
 
@@ -9759,7 +9759,7 @@ msgstr "This action can't be undone."
 msgid "This action can’t be undone."
 msgstr "This action can’t be undone."
 
-#: src/components/receivables/components/BankAccountFormContent.tsx:172
+#: src/components/receivables/components/BankAccountFormContent.tsx:160
 msgid "This bank account will receive payments for your invoices"
 msgstr "This bank account will receive payments for your invoices"
 
