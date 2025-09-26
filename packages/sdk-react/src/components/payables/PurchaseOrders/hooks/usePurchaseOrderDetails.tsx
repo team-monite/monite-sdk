@@ -1,4 +1,6 @@
 import { PurchaseOrderFormData } from '../schemas';
+import { PURCHASE_ORDER_CONSTANTS } from '../consts';
+import { calculateValidForDays } from '../utils/calculations';
 import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { rateMajorToMinor } from '@/core/utils/currencies';
@@ -16,19 +18,23 @@ const transformFormDataToCreatePayload = (
     line_items,
     currency,
     message,
-    valid_for_days,
+    expiry_date,
     counterpart_id,
     ...optionalFields
   } = data;
+
+  const validForDays = expiry_date
+    ? calculateValidForDays(expiry_date)
+    : PURCHASE_ORDER_CONSTANTS.DEFAULT_VALID_FOR_DAYS;
 
   const payload: components['schemas']['PurchaseOrderPayloadSchema'] = {
     counterpart_id,
     currency: currency as components['schemas']['CurrencyEnum'],
     message: message || '',
-    valid_for_days,
+    valid_for_days: validForDays,
     items: line_items.map((item) => ({
       name: item.name,
-      quantity: Math.round(item.quantity),
+      quantity: item.quantity,
       unit: item.unit,
       price: rateMajorToMinor(item.price),
       currency: item.currency as components['schemas']['CurrencyEnum'],
@@ -37,7 +43,6 @@ const transformFormDataToCreatePayload = (
       ),
     })),
   };
-
   if (optionalFields.counterpart_address_id) {
     payload.counterpart_address_id = optionalFields.counterpart_address_id;
   }
@@ -54,12 +59,12 @@ const transformFormDataToCreatePayload = (
 const transformFormDataToUpdatePayload = (
   data: PurchaseOrderFormData
 ): components['schemas']['UpdatePurchaseOrderPayloadSchema'] => {
-  const { line_items, message, ...optionalFields } = data;
+  const { line_items, message, expiry_date, ...optionalFields } = data;
 
   const payload: components['schemas']['UpdatePurchaseOrderPayloadSchema'] = {
     items: line_items.map((item) => ({
       name: item.name,
-      quantity: Math.round(item.quantity),
+      quantity: item.quantity,
       unit: item.unit,
       price: rateMajorToMinor(item.price),
       currency: item.currency as components['schemas']['CurrencyEnum'],
@@ -69,6 +74,9 @@ const transformFormDataToUpdatePayload = (
     })),
   };
 
+  if (expiry_date) {
+    payload.valid_for_days = calculateValidForDays(expiry_date);
+  }
   if (optionalFields.counterpart_address_id) {
     payload.counterpart_address_id = optionalFields.counterpart_address_id;
   }

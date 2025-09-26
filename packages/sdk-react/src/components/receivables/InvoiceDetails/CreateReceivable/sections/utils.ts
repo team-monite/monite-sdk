@@ -280,9 +280,14 @@ export const parseLocaleNumericString = (
  * Formats the data consistently and handles type conversions
  */
 export const sanitizeLineItems = (
-  items: ReadonlyArray<SanitizableLineItem> | undefined
+  items: ReadonlyArray<SanitizableLineItem> | undefined,
+  options?: { treatFlatPricesAsMajorUnits?: boolean }
 ): CreateReceivablesFormBeforeValidationLineItemProps[] => {
   if (!items || !Array.isArray(items)) return [];
+
+  const treatFlatPricesAsMajorUnits = Boolean(
+    options?.treatFlatPricesAsMajorUnits
+  );
 
   const result = items
     .map((item) => {
@@ -295,7 +300,14 @@ export const sanitizeLineItems = (
           : flatNameRaw) || '';
       if (!name || name.trim() === '') return null;
 
-      const flatPriceValue = extItem.price;
+      const flatPriceRaw = extItem.price;
+      const flatPriceValue =
+        typeof flatPriceRaw === 'number'
+          ? treatFlatPricesAsMajorUnits
+            ? flatPriceRaw
+            : rateMajorToMinor(flatPriceRaw)
+          : undefined;
+
       const flatCurrency = extItem.currency;
       const flatUnit = extItem.unit;
       const vatRateValue = extItem.vat_rate_value ?? extItem.tax_rate_value;
@@ -322,20 +334,22 @@ export const sanitizeLineItems = (
       };
 
       const result: CreateReceivablesFormBeforeValidationLineItemProps = {
-        ...extItem,
         id: extItem.product_id || extItem.id || generateUniqueId(),
         product,
         quantity: extItem.quantity ?? 1,
-        vat_rate_value:
-          typeof extItem.vat_rate_value === 'number'
-            ? extItem.vat_rate_value <= 100
-              ? rateMajorToMinor(extItem.vat_rate_value)
-              : extItem.vat_rate_value
-            : undefined,
-        tax_rate_value:
-          typeof extItem.tax_rate_value === 'number'
-            ? extItem.tax_rate_value
-            : undefined,
+        ...(typeof extItem.vat_rate_value === 'number'
+          ? {
+              vat_rate_value:
+                extItem.vat_rate_value <= 100
+                  ? rateMajorToMinor(extItem.vat_rate_value)
+                  : extItem.vat_rate_value,
+            }
+          : {}),
+        ...(typeof extItem.tax_rate_value === 'number'
+          ? { tax_rate_value: extItem.tax_rate_value }
+          : {}),
+        ...(extItem.vat_rate_id ? { vat_rate_id: extItem.vat_rate_id } : {}),
+        ...(extItem.product_id ? { product_id: extItem.product_id } : {}),
       };
 
       if (

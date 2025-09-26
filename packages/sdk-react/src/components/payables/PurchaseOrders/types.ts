@@ -5,18 +5,21 @@ export interface CreatePurchaseOrderFormBeforeValidationLineItemProps {
   id?: string;
   name: string;
   quantity: number;
-  unit: string;
+  unit: PurchaseOrderMeasureUnit;
   price: number;
-  currency: string;
-  vat_rate: number;
+  currency: CurrencyEnum;
+  vat_rate: VatRateBasisPoints;
+  vat_rate_id?: string;
+  vat_rate_value?: number;
+  tax_rate_value?: number;
 }
 
 export interface CreatePurchaseOrderFormBeforeValidationProps {
   counterpart_id: string;
   line_items: Array<CreatePurchaseOrderFormBeforeValidationLineItemProps>;
-  valid_for_days: number;
+  valid_for_days?: number;
   message?: string;
-  currency: string;
+  currency: CurrencyEnum;
   entity_vat_id_id?: string;
   counterpart_address_id?: string;
   project_id?: string;
@@ -62,12 +65,13 @@ export interface EmailPurchaseOrderFormData {
   body_text: string;
 }
 
-export type CurrencyEnum = components['schemas']['CurrencyEnum'];
-
 export interface PurchaseOrderFilterTypes {
   search?: string;
-  status?: components['schemas']['PurchaseOrderStatusEnum'];
+  status?: PurchaseOrderStatusEnum;
   counterpart_id?: string;
 }
 
+type PurchaseOrderStatusEnum = components['schemas']['PurchaseOrderStatusEnum'];
 export type PurchaseOrderFilterValue = string | Date | null;
+export type CurrencyEnum = components['schemas']['CurrencyEnum'];
+export type VatRateBasisPoints = number; // integer basis points, e.g., 1900 => 19%

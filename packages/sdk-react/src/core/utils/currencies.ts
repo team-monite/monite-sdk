@@ -3,6 +3,24 @@ import { components } from '@/api';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 
+/**
+ * Type alias for currency values in major units (e.g., dollars, euros)
+ * Example: 22.22 for $22.22
+ *
+ * Use this type to clearly indicate that a value represents the standard
+ * currency denomination (dollars, not cents).
+ */
+export type MajorCurrencyValue = number;
+
+/**
+ * Type alias for currency values in minor units (e.g., cents, pence)
+ * Example: 2222 for $22.22
+ *
+ * Use this type to clearly indicate that a value represents the smallest
+ * currency denomination (cents, not dollars).
+ */
+export type MinorCurrencyValue = number;
+
 export type CurrenciesType = Record<CurrencyEnum, string>;
 
 export type CurrencyType = {
@@ -379,25 +397,55 @@ export const sortCurrencyOptionsByGroup = (
 };
 
 /**
- * Converts a currency rate from minor units (API format) to major units (UI display format)
- * Example: 2000 -> 20
- * Uses core currency conversion utilities for consistency and precision.
- * Rates always use 2 decimal places.
- * @param rateMinor The rate value in minor units (as received from API)
- * @returns The rate value in major units (for UI display)
+ * Converts a currency value from minor units (cents/API format) to major units (dollars/UI format)
+ *
+ * **Minor units** are the smallest currency denomination (e.g., cents for USD).
+ * **Major units** are the standard currency denomination (e.g., dollars for USD).
+ *
+ * This function divides by 100 to convert cents to dollars.
+ *
+ * @example
+ * // Converting $22.22 from API to form
+ * rateMinorToMajor(2222) // Returns 22.22
+ *
+ * @example
+ * // Converting £100.50 from API to form
+ * rateMinorToMajor(10050) // Returns 100.50
+ *
+ * @param rateMinor - The currency value in minor units (cents)
+ * @returns The currency value in major units (dollars)
+ *
+ * @see rateMajorToMinor - For the inverse conversion (major → minor)
  */
-export const rateMinorToMajor = (rateMinor: number): number => {
+export const rateMinorToMajor = (
+  rateMinor: MinorCurrencyValue
+): MajorCurrencyValue => {
   return fromMinorUnits(rateMinor, 2);
 };
 
 /**
- * Converts a currency rate from major units (UI display format) to minor units (API format)
- * Example: 20 -> 2000
- * Uses core currency conversion utilities for consistency and precision.
- * Rates always use 2 decimal places.
- * @param rateMajor The rate value in major units (from UI)
- * @returns The rate value in minor units (for API)
+ * Converts a currency value from major units (dollars/UI format) to minor units (cents/API format)
+ *
+ * **Major units** are the standard currency denomination (e.g., dollars for USD).
+ * **Minor units** are the smallest currency denomination (e.g., cents for USD).
+ *
+ * This function multiplies by 100 to convert dollars to cents.
+ *
+ * @example
+ * // Converting $22.22 from form to API payload
+ * rateMajorToMinor(22.22) // Returns 2222
+ *
+ * @example
+ * // Converting £100.50 from form to API payload
+ * rateMajorToMinor(100.50) // Returns 10050
+ *
+ * @param rateMajor - The currency value in major units (dollars)
+ * @returns The currency value in minor units (cents)
+ *
+ * @see rateMinorToMajor - For the inverse conversion (minor → major)
  */
-export const rateMajorToMinor = (rateMajor: number): number => {
+export const rateMajorToMinor = (
+  rateMajor: MajorCurrencyValue
+): MinorCurrencyValue => {
   return toMinorUnits(rateMajor, 2);
 };

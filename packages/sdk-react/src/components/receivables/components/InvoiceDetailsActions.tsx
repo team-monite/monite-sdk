@@ -70,6 +70,15 @@ export const InvoiceDetailsActions = ({
       entityUserId: invoice?.entity_user_id,
     });
 
+  const {
+    data: isCreateAllowed,
+    isLoading: isCreateAllowedLoading,
+  } = useIsActionAllowed({
+    method: 'receivable',
+    action: 'create',
+    entityUserId: invoice?.entity_user_id,
+  });
+
   const { refetch: downloadPdf, isLoading: isDownloadingPdf } =
     useGetReceivablePDFById(invoice.id, false);
 
@@ -98,8 +107,8 @@ export const InvoiceDetailsActions = ({
   const handleDownloadPdf = async () => {
     const pdfLink = await downloadPdf();
 
-    if (pdfLink.data?.file_url) {
-      window.open(pdfLink.data.file_url, '_blank');
+    if (typeof window !== 'undefined' && pdfLink.data?.file_url) {
+      window.open(pdfLink.data.file_url, '_blank', 'noopener,noreferrer');
     }
   };
 
@@ -242,6 +251,7 @@ export const InvoiceDetailsActions = ({
           type="button"
           variant="outline"
           size="sm"
+          disabled={isCreateAllowedLoading || !isCreateAllowed}
           onClick={() => handleButtonClick(handleDuplicateInvoice)}
         >
           <Copy /> {t(i18n)`Duplicate`}
@@ -278,6 +288,7 @@ export const InvoiceDetailsActions = ({
               </>
             )}
             <DropdownMenuItem
+              disabled={isCreateAllowedLoading || !isCreateAllowed}
               onClick={() => handleButtonClick(handleDuplicateInvoice)}
             >
               {t(i18n)`Duplicate`}

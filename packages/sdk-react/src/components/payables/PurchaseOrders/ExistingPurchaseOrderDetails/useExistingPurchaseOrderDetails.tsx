@@ -86,8 +86,9 @@ export function useExistingPurchaseOrderDetails({
   }, [view]);
 
   const handleDownloadPDF = useCallback(async () => {
+    if (typeof window === 'undefined') return;
     if (purchaseOrder?.file_url) {
-      window.open(purchaseOrder.file_url, '_blank');
+      window.open(purchaseOrder.file_url, '_blank', 'noopener,noreferrer');
     }
   }, [purchaseOrder?.file_url]);
 

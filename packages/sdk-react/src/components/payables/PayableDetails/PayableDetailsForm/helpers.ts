@@ -12,6 +12,7 @@ import {
 import { CounterpartResponse } from '@/core/queries';
 import { getIndividualName } from '@/core/utils';
 import { toMinorUnits, fromMinorUnits } from '@/core/utils/currency';
+import { ratePercentageToDecimal } from '@/core/utils/vatUtils';
 import { format } from 'date-fns';
 import { FieldValue, FieldValues } from 'react-hook-form';
 import { resolveNullableUpdate } from '@/components/payables/utils/resolveNullableUpdate';
@@ -150,7 +151,8 @@ const calculateLineItemSubtotal = (price: number, quantity: number): number => {
 };
 
 const calculateLineItemTotal = (subtotal: number, taxRate: number): number => {
-  const total = subtotal + (taxRate * subtotal) / 100;
+  const taxRateDecimal = ratePercentageToDecimal(taxRate);
+  const total = subtotal + taxRateDecimal * subtotal;
 
   return parseFloat(total.toFixed(2));
 };

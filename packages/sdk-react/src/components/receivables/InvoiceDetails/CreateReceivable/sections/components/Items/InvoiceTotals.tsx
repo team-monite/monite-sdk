@@ -1,5 +1,6 @@
 import { components } from '@/api';
 import { useCurrencies } from '@/core/hooks';
+import { rateMajorToMinor } from '@/core/utils/currencies';
 import { Price } from '@/core/utils/price';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -56,18 +57,22 @@ export const InvoiceTotals = ({
         />
 
         {Object.entries(taxesByVatRate)?.length > 0 ? (
-          Object.entries(taxesByVatRate).map(([taxRate, totalTax]) => (
-            <TotalTableItem
-              key={taxRate}
-              label={t(i18n)`Total Tax (${taxRate}%)`}
-              value={formatCurrencyToDisplay(
-                totalTax,
-                actualCurrency || defaultCurrency || 'USD',
-                true
-              )?.toString()}
-              className="mtw:text-sm mtw:font-normal mtw:text-neutral-50"
-            />
-          ))
+          Object.entries(taxesByVatRate).map(([taxRate, totalTax]) => {
+            const totalTaxMinor = rateMajorToMinor(totalTax);
+            
+            return (
+              <TotalTableItem
+                key={taxRate}
+                label={t(i18n)`Total Tax (${taxRate}%)`}
+                value={formatCurrencyToDisplay(
+                  totalTaxMinor,
+                  actualCurrency || defaultCurrency || 'USD',
+                  true
+                )?.toString()}
+                className="mtw:text-sm mtw:font-normal mtw:text-neutral-50"
+              />
+            );
+          })
         ) : (
           <TotalTableItem
             label={t(i18n)`Taxes total`}

@@ -1,5 +1,5 @@
 import { VendorSelector } from '../components/VendorSelector';
-import { CreatePurchaseOrderFormProps } from '../validation';
+import type { CreatePurchaseOrderFormProps } from '../validation';
 import { components } from '@/api';
 import { CreateCounterpartModal } from '@/components/counterparts/components';
 import { CustomerType } from '@/components/counterparts/types';
@@ -28,11 +28,11 @@ export const VendorSection = ({
   handleEditProfileState,
 }: VendorSectionProps) => {
   const { watch, setValue } = useFormContext<CreatePurchaseOrderFormProps>();
-  const counterpartIdRef = useRef<string | undefined>('');
+  const selectedCounterpartId = watch('counterpart_id');
   const selectedAddressId = watch('counterpart_address_id');
-
+  const counterpartIdRef = useRef<string | undefined>(selectedCounterpartId);
   const { data: counterpartAddresses } = useCounterpartAddresses(
-    counterpart?.id
+    selectedCounterpartId
   );
 
   const [isCreateCounterpartOpened, setIsCreateCounterpartOpened] =
@@ -43,26 +43,38 @@ export const VendorSection = ({
   useEffect(() => {
     if (!counterpartAddresses?.data?.length) return;
 
+    const activeCounterpart =
+      counterpart?.id === selectedCounterpartId ? counterpart : undefined;
+
     if (!selectedAddressId) {
-      counterpartIdRef.current = counterpart?.id;
+      counterpartIdRef.current = selectedCounterpartId;
       const addressId =
-        counterpart?.default_billing_address_id ||
+        activeCounterpart?.default_billing_address_id ||
         (counterpartAddresses.data.length === 1
           ? counterpartAddresses.data[0].id
           : '');
       setValue('counterpart_address_id', addressId);
     }
 
-    if (selectedAddressId && counterpartIdRef.current !== counterpart?.id) {
-      counterpartIdRef.current = counterpart?.id;
+    if (
+      selectedAddressId &&
+      counterpartIdRef.current !== selectedCounterpartId
+    ) {
+      counterpartIdRef.current = selectedCounterpartId;
       const addressId =
-        counterpart?.default_billing_address_id ||
+        activeCounterpart?.default_billing_address_id ||
         (counterpartAddresses.data.length === 1
           ? counterpartAddresses.data[0].id
           : '');
       setValue('counterpart_address_id', addressId);
     }
-  }, [counterpartAddresses, setValue, counterpart, selectedAddressId]);
+  }, [
+    counterpartAddresses,
+    setValue,
+    counterpart,
+    selectedAddressId,
+    selectedCounterpartId,
+  ]);
 
   return (
     <div className="mtw:w-full">
@@ -87,7 +99,7 @@ export const VendorSection = ({
 
       {(isEditModalOpen || isEditCounterpartOpened) && (
         <EditCounterpartModal
-          initialCounterpartId={counterpart?.id || ''}
+          initialCounterpartId={selectedCounterpartId ?? ''}
           initialBillingAddressId={selectedAddressId as string}
           initialShippingAddressId={selectedAddressId as string}
           disabled={disabled}

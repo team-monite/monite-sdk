@@ -1,4 +1,4 @@
-import { PURCHASE_ORDER_CONSTANTS } from './constants';
+import { PURCHASE_ORDER_CONSTANTS } from './consts';
 import { PURCHASE_ORDER_MEASURE_UNITS } from './types';
 import { CurrencyEnum } from '@/enums/CurrencyEnum';
 import { I18n } from '@lingui/core';
@@ -7,10 +7,10 @@ import { z } from 'zod';
 
 /**
  * Purchase Order line item validation schema
- * Simplified for manual entry only (no product catalog integration)
+ * Supports both VAT and non-VAT modes like Receivables
  */
-const getPurchaseOrderLineItemSchema = (i18n: I18n) =>
-  z.object({
+const getPurchaseOrderLineItemSchema = (i18n: I18n, isNonVatSupported: boolean) => {
+  const baseLineItemSchema = z.object({
     id: z.string().optional(),
     name: z.preprocess(
       (val) => {
@@ -44,13 +44,15 @@ const getPurchaseOrderLineItemSchema = (i18n: I18n) =>
     ),
     price: z.preprocess(
       (val) => {
-        if (val === undefined || val === null || val === '') return 0;
+        if (val === undefined || val === null || val === '') return undefined;
 
         const num = Number(val);
 
-        return isNaN(num) || num < 0 ? 0 : num;
+        return isNaN(num) ? undefined : num;
       },
-      z.number().min(0, t(i18n)`Price must be 0 or greater`)
+      z.number({
+        message: t(i18n)`Price is a required field`
+      }).min(0, t(i18n)`Price must be 0 or greater`)
     ),
     currency: z.preprocess(
       (val) => {
@@ -60,62 +62,46 @@ const getPurchaseOrderLineItemSchema = (i18n: I18n) =>
       },
       z.enum(CurrencyEnum as [string, ...string[]])
     ),
-    vat_rate_id: z.string().optional(),
-    vat_rate_value: z
-      .preprocess(
-        (val) => {
-          if (val === undefined || val === null || val === '') return 0;
-
-          const num = Number(val);
-
-          return isNaN(num) ? 0 : num;
-        },
-        z
-          .number()
-          .min(0, t(i18n)`VAT rate must be 0 or greater`)
-          .max(100, t(i18n)`VAT rate must be 100% or less`)
-      )
-      .optional(),
-    tax_rate_value: z
-      .preprocess(
-        (val) => {
-          if (val === undefined || val === null || val === '') return 0;
-
-          const num = Number(val);
-
-          return isNaN(num) ? 0 : num;
-        },
-        z
-          .number()
-          .min(0, t(i18n)`Tax rate must be 0 or greater`)
-          .max(100, t(i18n)`Tax rate must be 100% or less`)
-      )
-      .optional(),
   });
+
+  // Non-VAT schema (tax is required)
+  const nonVatLineItemSchema = baseLineItemSchema.extend({
+    vat_rate_value: z.number().optional(),
+    vat_rate_id: z.string().optional(),
+    tax_rate_value: z
+      .number({
+        message: t(i18n)`Tax is a required field`
+      })
+      .min(0, t(i18n)`Tax rate must be 0 or greater`)
+      .max(100, t(i18n)`Tax rate must be 100% or less`),
+  });
+
+  // VAT schema (VAT is required)
+  const vatLineItemSchema = baseLineItemSchema.extend({
+    tax_rate_value: z.number().min(0).max(100).optional(),
+    vat_rate_value: z
+      .number({ error: t(i18n)`VAT is a required field` })
+      .min(0, t(i18n)`VAT rate must be 0 or greater`)
+      .max(100, t(i18n)`VAT rate must be 100% or less`),
+    vat_rate_id: z
+      .string({ error: t(i18n)`VAT is a required field` })
+      .min(1, t(i18n)`VAT is a required field`),
+  });
+
+  return isNonVatSupported ? nonVatLineItemSchema : vatLineItemSchema;
+};
 
 /**
  * Base Purchase Order validation schema
  * Simplified to match Figma design: Vendor + Items + Details (expiry date + message)
  */
-const getBasePurchaseOrderSchema = (i18n: I18n) =>
+const getBasePurchaseOrderSchema = (i18n: I18n, isNonVatSupported: boolean) =>
   z.object({
     counterpart_id: z.string().min(1, t(i18n)`Vendor is a required field`),
     line_items: z
-      .array(getPurchaseOrderLineItemSchema(i18n))
+      .array(getPurchaseOrderLineItemSchema(i18n, isNonVatSupported))
       .min(1, t(i18n)`Please add at least 1 item to proceed`),
-    valid_for_days: z.preprocess(
-      (val) => {
-        if (val === undefined || val === null || val === '')
-          return PURCHASE_ORDER_CONSTANTS.DEFAULT_VALID_FOR_DAYS;
-
-        const num = Number(val);
-
-        return isNaN(num) || num <= 0
-          ? PURCHASE_ORDER_CONSTANTS.DEFAULT_VALID_FOR_DAYS
-          : num;
-      },
-      z.number().positive(t(i18n)`Valid for days must be greater than 0`)
-    ),
+    valid_for_days: z.number().positive().optional(),
     expiry_date: z.preprocess(
       (val) => {
         if (!val) return undefined;
@@ -159,20 +145,19 @@ const getBasePurchaseOrderSchema = (i18n: I18n) =>
     entity_vat_id_id: z.string().optional(),
     counterpart_address_id: z.string().optional(),
     project_id: z.string().optional(),
-    footer: z.string().optional(),
   });
 
 /**
  * Create Purchase Order validation schema
  */
-export const getCreatePurchaseOrderValidationSchema = (i18n: I18n) =>
-  getBasePurchaseOrderSchema(i18n);
+export const getCreatePurchaseOrderValidationSchema = (i18n: I18n, isNonVatSupported: boolean = false) =>
+  getBasePurchaseOrderSchema(i18n, isNonVatSupported);
 
 /**
  * Update Purchase Order validation schema
  */
-export const getUpdatePurchaseOrderValidationSchema = (i18n: I18n) =>
-  getBasePurchaseOrderSchema(i18n);
+export const getUpdatePurchaseOrderValidationSchema = (i18n: I18n, isNonVatSupported: boolean = false) =>
+  getBasePurchaseOrderSchema(i18n, isNonVatSupported);
 
 /**
  * Email Purchase Order validation schema

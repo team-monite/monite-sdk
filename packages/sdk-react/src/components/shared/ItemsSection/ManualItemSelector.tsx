@@ -50,7 +50,7 @@ export const ManualItemSelector = <
             field.onBlur();
             onBlur?.();
           }}
-          sx={{ minWidth: '200px' }}
+          className="mtw:min-w-[200px]"
         />
       )}
     />

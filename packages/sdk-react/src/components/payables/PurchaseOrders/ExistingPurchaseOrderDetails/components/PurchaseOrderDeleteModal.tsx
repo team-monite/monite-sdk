@@ -1,19 +1,18 @@
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
-import { useRootElements } from '@/core/context/RootElementsProvider';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
+import { Alert, AlertDescription } from '@/ui/components/alert';
+import { Button } from '@/ui/components/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/ui/components/dialog';
+import { LoadingSpinner } from '@/ui/loading';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  Alert,
-  Button,
-  CircularProgress,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Typography,
-} from '@mui/material';
 import { useState } from 'react';
 
 interface PurchaseOrderDeleteModalProps {
@@ -39,7 +38,6 @@ const PurchaseOrderDeleteModalBase = ({
 }: PurchaseOrderDeleteModalProps) => {
   const { i18n } = useLingui();
   const { api, entityId } = useMoniteContext();
-  const { root } = useRootElements();
   const [error, setError] = useState<string | null>(null);
 
   const deleteMutation =
@@ -67,42 +65,48 @@ const PurchaseOrderDeleteModalBase = ({
   return (
     <Dialog
       open={open}
-      onClose={onClose}
-      container={root}
-      maxWidth="sm"
-      fullWidth
+      onOpenChange={(isOpen) => {
+        if (!isOpen) onClose();
+      }}
     >
-      <DialogTitle>{t(i18n)`Delete Purchase Order`}</DialogTitle>
-      <DialogContent>
-        <Typography variant="body1">
+      <DialogContent onInteractOutside={(e) => e.preventDefault()}>
+        <DialogHeader>
+          <DialogTitle>{t(i18n)`Delete Purchase Order`}</DialogTitle>
+        </DialogHeader>
+        <div className="mtw:text-sm">
           {t(
             i18n
           )`Are you sure you want to delete this purchase order? This action cannot be undone.`}
-        </Typography>
+        </div>
         {error && (
-          <Alert severity="error" sx={{ mt: 2 }}>
-            {error}
+          <Alert variant="error" className="mtw:mt-2">
+            <AlertDescription>{error}</AlertDescription>
           </Alert>
         )}
+        <DialogFooter>
+          <Button
+            variant="outline"
+            onClick={onClose}
+            disabled={deleteMutation.isPending}
+          >
+            {t(i18n)`Cancel`}
+          </Button>
+          <Button
+            variant="destructive"
+            onClick={handleDelete}
+            disabled={deleteMutation.isPending}
+          >
+            {deleteMutation.isPending ? (
+              <span className="mtw:flex mtw:items-center mtw:gap-2">
+                <LoadingSpinner className="mtw:w-4 mtw:h-4 mtw:border-inherit mtw:border-t-transparent" />
+                {t(i18n)`Deleting...`}
+              </span>
+            ) : (
+              t(i18n)`Delete`
+            )}
+          </Button>
+        </DialogFooter>
       </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose} disabled={deleteMutation.isPending}>
-          {t(i18n)`Cancel`}
-        </Button>
-        <Button
-          onClick={handleDelete}
-          color="error"
-          variant="contained"
-          disabled={deleteMutation.isPending}
-          startIcon={
-            deleteMutation.isPending ? (
-              <CircularProgress size={20} color="inherit" />
-            ) : null
-          }
-        >
-          {t(i18n)`Delete`}
-        </Button>
-      </DialogActions>
     </Dialog>
   );
 };

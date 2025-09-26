@@ -14,7 +14,7 @@ import {
   TabsList,
   TabsTrigger,
   TabsContent,
-} from '@/ui/components/tabs-underline';
+} from '@/ui/components/tab-bar';
 import { cn } from '@/ui/lib/utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -109,7 +109,7 @@ export const CreatePayableMenu = ({
             onValueChange={setSelectedTab}
             className="mtw:w-[550px]"
           >
-            <div className="mtw:px-8 mtw:pt-4 mtw:border-b mtw:border-[#dce2eb]">
+            <div className="mtw:px-8 mtw:pt-4">
               <TabsList className="mtw:bg-transparent mtw:p-0 mtw:h-11 mtw:w-auto mtw:justify-start mtw:gap-6 mtw:rounded-none mtw:relative mtw:inline-flex">
                 <TabsTrigger 
                   value="bill"
@@ -134,12 +134,14 @@ export const CreatePayableMenu = ({
                 <div
                   className={cn(
                     'mtw:box-border mtw:cursor-pointer mtw:w-full mtw:h-40 mtw:flex mtw:flex-col mtw:items-center mtw:justify-center mtw:text-center mtw:border-2 mtw:rounded-xl mtw:border-dashed mtw:border-gray-300 mtw:bg-white mtw:hover:bg-gray-50',
-                    dragIsOver && 'mtw:bg-gray-100'
+                    dragIsOver && 'mtw:bg-gray-100',
+                    !isCreateAllowed && 'mtw:opacity-50 mtw:cursor-not-allowed'
                   )}
-                  onDragOver={handleDragOver}
-                  onDragLeave={handleDragLeave}
-                  onDrop={handleDrop}
-                  onClick={openFileInput}
+                  onDragOver={isCreateAllowed ? handleDragOver : undefined}
+                  onDragLeave={isCreateAllowed ? handleDragLeave : undefined}
+                  onDrop={isCreateAllowed ? handleDrop : undefined}
+                  onClick={isCreateAllowed ? openFileInput : undefined}
+                  aria-disabled={!isCreateAllowed}
                 >
                   <CloudUpload className="mtw:text-gray-400 mtw:w-8 mtw:h-8 mtw:mb-2" />
                   <p className="mtw:text-sm mtw:font-semibold mtw:text-gray-900">

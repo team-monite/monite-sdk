@@ -1,10 +1,11 @@
 import { components } from '@/api';
+import { Badge, type badgeVariants } from '@/ui/components/badge';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Circle } from '@mui/icons-material';
-import { Chip, ChipProps } from '@mui/material';
-import { lighten, styled, useTheme, useThemeProps } from '@mui/material/styles';
+import type { VariantProps } from 'class-variance-authority';
 import { forwardRef, useMemo } from 'react';
+
+type BadgeVariant = NonNullable<VariantProps<typeof badgeVariants>['variant']>;
 
 type PurchaseOrderStatus =
   components['schemas']['PurchaseOrderResponseSchema']['status'];
@@ -12,7 +13,7 @@ type StatusConfigKey = PurchaseOrderStatus & keyof StatusConfigMap;
 
 interface StatusConfig {
   label: string;
-  color: string;
+  variant: BadgeVariant;
 }
 
 interface StatusConfigMap {
@@ -22,35 +23,27 @@ interface StatusConfigMap {
 
 export interface MonitePurchaseOrderStatusChipProps {
   status: components['schemas']['PurchaseOrderResponseSchema']['status'];
-  icon?: boolean;
-  variant?: ChipProps['variant'];
-  size?: ChipProps['size'];
+  variant?: BadgeVariant;
 }
 
 export const PurchaseOrderStatusChip = forwardRef<
   HTMLDivElement,
   MonitePurchaseOrderStatusChipProps
->((inProps, ref) => {
-  const { status, icon, size, variant } = useThemeProps({
-    props: inProps,
-    name: 'MonitePurchaseOrderStatusChip',
-  });
-
+>(({ status, variant }, ref) => {
   const { i18n } = useLingui();
-  const theme = useTheme();
 
   const statusConfig: StatusConfigMap = useMemo(
     () => ({
       draft: {
         label: t(i18n)`Draft`,
-        color: theme.palette.secondary.main,
+        variant: 'secondary' as const,
       },
       issued: {
         label: t(i18n)`Issued`,
-        color: theme.palette.primary.main,
+        variant: 'default' as const,
       },
     }),
-    [i18n, theme.palette.secondary.main, theme.palette.primary.main]
+    [i18n]
   );
 
   const config: StatusConfig = useMemo(() => {
@@ -64,49 +57,17 @@ export const PurchaseOrderStatusChip = forwardRef<
       ? statusConfig[status]
       : {
           label: status || t(i18n)`Unknown`,
-          color: theme.palette.grey[500],
+          variant: 'outline' as const,
         };
-  }, [status, statusConfig, i18n, theme.palette.grey]);
-
-  const chipStyles = useMemo(
-    () => ({
-      color: config.color,
-      backgroundColor: lighten(config.color, 0.9),
-      border: 'none',
-      '& .MuiChip-icon': {
-        color: config.color,
-      },
-    }),
-    [config.color]
-  );
-
-  const chipIcon = useMemo(
-    () => (icon ? <Circle sx={{ fontSize: '10px !important' }} /> : undefined),
-    [icon]
-  );
+  }, [status, statusConfig, i18n]);
 
   return (
-    <StyledChip
-      className="Monite-PurchaseOrderStatusChip"
+    <Badge
       ref={ref}
-      sx={chipStyles}
-      icon={chipIcon}
-      label={config.label}
-      size={size}
-      status={status}
-      variant={variant ?? 'outlined'}
-    />
+      className="Monite-PurchaseOrderStatusChip"
+      variant={variant ?? config.variant}
+    >
+      {config.label}
+    </Badge>
   );
 });
-
-export const StyledChip = styled(
-  forwardRef<
-    HTMLDivElement,
-    ChipProps & Omit<MonitePurchaseOrderStatusChipProps, 'icon'>
-  >((props, ref) => <Chip ref={ref} {...props} />),
-  {
-    name: 'MonitePurchaseOrderStatusChip',
-    slot: 'root',
-    shouldForwardProp: () => true,
-  }
-)({});

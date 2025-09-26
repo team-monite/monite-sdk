@@ -6,14 +6,20 @@ import {
 import { PurchaseOrderFilterTypes, PurchaseOrderFilterValue } from '../types';
 import { getCounterpartName } from '@/components/counterparts/helpers';
 import { useMoniteContext } from '@/core/context/MoniteContext';
-import { useRootElements } from '@/core/context/RootElementsProvider';
 import { PurchaseOrderStatusEnum } from '@/enums/PurchaseOrderStatusEnum';
 import { FilterContainer } from '@/ui/Filters/FilterContainer';
 import { SearchField } from '@/ui/SearchField';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/ui/components/select';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { FormControl, MenuItem, Select, SxProps } from '@mui/material';
-import { Theme } from 'mui-styles';
+import type { SxProps } from '@mui/material';
+import type { Theme } from 'mui-styles';
 
 interface PurchaseOrderFiltersProps {
   onChangeFilter: (
@@ -30,7 +36,6 @@ const getStatusTextMap = (i18n: ReturnType<typeof useLingui>['i18n']) => ({
 
 export const Filters = ({ onChangeFilter, sx }: PurchaseOrderFiltersProps) => {
   const { i18n } = useLingui();
-  const { root } = useRootElements();
   const { api } = useMoniteContext();
   const className = 'Monite-PurchaseOrderFilters';
 
@@ -47,6 +52,7 @@ export const Filters = ({ onChangeFilter, sx }: PurchaseOrderFiltersProps) => {
       sx={{
         borderTopLeftRadius: '12px',
         borderTopRightRadius: '12px',
+        paddingTop: 0,
         ...sx,
       }}
       searchField={
@@ -58,65 +64,49 @@ export const Filters = ({ onChangeFilter, sx }: PurchaseOrderFiltersProps) => {
         />
       }
     >
-      <FormControl
-        variant="standard"
-        className="Monite-PurchaseOrderStatusFilter Monite-FilterControl"
-      >
+      <div className="Monite-PurchaseOrderStatusFilter Monite-FilterControl">
         <Select
-          labelId="status"
-          label={t(i18n)`Status`}
           defaultValue="all"
-          MenuProps={{ container: root }}
-          onChange={(selected) => {
-            onChangeFilter(
-              FILTER_TYPE_STATUS,
-              selected && selected.target.value
-            );
+          onValueChange={(value) => {
+            onChangeFilter(FILTER_TYPE_STATUS, value);
           }}
         >
-          {[
-            { label: t(i18n)`All statuses`, value: 'all' },
-            ...PurchaseOrderStatusEnum.map((status) => ({
-              label:
-                getStatusTextMap(i18n)[status as keyof typeof getStatusTextMap],
-              value: status,
-            })),
-          ].map(({ label, value }) => (
-            <MenuItem value={value} key={value}>
-              {label}
-            </MenuItem>
-          ))}
+          <SelectTrigger className="mtw:w-full">
+            <SelectValue placeholder={t(i18n)`Status`} />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">{t(i18n)`All statuses`}</SelectItem>
+            {PurchaseOrderStatusEnum.map((status) => {
+              const map = getStatusTextMap(i18n);
+              return (
+                <SelectItem value={status} key={status}>
+                  {map[status as keyof typeof map]}
+                </SelectItem>
+              );
+            })}
+          </SelectContent>
         </Select>
-      </FormControl>
-      <FormControl
-        variant="standard"
-        className="Monite-PurchaseOrderVendorFilter Monite-FilterControl"
-      >
+      </div>
+      <div className="Monite-PurchaseOrderVendorFilter Monite-FilterControl">
         <Select
-          labelId="vendor"
-          label={t(i18n)`Vendor`}
           defaultValue="all"
-          MenuProps={{ container: root }}
-          onChange={(selected) => {
-            onChangeFilter(
-              FILTER_TYPE_VENDOR,
-              selected && selected.target.value
-            );
+          onValueChange={(value) => {
+            onChangeFilter(FILTER_TYPE_VENDOR, value);
           }}
         >
-          {[
-            { label: t(i18n)`All vendors`, value: 'all' },
-            ...(vendors?.data?.map((vendor) => ({
-              label: getCounterpartName(vendor),
-              value: vendor.id,
-            })) || []),
-          ].map(({ label, value }) => (
-            <MenuItem value={value} key={value}>
-              {label}
-            </MenuItem>
-          ))}
+          <SelectTrigger className="mtw:w-full">
+            <SelectValue placeholder={t(i18n)`Vendor`} />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">{t(i18n)`All vendors`}</SelectItem>
+            {(vendors?.data || []).map((vendor) => (
+              <SelectItem value={vendor.id} key={vendor.id}>
+                {getCounterpartName(vendor)}
+              </SelectItem>
+            ))}
+          </SelectContent>
         </Select>
-      </FormControl>
+      </div>
     </FilterContainer>
   );
 };

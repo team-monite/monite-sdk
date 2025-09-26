@@ -20,12 +20,7 @@ import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import CloseIcon from '@mui/icons-material/Close';
-import DeleteIcon from '@mui/icons-material/Delete';
-import DownloadIcon from '@mui/icons-material/Download';
-import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import EmailIcon from '@mui/icons-material/MailOutline';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { X, Trash2, Download, ChevronRight, Mail, MoreVertical } from 'lucide-react';
 import {
   Alert,
   DialogContent,
@@ -34,7 +29,6 @@ import {
   IconButton,
   Stack,
   Toolbar,
-  Typography,
   CircularProgress,
 } from '@mui/material';
 import { useState, useTransition } from 'react';
@@ -174,13 +168,15 @@ const ExistingPurchaseOrderDetailsBase = (
                     aria-label="close"
                     disabled={loading}
                   >
-                    <CloseIcon />
+                    <X />
                   </IconButton>
                 )}
 
-                <Typography variant="h3">{t(
-                  i18n
-                )`Purchase order ${documentId} to ${getCounterpartName(purchaseOrder.counterpart) || t(i18n)`Vendor`}`}</Typography>
+                <h3 className="mtw:text-[28px] mtw:leading-[34px] mtw:font-semibold">
+                  {t(
+                    i18n
+                  )`Purchase order ${documentId} to ${getCounterpartName(purchaseOrder.counterpart) || t(i18n)`Vendor`}`}
+                </h3>
                 <PurchaseOrderStatusChip status={purchaseOrder.status} />
               </Stack>
             </Grid>
@@ -214,7 +210,7 @@ const ExistingPurchaseOrderDetailsBase = (
                     <DropdownMenuTrigger asChild>
                       <Button variant="ghost" disabled={loading}>
                         {t(i18n)`More`}
-                        <MoreVertIcon className="mtw:ml-2" />
+                        <MoreVertical className="mtw:ml-2" />
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
@@ -226,7 +222,7 @@ const ExistingPurchaseOrderDetailsBase = (
                                 callbacks.handleDownloadPDF();
                               }}
                             >
-                              <DownloadIcon fontSize="small" />
+                              <Download size={16} />
                               <span className="mtw:ml-2">{t(i18n)`Download PDF`}</span>
                             </DropdownMenuItem>
                           )}
@@ -237,7 +233,7 @@ const ExistingPurchaseOrderDetailsBase = (
                             }}
                             disabled={buttons.isDeleteButtonDisabled}
                           >
-                            <DeleteIcon fontSize="small" />
+                            <Trash2 size={16} />
                             <span className="mtw:ml-2">{t(i18n)`Delete`}</span>
                           </DropdownMenuItem>
                         </>
@@ -251,7 +247,7 @@ const ExistingPurchaseOrderDetailsBase = (
                             );
                           }}
                         >
-                          <EmailIcon fontSize="small" />
+                          <Mail size={16} />
                           <span className="mtw:ml-2">{t(i18n)`Send email`}</span>
                         </DropdownMenuItem>
                       )}
@@ -267,7 +263,7 @@ const ExistingPurchaseOrderDetailsBase = (
                     {buttons.isDownloadPDFButtonDisabled ? (
                       <CircularProgress size={20} color="inherit" />
                     ) : (
-                      <DownloadIcon fontSize="small" />
+                      <Download size={16} />
                     )}
                     <span className="mtw:ml-2">{t(i18n)`Download PDF`}</span>
                   </Button>
@@ -282,7 +278,7 @@ const ExistingPurchaseOrderDetailsBase = (
                     disabled={loading}
                   >
                     {t(i18n)`Compose email`}
-                    <KeyboardArrowRightIcon className="mtw:ml-2" />
+                    <ChevronRight className="mtw:ml-2" />
                   </Button>
                 )}
                 {buttons.isIssueButtonVisible && (

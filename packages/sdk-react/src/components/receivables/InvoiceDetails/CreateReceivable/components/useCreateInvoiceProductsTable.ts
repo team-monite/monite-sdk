@@ -2,7 +2,8 @@ import { components } from '@/api';
 import { CreateReceivablesFormBeforeValidationLineItemProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { useCurrencies } from '@/core/hooks';
 import { Price } from '@/core/utils/price';
-import { getRateValueForDisplay } from '@/core/utils/vatUtils';
+import { getRateValueForDisplay, ratePercentageToDecimal } from '@/core/utils/vatUtils';
+import { rateMajorToMinor } from '@/core/utils/currencies';
 import { useMemo } from 'react';
 
 
@@ -62,15 +63,46 @@ export const useCreateInvoiceProductsTable = ({
     return { price, quantity };
   };
 
-  const subtotalPrice = useMemo(() => {
-    const price = lineItems.reduce((acc, field) => {
+  const taxesByVatRate = useMemo(() => {
+    const taxes: Record<number, number> = {};
+
+    lineItems.forEach((field) => {
       const { price, quantity } = getPriceAndQuantity(field);
-      const vatRate =
+      const vatRatePercent = getRateValueForDisplay(
+        isNonVatSupported,
+        field.vat_rate_value ?? 0,
+        field.tax_rate_value ?? 0
+      );
+      const vatRateDecimal = ratePercentageToDecimal(vatRatePercent);
+
+      if (vatRatePercent === 0) return;
+
+      let lineSubtotal = price * quantity;
+      if (isInclusivePricing && vatRateDecimal) {
+        lineSubtotal = lineSubtotal / (1 + vatRateDecimal);
+      }
+
+      const lineTax = lineSubtotal * vatRateDecimal;
+
+      if (!taxes[vatRatePercent]) {
+        taxes[vatRatePercent] = 0;
+      }
+      taxes[vatRatePercent] += lineTax;
+    });
+
+    return taxes;
+  }, [lineItems, isNonVatSupported, isInclusivePricing]);
+
+  const subtotalPrice = useMemo(() => {
+    const priceMajor = lineItems.reduce((acc, field, index) => {
+      const { price, quantity } = getPriceAndQuantity(field);
+      const vatRate = ratePercentageToDecimal(
         getRateValueForDisplay(
           isNonVatSupported,
           field.vat_rate_value ?? 0,
           field.tax_rate_value ?? 0
-        ) / 100;
+        )
+      );
       if (isInclusivePricing && vatRate) {
         const base = (price * quantity) / (1 + vatRate);
         return acc + base;
@@ -82,10 +114,10 @@ export const useCreateInvoiceProductsTable = ({
       actualCurrency ??
       lineItems.find((field) => Boolean(field.product?.price?.currency))
         ?.product?.price?.currency ??
-      lineItems.find((field) => {
+      (lineItems.find((field) => {
         const extField = field as ExtendedLineItem;
         return typeof extField.price === 'object' && extField.price?.currency;
-      })?.product?.price?.currency ??
+      }) as ExtendedLineItem | undefined)?.price?.currency ??
       (
         lineItems.find((field) =>
           Boolean((field as ExtendedLineItem).currency)
@@ -96,8 +128,10 @@ export const useCreateInvoiceProductsTable = ({
       return undefined;
     }
 
+    const priceMinor = rateMajorToMinor(priceMajor);
+
     const priceObj = new Price({
-      value: price,
+      value: priceMinor,
       currency: currency as CurrencyEnum,
       formatter: formatCurrencyToDisplay,
     });
@@ -110,46 +144,17 @@ export const useCreateInvoiceProductsTable = ({
     isNonVatSupported,
   ]);
 
-  const taxesByVatRate = useMemo(() => {
-    return lineItems.reduce(
-      (acc, field) => {
-        const { price, quantity } = getPriceAndQuantity(field);
-        const vatRate = getRateValueForDisplay(
-          isNonVatSupported,
-          field.vat_rate_value ?? 0,
-          field.tax_rate_value ?? 0
-        );
-
-        if (!vatRate) return acc;
-
-        const amount = price * quantity;
-        const tax = isInclusivePricing
-          ? amount - amount / (1 + vatRate / 100)
-          : amount * (vatRate / 100);
-
-        if (acc[vatRate]) {
-          acc[vatRate] += tax;
-        } else {
-          acc[vatRate] = tax;
-        }
-
-        return acc;
-      },
-      {} as Record<number, number>
-    );
-  }, [lineItems, isInclusivePricing, isNonVatSupported]);
-
   const totalTaxes = useMemo(() => {
-    const taxes = Object.values(taxesByVatRate).reduce((acc, v) => acc + v, 0);
+    const taxesMajor = Object.values(taxesByVatRate).reduce(
+      (acc, v) => acc + v,
+      0
+    );
+    const taxesMinor = rateMajorToMinor(taxesMajor);
 
     const currency =
       actualCurrency ??
       lineItems.find((field) => Boolean(field.product?.price?.currency))
         ?.product?.price?.currency ??
-      lineItems.find((field) => {
-        const extField = field as ExtendedLineItem;
-        return typeof extField.price === 'object' && extField.price?.currency;
-      })?.product?.price?.currency ??
       (
         lineItems.find((field) =>
           Boolean((field as ExtendedLineItem).currency)
@@ -161,12 +166,17 @@ export const useCreateInvoiceProductsTable = ({
     }
 
     const priceObj = new Price({
-      value: taxes,
+      value: taxesMinor,
       currency: currency as CurrencyEnum,
       formatter: formatCurrencyToDisplay,
     });
     return priceObj;
-  }, [lineItems, formatCurrencyToDisplay, actualCurrency, taxesByVatRate]);
+  }, [
+    lineItems,
+    formatCurrencyToDisplay,
+    actualCurrency,
+    taxesByVatRate,
+  ]);
 
   const totalPrice = useMemo(() => {
     if (!subtotalPrice || !totalTaxes) {
@@ -185,9 +195,7 @@ export const useCreateInvoiceProductsTable = ({
           isNonVatSupported,
           lineItem.vat_rate_value ?? 0,
           lineItem.tax_rate_value ?? 0
-        ) /
-          100 ===
-        0
+        ) === 0
     );
 
   return {

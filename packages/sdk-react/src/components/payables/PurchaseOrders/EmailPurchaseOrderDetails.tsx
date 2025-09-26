@@ -2,6 +2,7 @@ import {
   EmailPurchaseOrderForm,
   EmailPurchaseOrderFormContent,
 } from './EmailPurchaseOrderDetails.form.components';
+import { PreviewPurchaseOrderEmail } from './PreviewPurchaseOrderEmail';
 import { useSendPurchaseOrderById } from './hooks/useSendPurchaseOrderById';
 import {
   EmailPurchaseOrderFormValues,
@@ -13,32 +14,34 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCounterpartById, useCounterpartContactList } from '@/core/queries';
 import { useMe } from '@/core/queries';
-import { Dialog } from '@/ui/Dialog';
 import { CenteredContentBox } from '@/ui/box';
+import { cn } from '@/ui/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { ArrowLeft } from 'lucide-react';
+import { Button } from '@/ui/components/button';
 import {
-  Button,
-  CircularProgress,
+  Dialog,
   DialogContent,
   DialogTitle,
-  Grid,
-  Stack,
-  Toolbar,
-  Typography,
-} from '@mui/material';
-import { useCallback, useEffect, useId, useMemo } from 'react';
+} from '@/ui/components/dialog';
+import { LoadingSpinner } from '@/ui/loading';
+import { useCallback, useEffect, useId, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 
+enum FormPresentation {
+  Edit = 'form',
+  Preview = 'preview',
+}
+
 interface EmailPurchaseOrderDetailsProps {
   purchaseOrderId: string;
-  onClose: () => void;
-  onSendEmail?: (purchaseOrderId: string) => void;
   isOpen: boolean;
   mode: 'issue_and_send' | 'send';
+  onClose: () => void;
+  onSendEmail?: (purchaseOrderId: string) => void;
 }
 
 interface EmailPurchaseOrderFormProps extends EmailPurchaseOrderDetailsProps {
@@ -118,9 +121,8 @@ export const EmailPurchaseOrderDetailsBase = ({
   onSendEmail,
 }: EmailPurchaseOrderFormProps) => {
   const { i18n } = useLingui();
-  const { entityId } = useMoniteContext();
 
-  const { control, handleSubmit, reset } =
+  const { control, handleSubmit, reset, getValues, trigger } =
     useForm<EmailPurchaseOrderFormValues>({
       resolver: zodResolver(getEmailPurchaseOrderSchema(i18n)),
       defaultValues: useMemo(
@@ -141,6 +143,10 @@ export const EmailPurchaseOrderDetailsBase = ({
 
   const formName = `Monite-Form-emailPurchaseOrderDetails-${useId()}`;
 
+  const [presentation, setPresentation] = useState<FormPresentation>(
+    FormPresentation.Edit
+  );
+
   const handleIssueAndSend = useCallback(
     (e: React.FormEvent) => {
       e.preventDefault();
@@ -152,42 +158,44 @@ export const EmailPurchaseOrderDetailsBase = ({
           subject_text: values.subject,
         };
 
-        sendEmail(
-          {
-            path: { purchase_order_id: purchaseOrderId },
-            body: emailParams,
-            header: { 'x-monite-entity-id': entityId },
+        sendEmail(emailParams, {
+          onSuccess: () => {
+            toast.success(
+              mode === 'issue_and_send'
+                ? t(i18n)`Purchase order issued and sent successfully`
+                : t(i18n)`Purchase order sent successfully`
+            );
+            onSendEmail?.(purchaseOrderId);
+            onClose();
           },
-          {
-            onSuccess: () => {
-              toast.success(
-                mode === 'issue_and_send'
-                  ? t(i18n)`Purchase order issued and sent successfully`
-                  : t(i18n)`Purchase order sent successfully`
-              );
-              onSendEmail?.(purchaseOrderId);
-              onClose();
-            },
-            onError: (error) => {
-              const errorMessage =
-                (error as any)?.message ||
-                (error as any)?.error?.message ||
-                t(i18n)`Failed to send purchase order`;
-              toast.error(errorMessage);
-            },
-          }
-        );
+          onError: (error) => {
+            const messageFromError =
+              error instanceof Error ? error.message : undefined;
+            const apiErrorMessage =
+              typeof error === 'object' &&
+              error !== null &&
+              'error' in error &&
+              typeof (error as { error?: { message?: string } }).error
+                ?.message === 'string'
+                ? (error as { error?: { message?: string } }).error?.message
+                : undefined;
+            const errorMessage =
+              apiErrorMessage ||
+              messageFromError ||
+              t(i18n)`Failed to send purchase order`;
+            toast.error(errorMessage);
+          },
+        });
       })(e);
     },
     [
-      handleSubmit,
       i18n,
       purchaseOrderId,
-      entityId,
-      onClose,
-      onSendEmail,
       sendMutation.mutate,
       mode,
+      handleSubmit,
+      onClose,
+      onSendEmail,
     ]
   );
 
@@ -195,80 +203,100 @@ export const EmailPurchaseOrderDetailsBase = ({
 
   const className = 'Monite-EmailPurchaseOrderDetails';
 
+  const isPreview = presentation === FormPresentation.Preview;
+
   return (
-    <Dialog open={isOpen} fullScreen onClose={onClose}>
-      <DialogTitle className={className + '-Title'}>
-        <Toolbar>
-          <Grid container>
-            <Grid item xs={6}>
-              <Stack direction="row" alignItems="center" spacing={2}>
-                <Button
-                  variant="text"
-                  color="primary"
-                  onClick={onClose}
-                  startIcon={<ArrowBackIcon />}
-                  disabled={isDisabled}
-                  data-testid="back-button"
-                >{t(i18n)`Back`}</Button>
-                <Typography variant="h3">{t(i18n)`Compose email`}</Typography>
-              </Stack>
-            </Grid>
-            <Grid item xs={6}>
-              <Stack
-                direction="row"
-                alignItems="center"
-                justifyContent="end"
-                spacing={2}
-              >
-                <Button
-                  variant="contained"
-                  color="primary"
-                  type="submit"
-                  form={formName}
-                  disabled={isDisabled || isLoading}
-                  data-testid="issue-and-send-button"
-                >
-                  {isIssued ? t(i18n)`Send` : t(i18n)`Issue and Send`}
-                </Button>
-              </Stack>
-            </Grid>
-          </Grid>
-        </Toolbar>
-      </DialogTitle>
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent
-        className={className + '-Content'}
-        sx={{
-          mt: 4,
-          p: '0 32px 32px 32px',
-          height: '100%',
-          width: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-        }}
+        fullScreen
+        showCloseButton={false}
+        className={cn(
+          className + '-Content',
+          'mtw:p-0 mtw:flex mtw:flex-col mtw:gap-0'
+        )}
       >
-        <EmailPurchaseOrderForm
-          formName={formName}
-          handleIssueAndSend={handleIssueAndSend}
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            flex: 1,
-            minHeight: 0,
-            width: '100%',
-          }}
-        >
-          {isLoading ? (
-            <CenteredContentBox className="Monite-LoadingPage">
-              <CircularProgress />
-            </CenteredContentBox>
-          ) : (
-            <EmailPurchaseOrderFormContent
-              purchaseOrderId={purchaseOrderId}
-              control={control}
-              isDisabled={isDisabled}
-            />
-          )}
-        </EmailPurchaseOrderForm>
+        <DialogTitle className={className + '-Title mtw:p-4 mtw:shrink-0'}>
+          <div className="mtw:flex mtw:items-center mtw:justify-between mtw:w-full">
+            <div className="mtw:flex mtw:items-center mtw:gap-2">
+              {!isPreview && (
+                <>
+                  <Button
+                    variant="ghost"
+                    onClick={onClose}
+                    disabled={isDisabled}
+                    className="mtw:flex mtw:items-center mtw:gap-2"
+                  >
+                    <ArrowLeft className="mtw:w-4 mtw:h-4" />
+                    {t(i18n)`Back`}
+                  </Button>
+                  <h3 className="mtw:text-lg mtw:font-semibold">{t(i18n)`Compose email`}</h3>
+                </>
+              )}
+              {isPreview && (
+                <Button
+                  variant="ghost"
+                  onClick={() => setPresentation(FormPresentation.Edit)}
+                  className="mtw:flex mtw:items-center mtw:gap-2"
+                  aria-label={t(i18n)`Back to edit`}
+                  disabled={isDisabled}
+                >
+                  <ArrowLeft className="mtw:w-4 mtw:h-4" />
+                  {t(i18n)`Back to edit`}
+                </Button>
+              )}
+            </div>
+            <div className="mtw:flex mtw:items-center mtw:gap-2">
+              {presentation === FormPresentation.Edit && (
+              <Button
+                variant="outline"
+                type="button"
+                form={formName}
+                disabled={isDisabled || isLoading}
+                onClick={async () => {
+                  const isValid = await trigger();
+                  if (isValid) setPresentation(FormPresentation.Preview);
+                }}
+              >{t(i18n)`Preview email`}</Button>
+              )}
+              <Button
+                variant="default"
+                type="submit"
+                form={formName}
+                disabled={isDisabled || isLoading}
+              >
+                {isIssued ? t(i18n)`Send` : t(i18n)`Issue and Send`}
+              </Button>
+            </div>
+          </div>
+        </DialogTitle>
+        <div className={cn(
+          'mtw:flex mtw:flex-col mtw:flex-1 mtw:overflow-auto',
+          isPreview ? 'mtw:p-0' : 'mtw:p-8'
+        )}>
+          <EmailPurchaseOrderForm
+            formName={formName}
+            handleIssueAndSend={handleIssueAndSend}
+            className="mtw:flex mtw:flex-col mtw:flex-1 mtw:min-h-0 mtw:w-full"
+          >
+            {isLoading ? (
+              <CenteredContentBox className="Monite-LoadingPage">
+                <LoadingSpinner />
+              </CenteredContentBox>
+            ) : presentation === FormPresentation.Edit ? (
+              <EmailPurchaseOrderFormContent
+                purchaseOrderId={purchaseOrderId}
+                control={control}
+                isDisabled={isDisabled}
+              />
+            ) : (
+              <PreviewPurchaseOrderEmail
+                purchaseOrderId={purchaseOrderId}
+                subject={getValues('subject')}
+                body={getValues('body')}
+              />
+            )}
+          </EmailPurchaseOrderForm>
+        </div>
       </DialogContent>
     </Dialog>
   );

@@ -1,3 +1,4 @@
+import { getCounterpartName } from '@/components/counterparts/helpers';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { t } from '@lingui/macro';
@@ -16,15 +17,15 @@ export const useCreatePurchaseOrder = () => {
           queryClient
         );
 
-        if (purchaseOrder.counterpart && 'name' in purchaseOrder.counterpart) {
-          return toast.success(
-            t(
-              i18n
-            )`Purchase order for "${purchaseOrder.counterpart.name}" was created`
-          );
-        }
+        const counterpartName = purchaseOrder.counterpart
+          ? getCounterpartName(purchaseOrder.counterpart)
+          : null;
 
-        toast.success(t(i18n)`Purchase order has been created`);
+        toast.success(
+          counterpartName
+            ? t(i18n)`Purchase order for "${counterpartName}" was created`
+            : t(i18n)`Purchase order has been created`
+        );
       },
       onError: (error) => {
         const errorMessage = getAPIErrorMessage(i18n, error);

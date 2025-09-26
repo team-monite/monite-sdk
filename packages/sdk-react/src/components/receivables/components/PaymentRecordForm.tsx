@@ -2,6 +2,7 @@ import { manualPaymentRecordValidationSchema } from '../validation';
 import { components } from '@/api';
 import { ManualPaymentRecordFormValues } from '@/components/receivables/validation';
 import { useCurrencies } from '@/core/hooks';
+import { fromMinorUnits } from '@/core/utils/currency';
 import { safeZodResolver } from '@/core/utils/safeZodResolver';
 import { RHFDatePicker } from '@/ui/RHF/RHFDatePicker';
 import { RHFTextField } from '@/ui/RHF/RHFTextField';
@@ -95,7 +96,7 @@ export const PaymentRecordForm = ({
                 <Button
                   variant="text"
                   sx={{ textDecoration: 'underline' }}
-                  onClick={() => setValue('amount', invoice.amount_due / 100)}
+                  onClick={() => setValue('amount', fromMinorUnits(invoice.amount_due))}
                 >
                   {formatCurrencyToDisplay(
                     invoice.amount_due,

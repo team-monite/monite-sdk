@@ -74,12 +74,16 @@ const InvoiceItemRowComponent = ({
   );
   const quantityError = Boolean(lineItemError?.quantity);
   const priceError = Boolean(
-    lineItemError?.product?.price?.value || lineItemError?.price
+    lineItemError?.product?.price?.value ||
+    lineItemError?.price?.value ||
+    lineItemError?.price
   );
   const taxOrVatError = isNonVatSupported
     ? Boolean(lineItemError?.tax_rate_value)
     : Boolean(lineItemError?.vat_rate_id || lineItemError?.vat_rate_value);
-  const measureUnitFieldError = lineItemError?.product?.measure_unit_id;
+  const measureUnitFieldError =
+    lineItemError?.product?.measure_unit_id ??
+    lineItemError?.measure_unit_id;
 
   const handleVatRateDefaults = (
     defaultVatId: string | null,
@@ -230,6 +234,9 @@ const InvoiceItemRowComponent = ({
               highestVatRate={highestVatRate}
               currentTaxRateValue={
                 onRequestLineItemValue('tax_rate_value') as number | undefined
+              }
+              currentVatRateValue={
+                onRequestLineItemValue('vat_rate_value') as number | undefined
               }
               onInitializeDefaults={handleVatRateDefaults}
               onModified={onLineItemManuallyChanged}

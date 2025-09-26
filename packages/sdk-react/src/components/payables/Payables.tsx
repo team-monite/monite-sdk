@@ -19,7 +19,7 @@ import { AccessRestriction } from '@/ui/accessRestriction';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { CircularProgress } from '@mui/material';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/ui/components/tabs-underline';
+import { TabBar, TabBarList, TabBarTrigger, TabBarContent } from '@/ui/components/tab-bar';
 import { useState, lazy, Suspense } from 'react';
 
 const PurchaseOrdersTable = lazy(() => import('@/components/payables/PurchaseOrders').then(module => ({ default: module.PurchaseOrdersTable })));
@@ -190,6 +190,13 @@ const PayablesBase = ({
       entityUserId: user?.id,
     });
 
+  const { data: isReadPurchaseOrderAllowed, isLoading: isReadPurchaseOrderAllowedLoading } =
+    useIsActionAllowed({
+      method: 'payables_purchase_order',
+      action: 'read',
+      entityUserId: user?.id,
+    });
+
   const { root } = useRootElements();
   const className = 'Monite-Payables-Header';
   const finalEnableGLCodes =
@@ -202,7 +209,7 @@ const PayablesBase = ({
         title={
           <>
             {t(i18n)`Bill Pay`}
-            {(isReadAllowedLoading || isCreateAllowedLoading || isCreatePurchaseOrderAllowedLoading) && (
+            {(isReadAllowedLoading || isReadPurchaseOrderAllowedLoading || isCreateAllowedLoading || isCreatePurchaseOrderAllowedLoading) && (
               <CircularProgress size="0.7em" color="secondary" sx={{ ml: 1 }} />
             )}
           </>
@@ -218,23 +225,25 @@ const PayablesBase = ({
           />
         }
       />
-      {!isReadAllowed && !isReadAllowedLoading && <AccessRestriction />}
-      {isReadAllowed && (
-        <Tabs 
-          value={activeTab} 
+      {!isReadAllowed && !isReadPurchaseOrderAllowed && !isReadAllowedLoading && !isReadPurchaseOrderAllowedLoading && <AccessRestriction />}
+      {(isReadAllowed || isReadPurchaseOrderAllowed) && (
+        <TabBar
+          value={activeTab}
           onValueChange={(value) => setActiveTab(value as PayablesTabEnum)}
           className="mtw:w-full"
         >
-          <TabsList className="mtw:mb-4">
-            <TabsTrigger value={PayablesTabEnum.Bills}>
-              {t(i18n)`Bills`}
-            </TabsTrigger>
-            <TabsTrigger value={PayablesTabEnum.PurchaseOrders}>
-              {t(i18n)`Purchase orders`}
-            </TabsTrigger>
-          </TabsList>
+          <div className="mtw:mb-4">
+            <TabBarList indicatorClassName="mtw:bg-[#3737ff]">
+              <TabBarTrigger value={PayablesTabEnum.Bills}>
+                {t(i18n)`Bills`}
+              </TabBarTrigger>
+              <TabBarTrigger value={PayablesTabEnum.PurchaseOrders}>
+                {t(i18n)`Purchase orders`}
+              </TabBarTrigger>
+            </TabBarList>
+          </div>
 
-          <TabsContent value={PayablesTabEnum.Bills}>
+          <TabBarContent value={PayablesTabEnum.Bills}>
             <PayablesTable
               onRowClick={(id) => setInvoiceIdDialog({ open: true, invoiceId: id })}
               onPay={handlePay}
@@ -242,17 +251,17 @@ const PayablesBase = ({
               openFileInput={openFileInput}
               setIsCreateInvoiceDialogOpen={setIsCreateInvoiceDialogOpen}
             />
-          </TabsContent>
+          </TabBarContent>
 
-          <TabsContent value={PayablesTabEnum.PurchaseOrders}>
+          <TabBarContent value={PayablesTabEnum.PurchaseOrders}>
             <Suspense fallback={<CircularProgress />}>
               <PurchaseOrdersTable
                 onRowClick={(id) => setPurchaseOrderIdDialog({ open: true, purchaseOrderId: id })}
                 setIsCreatePurchaseOrderDialogOpen={setIsCreatePurchaseOrderDialogOpen}
               />
             </Suspense>
-          </TabsContent>
-        </Tabs>
+          </TabBarContent>
+        </TabBar>
       )}
       <FileInput
         aria-label={t(i18n)`Upload payable files`}

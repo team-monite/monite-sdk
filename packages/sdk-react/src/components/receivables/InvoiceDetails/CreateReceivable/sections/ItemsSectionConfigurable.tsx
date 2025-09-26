@@ -1,6 +1,6 @@
-import { ConfigurableItemsSection } from '@/components/shared/ItemsSection';
-import { RECEIVABLES_ITEMS_CONFIG } from '@/components/shared/ItemsSection/constants';
 import type { CurrencyEnum } from './types';
+import { ConfigurableItemsSection } from '@/components/shared/ItemsSection';
+import { RECEIVABLES_ITEMS_CONFIG } from '@/components/shared/ItemsSection/consts';
 
 interface ConfigurableReceivablesItemsSectionProps {
   actualCurrency?: CurrencyEnum;
@@ -14,9 +14,6 @@ export const ConfigurableReceivablesItemsSection = (
   props: ConfigurableReceivablesItemsSectionProps
 ) => {
   return (
-    <ConfigurableItemsSection
-      config={RECEIVABLES_ITEMS_CONFIG}
-      {...props}
-    />
+    <ConfigurableItemsSection config={RECEIVABLES_ITEMS_CONFIG} {...props} />
   );
 };

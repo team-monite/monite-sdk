@@ -1,8 +1,8 @@
 import { ConfigurableDataTable } from '../shared/ConfigurableDataTable';
 import { Filters as FiltersComponent } from './Filters';
 import { createPurchaseOrderTableConfig } from './config/tableConfig';
-import { PURCHASE_ORDER_CONSTANTS } from './constants';
 import {
+  PURCHASE_ORDER_CONSTANTS,
   FILTER_TYPE_SEARCH,
   FILTER_TYPE_STATUS,
   FILTER_TYPE_VENDOR,
@@ -81,6 +81,11 @@ export const PurchaseOrdersTable = ({
       action: 'read',
       entityUserId: user?.id,
     });
+  const { data: canCreatePO } = useIsActionAllowed({
+    method: 'payables_purchase_order',
+    action: 'create',
+    entityUserId: user?.id,
+  });
 
   const purchaseOrdersQueryParameters = {
     query: {
@@ -185,20 +190,21 @@ export const PurchaseOrdersTable = ({
       )`Create your first purchase order to get started`}
       filterTitle={t(i18n)`No purchase orders found`}
       actionButtonLabel={
-        !isFiltering && !isSearching
+        !isFiltering && !isSearching && canCreatePO
           ? t(i18n)`Create Purchase Order`
           : undefined
       }
       actionOptions={
-        !isFiltering && !isSearching
+        !isFiltering && !isSearching && canCreatePO
           ? [t(i18n)`Create Purchase Order`]
           : undefined
       }
       onCreate={(type) => {
-        if (
+        const isCreateAction =
           type === t(i18n)`Create Purchase Order` ||
-          type === 'Create Purchase Order'
-        ) {
+          type === 'Create Purchase Order';
+
+        if (isCreateAction && canCreatePO) {
           setIsCreatePurchaseOrderDialogOpen?.(true);
         }
       }}

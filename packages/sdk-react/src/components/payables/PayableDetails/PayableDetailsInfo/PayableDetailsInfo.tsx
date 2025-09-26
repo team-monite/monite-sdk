@@ -22,6 +22,7 @@ import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useOptionalFields } from '@/core/hooks/useOptionalFields';
 import { useApprovalPolicyById, useEntityUserById } from '@/core/queries';
 import { useCounterpartContactList } from '@/core/queries/useCounterpart';
+import { vatRateBasisPointsToPercentage } from '@/core/utils/vatUtils';
 import { StyledLabelTableCell } from '@/ui/Card/Card';
 import { CenteredContentBox } from '@/ui/box';
 import { TagsModal } from '@/ui/tagsModal';
@@ -537,7 +538,7 @@ const PayableDetailsInfoBase = ({
                           </Box>
                           <Box sx={{ color: 'secondary.main' }}>
                             {t(i18n)`excl. Tax`}{' '}
-                            {`${item.tax ? (item.tax / 100).toFixed(0) : 0}%`}
+                            {`${item.tax ? vatRateBasisPointsToPercentage(item.tax).toFixed(0) : 0}%`}
                           </Box>
                         </>
                       ) : payable.currency ? (

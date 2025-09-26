@@ -16,6 +16,8 @@ import type { SanitizableLineItem } from '@/components/receivables/InvoiceDetail
 import { sanitizeLineItems } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/utils';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
+import { rateMajorToMinor } from '@/core/utils/currencies';
+import type { Price } from '@/core/utils/price';
 import { vatRateBasisPointsToPercentage } from '@/core/utils/vatUtils';
 import { cn } from '@/ui/lib/utils';
 import { t } from '@lingui/macro';
@@ -27,7 +29,7 @@ export interface PurchaseOrderPreviewMoniteProps {
     message?: string;
   };
   counterpart?: components['schemas']['CounterpartResponse'] | null;
-  currency?: string;
+  currency?: CurrencyEnum;
   entityData?: components['schemas']['EntityResponse'] | null;
   counterpartAddress?: components['schemas']['CounterpartAddress'] | null;
   expiryDate: Date;
@@ -55,16 +57,20 @@ export const PurchaseOrderPreviewMonite = ({
   const convertedLineItems =
     line_items?.map(
       (item): SanitizableLineItem => ({
-        ...item,
-        price: {
-          currency: item.currency as components['schemas']['CurrencyEnum'],
-          value: item.price,
-        },
+        id: item.id,
+        name: item.name,
+        quantity: item.quantity,
+        unit: item.unit,
+        price: item.price,
+        currency: item.currency as CurrencyEnum,
+        vat_rate_id: item.vat_rate_id,
+        vat_rate_value: item.vat_rate_value,
+        tax_rate_value: item.tax_rate_value,
       })
     ) || [];
-
   const sanitizedItems = sanitizeLineItems(
-    convertedLineItems as ReadonlyArray<SanitizableLineItem> | undefined
+    convertedLineItems as ReadonlyArray<SanitizableLineItem> | undefined,
+    { treatFlatPricesAsMajorUnits: true }
   );
 
   const { subtotalPrice, totalPrice, taxesByVatRate } =
@@ -72,10 +78,13 @@ export const PurchaseOrderPreviewMonite = ({
       lineItems: sanitizedItems,
       formatCurrencyToDisplay,
       isNonVatSupported,
-      actualCurrency:
-        (currency as components['schemas']['CurrencyEnum']) ?? 'USD',
+      actualCurrency: currency ?? 'USD',
       isInclusivePricing: false,
     });
+
+  const priceToMinorUnits = (price?: Price | undefined) => {
+    return price ? price.getValue() : null;
+  };
 
   return (
     <div
@@ -216,8 +225,8 @@ export const PurchaseOrderPreviewMonite = ({
             {sanitizedItems.length > 0 ? (
               sanitizedItems.map((item, index) => {
                 const quantity = item?.quantity ?? 1;
-                const price = item?.product?.price?.value ?? 0;
-                const totalAmount = price * quantity;
+                const priceMajor = item?.product?.price?.value ?? 0;
+                const totalAmountMajor = priceMajor * quantity;
 
                 const vatRate = item.tax_rate_value
                   ? item.tax_rate_value
@@ -243,11 +252,15 @@ export const PurchaseOrderPreviewMonite = ({
                       </span>
                     </td>
                     <td className={styles.colPrice}>
-                      {formatCurrencyToDisplay(price, currency || 'USD', true)}
+                      {formatCurrencyToDisplay(
+                        rateMajorToMinor(priceMajor),
+                        currency ?? 'USD',
+                        true
+                      )}
                     </td>
                     <td className={styles.colAmount}>
                       {formatCurrencyToDisplay(
-                        totalAmount,
+                        rateMajorToMinor(totalAmountMajor),
                         currency || 'USD',
                         true
                       )}
@@ -275,7 +288,11 @@ export const PurchaseOrderPreviewMonite = ({
             <div className={styles.totalRow}>
               <span className={styles.totalLabel}>{t(i18n)`Subtotal`}</span>
               <span className={styles.totalValue}>
-                {subtotalPrice?.toString()}
+                {formatCurrencyToDisplay(
+                  priceToMinorUnits(subtotalPrice) ?? 0,
+                  currency ?? 'USD',
+                  true
+                )}
               </span>
             </div>
 
@@ -287,7 +304,7 @@ export const PurchaseOrderPreviewMonite = ({
                 <span className={styles.totalValue}>
                   {currency &&
                     formatCurrencyToDisplay(
-                      taxAmount as number,
+                      rateMajorToMinor(taxAmount as number),
                       currency,
                       true
                     )}
@@ -295,14 +312,20 @@ export const PurchaseOrderPreviewMonite = ({
               </div>
             ))}
 
-            <div className={cn(styles.totalRow, styles.finalTotal)}>
-              <span className={styles.totalLabel}>
-                {t(i18n)`TOTAL`} ({currency || 'USD'})
-              </span>
-              <span className={styles.totalValue}>
-                {totalPrice?.toString()}
-              </span>
-            </div>
+            {totalPrice && (
+              <div className={cn(styles.totalRow, styles.finalTotal)}>
+                <span className={styles.totalLabel}>
+                  {t(i18n)`TOTAL`} ({currency || 'USD'})
+                </span>
+                <span className={styles.totalValue}>
+                  {formatCurrencyToDisplay(
+                    priceToMinorUnits(totalPrice) ?? 0,
+                    currency || 'USD',
+                    true
+                  )}
+                </span>
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -348,3 +371,5 @@ export const PurchaseOrderPreviewMonite = ({
     </div>
   );
 };
+
+type CurrencyEnum = components['schemas']['CurrencyEnum'];

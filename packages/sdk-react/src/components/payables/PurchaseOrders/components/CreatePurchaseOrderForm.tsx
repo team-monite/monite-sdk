@@ -3,11 +3,13 @@ import { FullfillmentSummary } from '../sections/PurchaseOrderTermsSummary';
 import { VendorSection } from '../sections/VendorSection';
 import { components } from '@/api';
 import { ConfigurableItemsSection } from '@/components/shared/ItemsSection';
-import { PURCHASE_ORDERS_ITEMS_CONFIG } from '@/components/shared/ItemsSection/constants';
-import { DialogContent } from '@mui/material';
+import type { CreatePurchaseOrderFormBeforeValidationProps } from '../types';
+import { PURCHASE_ORDERS_ITEMS_CONFIG } from '@/components/shared/ItemsSection/consts';
 import { memo } from 'react';
+import { FormErrorDisplay as POFormErrorDisplay } from './FormErrorDisplay';
+import type { ErrorDisplayProps as POErrorDisplayProps } from './FormErrorDisplay';
 
-interface CreatePurchaseOrderFormProps {
+interface CreatePurchaseOrderFormComponentProps {
   counterpart?: components['schemas']['CounterpartResponse'];
   counterpartAddresses?: components['schemas']['CounterpartAddressResourceList'];
   className?: string;
@@ -26,23 +28,14 @@ export const CreatePurchaseOrderForm = memo(
     disabled = false,
     actualCurrency = 'USD',
     isNonVatSupported = false,
-  }: CreatePurchaseOrderFormProps) => {
+  }: CreatePurchaseOrderFormComponentProps) => {
     return (
-      <DialogContent
-        sx={{
-          flex: 1,
-          overflow: 'auto',
-          px: 3,
-          py: 0,
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 3,
-        }}
-        className={className + '-Form'}
+      <div
+        className={(className + '-Form') + ' mtw:flex mtw:flex-1 mtw:overflow-auto mtw:px-3 mtw:py-0 mtw:flex-col mtw:gap-3'}
       >
         <VendorSection counterpart={counterpart} disabled={disabled} />
 
-        <ConfigurableItemsSection
+        <ConfigurableItemsSection<CreatePurchaseOrderFormBeforeValidationProps>
           config={PURCHASE_ORDERS_ITEMS_CONFIG}
           actualCurrency={
             actualCurrency as components['schemas']['CurrencyEnum']
@@ -52,12 +45,18 @@ export const CreatePurchaseOrderForm = memo(
           }
           isNonVatSupported={isNonVatSupported}
           isVatSelectionDisabled={disabled}
+          renderErrorDisplay={({ generalError, fieldErrors }) => (
+            <POFormErrorDisplay
+              generalError={generalError}
+              fieldErrors={fieldErrors as POErrorDisplayProps['fieldErrors']}
+            />
+          )}
         />
 
         <EntitySection disabled={disabled} />
 
         <FullfillmentSummary disabled={disabled} />
-      </DialogContent>
+      </div>
     );
   }
 );

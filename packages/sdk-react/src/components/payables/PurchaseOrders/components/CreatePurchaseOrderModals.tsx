@@ -1,9 +1,7 @@
-import { components } from '@/api';
 import { TemplateSettings } from '@/components/templateSettings';
 
 interface CreatePurchaseOrderModalsProps {
   isEditTemplateModalOpen: boolean;
-  entity?: components['schemas']['EntityResponse'] | null;
   onTemplateModalClose: () => void;
 }
 

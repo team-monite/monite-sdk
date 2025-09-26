@@ -373,10 +373,13 @@ export const ItemSelector = ({
         error={error}
         className="Item-Selector"
         sx={{ width: '100%', marginLeft }}
+        disabled={disabled}
         value={customName}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
+        onFocus={disabled ? undefined : handleFocus}
+        onBlur={disabled ? undefined : handleBlur}
         onChange={(e) => {
+          if (disabled) return;
+
           setCustomName(e.target.value);
           const val = e.target.value;
           if (val.trim()) {

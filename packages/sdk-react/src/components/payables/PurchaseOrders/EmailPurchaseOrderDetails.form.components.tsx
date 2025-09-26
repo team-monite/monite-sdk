@@ -1,4 +1,3 @@
-import { EmailPurchaseOrderFormValues } from './validation';
 import { DefaultEmail } from '@/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView/CounterpartOrganizationView';
 import type { CounterpartOrganizationRootResponse } from '@/components/receivables/types';
 import {
@@ -6,22 +5,21 @@ import {
   getContactList,
 } from '@/components/receivables/utils/contacts';
 import { useMoniteContext } from '@/core/context/MoniteContext';
-import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useCounterpartById, useCounterpartContactList } from '@/core/queries';
+import { Card, CardContent } from '@/ui/components/card';
+import { Input } from '@/ui/components/input';
+import { Label } from '@/ui/components/label';
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from '@/ui/components/select';
+import { Textarea } from '@/ui/components/textarea';
+import { LoadingSpinner } from '@/ui/loading/LoadingSpinner';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  Card,
-  CardContent,
-  CircularProgress,
-  FormControl,
-  FormHelperText,
-  MenuItem,
-  Select,
-  Stack,
-  TextField,
-  Typography,
-} from '@mui/material';
 import type {
   PropsWithChildren,
   CSSProperties,
@@ -33,6 +31,7 @@ import { Control, Controller } from 'react-hook-form';
 export interface FormProps {
   formName: string;
   style?: CSSProperties;
+  className?: string;
   children: ReactNode;
   handleIssueAndSend: (e: FormEvent) => void;
 }
@@ -40,17 +39,24 @@ export interface FormProps {
 export const EmailPurchaseOrderForm = ({
   formName,
   style,
+  className,
   children,
   handleIssueAndSend,
 }: PropsWithChildren<FormProps>) => {
   return (
-    <form id={formName} noValidate onSubmit={handleIssueAndSend} style={style}>
+    <form
+      id={formName}
+      noValidate
+      onSubmit={handleIssueAndSend}
+      style={style}
+      className={className}
+    >
       {children}
     </form>
   );
 };
 
-export interface ControlProps {
+export interface EmailPurchaseOrderControlProps {
   subject: string;
   body: string;
   to: string;
@@ -58,13 +64,14 @@ export interface ControlProps {
 
 interface RecipientSelectorProps {
   purchaseOrderId: string;
-  control: Control<ControlProps>;
+  control: Control<EmailPurchaseOrderControlProps>;
 }
 
 const RecipientSelector = ({
   purchaseOrderId,
   control,
 }: RecipientSelectorProps) => {
+  const { i18n } = useLingui();
   const { api, entityId } = useMoniteContext();
   const { data: purchaseOrder } =
     api.payablePurchaseOrders.getPayablePurchaseOrdersId.useQuery({
@@ -78,9 +85,12 @@ const RecipientSelector = ({
     purchaseOrder?.counterpart_id
   );
 
-  const { root } = useRootElements();
-
-  if (isLoading) return <CircularProgress />;
+  if (isLoading)
+    return (
+      <div className="mtw:flex mtw:items-center mtw:justify-center">
+        <LoadingSpinner />
+      </div>
+    );
 
   const defaultContact = getDefaultContact(
     contacts,
@@ -88,33 +98,32 @@ const RecipientSelector = ({
   );
 
   return (
-    <Controller
+    <Controller<EmailPurchaseOrderControlProps>
       name="to"
       control={control}
       render={({ field, fieldState: { error } }) => (
-        <FormControl
-          variant="standard"
-          required
-          fullWidth
-          error={Boolean(error)}
-        >
-          <Select
-            MenuProps={{ container: root }}
-            className="Monite-NakedField Monite-RecipientSelector"
-            data-testid={`${field.name}-select`}
-            {...field}
-          >
-            {getContactList(contacts, defaultContact).map((contact) => (
-              <MenuItem key={contact.id} value={contact.email}>
-                <DefaultEmail
-                  email={contact.email ?? ''}
-                  isDefault={contact.is_default}
-                />
-              </MenuItem>
-            ))}
+        <div className="mtw:w-full">
+          <Select value={field.value} onValueChange={field.onChange}>
+            <SelectTrigger className="mtw:w-full mtw:border-none mtw:bg-transparent mtw:p-1 mtw:text-base mtw:font-normal mtw:text-[#292929] mtw:leading-6 focus:mtw:ring-0 focus:mtw:outline-none">
+              <SelectValue placeholder={t(i18n)`Select recipient`} />
+            </SelectTrigger>
+            <SelectContent>
+              {getContactList(contacts, defaultContact).map((contact) => (
+                <SelectItem key={contact.id} value={contact.email ?? ''}>
+                  <DefaultEmail
+                    email={contact.email ?? ''}
+                    isDefault={contact.is_default}
+                  />
+                </SelectItem>
+              ))}
+            </SelectContent>
           </Select>
-          {error && <FormHelperText>{error.message}</FormHelperText>}
-        </FormControl>
+          {error && (
+            <p className="mtw:text-xs mtw:text-red-600 mtw:mt-1">
+              {error.message}
+            </p>
+          )}
+        </div>
       )}
     />
   );
@@ -122,7 +131,7 @@ const RecipientSelector = ({
 
 interface EmailPurchaseOrderFormContentProps {
   purchaseOrderId: string;
-  control: Control<EmailPurchaseOrderFormValues>;
+  control: Control<EmailPurchaseOrderControlProps>;
   isDisabled: boolean;
 }
 
@@ -135,77 +144,78 @@ export const EmailPurchaseOrderFormContent = ({
 
   return (
     <>
-      <Card sx={{ mb: 3 }}>
-        <CardContent
-          sx={{
-            px: 3,
-            pt: 1,
-            pb: 1,
-            '&:last-child': { pb: 1 },
-          }}
-        >
-          <Stack spacing={2} direction="row" alignItems="center">
-            <Typography variant="body2" sx={{ minWidth: '52px' }}>{t(
+      {/* To Field */}
+      <Card
+        className="mtw:mb-6 mtw:border-[#dedede] mtw:rounded-lg mtw:shadow-none mtw:py-0"
+        style={{ paddingTop: 0, paddingBottom: 0 }}
+      >
+        <CardContent className="mtw:px-6 mtw:py-2">
+          <div className="mtw:flex mtw:items-center mtw:gap-4">
+            <Label className="mtw:min-w-[52px] mtw:text-sm mtw:font-medium mtw:text-[rgba(0,0,0,0.56)] mtw:leading-5">{t(
               i18n
-            )`To`}</Typography>
+            )`To`}</Label>
             <RecipientSelector
               purchaseOrderId={purchaseOrderId}
               control={control}
             />
-          </Stack>
+          </div>
         </CardContent>
       </Card>
-      <Card>
-        <CardContent
-          sx={{
-            px: 3,
-            py: 1,
-            borderBottomWidth: '1px',
-            borderBottomStyle: 'solid',
-            borderBottomColor: 'divider',
-          }}
-        >
-          <Stack spacing={2} direction="row" alignItems="center">
-            <Typography variant="body2">{t(i18n)`Subject`}</Typography>
-            <Controller
+
+      {/* Subject and Body Card */}
+      <Card
+        className="mtw:border-[rgba(0,0,0,0.13)] mtw:rounded-lg mtw:shadow-none mtw:min-h-[320px] mtw:flex mtw:flex-col"
+        style={{ paddingTop: 0, paddingBottom: 0 }}
+      >
+        {/* Subject Section */}
+        <CardContent className="mtw:px-6 mtw:py-2 mtw:border-b mtw:border-b-[#f2f2f2]">
+          <div className="mtw:flex mtw:items-center mtw:gap-4">
+            <Label className="mtw:min-w-[52px] mtw:text-sm mtw:font-medium mtw:text-[rgba(0,0,0,0.56)] mtw:leading-5">{t(
+              i18n
+            )`Subject`}</Label>
+            <Controller<EmailPurchaseOrderControlProps>
               name="subject"
               control={control}
               render={({ field, fieldState: { error } }) => (
-                <TextField
-                  id={field.name}
-                  data-testid={`${field.name}-input`}
-                  variant="standard"
-                  className="Monite-NakedField"
-                  fullWidth
-                  error={Boolean(error)}
-                  helperText={error?.message}
-                  required
-                  {...field}
-                  disabled={isDisabled}
-                />
+                <div className="mtw:w-full">
+                  <Input
+                    id={field.name}
+                    className="mtw:w-full mtw:border-none mtw:bg-transparent mtw:p-1 mtw:text-base mtw:font-normal mtw:text-[#292929] mtw:leading-6 focus:mtw:ring-0 focus:mtw:outline-none"
+                    {...field}
+                    disabled={isDisabled}
+                    aria-invalid={Boolean(error)}
+                  />
+                  {error && (
+                    <p className="mtw:text-xs mtw:text-red-600 mtw:mt-1">
+                      {error.message}
+                    </p>
+                  )}
+                </div>
               )}
             />
-          </Stack>
+          </div>
         </CardContent>
-        <CardContent sx={{ pl: 3, pr: 3, pb: 3, pt: 1 }}>
-          <Controller
+
+        {/* Body Section */}
+        <CardContent className="mtw:py-0 mtw:flex mtw:flex-col">
+          <Controller<EmailPurchaseOrderControlProps>
             name="body"
             control={control}
             render={({ field, fieldState: { error } }) => (
-              <TextField
-                id={field.name}
-                data-testid={`${field.name}-input`}
-                variant="standard"
-                className="Monite-NakedField"
-                fullWidth
-                error={Boolean(error)}
-                helperText={error?.message}
-                required
-                multiline
-                rows={8}
-                {...field}
-                disabled={isDisabled}
-              />
+              <div className="mtw:flex mtw:flex-col">
+                <Textarea
+                  id={field.name}
+                  className="mtw:min-h-[200px] mtw:border-none mtw:bg-transparent mtw:p-0 mtw:text-base mtw:font-normal mtw:text-[#292929] mtw:leading-6 mtw:resize-y focus:mtw:ring-0 focus:mtw:outline-none"
+                  {...field}
+                  disabled={isDisabled}
+                  aria-invalid={Boolean(error)}
+                />
+                {error && (
+                  <p className="mtw:text-xs mtw:text-red-600 mtw:mt-1">
+                    {error.message}
+                  </p>
+                )}
+              </div>
             )}
           />
         </CardContent>

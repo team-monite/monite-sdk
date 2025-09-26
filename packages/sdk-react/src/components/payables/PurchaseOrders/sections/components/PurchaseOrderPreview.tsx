@@ -1,11 +1,11 @@
-import { PURCHASE_ORDER_CONSTANTS } from '../../constants';
+import { PURCHASE_ORDER_CONSTANTS } from '../../consts';
+import { calculateExpiryDate } from '../../utils/calculations';
 import type { PurchaseOrderLineItem } from '../../validation';
 import { PurchaseOrderPreviewMonite } from './PurchaseOrderPreviewMonite';
 import { components } from '@/api';
 import { useAdaptiveScale } from '@/hooks/useAdaptiveScale';
 import { AspectRatio } from '@/ui/components/aspect-ratio';
 import { cn } from '@/ui/lib/utils';
-import { addDays } from 'date-fns';
 import { useMemo, useRef } from 'react';
 
 export interface PurchaseOrderPreviewBaseProps {
@@ -14,19 +14,14 @@ export interface PurchaseOrderPreviewBaseProps {
     expiry_date?: Date | string;
     line_items?: PurchaseOrderLineItem[];
     message?: string;
-    footer?: string;
     entity_bank_account_id?: string;
     vat_mode?: components['schemas']['VatModeEnum'];
   };
   counterpart?: components['schemas']['CounterpartResponse'] | null;
-  currency?: string;
+  currency?: CurrencyEnum;
   isNonVatSupported?: boolean;
   entityData?: components['schemas']['EntityResponse'] | null;
   counterpartAddress?: components['schemas']['CounterpartAddress'] | null;
-  entityVatIds?: components['schemas']['EntityVatIDResourceList'] | null;
-  counterpartVats?:
-    | components['schemas']['CounterpartVatIDResourceList']
-    | null;
 }
 
 export const PurchaseOrderPreview = ({
@@ -36,20 +31,26 @@ export const PurchaseOrderPreview = ({
   isNonVatSupported: _isNonVatSupported = false,
   entityData,
   counterpartAddress,
-  entityVatIds: _entityVatIds,
-  counterpartVats: _counterpartVats,
 }: PurchaseOrderPreviewBaseProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const previewRef = useRef<HTMLDivElement>(null);
 
   const expiryDate = useMemo(() => {
     if (purchaseOrderData.expiry_date) {
-      return new Date(purchaseOrderData.expiry_date);
+      const d = new Date(purchaseOrderData.expiry_date);
+
+      d.setHours(0, 0, 0, 0);
+
+      return d;
     }
     const validForDays =
       purchaseOrderData.valid_for_days ||
       PURCHASE_ORDER_CONSTANTS.DEFAULT_VALID_FOR_DAYS;
-    return addDays(new Date(), validForDays);
+    const d = calculateExpiryDate(validForDays);
+
+    d.setHours(0, 0, 0, 0);
+
+    return d;
   }, [purchaseOrderData.expiry_date, purchaseOrderData.valid_for_days]);
 
   const scale = useAdaptiveScale(containerRef, previewRef, {
@@ -122,3 +123,5 @@ export const PurchaseOrderPreview = ({
     </div>
   );
 };
+
+type CurrencyEnum = components['schemas']['CurrencyEnum'];

@@ -35,6 +35,7 @@ export function GenericDropdownMenu<T = string>({
   disabled = false,
   placeholder = DEFAULT_PLACEHOLDER,
   triggerClassName = DEFAULT_TRIGGER_CLASSNAME,
+  className,
   onChange,
 }: GenericDropdownMenuProps<T>) {
   const selectedOption = useMemo(
@@ -55,11 +56,11 @@ export function GenericDropdownMenu<T = string>({
           {!disabled && <ChevronDownIcon className="mtw:w-4 mtw:h-4" />}
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
+      <DropdownMenuContent className={className}>
         {options.map((option) => (
           <DropdownMenuItem
             key={String(option.value)}
-            onClick={() => onChange(option.value)}
+            onSelect={() => onChange(option.value)}
           >
             {option.label}
           </DropdownMenuItem>

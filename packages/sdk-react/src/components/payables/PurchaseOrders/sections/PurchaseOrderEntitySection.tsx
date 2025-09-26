@@ -2,13 +2,14 @@ import type { SectionGeneralProps } from '@/components/receivables/InvoiceDetail
 import { CreatePurchaseOrderFormProps } from '../validation';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Box, FormControl, TextField, Typography } from '@mui/material';
-import { Controller, useFormContext } from 'react-hook-form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/ui/components/form';
+import { Textarea } from '@/ui/components/textarea';
+import { cn } from '@/ui/lib/utils';
+import { useFormContext } from 'react-hook-form';
 
 interface EntitySectionProps extends SectionGeneralProps {
   visibleFields?: {
     isMessageShown?: boolean;
-    isFooterShown?: boolean;
   };
 }
 
@@ -17,89 +18,36 @@ export const EntitySection = ({
   visibleFields,
 }: EntitySectionProps) => {
   const { i18n } = useLingui();
-  const { control } = useFormContext<CreatePurchaseOrderFormProps>();
+  const form = useFormContext<CreatePurchaseOrderFormProps>();
+  const { control } = form;
+
+  if (!visibleFields?.isMessageShown) {
+    return null;
+  }
 
   return (
-    <Box>
-      {visibleFields?.isMessageShown && (
-        <>
-          <Typography
-            variant="caption"
-            color="textSecondary"
-            sx={{ lineHeight: 2 }}
-          >
-            {t(i18n)`Message`}
-          </Typography>
-          <Controller
-            name="message"
-            control={control}
-            render={({ field, fieldState: { error } }) => (
-              <FormControl
-                variant="outlined"
-                fullWidth
-                disabled={disabled}
-                sx={{ mb: 2 }}
-                error={Boolean(error)}
-              >
-                <TextField
+    <section className="mtw:space-y-6">
+      <Form {...form}>
+        <FormField
+          control={control}
+          name="message"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="mtw:text-sm mtw:font-medium mtw:text-foreground">
+                {t(i18n)`Message`}
+              </FormLabel>
+              <FormControl>
+                <Textarea
                   {...field}
-                  placeholder={t(i18n)`Add a message for the vendor...`}
-                  multiline
-                  minRows={2}
-                  fullWidth
-                  sx={{
-                    '& .MuiInputBase-root': {
-                      background: 'white',
-                    },
-                  }}
-                  error={Boolean(error)}
+                  disabled={disabled}
+                  className={cn('mtw:min-h-[120px]', disabled && 'mtw:opacity-70')}
                 />
               </FormControl>
-            )}
-          />
-        </>
-      )}
-
-      {visibleFields?.isFooterShown && (
-        <>
-          <Typography
-            variant="caption"
-            color="textSecondary"
-            sx={{ lineHeight: 2 }}
-          >
-            {t(i18n)`Note to vendor`}
-          </Typography>
-          <Controller
-            name="footer"
-            control={control}
-            render={({ field, fieldState: { error } }) => (
-              <FormControl
-                variant="outlined"
-                fullWidth
-                disabled={disabled}
-                sx={{ mb: 2 }}
-                error={Boolean(error)}
-              >
-                <TextField
-                  {...field}
-                  placeholder={t(
-                    i18n
-                  )`Add a note to be displayed below the line items`}
-                  multiline
-                  minRows={2}
-                  fullWidth
-                  sx={{
-                    '& .MuiInputBase-root': {
-                      background: 'white',
-                    },
-                  }}
-                  error={Boolean(error)}
-                />
-              </FormControl>
-            )}
-          />
-        </>
-      )}
-    </Box>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </Form>
+    </section>
   );
 };

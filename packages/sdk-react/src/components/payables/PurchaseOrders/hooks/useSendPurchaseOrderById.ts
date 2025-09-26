@@ -5,10 +5,13 @@ import { toast } from 'react-hot-toast';
 
 export const useSendPurchaseOrderById = (purchaseOrderId: string) => {
   const { i18n } = useLingui();
-  const { api, queryClient } = useMoniteContext();
+  const { api, queryClient, entityId } = useMoniteContext();
 
   return api.payablePurchaseOrders.postPayablePurchaseOrdersIdSend.useMutation(
-    undefined,
+    {
+      path: { purchase_order_id: purchaseOrderId },
+      header: { 'x-monite-entity-id': entityId },
+    },
     {
       onSuccess: async () => {
         await Promise.all([

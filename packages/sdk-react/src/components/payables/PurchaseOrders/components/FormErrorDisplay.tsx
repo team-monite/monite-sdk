@@ -1,11 +1,11 @@
 import type { CreatePurchaseOrderFormProps } from '../validation';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Alert, Collapse, List, ListItem, ListItemText } from '@mui/material';
+import { FormErrorDisplay as SharedFormErrorDisplay } from '@/ui/FormErrorDisplay';
 import { useMemo, memo } from 'react';
 import type { FieldErrors } from 'react-hook-form';
 
-type ErrorDisplayProps = {
+export type ErrorDisplayProps = {
   generalError?: string | null;
   fieldErrors: {
     name?: string | null;
@@ -21,55 +21,11 @@ type ErrorDisplayProps = {
 
 export const FormErrorDisplay = memo(
   ({ generalError, fieldErrors }: ErrorDisplayProps) => {
-    const hasFieldErrors = useMemo(
-      () => Object.values(fieldErrors).some((error) => error),
-      [fieldErrors]
-    );
-
-    const hasErrors = useMemo(
-      () => Boolean(generalError) || hasFieldErrors,
-      [generalError, hasFieldErrors]
-    );
-
-    if (!hasErrors) return null;
-
     return (
-      <Collapse
-        in={true}
-        sx={{
-          ':not(.MuiCollapse-hidden)': {
-            marginBottom: 1,
-          },
-        }}
-      >
-        <Alert
-          severity="error"
-          sx={{
-            '& .MuiAlert-icon': {
-              alignItems: 'center',
-            },
-          }}
-        >
-          {generalError && <div>{generalError}</div>}
-
-          {hasFieldErrors && (
-            <List dense disablePadding sx={{ mt: generalError ? 1 : 0 }}>
-              {Object.entries(fieldErrors).map(([key, error]) =>
-                error ? (
-                  <ListItem key={key} disablePadding>
-                    <ListItemText
-                      primary={error}
-                      primaryTypographyProps={{
-                        sx: { color: 'inherit' },
-                      }}
-                    />
-                  </ListItem>
-                ) : null
-              )}
-            </List>
-          )}
-        </Alert>
-      </Collapse>
+      <SharedFormErrorDisplay
+        generalError={generalError}
+        fieldErrors={fieldErrors}
+      />
     );
   }
 );
