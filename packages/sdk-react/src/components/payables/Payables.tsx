@@ -95,7 +95,7 @@ const PayablesBase = ({
   const [isCreateInvoiceDialogOpen, setIsCreateInvoiceDialogOpen] =
     useState(false);
 
-  const { FileInput, openFileInput, checkFileError } = useFileInput();
+  const { FileInput, openFileInput } = useFileInput();
   const payableUploadFromFileMutation =
     api.payables.postPayablesUploadFromFile.useMutation(
       {},
@@ -111,16 +111,8 @@ const PayablesBase = ({
       }
     );
 
-  const handleFileUpload = (files: File | FileList) => {
-    const fileArray = files instanceof File ? [files] : Array.from(files);
-
-    fileArray.forEach((file) => {
-      const error = checkFileError(file);
-      if (error) {
-        toast.error(error);
-        return;
-      }
-
+  const handleFileUpload = (files: File[]) => {
+    files.forEach((file) => {
       toast.promise(
         payableUploadFromFileMutation.mutateAsync({
           file,
@@ -188,7 +180,7 @@ const PayablesBase = ({
         aria-label={t(i18n)`Upload payable files`}
         multiple
         onChange={(event) => {
-          const files = event.target.files;
+          const files = Array.from(event.target.files || []);
           if (files) handleFileUpload(files);
         }}
       />

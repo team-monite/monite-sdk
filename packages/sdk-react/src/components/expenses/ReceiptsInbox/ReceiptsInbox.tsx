@@ -1,6 +1,7 @@
 import { useGetMailboxes } from '../hooks/useGetMailboxes';
 import { useGetReceipts } from '../hooks/useGetReceipts';
 import { useInfiniteGetReceipts } from '../hooks/useInfiniteGetReceipts';
+import { useUploadNewReceiptFile } from '../hooks/useUploadNewReceiptFile';
 import { ReceiptCard, ReceiptCardSkeleton } from './ReceiptCard';
 import { components } from '@/api/schema';
 import { useDebounce } from '@/core/hooks';
@@ -16,13 +17,19 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/ui/components/dialog';
+import { FileUpload } from '@/ui/components/file-upload';
 import { Input } from '@/ui/components/input';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/ui/components/popover';
 import { Separator } from '@/ui/components/separator';
 import { TabBar, TabBarList, TabBarTrigger } from '@/ui/components/tab-bar';
 import { LoadingPage } from '@/ui/loadingPage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { CopyIcon, XIcon } from 'lucide-react';
+import { CopyIcon, FocusIcon, XIcon } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 const FILTER_TYPE_SEARCH = 'search';
@@ -42,6 +49,7 @@ export const ReceiptsInbox = ({
 }) => {
   const { i18n } = useLingui();
 
+  const [isUploadMenuOpen, setUploadMenuOpen] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const { data: user } = useEntityUserByAuthToken();
@@ -152,6 +160,8 @@ export const ReceiptsInbox = ({
     isReadReceiptsAllowed
   );
 
+  const { receiptUploadFromFileMutation } = useUploadNewReceiptFile();
+
   const { data: mailboxexData } = useGetMailboxes(isReadReceiptsAllowed);
   const receiptsEmailAddress = mailboxexData?.data?.find(
     (mailbox) =>
@@ -169,6 +179,15 @@ export const ReceiptsInbox = ({
     []
   );
 
+  const handleReceiptUpload = (files: File[]) => {
+    files.forEach((file) => {
+      receiptUploadFromFileMutation.mutateAsync({
+        file,
+      });
+    });
+    setUploadMenuOpen(false);
+  };
+
   const handleChangeTab = useCallback(
     (value: HasTransactionFilterValue) => {
       onFilterChange(FILTER_TYPE_HAS_TRANSACTION, value);
@@ -183,25 +202,14 @@ export const ReceiptsInbox = ({
     [onFilterChange]
   );
 
-  // Early returns for loading and access restriction states
-  if (isReadReceiptsAllowedLoading) {
+  const getPageContent = useCallback(() => {
+    if (isReadReceiptsAllowedLoading) {
+      <LoadingPage />;
+    }
+    if (!isReadReceiptsAllowed) {
+      <AccessRestriction />;
+    }
     return (
-      <DialogAndHeader setIsOpen={setIsOpen}>
-        <LoadingPage />
-      </DialogAndHeader>
-    );
-  }
-
-  if (!isReadReceiptsAllowed) {
-    return (
-      <DialogAndHeader setIsOpen={setIsOpen}>
-        <AccessRestriction />
-      </DialogAndHeader>
-    );
-  }
-
-  return (
-    <DialogAndHeader setIsOpen={setIsOpen}>
       <>
         {/* Fixed Tabs and Search Section */}
         <div className="mtw:space-y-4">
@@ -277,6 +285,7 @@ export const ReceiptsInbox = ({
               />
             )}
             onItemClick={handleReceiptClick}
+            isItemClickable={(receipt) => receipt.ocr_status !== 'processing'}
             minItemWidth={240}
             loadingSkeleton={ReceiptCardSkeleton}
             skeletonCount={6}
@@ -308,18 +317,28 @@ export const ReceiptsInbox = ({
           />
         </div>
       </>
-    </DialogAndHeader>
-  );
-};
-
-const DialogAndHeader = ({
-  children,
-  setIsOpen,
-}: {
-  children: React.ReactNode;
-  setIsOpen: (open: boolean) => void;
-}) => {
-  const { i18n } = useLingui();
+    );
+  }, [
+    isReadReceiptsAllowedLoading,
+    isReadReceiptsAllowed,
+    i18n,
+    unmatchedReceipts?.length,
+    receiptsEmailAddress,
+    searchInputValue,
+    handleSearchChange,
+    receipts,
+    handleReceiptClick,
+    isLoading,
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+    errorState,
+    handleChangeTab,
+    userDataMap,
+    filters,
+    error,
+    refetch,
+  ]);
 
   return (
     <DialogContent
@@ -337,16 +356,51 @@ const DialogAndHeader = ({
             >
               <XIcon className="mtw:size-6" />
             </Button>
-            <DialogTitle className="mtw:font-semibold mtw:text-2xl">{t(
-              i18n
-            )`Receipt inbox`}</DialogTitle>
+            <DialogTitle className="mtw:font-semibold mtw:text-2xl">
+              {t(i18n)`Receipt inbox`}
+            </DialogTitle>
             <DialogDescription className="mtw:sr-only">{t(
               i18n
             )`Receipt inbox`}</DialogDescription>
+
+            <Popover
+              open={isUploadMenuOpen}
+              onOpenChange={setUploadMenuOpen}
+              modal={true}
+            >
+              <PopoverTrigger asChild>
+                <Button variant="secondary" className="mtw:ml-auto">
+                  <FocusIcon className="mtw:size-6" />
+                  {t(i18n)`Scan receipts`}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent
+                align="end"
+                className="mtw:w-auto mtw:min-w-[550px] mtw:border-none"
+              >
+                <div className="mtw:p-4 mtw:w-[550px] mtw:space-y-4">
+                  <div className="mtw:space-y-2">
+                    <p className="mtw:text-xl mtw:font-semibold">
+                      {t(i18n)`Upload receipts`}
+                    </p>
+                    <p>
+                      {t(
+                        i18n
+                      )`Upload card transaction receipts and we'll automatically match them to the correct transaction. `}
+                    </p>
+                  </div>
+                  <FileUpload
+                    onFileUpload={handleReceiptUpload}
+                    multiple={true}
+                    height="200px"
+                  />
+                </div>
+              </PopoverContent>
+            </Popover>
           </div>
         </DialogHeader>
 
-        {children}
+        {getPageContent()}
       </div>
     </DialogContent>
   );

@@ -1,17 +1,11 @@
-import { ComponentProps, forwardRef, useRef, useState } from 'react';
-
+import { OcrFileTypesValues, OcrFileTypesString } from '../types/filetypes';
 import { css } from '@emotion/react';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { ComponentProps, forwardRef, useRef, useState } from 'react';
 
 const maxFileSizeInMB = 20;
 const maxFileSizeInKB = 1024 * 1024 * maxFileSizeInMB;
-
-export const OCR_SUPPORTED_FORMATS = [
-  'application/pdf',
-  'image/jpeg',
-  'image/png',
-];
 
 /**
  * `useFileInput` is a React hook that creates an invisible `<input type="file" />` and `open()` method for interacting with it.
@@ -55,7 +49,7 @@ export const useFileInput = () => {
     forwardRef<HTMLInputElement, ComponentProps<'input'>>((props, ref) => (
       <input
         type="file"
-        accept={OCR_SUPPORTED_FORMATS.join(',')}
+        accept={OcrFileTypesString}
         ref={(node) => {
           if (typeof ref === 'function') ref(node);
           else if (ref) ref.current = node;
@@ -84,7 +78,11 @@ export const useFileInput = () => {
       return t(i18n)`No file provided`;
     }
 
-    if (!OCR_SUPPORTED_FORMATS.includes(file.type)) {
+    if (
+      !OcrFileTypesValues.includes(
+        file.type as (typeof OcrFileTypesValues)[number]
+      )
+    ) {
       return t(i18n)`Unsupported file type for ${file.name}`;
     }
 

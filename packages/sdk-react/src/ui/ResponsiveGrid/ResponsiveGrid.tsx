@@ -16,7 +16,10 @@ interface ResponsiveGridProps<TData> {
   error?: Error | null;
   // Minimum item width for auto-sizing (default: 200px)
   minItemWidth?: number;
+  // Function to handle item click
   onItemClick?: (item: TData, index: number) => void;
+  // Function to determine if an item should be clickable
+  isItemClickable?: (item: TData, index: number) => boolean;
   // Custom no items overlay component
   noItemsOverlay?: React.ComponentType;
   // Custom loading skeleton component
@@ -48,6 +51,7 @@ interface ResponsiveGridProps<TData> {
  * @param error - Error object if data fetching failed
  * @param minItemWidth - Minimum width for each grid item (default: 200px)
  * @param onItemClick - Optional click handler for grid items
+ * @param isItemClickable - Function to determine if an item should be clickable (default: true for all items)
  * @param noItemsOverlay - Custom component to show when no data is available
  * @param loadingSkeleton - Custom component to show during loading
  * @param skeletonCount - Number of skeleton items to show during loading (default: 12)
@@ -97,6 +101,17 @@ interface ResponsiveGridProps<TData> {
  *   </div>
  * );
  * ```
+ *
+ * @example
+ * ```tsx
+ * // With conditional clickability (e.g., disable clicks for processing items)
+ * <ResponsiveGrid
+ *   data={receipts}
+ *   renderItem={(receipt) => <ReceiptCard receipt={receipt} />}
+ *   onItemClick={handleReceiptClick}
+ *   isItemClickable={(receipt) => receipt.ocr_status !== 'processing'}
+ * />
+ * ```
  */
 function ResponsiveGridComponent<TData>({
   data,
@@ -108,6 +123,7 @@ function ResponsiveGridComponent<TData>({
   error,
   minItemWidth = 200,
   onItemClick,
+  isItemClickable,
   noItemsOverlay: NoItemsOverlay,
   loadingSkeleton: LoadingSkeleton,
   skeletonCount = 12,
@@ -236,7 +252,9 @@ function ResponsiveGridComponent<TData>({
       <div className="mtw:flex mtw:flex-col">
         <div style={autoColumnsGridStyle}>
           {data.map((item, index) => {
-            const isClickable = Boolean(onItemClick);
+            const isClickable =
+              Boolean(onItemClick) &&
+              (isItemClickable ? isItemClickable(item, index) : true);
             const key = (item as any)?.id ?? `grid-item-${index}`;
             return (
               <div
