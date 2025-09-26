@@ -91,9 +91,9 @@ export async function ensureLineItemValid(page: Page): Promise<void> {
     await addRowBtn.click().catch(() => {});
   }
 
-  const removeRowButtons = page.locator('[data-testid="remove-item"], button', {
-    hasText: /Remove|Delete|Trash/i,
-  });
+  const removeRowButtons = page
+    .locator('table tbody [data-testid="remove-item"]')
+    .or(page.locator('table tbody button', { hasText: /Remove|Delete|Trash/i }));
   const removeCount = await removeRowButtons.count();
   await page.evaluate(
     (count) =>
@@ -222,11 +222,8 @@ export async function ensureVendorSelected(page: Page): Promise<void> {
   const optionsList = page
     .locator('[id^="Monite-Selector"], [data-radix-popper-content], body')
     .locator('[role="option"]');
-  const createNewOption = optionsList
-    .filter({ hasText: /Create new (vendor|counterpart|customer)/i })
-    .first();
-  const firstRealOption = page
-    .getByRole('option')
+
+  const firstRealOption = optionsList
     .filter({ hasNotText: /Create new/i })
     .first();
   const createNewButton = page

@@ -19,12 +19,15 @@ export const PurchaseOrderPDFViewer = ({
     data: purchaseOrder,
     isLoading,
     error,
-  } = api.payablePurchaseOrders.getPayablePurchaseOrdersId.useQuery({
-    path: {
-      purchase_order_id: purchaseOrderId,
+  } = api.payablePurchaseOrders.getPayablePurchaseOrdersId.useQuery(
+    {
+      path: {
+        purchase_order_id: purchaseOrderId,
+      },
+      header: { 'x-monite-entity-id': entityId },
     },
-    header: { 'x-monite-entity-id': entityId },
-  });
+    { enabled: Boolean(entityId && purchaseOrderId) }
+  );
 
   if (isLoading) {
     return <LoadingPage />;

@@ -27,7 +27,7 @@ export interface PurchaseOrderPreviewMoniteProps {
     message?: string;
   };
   counterpart?: components['schemas']['CounterpartResponse'] | null;
-  currency?: string;
+  currency?: CurrencyEnum;
   entityData?: components['schemas']['EntityResponse'] | null;
   counterpartAddress?: components['schemas']['CounterpartAddress'] | null;
   expiryDate: Date;
@@ -60,7 +60,7 @@ export const PurchaseOrderPreviewMonite = ({
         quantity: item.quantity,
         unit: item.unit,
         price: item.price,
-        currency: item.currency as components['schemas']['CurrencyEnum'],
+        currency: item.currency as CurrencyEnum,
         vat_rate_id: item.vat_rate_id,
         vat_rate_value: item.vat_rate_value,
         tax_rate_value: item.tax_rate_value,
@@ -76,8 +76,7 @@ export const PurchaseOrderPreviewMonite = ({
       lineItems: sanitizedItems,
       formatCurrencyToDisplay,
       isNonVatSupported,
-      actualCurrency:
-        (currency as components['schemas']['CurrencyEnum']) ?? 'USD',
+      actualCurrency: currency ?? 'USD',
       isInclusivePricing: false,
     });
 
@@ -247,7 +246,7 @@ export const PurchaseOrderPreviewMonite = ({
                       </span>
                     </td>
                     <td className={styles.colPrice}>
-                      {formatCurrencyToDisplay(price, currency || 'USD', true)}
+                      {formatCurrencyToDisplay(price, currency ?? 'USD', true)}
                     </td>
                     <td className={styles.colAmount}>
                       {formatCurrencyToDisplay(
@@ -352,3 +351,5 @@ export const PurchaseOrderPreviewMonite = ({
     </div>
   );
 };
+
+type CurrencyEnum = components['schemas']['CurrencyEnum'];

@@ -92,8 +92,10 @@ export const Overview = ({ purchaseOrder }: OverviewProps) => {
                   label: t(i18n)`Name`,
                   value: isCounterpartLoading ? (
                     <Skeleton className="mtw:h-4 mtw:w-[150px]" />
+                  ) : counterpart ? (
+                    getCounterpartName(counterpart) ?? '—'
                   ) : (
-                    getCounterpartName(counterpart) || '—'
+                    '—'
                   ),
                 },
                 {

@@ -373,6 +373,7 @@ export const ItemSelector = ({
         error={error}
         className="Item-Selector"
         sx={{ width: '100%', marginLeft }}
+        disabled={disabled}
         value={customName}
         onFocus={handleFocus}
         onBlur={handleBlur}

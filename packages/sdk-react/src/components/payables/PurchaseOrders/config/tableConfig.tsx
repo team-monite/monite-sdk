@@ -31,7 +31,7 @@ export const createPurchaseOrderTableConfig = (
   locale: { dateFormat?: MoniteDateFormat },
   formatCurrencyToDisplay: (
     amountInMinorUnits: string | number,
-    currency: string,
+    currency: CurrencyEnum,
     isCurrencyDisplayed?: boolean
   ) => string | null
 ): TableConfig<components['schemas']['PurchaseOrderResponseSchema']> => {
@@ -154,3 +154,5 @@ export const createPurchaseOrderTableConfig = (
     checkboxSelection: true,
   };
 };
+
+type CurrencyEnum = components['schemas']['CurrencyEnum'];

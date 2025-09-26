@@ -5,6 +5,7 @@ import { InvoiceCancelModal } from './InvoiceCancelModal';
 import { InvoiceDeleteModal } from './InvoiceDeleteModal';
 import { MarkAsUncollectibleModal } from './MarkAsUncollectibleModal';
 import { RecordManualPaymentModal } from './RecordManualPaymentModal';
+import { RecurrenceCancelModal } from './RecurrenceCancelModal';
 import { components } from '@/api';
 import { useIsMobileScreen } from '@/core/hooks/useMediaQuery';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';

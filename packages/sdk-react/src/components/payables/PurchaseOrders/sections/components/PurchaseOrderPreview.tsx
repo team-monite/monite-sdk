@@ -19,7 +19,7 @@ export interface PurchaseOrderPreviewBaseProps {
     vat_mode?: components['schemas']['VatModeEnum'];
   };
   counterpart?: components['schemas']['CounterpartResponse'] | null;
-  currency?: string;
+  currency?: CurrencyEnum;
   isNonVatSupported?: boolean;
   entityData?: components['schemas']['EntityResponse'] | null;
   counterpartAddress?: components['schemas']['CounterpartAddress'] | null;
@@ -130,3 +130,5 @@ export const PurchaseOrderPreview = ({
     </div>
   );
 };
+
+type CurrencyEnum = components['schemas']['CurrencyEnum'];

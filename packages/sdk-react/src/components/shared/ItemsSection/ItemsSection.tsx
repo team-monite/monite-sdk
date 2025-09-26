@@ -106,10 +106,6 @@ export function ConfigurableItemsSection<
     return measureUnitsData;
   }, [config.staticMeasureUnits, measureUnitsData]);
 
-  const _apiMeasureUnitsData = config.staticMeasureUnits
-    ? undefined
-    : measureUnitsData;
-
   const {
     fields,
     tooManyEmptyRows,
@@ -607,7 +603,7 @@ export function ConfigurableItemsSection<
                       typeof value === 'number'
                     ) {
                       newValue =
-                        value > 100
+                        value >= 100
                           ? vatRateBasisPointsToPercentage(value)
                           : value;
                     }

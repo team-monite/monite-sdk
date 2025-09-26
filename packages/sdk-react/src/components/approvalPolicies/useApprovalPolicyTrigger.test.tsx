@@ -1,4 +1,4 @@
-import { OPERATOR_OPERATIONS, OperatorOperation } from './triggerUtils';
+import { OPERATOR_OPERATIONS, type OperatorOperation } from './triggerUtils';
 import {
   useApprovalPolicyTrigger,
   AmountTuple,
@@ -15,12 +15,6 @@ import {
 } from '@/mocks/entityUsers/entityUserByIdFixture';
 import { tagListFixture } from '@/mocks/tags';
 import { renderHook } from '@testing-library/react';
-
-import { OPERATOR_OPERATIONS, type OperatorOperation } from './triggerUtils';
-import {
-  useApprovalPolicyTrigger,
-  AmountTuple,
-} from './useApprovalPolicyTrigger';
 
 describe('useApprovalPolicyTrigger', () => {
   describe('trigger parsing based on format', () => {

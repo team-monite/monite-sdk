@@ -99,6 +99,6 @@ export const useDocumentTemplatesApi = (
 };
 
 type TemplateDocumentType =
-  | components['schemas']['TemplateReceivableResponse']['document_type']
+  | components['schemas']['DocumentTypeEnum']
   | 'invoice';
 type TemplateDocument = components['schemas']['TemplateReceivableResponse'];
