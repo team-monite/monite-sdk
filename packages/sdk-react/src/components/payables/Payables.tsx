@@ -1,5 +1,6 @@
 import { CreatePayableMenu } from './CreatePayableMenu';
 import { CustomerTypes } from '@/components/counterparts/types';
+import { PayablesTabEnum } from './types';
 import { PayableDetails } from '@/components/payables/PayableDetails';
 import { UsePayableDetailsProps } from '@/components/payables/PayableDetails/usePayableDetails';
 import { PayablesTable } from '@/components/payables/PayablesTable';
@@ -18,7 +19,11 @@ import { AccessRestriction } from '@/ui/accessRestriction';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { CircularProgress } from '@mui/material';
-import { useState } from 'react';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/ui/components/tabs-underline';
+import { useState, lazy, Suspense } from 'react';
+
+const PurchaseOrdersTable = lazy(() => import('@/components/payables/PurchaseOrders').then(module => ({ default: module.PurchaseOrdersTable })));
+const PurchaseOrderDetails = lazy(() => import('@/components/payables/PurchaseOrders').then(module => ({ default: module.PurchaseOrderDetails })));
 import { toast } from 'react-hot-toast';
 
 export type PayablesProps = {
@@ -50,6 +55,7 @@ export const Payables = (props: PayablesProps) => {
     </MoniteScopedProviders>
   );
 };
+
 
 const PayablesBase = ({
   customerTypes,
@@ -88,10 +94,17 @@ const PayablesBase = ({
     onPay,
   });
 
+  const [activeTab, setActiveTab] = useState<PayablesTabEnum>(PayablesTabEnum.Bills);
+
   const [invoiceIdDialog, setInvoiceIdDialog] = useState<{
     invoiceId: string | undefined;
     open: boolean;
   }>({ invoiceId: undefined, open: false });
+
+  const [purchaseOrderIdDialog, setPurchaseOrderIdDialog] = useState<{
+    purchaseOrderId: string | undefined;
+    open: boolean;
+  }>({ purchaseOrderId: undefined, open: false });
 
   const closeEditDialog = () => {
     setInvoiceIdDialog((prev) => ({
@@ -101,7 +114,18 @@ const PayablesBase = ({
     }));
   };
 
+  const closePurchaseOrderDialog = () => {
+    setPurchaseOrderIdDialog((prev) => ({
+      ...prev,
+      open: false,
+      purchaseOrderId: undefined,
+    }));
+  };
+
   const [isCreateInvoiceDialogOpen, setIsCreateInvoiceDialogOpen] =
+    useState(false);
+  
+  const [isCreatePurchaseOrderDialogOpen, setIsCreatePurchaseOrderDialogOpen] =
     useState(false);
 
   const { FileInput, openFileInput, checkFileError } = useFileInput();
@@ -152,6 +176,13 @@ const PayablesBase = ({
       entityUserId: user?.id,
     });
 
+  const { data: isCreatePurchaseOrderAllowed, isLoading: isCreatePurchaseOrderAllowedLoading } =
+    useIsActionAllowed({
+      method: 'payables_purchase_order',
+      action: 'create',
+      entityUserId: user?.id,
+    });
+
   const { data: isReadAllowed, isLoading: isReadAllowedLoading } =
     useIsActionAllowed({
       method: 'payable',
@@ -171,7 +202,7 @@ const PayablesBase = ({
         title={
           <>
             {t(i18n)`Bill Pay`}
-            {(isReadAllowedLoading || isCreateAllowedLoading) && (
+            {(isReadAllowedLoading || isCreateAllowedLoading || isCreatePurchaseOrderAllowedLoading) && (
               <CircularProgress size="0.7em" color="secondary" sx={{ ml: 1 }} />
             )}
           </>
@@ -179,20 +210,49 @@ const PayablesBase = ({
         extra={
           <CreatePayableMenu
             isCreateAllowed={isCreateAllowed}
+            isCreatePurchaseOrderAllowed={isCreatePurchaseOrderAllowed}
             onCreateInvoice={() => setIsCreateInvoiceDialogOpen(true)}
+            onCreatePurchaseOrder={() => setIsCreatePurchaseOrderDialogOpen(true)}
             handleFileUpload={handleFileUpload}
+            activeTab={activeTab}
           />
         }
       />
       {!isReadAllowed && !isReadAllowedLoading && <AccessRestriction />}
       {isReadAllowed && (
-        <PayablesTable
-          onRowClick={(id) => setInvoiceIdDialog({ open: true, invoiceId: id })}
-          onPay={handlePay}
-          onPayUS={onPayUS}
-          openFileInput={openFileInput}
-          setIsCreateInvoiceDialogOpen={setIsCreateInvoiceDialogOpen}
-        />
+        <Tabs 
+          value={activeTab} 
+          onValueChange={(value) => setActiveTab(value as PayablesTabEnum)}
+          className="mtw:w-full"
+        >
+          <TabsList className="mtw:mb-4">
+            <TabsTrigger value={PayablesTabEnum.Bills}>
+              {t(i18n)`Bills`}
+            </TabsTrigger>
+            <TabsTrigger value={PayablesTabEnum.PurchaseOrders}>
+              {t(i18n)`Purchase orders`}
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value={PayablesTabEnum.Bills}>
+            <PayablesTable
+              onRowClick={(id) => setInvoiceIdDialog({ open: true, invoiceId: id })}
+              onPay={handlePay}
+              onPayUS={onPayUS}
+              openFileInput={openFileInput}
+              setIsCreateInvoiceDialogOpen={setIsCreateInvoiceDialogOpen}
+            />
+          </TabsContent>
+
+          <TabsContent value={PayablesTabEnum.PurchaseOrders}>
+            <Suspense fallback={<CircularProgress />}>
+              <PurchaseOrdersTable
+                onRowClick={(id) => setPurchaseOrderIdDialog({ open: true, purchaseOrderId: id })}
+                setIsCreatePurchaseOrderDialogOpen={setIsCreatePurchaseOrderDialogOpen}
+              />
+            </Suspense>
+          </TabsContent>
+        </Tabs>
       )}
       <FileInput
         aria-label={t(i18n)`Upload payable files`}
@@ -250,6 +310,49 @@ const PayablesBase = ({
           onClose={() => setIsCreateInvoiceDialogOpen(false)}
           onSaved={handleSaved}
         />
+      </Dialog>
+
+      <Dialog
+        className={className + '-Dialog-PurchaseOrderDetails'}
+        open={purchaseOrderIdDialog.open}
+        container={root}
+        onClose={closePurchaseOrderDialog}
+        onClosed={closePurchaseOrderDialog}
+        fullScreen
+      >
+        <Suspense fallback={<CircularProgress />}>
+          <PurchaseOrderDetails
+            id={purchaseOrderIdDialog.purchaseOrderId}
+            onClose={closePurchaseOrderDialog}
+            vendorTypes={
+              customerTypes || componentSettings?.counterparts?.customerTypes
+            }
+          />
+        </Suspense>
+      </Dialog>
+
+      <Dialog
+        className={className + '-Dialog-CreatePurchaseOrder'}
+        open={isCreatePurchaseOrderDialogOpen}
+        container={root}
+        onClose={() => setIsCreatePurchaseOrderDialogOpen(false)}
+        fullScreen
+      >
+        <Suspense fallback={<CircularProgress />}>
+          <PurchaseOrderDetails
+            onClose={() => setIsCreatePurchaseOrderDialogOpen(false)}
+            onSaved={(purchaseOrderId) => {
+              setIsCreatePurchaseOrderDialogOpen(false);
+              setPurchaseOrderIdDialog({ 
+                open: true, 
+                purchaseOrderId: purchaseOrderId 
+              });
+            }}
+            vendorTypes={
+              customerTypes || componentSettings?.counterparts?.customerTypes
+            }
+          />
+        </Suspense>
       </Dialog>
     </>
   );

@@ -3,8 +3,9 @@ import type {
   CreateReceivablesFormBeforeValidationProps,
   CreateReceivablesFormBeforeValidationLineItemProps,
 } from '../../validation';
-import type { CurrencyEnum } from '../types';
+import type { CurrencyEnum, SanitizableLineItem } from '../types';
 import { sanitizeLineItems } from '../utils';
+import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies, useDebounceCallback } from '@/core/hooks';
 import { useIsMounted } from '@/core/hooks/useIsMounted';
@@ -24,9 +25,21 @@ interface UseLineItemManagementProps {
   isNonVatSupported: boolean;
   isInclusivePricing: boolean;
   maxAllowedEmptyRows?: number;
+  itemStructure?: 'nested' | 'flat';
 }
 
 const DEFAULT_MAX_ALLOWED_EMPTY_ROWS = 4;
+
+type FlatLineItem = CreateReceivablesFormBeforeValidationLineItemProps & {
+  name: string;
+  price: components['schemas']['PriceFloat'];
+  currency?: CurrencyEnum;
+  unit?: string;
+};
+
+const isFlatLineItem = (
+  item: CreateReceivablesFormBeforeValidationLineItemProps | undefined
+): item is FlatLineItem => Boolean(item && 'name' in item && item.name && !item.product);
 
 export const useLineItemManagement = ({
   actualCurrency,
@@ -34,6 +47,7 @@ export const useLineItemManagement = ({
   isNonVatSupported,
   isInclusivePricing,
   maxAllowedEmptyRows = DEFAULT_MAX_ALLOWED_EMPTY_ROWS,
+  itemStructure = 'nested',
 }: UseLineItemManagementProps) => {
   const {
     control,
@@ -63,15 +77,42 @@ export const useLineItemManagement = ({
   const [tooManyEmptyRows, setTooManyEmptyRows] = useState(false);
 
   const watchedLineItems = watch('line_items');
+  const watchedLineItemsContentHash = JSON.stringify(watchedLineItems);
   const currentLineItems = useMemo(
     () => watchedLineItems ?? [],
-    [watchedLineItems]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [watchedLineItemsContentHash]
   );
 
-  const sanitizedLineItemsForTable = useMemo(
-    () => sanitizeLineItems(currentLineItems),
-    [currentLineItems]
-  );
+  const sanitizedLineItemsForTable = useMemo(() => {
+    const convertedItems: SanitizableLineItem[] = currentLineItems.map(item => {
+      if (isFlatLineItem(item)) {
+        return {
+          id: item.id,
+          name: item.name,
+          quantity: item.quantity,
+          price: item.price?.value,
+          currency: item.price?.currency || item.currency,
+          unit: item.unit,
+          vat_rate_id: item.vat_rate_id,
+          vat_rate_value: item.vat_rate_value,
+          tax_rate_value: item.tax_rate_value,
+        } as SanitizableLineItem;
+      } else {
+        return {
+          id: item.id,
+          quantity: item.quantity,
+          vat_rate_id: item.vat_rate_id,
+          vat_rate_value: item.vat_rate_value,
+          tax_rate_value: item.tax_rate_value,
+          product: item.product,
+          measure_unit: item.measure_unit,
+        } as SanitizableLineItem;
+      }
+    });
+    
+    return sanitizeLineItems(convertedItems);
+  }, [currentLineItems]);
 
   const { formatCurrencyToDisplay } = useCurrencies();
 
@@ -93,6 +134,31 @@ export const useLineItemManagement = ({
     (
       template?: CreateReceivablesFormBeforeValidationLineItemProps
     ): CreateReceivablesFormBeforeValidationLineItemProps => {
+      if (itemStructure === 'flat') {
+        const flatTemplate = isFlatLineItem(template) ? template : undefined;
+        const priceValue = flatTemplate?.price?.value ?? template?.product?.price?.value ?? 0;
+
+        return {
+          id: flatTemplate?.id ?? generateUniqueId(),
+          name:
+            flatTemplate?.name ?? template?.product?.name ?? '',
+          quantity: flatTemplate?.quantity ?? template?.quantity ?? 1,
+          price: {
+            currency: actualCurrency ?? defaultCurrency,
+            value: priceValue,
+          },
+          vat_rate_id: isNonVatSupported
+            ? undefined
+            : flatTemplate?.vat_rate_id ?? template?.vat_rate_id,
+          vat_rate_value: isNonVatSupported
+            ? undefined
+            : flatTemplate?.vat_rate_value ?? template?.vat_rate_value,
+          tax_rate_value: isNonVatSupported
+            ? flatTemplate?.tax_rate_value ?? template?.tax_rate_value
+            : undefined,
+        };
+      }
+
       const product: CreateReceivablesFormBeforeValidationLineItemProps['product'] =
         {
           name: template?.product?.name || '',
@@ -104,38 +170,43 @@ export const useLineItemManagement = ({
           type: template?.product?.type || 'product',
         };
 
-      // Preserve VAT rates correctly based on region
-      // For non-VAT regions, use tax_rate_value, otherwise preserve vat_rate_id and vat_rate_value
-      return {
-        id: template?.id ?? generateUniqueId(),
-        product_id: template?.product_id || '',
-        product,
-        quantity: template?.quantity ?? 1,
-        // Preserve VAT values or set defaults based on region
-        vat_rate_id: isNonVatSupported ? undefined : template?.vat_rate_id,
-        vat_rate_value: isNonVatSupported
-          ? undefined
-          : template?.vat_rate_value,
-        tax_rate_value: isNonVatSupported
-          ? template?.tax_rate_value
-          : undefined,
-        // Preserve measure_unit for custom units
-        ...(template?.measure_unit
-          ? { measure_unit: template.measure_unit }
-          : {}),
-      };
+        // Preserve VAT rates correctly based on region
+        // For non-VAT regions, use tax_rate_value, otherwise preserve vat_rate_id and vat_rate_value
+        return {
+          id: template?.id ?? generateUniqueId(),
+          product_id: template?.product_id || '',
+          product,
+          quantity: template?.quantity ?? 1,
+          // Preserve VAT values or set defaults based on region
+          vat_rate_id: isNonVatSupported ? undefined : template?.vat_rate_id,
+          vat_rate_value: isNonVatSupported
+            ? undefined
+            : template?.vat_rate_value,
+          tax_rate_value: isNonVatSupported
+            ? template?.tax_rate_value
+            : undefined,
+          // Preserve measure_unit for custom units
+          ...(template?.measure_unit
+            ? { measure_unit: template.measure_unit }
+            : {}),
+        };
     },
-    [actualCurrency, defaultCurrency, isNonVatSupported]
+    [actualCurrency, defaultCurrency, isNonVatSupported, itemStructure]
   );
 
   const countEmptyRows = useCallback(
     (items: CreateReceivablesFormBeforeValidationLineItemProps[]) => {
-      return items.reduce(
-        (count, field) => (field.product?.name === '' ? count + 1 : count),
-        0
-      );
+      return items.reduce((count, field) => {
+        const itemName =
+          itemStructure === 'flat'
+            ? isFlatLineItem(field)
+              ? field.name ?? ''
+              : ''
+            : field.product?.name ?? '';
+        return itemName === '' ? count + 1 : count;
+      }, 0);
     },
-    []
+    [itemStructure]
   );
 
   const performAutoAddRow = useCallback(() => {
@@ -231,10 +302,14 @@ export const useLineItemManagement = ({
     if (!currentItems?.length) return;
 
     const nonEmptyItems = currentItems.filter((item) =>
-      Boolean(item?.product?.name?.trim())
+      itemStructure === 'flat'
+        ? isFlatLineItem(item) && Boolean(item.name?.trim())
+        : Boolean(item?.product?.name?.trim())
     );
-    const firstEmptyItem = currentItems.find(
-      (item) => !item?.product?.name?.trim()
+    const firstEmptyItem = currentItems.find((item) =>
+      itemStructure === 'flat'
+        ? !isFlatLineItem(item) || !item.name?.trim()
+        : !item?.product?.name?.trim()
     );
 
     let finalItems: CreateReceivablesFormBeforeValidationLineItemProps[] = [];
@@ -257,20 +332,25 @@ export const useLineItemManagement = ({
       });
       setAutoAddedRows([]);
     }
-  }, [getValues, setValue, clearErrors, createEmptyRow]);
+  }, [getValues, setValue, clearErrors, createEmptyRow, itemStructure]);
 
   useEffect(() => {
     if (!mounted.current || initialRowAdded) return;
 
     const existingItems = getValues('line_items');
 
-    if (!existingItems?.length && !isAddingRow.current) {
+    const hasFieldsFromDefaultValues = fields.length > 0;
+    const hasValuesFromForm = existingItems && existingItems.length > 0;
+
+    if (!hasValuesFromForm && !hasFieldsFromDefaultValues && !isAddingRow.current) {
       isAddingRow.current = true;
       append(createEmptyRow());
       setAutoAddedRows([0]);
       setInitialRowAdded(true);
+    } else {
+      setInitialRowAdded(true);
     }
-  }, [mounted, initialRowAdded, getValues, append, createEmptyRow]);
+  }, [mounted, initialRowAdded, getValues, append, createEmptyRow, fields.length]);
 
   const handleRemoveItem = useCallback(
     (index: number) => {

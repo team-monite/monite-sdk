@@ -1,5 +1,3 @@
-import { ReactNode } from 'react';
-
 import { CenteredContentBox } from '@/ui/box';
 import {
   DropdownMenu,
@@ -16,6 +14,7 @@ import ReceiptLong from '@mui/icons-material/ReceiptLong';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import SearchOffIcon from '@mui/icons-material/SearchOff';
 import { Box, Button, Stack, Typography } from '@mui/material';
+import { ReactNode } from 'react';
 
 export interface BaseProps {
   onAction?: (option?: string) => void;
@@ -24,6 +23,7 @@ export interface BaseProps {
   type?:
     | 'no-data'
     | 'no-data=payables'
+    | 'no-data=purchase-orders'
     | 'error'
     | 'access-restricted'
     | 'unsupported-country'
@@ -67,6 +67,11 @@ export const DataGridEmptyState = ({
       );
       break;
     case 'no-data=payables':
+      defaultIcon = (
+        <ReceiptLong sx={{ fontSize: '4rem', color: 'primary.main' }} />
+      );
+      break;
+    case 'no-data=purchase-orders':
       defaultIcon = (
         <ReceiptLong sx={{ fontSize: '4rem', color: 'primary.main' }} />
       );
