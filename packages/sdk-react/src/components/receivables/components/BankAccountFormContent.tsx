@@ -14,7 +14,6 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useMyEntity } from '@/core/queries';
 import {
   countryCurrencyList,
-  getCountriesArray,
   CountryType,
 } from '@/core/utils/countries';
 import { safeZodResolver } from '@/core/utils/safeZodResolver';
@@ -24,7 +23,6 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, Stack, Switch, TextField, Typography } from '@mui/material';
 import type { SyntheticEvent } from 'react';
-import { useMemo } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 type Props = {
@@ -53,16 +51,6 @@ export const BankAccountFormContent = ({
     (item) => item.country === entity?.address?.country
   );
   const { mutate: setAsDefault } = useSetDefaultBankAccount(false, false);
-
-  const countryOptions = useMemo(
-    () =>
-      getCountriesArray(i18n).filter((countryItem) =>
-        componentSettings?.receivables?.bankAccountCountries?.includes(
-          countryItem?.code as components['schemas']['AllowedCountries']
-        )
-      ),
-    [componentSettings, i18n]
-  );
 
   const defaultValues: EntityBankAccountFields = {
     is_default_for_currency: false,
