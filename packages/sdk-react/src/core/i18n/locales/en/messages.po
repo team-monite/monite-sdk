@@ -59,8 +59,12 @@ msgid "."
 msgstr "."
 
 #: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:107
-msgid "(.pdf, .png, .jpg supported)"
-msgstr "(.pdf, .png, .jpg supported)"
+#~ msgid "(.pdf, .png, .jpg supported)"
+#~ msgstr "(.pdf, .png, .jpg supported)"
+
+#: src/ui/components/file-upload.tsx:153
+msgid "({0} files up to 20 MB)"
+msgstr "({0} files up to 20 MB)"
 
 #: src/components/aiAssistant/components/FeedbackForm/FeedbackForm.tsx:147
 #~ msgid "(Optional) Feel free to add specific details"
@@ -524,8 +528,8 @@ msgstr "Add item"
 msgid "Add new bank account"
 msgstr "Add new bank account"
 
-#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:72
-#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:125
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:31
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:63
 #: src/components/payables/Payables.test.tsx:72
 #: src/components/payables/Payables.test.tsx:110
 #: src/components/payables/Payables.test.tsx:152
@@ -689,7 +693,7 @@ msgstr "Algeria"
 msgid "Algerian Dinar"
 msgstr "Algerian Dinar"
 
-#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:198
+#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:225
 msgid "All"
 msgstr "All"
 
@@ -801,7 +805,7 @@ msgstr "American Samoa"
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:225
 #: src/components/expenses/ExpensesTable/ManagerTransactionsTable.tsx:260
 #: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:230
-#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:137
+#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:138
 #: src/components/receivables/components/CreditNotesTable.tsx:168
 #: src/components/receivables/components/InvoiceDetailsTabDetails.tsx:83
 #: src/components/receivables/components/InvoiceDetailsTabScheduledInvoices.tsx:104
@@ -1459,11 +1463,11 @@ msgstr "Bicycle Shops"
 msgid "Bill"
 msgstr "Bill"
 
-#: src/components/payables/Payables.tsx:215
+#: src/components/payables/Payables.tsx:207
 msgid "Bill #{payableId} has been deleted"
 msgstr "Bill #{payableId} has been deleted"
 
-#: src/components/payables/Payables.tsx:163
+#: src/components/payables/Payables.tsx:155
 msgid "Bill Pay"
 msgstr "Bill Pay"
 
@@ -2011,6 +2015,14 @@ msgstr "Choose counterpart type:"
 msgid "Choose document"
 msgstr "Choose document"
 
+#: src/ui/components/file-upload.tsx:159
+msgid "Choose file"
+msgstr "Choose file"
+
+#: src/ui/components/file-upload.tsx:158
+msgid "Choose files"
+msgstr "Choose files"
+
 #: src/components/payables/PayableDetails/PayableDetailsAttachFile/PayableDetailsAttachFile.tsx:167
 msgid "Choose from device"
 msgstr "Choose from device"
@@ -2062,7 +2074,7 @@ msgstr "Cleaning and Maintenance"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:204
 #: src/components/userRoles/UserRoleDetails/UserRoleDeleteDialog/UserRoleDeleteDialog.tsx:60
 #: src/ui/accessRestriction/AccessRestrictionModal.tsx:37
-#: src/ui/components/dialog.tsx:78
+#: src/ui/components/dialog.tsx:86
 #: src/ui/components/sheet.tsx:90
 msgid "Close"
 msgstr "Close"
@@ -2391,7 +2403,7 @@ msgstr "Copied!"
 msgid "Copy"
 msgstr "Copy"
 
-#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:230
+#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:257
 msgid "Copy inbox email address"
 msgstr "Copy inbox email address"
 
@@ -2908,7 +2920,7 @@ msgstr "Danish Krone"
 
 #: src/components/expenses/ExpensesTable/ManagerTransactionsTable.tsx:224
 #: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:152
-#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:116
+#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:117
 #: src/components/receivables/components/InvoiceDetailsTabScheduledInvoices.tsx:101
 #: src/components/receivables/components/PaymentRecordForm.tsx:110
 #: src/components/receivables/validation.ts:263
@@ -3220,7 +3232,7 @@ msgstr "Descending"
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:1060
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/ApprovalPolicyView.tsx:210
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ExistingApprovalPolicyDetailsAdvanced/ExistingApprovalPolicyDetailsAdvanced.tsx:84
-#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:241
+#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:242
 #: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:115
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:141
 #: src/components/products/ProductDetails/validation.ts:46
@@ -3471,7 +3483,7 @@ msgstr "Done, continue"
 msgid "Door-To-Door Sales"
 msgstr "Door-To-Door Sales"
 
-#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:216
+#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:217
 msgid "Download"
 msgstr "Download"
 
@@ -3498,7 +3510,11 @@ msgstr "Draft or already issued invoices will keep this bank account. If require
 msgid "Drag & Drop it here to save for administrative purposes."
 msgstr "Drag & Drop it here to save for administrative purposes."
 
-#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:104
+#: src/ui/components/file-upload.tsx:151
+msgid "Drag and drop file or click to upload"
+msgstr "Drag and drop file or click to upload"
+
+#: src/ui/components/file-upload.tsx:150
 msgid "Drag and drop files or click to upload"
 msgstr "Drag and drop files or click to upload"
 
@@ -3921,7 +3937,7 @@ msgid "Email preview"
 msgstr "Email preview"
 
 #: src/components/expenses/ExpensesTable/ManagerTransactionsTable.tsx:211
-#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:99
+#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:100
 msgid "Employee"
 msgstr "Employee"
 
@@ -4202,15 +4218,15 @@ msgstr "Excluding tax"
 msgid "Executive"
 msgstr "Executive"
 
-#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:81
+#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:82
 msgid "Expense"
 msgstr "Expense"
 
-#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:83
+#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:84
 msgid "Expense {0} details"
 msgstr "Expense {0} details"
 
-#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:234
+#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:235
 msgid "Expense details"
 msgstr "Expense details"
 
@@ -4218,7 +4234,7 @@ msgstr "Expense details"
 #~ msgid "Expense_Receipt_May2025.pdf"
 #~ msgstr "Expense_Receipt_May2025.pdf"
 
-#: src/components/expenses/Expenses.tsx:24
+#: src/components/expenses/Expenses.tsx:33
 #: src/components/expenses/ExpensesTable/ManagerTransactionsTable.tsx:395
 #: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:352
 msgid "Expenses"
@@ -4318,8 +4334,8 @@ msgstr "Failed to generate email preview"
 msgid "Failed to Load {entityName}"
 msgstr "Failed to Load {entityName}"
 
-#: src/ui/ResponsiveGrid/ResponsiveGrid.tsx:304
-#: src/ui/ResponsiveGrid/ResponsiveGrid.tsx:339
+#: src/ui/ResponsiveGrid/ResponsiveGrid.tsx:322
+#: src/ui/ResponsiveGrid/ResponsiveGrid.tsx:357
 msgid "Failed to load more items"
 msgstr "Failed to load more items"
 
@@ -4384,6 +4400,10 @@ msgstr "Failed to update receivable: {errorMessage}"
 msgid "Failed to update VAT."
 msgstr "Failed to update VAT."
 
+#: src/components/expenses/hooks/useUploadNewReceiptFile.ts:19
+msgid "Failed to upload receipt"
+msgstr "Failed to upload receipt"
+
 #: src/core/utils/countries.ts:88
 msgid "Falkland Islands (Malvinas)"
 msgstr "Falkland Islands (Malvinas)"
@@ -4428,7 +4448,7 @@ msgstr "Fiji"
 msgid "Fijian Dollar"
 msgstr "Fijian Dollar"
 
-#: src/core/hooks/useFileInput.tsx:92
+#: src/core/hooks/useFileInput.tsx:90
 msgid "File {0} size exceeds {maxFileSizeInMB} MB limit."
 msgstr "File {0} size exceeds {maxFileSizeInMB} MB limit."
 
@@ -4439,6 +4459,10 @@ msgstr "File is being processed..."
 #: src/components/payables/PayableDetails/PayableDetailsAttachFile/PayableDetailsAttachFile.tsx:103
 msgid "File successfully attached"
 msgstr "File successfully attached"
+
+#: src/ui/components/file-upload.tsx:217
+msgid "File upload input"
+msgstr "File upload input"
 
 #: src/components/expenses/ExpensesTable/ManagerTransactionsTable.tsx:345
 #: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:304
@@ -5151,7 +5175,7 @@ msgstr "In range"
 msgid "In review"
 msgstr "In review"
 
-#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:218
+#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:245
 msgid "Inbox address:"
 msgstr "Inbox address:"
 
@@ -5963,7 +5987,7 @@ msgstr "List all customers who have overdue payments for more than 60 days"
 msgid "Lithuania"
 msgstr "Lithuania"
 
-#: src/ui/ResponsiveGrid/ResponsiveGrid.tsx:370
+#: src/ui/ResponsiveGrid/ResponsiveGrid.tsx:388
 msgid "Load more"
 msgstr "Load more"
 
@@ -5971,8 +5995,8 @@ msgstr "Load more"
 msgid "Loading invoice details"
 msgstr "Loading invoice details"
 
-#: src/ui/ResponsiveGrid/ResponsiveGrid.tsx:278
-#: src/ui/ResponsiveGrid/ResponsiveGrid.tsx:370
+#: src/ui/ResponsiveGrid/ResponsiveGrid.tsx:296
+#: src/ui/ResponsiveGrid/ResponsiveGrid.tsx:388
 msgid "Loading more..."
 msgstr "Loading more..."
 
@@ -5989,7 +6013,7 @@ msgstr "Loading..."
 msgid "Loan sum"
 msgstr "Loan sum"
 
-#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:129
+#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:130
 msgid "Location"
 msgstr "Location"
 
@@ -6163,8 +6187,8 @@ msgstr "Masonry, Stonework, and Plaster"
 msgid "Massage Parlors"
 msgstr "Massage Parlors"
 
-#: src/components/expenses/ReceiptsInbox/ReceiptCard.tsx:52
-#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:210
+#: src/components/expenses/ReceiptsInbox/ReceiptCard.tsx:76
+#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:237
 msgid "Matched"
 msgstr "Matched"
 
@@ -6231,7 +6255,7 @@ msgstr "Menu"
 
 #: src/components/expenses/ExpensesTable/ManagerTransactionsTable.tsx:219
 #: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:147
-#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:108
+#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:109
 msgid "Merchant"
 msgstr "Merchant"
 
@@ -6710,7 +6734,7 @@ msgstr "No expenses found"
 msgid "No expenses yet"
 msgstr "No expenses yet"
 
-#: src/core/hooks/useFileInput.tsx:84
+#: src/core/hooks/useFileInput.tsx:78
 msgid "No file provided"
 msgstr "No file provided"
 
@@ -6736,11 +6760,11 @@ msgstr "No items yet"
 msgid "No logo"
 msgstr "No logo"
 
-#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:226
+#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:227
 msgid "No matching receipt."
 msgstr "No matching receipt."
 
-#: src/ui/ResponsiveGrid/ResponsiveGrid.tsx:357
+#: src/ui/ResponsiveGrid/ResponsiveGrid.tsx:375
 msgid "No more items to load"
 msgstr "No more items to load"
 
@@ -6784,9 +6808,13 @@ msgstr "No products or services yet"
 msgid "No Quotes"
 msgstr "No Quotes"
 
-#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:221
+#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:222
 msgid "No receipt file"
 msgstr "No receipt file"
+
+#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:313
+msgid "No receipts yet"
+msgstr "No receipts yet"
 
 #: src/components/receivables/components/InvoicesTable.test.tsx:125
 msgid "No Receivables"
@@ -6799,7 +6827,7 @@ msgid "No reminder"
 msgstr "No reminder"
 
 #: src/ui/components/data-table.tsx:412
-#: src/ui/ResponsiveGrid/ResponsiveGrid.tsx:227
+#: src/ui/ResponsiveGrid/ResponsiveGrid.tsx:243
 msgid "No results."
 msgstr "No results."
 
@@ -6966,7 +6994,7 @@ msgstr "Nurseries, Lawn and Garden Supply Stores"
 msgid "Nursing/Personal Care"
 msgstr "Nursing/Personal Care"
 
-#: src/ui/FileViewer/FileViewer.tsx:145
+#: src/ui/FileViewer/FileViewer.tsx:146
 msgid "of"
 msgstr "of"
 
@@ -7006,8 +7034,8 @@ msgstr "One Stop Shop Value Added Tax (EU)"
 msgid "Only my approvals"
 msgstr "Only my approvals"
 
-#: src/components/expenses/Expenses.tsx:31
-#: src/components/expenses/Expenses.tsx:32
+#: src/components/expenses/Expenses.tsx:40
+#: src/components/expenses/Expenses.tsx:41
 msgid "Open receipts inbox"
 msgstr "Open receipts inbox"
 
@@ -7023,7 +7051,7 @@ msgstr "Optometrists, Ophthalmologist"
 msgid "or"
 msgstr "or"
 
-#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:114
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:52
 msgid "Or add bill manually"
 msgstr "Or add bill manually"
 
@@ -7093,7 +7121,7 @@ msgstr "Ownership declaration"
 msgid "Package Stores-Beer, Wine, and Liquor"
 msgstr "Package Stores-Beer, Wine, and Liquor"
 
-#: src/ui/FileViewer/FileViewer.tsx:145
+#: src/ui/FileViewer/FileViewer.tsx:146
 msgid "Page"
 msgstr "Page"
 
@@ -7296,7 +7324,7 @@ msgstr "Payable “{0}” has been submitted"
 msgid "Payable “{0}” has been updated"
 msgstr "Payable “{0}” has been updated"
 
-#: src/components/payables/Payables.tsx:130
+#: src/components/payables/Payables.tsx:122
 msgid "Payable {0} uploaded successfully"
 msgstr "Payable {0} uploaded successfully"
 
@@ -7884,6 +7912,10 @@ msgstr "Priority"
 msgid "Priority is required"
 msgstr "Priority is required"
 
+#: src/components/expenses/ReceiptsInbox/ReceiptCard.tsx:49
+msgid "Processing"
+msgstr "Processing"
+
 #: src/components/payables/PayablesTable/PayablesTable.tsx:270
 msgid "Processing file"
 msgstr "Processing file"
@@ -8094,21 +8126,29 @@ msgid "Reason for Payment Code (Russia)"
 msgstr "Reason for Payment Code (Russia)"
 
 #: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:188
-#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:169
+#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:170
 msgid "Receipt"
 msgstr "Receipt"
 
 #: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:220
 #: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:225
 #: src/components/expenses/ReceiptPreview/ReceiptPreview.tsx:29
-#: src/components/expenses/ReceiptsInbox/ReceiptCard.tsx:68
+#: src/components/expenses/ReceiptsInbox/ReceiptCard.tsx:92
 msgid "Receipt {0}"
 msgstr "Receipt {0}"
 
-#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:178
-#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:181
+#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:360
+#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:362
 msgid "Receipt inbox"
 msgstr "Receipt inbox"
+
+#: src/components/expenses/hooks/useUploadNewReceiptFile.ts:16
+msgid "Receipt successfully uploaded"
+msgstr "Receipt successfully uploaded"
+
+#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:310
+msgid "Receipts"
+msgstr "Receipts"
 
 #: src/components/receivables/utils/getTypeLabel.ts:17
 #: src/components/userRoles/consts.ts:45
@@ -8397,7 +8437,7 @@ msgstr "Results per page"
 msgid "Resume application"
 msgstr "Resume application"
 
-#: src/ui/ResponsiveGrid/ResponsiveGrid.tsx:347
+#: src/ui/ResponsiveGrid/ResponsiveGrid.tsx:365
 msgid "Retry"
 msgstr "Retry"
 
@@ -8636,6 +8676,10 @@ msgstr "Save for later"
 #~ msgid "Save to prompt library"
 #~ msgstr "Save to prompt library"
 
+#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:374
+msgid "Scan receipts"
+msgstr "Scan receipts"
+
 #: src/components/receivables/utils/invoiceStatus.ts:63
 msgid "Scheduled"
 msgstr "Scheduled"
@@ -8675,7 +8719,7 @@ msgstr "Script in Monite Script is required"
 msgid "Search"
 msgstr "Search"
 
-#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:241
+#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:268
 msgid "Search by Document ID"
 msgstr "Search by Document ID"
 
@@ -9981,7 +10025,7 @@ msgstr "Trailer Parks, Campgrounds"
 msgid "Transaction"
 msgstr "Transaction"
 
-#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:91
+#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:92
 msgid "Transaction details"
 msgstr "Transaction details"
 
@@ -10236,8 +10280,8 @@ msgstr "Unknown"
 msgid "Unknown payment method"
 msgstr "Unknown payment method"
 
-#: src/components/expenses/ReceiptsInbox/ReceiptCard.tsx:52
-#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:201
+#: src/components/expenses/ReceiptsInbox/ReceiptCard.tsx:76
+#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:228
 msgid "Unmatched"
 msgstr "Unmatched"
 
@@ -10250,7 +10294,7 @@ msgstr "Unrecognized error. Please contact support."
 msgid "Unspecified"
 msgstr "Unspecified"
 
-#: src/core/hooks/useFileInput.tsx:88
+#: src/core/hooks/useFileInput.tsx:86
 msgid "Unsupported file type for {0}"
 msgstr "Unsupported file type for {0}"
 
@@ -10327,7 +10371,11 @@ msgstr "Updating the invoice"
 msgid "Upload a document here."
 msgstr "Upload a document here."
 
-#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:89
+#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:387
+msgid "Upload card transaction receipts and we'll automatically match them to the correct transaction."
+msgstr "Upload card transaction receipts and we'll automatically match them to the correct transaction."
+
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:42
 msgid "Upload files"
 msgstr "Upload files"
 
@@ -10335,12 +10383,19 @@ msgstr "Upload files"
 msgid "Upload payable file"
 msgstr "Upload payable file"
 
-#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:131
-#: src/components/payables/Payables.tsx:188
+#: src/components/payables/Payables.tsx:180
 msgid "Upload payable files"
 msgstr "Upload payable files"
 
-#: src/components/payables/Payables.tsx:129
+#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:384
+msgid "Upload receipts"
+msgstr "Upload receipts"
+
+#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:314
+msgid "Uploaded receipts will appear here"
+msgstr "Uploaded receipts will appear here"
+
+#: src/components/payables/Payables.tsx:121
 msgid "Uploading {0}"
 msgstr "Uploading {0}"
 
@@ -10695,15 +10750,15 @@ msgstr "Vietnam"
 msgid "Vietnamese Đồng"
 msgstr "Vietnamese Đồng"
 
-#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:207
-msgctxt "InvoicesTableRowActionMenu"
-msgid "View"
-msgstr "View"
-
-#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:206
+#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:207
 #: src/components/userRoles/consts.ts:69
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:118
 #: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:174
+msgid "View"
+msgstr "View"
+
+#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:207
+msgctxt "InvoicesTableRowActionMenu"
 msgid "View"
 msgstr "View"
 
