@@ -49,7 +49,7 @@ export const BankAccountFormContent = ({
   const { i18n } = useLingui();
   const { componentSettings } = useMoniteContext();
   const { data: entity } = useMyEntity();
-  const currentEntityCurrency = countryCurrencyList?.find(
+  const currentEntityCountryAndCurrency = countryCurrencyList?.find(
     (item) => item.country === entity?.address?.country
   );
   const { mutate: setAsDefault } = useSetDefaultBankAccount(false, false);
@@ -68,10 +68,10 @@ export const BankAccountFormContent = ({
     is_default_for_currency: false,
     country:
       bankAccount?.country ??
-      (currentEntityCurrency?.country as components['schemas']['AllowedCountries']),
+      (currentEntityCountryAndCurrency?.country as components['schemas']['AllowedCountries']),
     currency:
       bankAccount?.currency ??
-      (currentEntityCurrency?.currency as components['schemas']['CurrencyEnum']),
+      (currentEntityCountryAndCurrency?.currency as components['schemas']['CurrencyEnum']),
     display_name:
       bankAccount?.display_name ??
       t(i18n)`Bank account ${bankAccounts?.length + 1}`,
@@ -159,8 +159,8 @@ export const BankAccountFormContent = ({
           sort_code: values?.sort_code,
           bank_name: values?.bank_name,
           display_name: values?.display_name,
-          country: values?.country as components['schemas']['AllowedCountries'],
-          currency: values?.currency as components['schemas']['CurrencyEnum'],
+          country: componentSettings?.receivables?.bankAccountCountries?.length === 1 ? componentSettings?.receivables?.bankAccountCountries[0] : values?.country as components['schemas']['AllowedCountries'],
+          currency: componentSettings?.receivables?.bankAccountCurrencies?.length === 1 ? componentSettings?.receivables?.bankAccountCurrencies[0] : values?.currency as components['schemas']['CurrencyEnum'],
         })
       );
     }
