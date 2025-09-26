@@ -2541,7 +2541,7 @@ msgstr "Counterparts"
 #: src/components/receivables/components/EntityProfileFormContent.tsx:341
 #: src/components/receivables/validation.ts:33
 #: src/components/receivables/validation.ts:221
-#: src/ui/Country/MoniteCountry.tsx:69
+#: src/ui/Country/MoniteCountry.tsx:71
 msgid "Country"
 msgstr "Country"
 
