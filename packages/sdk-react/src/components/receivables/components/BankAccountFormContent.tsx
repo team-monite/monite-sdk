@@ -178,7 +178,7 @@ export const BankAccountFormContent = ({
             <MoniteCountry
               name="country"
               control={control}
-              disabled={countryOptions?.length === 1 || !!bankAccount}
+              disabled={!!bankAccount}
               required
               fullWidth
               allowedCountries={
