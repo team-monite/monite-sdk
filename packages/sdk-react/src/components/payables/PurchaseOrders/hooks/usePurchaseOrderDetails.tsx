@@ -28,7 +28,7 @@ const transformFormDataToCreatePayload = (
     valid_for_days,
     items: line_items.map((item) => ({
       name: item.name,
-      quantity: Math.round(item.quantity),
+      quantity: item.quantity,
       unit: item.unit,
       price: rateMajorToMinor(item.price),
       currency: item.currency as components['schemas']['CurrencyEnum'],
@@ -59,7 +59,7 @@ const transformFormDataToUpdatePayload = (
   const payload: components['schemas']['UpdatePurchaseOrderPayloadSchema'] = {
     items: line_items.map((item) => ({
       name: item.name,
-      quantity: Math.round(item.quantity),
+      quantity: item.quantity,
       unit: item.unit,
       price: rateMajorToMinor(item.price),
       currency: item.currency as components['schemas']['CurrencyEnum'],

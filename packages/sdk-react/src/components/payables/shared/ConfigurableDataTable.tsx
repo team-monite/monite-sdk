@@ -34,8 +34,8 @@ export interface TableColumnConfig<T extends { id: string } = { id: string }> {
   headerAlign?: 'left' | 'center' | 'right';
   align?: 'left' | 'center' | 'right';
   renderCell?: (params: GridRenderCellParams<T>) => ReactNode;
-  valueFormatter?: (value: unknown) => string | null;
-  valueGetter?: (value: unknown, row: T) => unknown;
+  valueFormatter?: (value: unknown, row: T) => string | null;
+  valueGetter?: (row: T) => unknown;
 }
 
 export interface TableConfig<T extends { id: string } = { id: string }> {
@@ -63,8 +63,8 @@ export interface ConfigurableDataTableProps<
   refetch: () => void;
   config: TableConfig<T>;
 
-  nextPage?: string | null;
-  prevPage?: string | null;
+  nextPage?: string;
+  prevPage?: string;
   currentPage?: string | null;
   pageSize: number;
   selectedRows?: string[];
@@ -164,8 +164,13 @@ const ConfigurableDataTableBase = <T extends { id: string }>({
       ...(col.headerAlign && { headerAlign: col.headerAlign }),
       ...(col.align && { align: col.align }),
       ...(col.renderCell && { renderCell: col.renderCell }),
-      ...(col.valueFormatter && { valueFormatter: col.valueFormatter }),
-      ...(col.valueGetter && { valueGetter: col.valueGetter }),
+      ...(col.valueFormatter && {
+        valueFormatter: (_value: unknown, row: T) =>
+          col.valueFormatter?.(row[col.field as keyof T], row),
+      }),
+      ...(col.valueGetter && {
+        valueGetter: (_value: unknown, row: T) => col.valueGetter?.(row),
+      }),
       ...(col.field === '__check__' && {
         disableColumnMenu: true,
         disableReorder: true,

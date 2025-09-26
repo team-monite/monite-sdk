@@ -8,8 +8,7 @@ import {
 } from '@/ui/components/dropdown-menu';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
-import { Box, Typography } from '@mui/material';
+import { Settings } from 'lucide-react';
 import { memo } from 'react';
 
 interface CreatePurchaseOrderHeaderProps {
@@ -45,24 +44,18 @@ export const CreatePurchaseOrderHeader = memo(
                   className="mtw:mr-2"
                   disabled={isLoading}
                 >
-                  <SettingsOutlinedIcon />
+                  <Settings className="mtw:h-4 mtw:w-4" aria-hidden="true" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem onClick={onCurrencyModalOpen}>
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      width: '100%',
-                    }}
-                  >
-                    <Typography>{t(i18n)`Currency`}</Typography>
-                    <Typography>{actualCurrency}</Typography>
-                  </Box>
+                  <div className="mtw:flex mtw:w-full mtw:items-center mtw:justify-between">
+                    <span className="mtw:text-sm mtw:text-muted-foreground">{t(i18n)`Currency`}</span>
+                    <span className="mtw:text-sm mtw:font-medium">{actualCurrency}</span>
+                  </div>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={onTemplateModalOpen}>
-                  <Typography>{t(i18n)`Edit template settings`}</Typography>
+                  {t(i18n)`Edit template settings`}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

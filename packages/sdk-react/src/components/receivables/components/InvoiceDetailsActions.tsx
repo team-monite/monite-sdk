@@ -5,7 +5,6 @@ import { InvoiceCancelModal } from './InvoiceCancelModal';
 import { InvoiceDeleteModal } from './InvoiceDeleteModal';
 import { MarkAsUncollectibleModal } from './MarkAsUncollectibleModal';
 import { RecordManualPaymentModal } from './RecordManualPaymentModal';
-import { RecurrenceCancelModal } from './RecurrenceCancelModal';
 import { components } from '@/api';
 import { useIsMobileScreen } from '@/core/hooks/useMediaQuery';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
@@ -98,8 +97,8 @@ export const InvoiceDetailsActions = ({
   const handleDownloadPdf = async () => {
     const pdfLink = await downloadPdf();
 
-    if (pdfLink.data?.file_url) {
-      window.open(pdfLink.data.file_url, '_blank');
+    if (typeof window !== 'undefined' && pdfLink.data?.file_url) {
+      window.open(pdfLink.data.file_url, '_blank', 'noopener,noreferrer');
     }
   };
 

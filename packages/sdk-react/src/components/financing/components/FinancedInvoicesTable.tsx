@@ -1,5 +1,5 @@
 import { FinanceDetails } from './FinanceDetails';
-import { components } from '@/api';
+import type { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { FinancedInvoiceStatusChip } from '@/components/financing/components/FinancedInvoiceStatusChip';
 import { useGetFinancedInvoices } from '@/components/financing/hooks';
@@ -33,6 +33,12 @@ import {
   GridSortModel,
 } from '@mui/x-data-grid';
 import { useMemo, useState } from 'react';
+
+const isInvoiceResponse = (
+  receivable: components['schemas']['ReceivableResponse'] | undefined
+): receivable is components['schemas']['InvoiceResponsePayload'] => {
+  return receivable?.type === 'invoice';
+};
 
 interface FinancedInvoicesTableBaseProps {
   /**
@@ -319,7 +325,7 @@ const FinancedInvoicesTableBase = ({
         rows={collectionData ?? []}
       />
 
-      {invoice && financedInvoice && (
+      {invoice && financedInvoice && isInvoiceResponse(invoice) && (
         <Dialog
           open={dialogIsOpen}
           onClose={() => {

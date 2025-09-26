@@ -21,6 +21,7 @@ import {
   TextField,
   Typography,
   createFilterOptions,
+  type FilterOptionsState,
 } from '@mui/material';
 import {
   memo,
@@ -103,6 +104,7 @@ export const VendorSelector = memo(
     }, [isSimplified, setIsEditCounterpartOpened]);
 
     const [isFocused, setIsFocused] = useState(false);
+    const [open, setOpen] = useState(false);
 
     const counterpartId = watch('counterpart_id');
 
@@ -140,9 +142,8 @@ export const VendorSelector = memo(
       ? prepareAddressView({ address: counterpartAddresses?.data[0] })
       : '';
 
-    // Optimize filterOptions function to prevent re-renders
     const handleFilterOptions = useCallback(
-      (options: CounterpartsAutocompleteOptionProps[], params: any) => {
+      (options: CounterpartsAutocompleteOptionProps[], params: FilterOptionsState<CounterpartsAutocompleteOptionProps>) => {
         const filtered = filter(options, params);
 
         !isSimplified &&
@@ -182,11 +183,16 @@ export const VendorSelector = memo(
               <Autocomplete
                 {...field}
                 value={selectedCounterpartOption}
+                onOpen={() => setOpen(true)}
+                onClose={() => setOpen(false)}
                 onChange={(_, value) => {
                   if (
                     isCreateNewCounterpartOption(value) ||
                     isDividerOption(value)
                   ) {
+                    if (isCreateNewCounterpartOption(value)) {
+                      handleCreateNewCounterpart();
+                    }
                     if (shouldDisableFormUpdate && handleUpdateCounterpartId) {
                       handleUpdateCounterpartId('');
                     } else {
@@ -220,7 +226,6 @@ export const VendorSelector = memo(
                       }`}
                       InputProps={{
                         ...params.InputProps,
-                        value: params.inputProps.value,
                         onFocus: () => setIsFocused(true),
                         onBlur: () => setIsFocused(false),
                         startAdornment: isCounterpartsLoading ? (
@@ -277,7 +282,7 @@ export const VendorSelector = memo(
                           if (
                             !isSimplified &&
                             selectedCounterpartOption &&
-                            !params.inputProps['aria-expanded']
+                            !open
                           ) {
                             return (
                               <Button onClick={handleEditCounterpart}>
@@ -285,18 +290,23 @@ export const VendorSelector = memo(
                               </Button>
                             );
                           }
-                          if (
-                            isSimplified &&
-                            !params.inputProps['aria-expanded']
-                          ) {
+                          if (isSimplified && !open) {
                             return <KeyboardArrowDown fontSize="small" />;
                           }
-                          if (
-                            selectedCounterpartOption &&
-                            params.inputProps['aria-expanded']
-                          ) {
+                          if (selectedCounterpartOption && open) {
                             return (
-                              <IconButton onClick={() => field.onChange('')}>
+                              <IconButton
+                                onClick={() => {
+                                  if (
+                                    shouldDisableFormUpdate &&
+                                    handleUpdateCounterpartId
+                                  ) {
+                                    handleUpdateCounterpartId('');
+                                  } else {
+                                    field.onChange('');
+                                  }
+                                }}
+                              >
                                 <ClearIcon
                                   sx={{ width: '1rem', height: '1rem' }}
                                 />
@@ -323,32 +333,34 @@ export const VendorSelector = memo(
                 selectOnFocus
                 clearOnBlur
                 handleHomeEndKeys
-                renderOption={(props, counterpartOption) =>
-                  isCreateNewCounterpartOption(counterpartOption) ? (
-                    <Button
-                      key={counterpartOption.id}
-                      variant="text"
-                      startIcon={<AddIcon />}
-                      fullWidth
-                      sx={{
-                        justifyContent: 'flex-start',
-                        px: 2,
-                      }}
-                      onClick={handleCreateNewCounterpart}
-                    >
-                      {counterpartOption.label}
-                    </Button>
-                  ) : counterpartOption.id === COUNTERPART_DIVIDER ? (
-                    <Divider
-                      key={counterpartOption.id}
-                      sx={{ padding: '.5rem', marginBottom: '1rem' }}
-                    />
-                  ) : (
+                renderOption={(props, counterpartOption) => {
+                  if (isCreateNewCounterpartOption(counterpartOption)) {
+                    return (
+                      <li {...props} key={counterpartOption.id}>
+                        <AddIcon sx={{ mr: 1 }} />
+                        {counterpartOption.label}
+                      </li>
+                    );
+                  }
+                  if (isDividerOption(counterpartOption)) {
+                    return (
+                      <li
+                        {...props}
+                        key={counterpartOption.id}
+                        role="presentation"
+                        aria-hidden="true"
+                        style={{ pointerEvents: 'none' }}
+                      >
+                        <Divider sx={{ p: '.5rem', mb: '1rem' }} />
+                      </li>
+                    );
+                  }
+                  return (
                     <li {...props} key={counterpartOption.id}>
                       {counterpartOption.label}
                     </li>
-                  )
-                }
+                  );
+                }}
               />
             </>
           );

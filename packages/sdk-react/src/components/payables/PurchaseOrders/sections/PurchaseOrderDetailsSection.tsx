@@ -1,5 +1,5 @@
+import { PURCHASE_ORDER_CONSTANTS } from '../consts';
 import { PurchaseOrderFormData } from '../schemas';
-import { PURCHASE_ORDER_CONSTANTS } from '../constants';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, TextField, Typography } from '@mui/material';
@@ -10,7 +10,8 @@ export const PurchaseOrderDetailsSection = () => {
   const { i18n } = useLingui();
   const { control, watch } = useFormContext<PurchaseOrderFormData>();
 
-  const validForDays = watch('valid_for_days') || PURCHASE_ORDER_CONSTANTS.DEFAULT_VALID_FOR_DAYS;
+  const validForDays =
+    watch('valid_for_days') || PURCHASE_ORDER_CONSTANTS.DEFAULT_VALID_FOR_DAYS;
   const expiryDate = addDays(new Date(), validForDays);
 
   return (
@@ -35,7 +36,10 @@ export const PurchaseOrderDetailsSection = () => {
               <TextField
                 {...field}
                 type="number"
-                inputProps={{ min: PURCHASE_ORDER_CONSTANTS.MIN_VALID_DAYS, max: PURCHASE_ORDER_CONSTANTS.MAX_VALID_DAYS }}
+                inputProps={{
+                  min: PURCHASE_ORDER_CONSTANTS.MIN_VALID_DAYS,
+                  max: PURCHASE_ORDER_CONSTANTS.MAX_VALID_DAYS,
+                }}
                 fullWidth
                 label={t(i18n)`Valid for (days)`}
                 error={!!fieldState.error}

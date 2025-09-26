@@ -99,6 +99,8 @@ export const PurchaseOrderStatusChip = forwardRef<
   );
 });
 
+const BLOCKED_PROPS: ReadonlyArray<string> = ['status'];
+
 export const StyledChip = styled(
   forwardRef<
     HTMLDivElement,
@@ -107,6 +109,6 @@ export const StyledChip = styled(
   {
     name: 'MonitePurchaseOrderStatusChip',
     slot: 'root',
-    shouldForwardProp: () => true,
+    shouldForwardProp: (prop) => !BLOCKED_PROPS.includes(String(prop)),
   }
 )({});

@@ -1,15 +1,26 @@
-export interface ItemsSectionConfig {
+import type { DeepKeys } from '@/core/types/utils';
+
+type LineItemOf<TForm> = TForm extends { line_items: Array<infer TItem> }
+  ? TItem
+  : never;
+
+type LineItemDeepKeys<TForm> = DeepKeys<LineItemOf<TForm>>;
+
+export interface ItemsSectionConfig<
+  TForm = unknown,
+  TMeasureUnit extends string = string,
+> {
   itemSelectionMode: 'catalog' | 'manual';
-  staticMeasureUnits?: string[];
+  staticMeasureUnits?: ReadonlyArray<TMeasureUnit>;
   fieldMapping: {
-    itemName: string;
-    price: string;
-    currency: string;
-    measureUnit: string;
-    quantity: string;
-    vatRateId?: string;
-    vatRateValue?: string;
-    taxRateValue?: string;
+    itemName: LineItemDeepKeys<TForm>;
+    price: LineItemDeepKeys<TForm>;
+    currency: LineItemDeepKeys<TForm>;
+    measureUnit: LineItemDeepKeys<TForm>;
+    quantity: LineItemDeepKeys<TForm>;
+    vatRateId?: LineItemDeepKeys<TForm>;
+    vatRateValue?: LineItemDeepKeys<TForm>;
+    taxRateValue?: LineItemDeepKeys<TForm>;
   };
 
   features: {

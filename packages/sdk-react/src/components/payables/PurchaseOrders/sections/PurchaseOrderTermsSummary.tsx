@@ -1,4 +1,4 @@
-import { PURCHASE_ORDER_CONSTANTS } from '../constants';
+import { PURCHASE_ORDER_CONSTANTS } from '../consts';
 import { CreatePurchaseOrderFormProps } from '../validation';
 import { RHFDatePicker } from '@/ui/RHF/RHFDatePicker/RHFDatePicker';
 import { t } from '@lingui/macro';

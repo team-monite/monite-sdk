@@ -34,7 +34,13 @@ import {
   Collapse,
   CircularProgress,
 } from '@mui/material';
-import { useState, useCallback, useMemo, useEffect } from 'react';
+import {
+  useState,
+  useCallback,
+  useMemo,
+  useEffect,
+  type ReactNode,
+} from 'react';
 import {
   Controller,
   useFormContext,
@@ -42,23 +48,33 @@ import {
   FieldPathValue,
 } from 'react-hook-form';
 
-interface ConfigurableItemsSectionProps {
-  config: ItemsSectionConfig;
+interface ConfigurableItemsSectionProps<
+  TForm = CreateReceivablesFormBeforeValidationProps,
+> {
+  config: ItemsSectionConfig<TForm>;
   actualCurrency?: CurrencyEnum;
   defaultCurrency?: CurrencyEnum;
   isNonVatSupported: boolean;
   isVatSelectionDisabled?: boolean;
   registerLineItemCleanupFn?: (fn: (() => void) | null) => void;
+  renderErrorDisplay?: (result: {
+    generalError?: string | null;
+    fieldErrors: Record<string, string | null | undefined>;
+    hasErrors: boolean;
+  }) => ReactNode;
 }
 
-export function ConfigurableItemsSection({
+export function ConfigurableItemsSection<
+  TForm = CreateReceivablesFormBeforeValidationProps,
+>({
   config,
   defaultCurrency = 'USD',
   actualCurrency = defaultCurrency,
   isNonVatSupported,
   isVatSelectionDisabled,
   registerLineItemCleanupFn,
-}: ConfigurableItemsSectionProps) {
+  renderErrorDisplay,
+}: ConfigurableItemsSectionProps<TForm>) {
   const { i18n } = useLingui();
   const { control, formState, getValues, trigger, watch } =
     useFormContext<CreateReceivablesFormBeforeValidationProps>();
@@ -114,6 +130,7 @@ export function ConfigurableItemsSection({
     defaultCurrency,
     isNonVatSupported,
     isInclusivePricing,
+    itemStructure: config.fieldMapping.price === 'price' ? 'flat' : 'nested',
   });
 
   const setValueWithoutValidation = useCallback(
@@ -138,10 +155,14 @@ export function ConfigurableItemsSection({
   ]);
 
   const { generalError, fieldErrors } = useFormErrors(lineItemErrors);
+  const hasErrorsDisplay = useMemo(
+    () => Boolean(generalError) || Object.values(fieldErrors).some(Boolean),
+    [generalError, fieldErrors]
+  );
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
 
   const className = 'Monite-ConfigurableItemsSection';
-  const tableRowClassName = 'Monite-ConfigurableItemsSection-Table';
+  const tableRowClassName = 'Monite-CreateReceivable-ItemsSection-Table';
 
   const highestVatRate = useMemo(() => {
     const rates = vatRates?.data;
@@ -445,7 +466,18 @@ export function ConfigurableItemsSection({
         {t(i18n)`Items`}
       </Typography>
 
-      <FormErrorDisplay generalError={generalError} fieldErrors={fieldErrors} />
+      {renderErrorDisplay ? (
+        renderErrorDisplay({
+          generalError,
+          fieldErrors,
+          hasErrors: hasErrorsDisplay,
+        })
+      ) : (
+        <FormErrorDisplay
+          generalError={generalError}
+          fieldErrors={fieldErrors}
+        />
+      )}
 
       <Box>
         <TableContainer
@@ -467,12 +499,8 @@ export function ConfigurableItemsSection({
           >
             <TableHead>
               <TableRow className={tableRowClassName}>
-                <TableCell sx={{ paddingLeft: 0, paddingRight: 2 }}>{t(
-                  i18n
-                )`Item name`}</TableCell>
-                <TableCell sx={{ paddingLeft: 2, paddingRight: 2 }}>{t(
-                  i18n
-                )`Quantity`}</TableCell>
+                <TableCell sx={{ padding: '0 !important' }}>{t(i18n)`Item name`}</TableCell>
+                <TableCell sx={{ padding: '0 !important' }}>{t(i18n)`Quantity`}</TableCell>
                 <TableCell
                   sx={{
                     paddingLeft: 2,
@@ -490,7 +518,7 @@ export function ConfigurableItemsSection({
                 <TableCell sx={{ paddingLeft: 2, paddingRight: 2 }}>
                   {isNonVatSupported ? t(i18n)`Tax` : t(i18n)`VAT`}
                 </TableCell>
-                <TableCell sx={{ padding: 0, width: '48px' }}></TableCell>
+                <TableCell sx={{ padding: '0 !important', width: '48px' }}></TableCell>
               </TableRow>
             </TableHead>
 
@@ -578,13 +606,45 @@ export function ConfigurableItemsSection({
                       fieldPathSuffix === 'vat_rate_value' &&
                       typeof value === 'number'
                     ) {
-                      newValue = vatRateBasisPointsToPercentage(value);
+                      newValue =
+                        value > 100
+                          ? vatRateBasisPointsToPercentage(value)
+                          : value;
                     }
                     setLineItemFieldValueForCurrentRow(
                       fieldPathSuffix,
                       newValue,
                       options
                     );
+
+                    if (
+                      fieldPathSuffix === 'vat_rate_id' &&
+                      typeof value === 'string' &&
+                      vatRates?.data &&
+                      Array.isArray(vatRates.data)
+                    ) {
+                      const rate = vatRates.data.find(
+                        (r) => r.id === value
+                      );
+                      if (rate && typeof rate.value === 'number') {
+                        const percent = vatRateBasisPointsToPercentage(
+                          rate.value
+                        );
+                        setLineItemFieldValueForCurrentRow(
+                          'vat_rate_value',
+                          percent,
+                          { shouldValidate: true }
+                        );
+                        
+                        setLineItemFieldValueForCurrentRow(
+                          'tax_rate_value',
+                          undefined,
+                          {
+                            shouldValidate: false,
+                          }
+                        );
+                      }
+                    }
                   };
 
                   const markLineItemAsModifiedForCurrentRow = () => {
@@ -647,7 +707,7 @@ export function ConfigurableItemsSection({
             onClick={handleAddRow}
             disabled={config.features.autoAddRows && tooManyEmptyRows}
           >
-            {config.features.autoAddRows ? t(i18n)`Row` : t(i18n)`Add row`}
+            {t(i18n)`Row`}
           </Button>
           {config.features.autoAddRows && tooManyEmptyRows && (
             <Typography mt={2} variant="body2" color="warning">{t(

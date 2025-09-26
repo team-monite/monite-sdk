@@ -5,7 +5,7 @@ import { Alert, Collapse, List, ListItem, ListItemText } from '@mui/material';
 import { useMemo, memo } from 'react';
 import type { FieldErrors } from 'react-hook-form';
 
-type ErrorDisplayProps = {
+export type ErrorDisplayProps = {
   generalError?: string | null;
   fieldErrors: {
     name?: string | null;

@@ -11,10 +11,11 @@ import {
 } from '@/core/queries';
 import { vatRateBasisPointsToPercentage } from '@/core/utils/vatUtils';
 import { MoniteCard } from '@/ui/Card/Card';
+import { Skeleton } from '@/ui/components/skeleton';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/ui/components/tabs';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Box, Stack, Tab, Tabs, Skeleton, Typography } from '@mui/material';
-import { useId, useState } from 'react';
+import { useState } from 'react';
 
 interface OverviewProps {
   purchaseOrder: components['schemas']['PurchaseOrderResponseSchema'];
@@ -26,7 +27,6 @@ export const Overview = ({ purchaseOrder }: OverviewProps) => {
   const { formatCurrencyToDisplay } = useCurrencies();
   const { isNonVatSupported } = useMyEntity();
   const [view, setView] = useState<'overview' | 'details'>('overview');
-  const tabsBaseId = `Monite-PurchaseOrderDetails-overview-${useId()}-tab-`;
 
   const { data: counterpart, isLoading: isCounterpartLoading } =
     useCounterpartById(purchaseOrder.counterpart_id);
@@ -36,68 +36,54 @@ export const Overview = ({ purchaseOrder }: OverviewProps) => {
     (address) => address.id === counterpart?.default_billing_address_id
   );
 
-  const issueDate = purchaseOrder.created_at
+  const createdAt = purchaseOrder.created_at
     ? new Date(purchaseOrder.created_at)
     : null;
-  const expiryDate = purchaseOrder.valid_for_days
-    ? new Date(Date.now() + purchaseOrder.valid_for_days * 24 * 60 * 60 * 1000)
+  const issuedAt = purchaseOrder.issued_at
+    ? new Date(purchaseOrder.issued_at)
     : null;
+  const expiryDate =
+    purchaseOrder.valid_for_days && (issuedAt || createdAt)
+      ? new Date(
+          (issuedAt ?? createdAt)!.getTime() +
+            purchaseOrder.valid_for_days * 24 * 60 * 60 * 1000
+        )
+      : null;
 
   const subtotal =
     purchaseOrder.items?.reduce(
-      (sum, item) => sum + item.quantity * item.price,
+      (sum, item) => sum + (item.quantity ?? 0) * (item.price ?? 0),
       0
     ) || 0;
   const totalTax =
     purchaseOrder.items?.reduce(
       (sum, item) =>
         sum +
-        (item.quantity *
-          item.price *
-          vatRateBasisPointsToPercentage(item.vat_rate)) /
+        ((item.quantity ?? 0) *
+          (item.price ?? 0) *
+          vatRateBasisPointsToPercentage(item.vat_rate ?? 0)) /
           100,
       0
     ) || 0;
   const totalAmount = subtotal + totalTax;
 
   return (
-    <Stack spacing={3}>
+    <div className="mtw:space-y-3">
       <Tabs
         value={view}
-        onChange={(_, newValue) => {
-          setView(newValue);
-        }}
+        onValueChange={(val) => setView(val as 'overview' | 'details')}
       >
-        <Tab
-          label={t(i18n)`Overview`}
-          id={`${tabsBaseId}-overview-tab`}
-          aria-controls={`${tabsBaseId}-overview-tabpanel`}
-          value="overview"
-        />
-        <Tab
-          label={t(i18n)`Details`}
-          id={`${tabsBaseId}-details-tab`}
-          aria-controls={`${tabsBaseId}-details-tabpanel`}
-          value="details"
-        />
-      </Tabs>
+        <TabsList>
+          <TabsTrigger value="overview">{t(i18n)`Overview`}</TabsTrigger>
+          <TabsTrigger value="details">{t(i18n)`Details`}</TabsTrigger>
+        </TabsList>
 
-      {view === 'overview' && (
-        <OverviewTabPanel
-          purchaseOrder={purchaseOrder}
-          role="tabpanel"
-          id={`${tabsBaseId}-overview-tabpanel`}
-          aria-labelledby={`${tabsBaseId}-overview-tab`}
-        />
-      )}
+        <TabsContent value="overview">
+          <OverviewTabPanel purchaseOrder={purchaseOrder} />
+        </TabsContent>
 
-      {view === 'details' && (
-        <Box
-          role="tabpanel"
-          id={`${tabsBaseId}-details-tabpanel`}
-          aria-labelledby={`${tabsBaseId}-details-tab`}
-        >
-          <Stack spacing={4}>
+        <TabsContent value="details">
+          <div className="mtw:space-y-4">
             {/* Vendor Section */}
             <MoniteCard
               title={t(i18n)`Vendor`}
@@ -105,7 +91,7 @@ export const Overview = ({ purchaseOrder }: OverviewProps) => {
                 {
                   label: t(i18n)`Name`,
                   value: isCounterpartLoading ? (
-                    <Skeleton width={150} />
+                    <Skeleton className="mtw:h-4 mtw:w-[150px]" />
                   ) : (
                     getCounterpartName(counterpart) || '—'
                   ),
@@ -113,7 +99,7 @@ export const Overview = ({ purchaseOrder }: OverviewProps) => {
                 {
                   label: t(i18n)`Address`,
                   value: isAddressesLoading ? (
-                    <Skeleton width={200} />
+                    <Skeleton className="mtw:h-4 mtw:w-[200px]" />
                   ) : billingAddress ? (
                     <>
                       {billingAddress.line1}
@@ -147,8 +133,8 @@ export const Overview = ({ purchaseOrder }: OverviewProps) => {
                 },
                 {
                   label: t(i18n)`Issue Date`,
-                  value: issueDate
-                    ? i18n.date(issueDate, locale.dateFormat)
+                  value: issuedAt
+                    ? i18n.date(issuedAt, locale.dateFormat)
                     : '—',
                 },
                 {
@@ -193,19 +179,19 @@ export const Overview = ({ purchaseOrder }: OverviewProps) => {
                 {
                   label: t(i18n)`Total`,
                   value: (
-                    <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+                    <div className="mtw:text-base mtw:font-semibold">
                       {formatCurrencyToDisplay(
                         totalAmount,
                         purchaseOrder.currency
                       )}
-                    </Typography>
+                    </div>
                   ),
                 },
               ]}
             />
-          </Stack>
-        </Box>
-      )}
-    </Stack>
+          </div>
+        </TabsContent>
+      </Tabs>
+    </div>
   );
 };

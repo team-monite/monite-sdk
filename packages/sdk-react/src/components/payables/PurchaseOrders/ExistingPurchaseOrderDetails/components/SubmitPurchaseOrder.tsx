@@ -1,17 +1,8 @@
 import { DeliveryMethod } from '../useExistingPurchaseOrderDetails';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import EmailIcon from '@mui/icons-material/MailOutline';
-import TaskOutlinedIcon from '@mui/icons-material/TaskOutlined';
-import {
-  Box,
-  Card,
-  CardContent,
-  darken,
-  Stack,
-  Typography,
-} from '@mui/material';
-import { lighten, useTheme } from '@mui/material/styles';
+import { Card, CardContent } from '@/ui/components/card';
+import { Mail, ClipboardCheck } from 'lucide-react';
 import { ReactNode } from 'react';
 
 const DeliveryMethodView = ({
@@ -31,60 +22,26 @@ const DeliveryMethodView = ({
   deliveryMethod: DeliveryMethod;
   setDeliveryMethod: (method: DeliveryMethod) => void;
 }) => {
-  const theme = useTheme();
-
   return (
     <Card
-      sx={{
-        borderRadius: 4,
-        borderColor: checked
-          ? 'primary.main'
-          : lighten(theme.palette.secondary.main, 0.95),
-        backgroundColor:
-          theme.palette.mode === 'dark'
-            ? checked
-              ? darken(theme.palette.primary.main, 0.4)
-              : lighten(theme.palette.secondary.main, 0.1)
-            : checked
-              ? lighten(theme.palette.primary.main, 0.95)
-              : lighten(theme.palette.secondary.main, 0.95),
-        cursor: 'pointer',
-        maxWidth: 200,
-        transition: 'all 0.2s ease',
-      }}
-      variant="outlined"
+      className={
+        'mtw:max-w-[200px] mtw:transition-all mtw:rounded-xl mtw:border ' +
+        (checked
+          ? 'mtw:border-primary mtw:bg-primary/5 '
+          : 'mtw:border-muted mtw:bg-muted/30 ') +
+        (disabled ? 'mtw:opacity-50 mtw:cursor-not-allowed' : 'mtw:cursor-pointer')
+      }
     >
-      <CardContent
-        onClick={() => !disabled && setDeliveryMethod(deliveryMethod)}
-      >
-        <Stack direction="column" spacing={1}>
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-            }}
-          >
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: 1,
-                backgroundColor:
-                  theme.palette.mode === 'dark'
-                    ? theme.palette.background.paper
-                    : lighten(theme.palette.primary.main, 0.9),
-                borderRadius: '50%',
-              }}
-            >
+      <CardContent onClick={() => !disabled && setDeliveryMethod(deliveryMethod)}>
+        <div className="mtw:flex mtw:flex-col mtw:gap-2">
+          <div className="mtw:flex mtw:items-center">
+            <div className="mtw:flex mtw:items-center mtw:justify-center mtw:p-2 mtw:bg-primary/10 mtw:rounded-full">
               {icon}
-            </Box>
-          </Box>
-          <Typography variant="body1" sx={{ fontWeight: 500 }}>
-            {title}
-          </Typography>
-          <Typography variant="body2">{description}</Typography>
-        </Stack>
+            </div>
+          </div>
+          <div className="mtw:text-sm mtw:font-medium">{title}</div>
+          <div className="mtw:text-sm mtw:text-muted-foreground">{description}</div>
+        </div>
       </CardContent>
     </Card>
   );
@@ -104,12 +61,10 @@ export const SubmitPurchaseOrder = ({
   const { i18n } = useLingui();
 
   return (
-    <Stack spacing={4}>
-      <Box>
-        <Typography variant="subtitle2" sx={{ mb: 2 }}>{t(
-          i18n
-        )`Submit purchase order`}</Typography>
-        <Stack direction="row" spacing={1}>
+    <div className="mtw:space-y-4">
+      <div>
+        <div className="mtw:mb-2 mtw:text-sm mtw:font-semibold">{t(i18n)`Submit purchase order`}</div>
+        <div className="mtw:flex mtw:flex-row mtw:gap-2">
           <DeliveryMethodView
             deliveryMethod={DeliveryMethod.Email}
             setDeliveryMethod={onDeliveryMethodChanged}
@@ -117,7 +72,7 @@ export const SubmitPurchaseOrder = ({
             title={t(i18n)`Issue and send`}
             description={t(i18n)`Issue purchase order and email it to vendor`}
             disabled={disabled}
-            icon={<EmailIcon color="primary" />}
+            icon={<Mail className="mtw:text-primary" />}
           />
           <DeliveryMethodView
             deliveryMethod={DeliveryMethod.Download}
@@ -126,10 +81,10 @@ export const SubmitPurchaseOrder = ({
             title={t(i18n)`Issue only`}
             description={t(i18n)`Deliver purchase order later or download PDF`}
             disabled={true}
-            icon={<TaskOutlinedIcon color="primary" />}
+            icon={<ClipboardCheck className="mtw:text-primary" />}
           />
-        </Stack>
-      </Box>
-    </Stack>
+        </div>
+      </div>
+    </div>
   );
 };

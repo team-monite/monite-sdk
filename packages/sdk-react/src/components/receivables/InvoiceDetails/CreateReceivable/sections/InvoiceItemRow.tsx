@@ -221,6 +221,9 @@ const InvoiceItemRowComponent: React.FC<InvoiceItemRowProps> = ({
               currentTaxRateValue={
                 onRequestLineItemValue('tax_rate_value') as number | undefined
               }
+              currentVatRateValue={
+                onRequestLineItemValue('vat_rate_value') as number | undefined
+              }
             />
           </FormControl>
         )}

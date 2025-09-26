@@ -55,11 +55,15 @@ export const PurchaseOrderPreviewMonite = ({
   const convertedLineItems =
     line_items?.map(
       (item): SanitizableLineItem => ({
-        ...item,
-        price: {
-          currency: item.currency as components['schemas']['CurrencyEnum'],
-          value: item.price,
-        },
+        id: item.id,
+        name: item.name,
+        quantity: item.quantity,
+        unit: item.unit,
+        price: item.price,
+        currency: item.currency as components['schemas']['CurrencyEnum'],
+        vat_rate_id: item.vat_rate_id,
+        vat_rate_value: item.vat_rate_value,
+        tax_rate_value: item.tax_rate_value,
       })
     ) || [];
 

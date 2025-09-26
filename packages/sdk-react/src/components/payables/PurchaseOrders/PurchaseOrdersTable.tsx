@@ -1,7 +1,7 @@
 import { ConfigurableDataTable } from '../shared/ConfigurableDataTable';
 import { Filters as FiltersComponent } from './Filters';
 import { createPurchaseOrderTableConfig } from './config/tableConfig';
-import { PURCHASE_ORDER_CONSTANTS } from './constants';
+import { PURCHASE_ORDER_CONSTANTS } from './consts';
 import {
   FILTER_TYPE_SEARCH,
   FILTER_TYPE_STATUS,

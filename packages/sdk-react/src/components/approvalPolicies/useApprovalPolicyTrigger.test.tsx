@@ -16,6 +16,12 @@ import {
 import { tagListFixture } from '@/mocks/tags';
 import { renderHook } from '@testing-library/react';
 
+import { OPERATOR_OPERATIONS, type OperatorOperation } from './triggerUtils';
+import {
+  useApprovalPolicyTrigger,
+  AmountTuple,
+} from './useApprovalPolicyTrigger';
+
 describe('useApprovalPolicyTrigger', () => {
   describe('trigger parsing based on format', () => {
     test('should parse triggers with named values that are lists', () => {
@@ -368,7 +374,7 @@ describe('useApprovalPolicyTrigger', () => {
         useApprovalPolicyTrigger({ approvalPolicy: undefined })
       );
 
-      const operators: Array<[string, string]> = [
+      const operators: Array<[OperatorOperation, string]> = [
         [OPERATOR_OPERATIONS.GREATER_THAN, 'Greater than'],
         [OPERATOR_OPERATIONS.GREATER_THAN_OR_EQUAL, 'Greater than or equal to'],
         [OPERATOR_OPERATIONS.LESS_THAN, 'Less than'],
@@ -377,9 +383,7 @@ describe('useApprovalPolicyTrigger', () => {
       ];
 
       operators.forEach(([operator, expectedText]) => {
-        const amountValue: AmountTuple[] = [
-          [operator as OperatorOperation, 1000],
-        ];
+        const amountValue: AmountTuple[] = [[operator, 1000]];
         const label = result.current.getAmountLabel(amountValue, 'USD');
         expect(label).toContain(expectedText);
       });

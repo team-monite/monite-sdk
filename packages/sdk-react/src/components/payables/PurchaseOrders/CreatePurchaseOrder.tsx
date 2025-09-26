@@ -1,5 +1,5 @@
 import { useInvoiceReminderDialogs } from '../../receivables/hooks';
-import { PURCHASE_ORDER_CONSTANTS } from './constants';
+import { PURCHASE_ORDER_CONSTANTS } from './consts';
 import { useCreatePurchaseOrder } from './hooks/useCreatePurchaseOrder';
 import { useUpdatePurchaseOrder } from './hooks/useUpdatePurchaseOrder';
 import { EntitySection } from './sections/PurchaseOrderEntitySection';
@@ -7,6 +7,7 @@ import { FullfillmentSummary } from './sections/PurchaseOrderTermsSummary';
 import { VendorSection } from './sections/VendorSection';
 import { PurchaseOrderPreview } from './sections/components/PurchaseOrderPreview';
 import { PURCHASE_ORDER_MEASURE_UNITS } from './types';
+import type { CreatePurchaseOrderFormBeforeValidationProps } from './types';
 import {
   type CreatePurchaseOrderFormProps,
   getCreatePurchaseOrderValidationSchema,
@@ -18,10 +19,11 @@ import { CreateInvoiceReminderDialog } from '@/components/receivables/components
 import { EditInvoiceReminderDialog } from '@/components/receivables/components/EditInvoiceReminderDialog';
 import { EntityProfileModal } from '@/components/receivables/components/EntityProfileModal';
 import { ConfigurableItemsSection } from '@/components/shared/ItemsSection';
-import { PURCHASE_ORDERS_ITEMS_CONFIG } from '@/components/shared/ItemsSection/constants';
+import { PURCHASE_ORDERS_ITEMS_CONFIG } from '@/components/shared/ItemsSection/consts';
 import { TemplateSettings } from '@/components/templateSettings';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
+import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useLocalStorageFields } from '@/core/hooks/useLocalStorageFields';
 import { useProductCurrencyGroups } from '@/core/hooks/useProductCurrencyGroups';
 import {
@@ -38,13 +40,6 @@ import { FullScreenModalHeader } from '@/ui/FullScreenModalHeader';
 import { AccessRestriction } from '@/ui/accessRestriction/AccessRestriction';
 import { Button } from '@/ui/components/button';
 import {
-  Dialog as SDialog,
-  DialogContent as SDialogContent,
-  DialogHeader as SDialogHeader,
-  DialogTitle as SDialogTitle,
-  DialogFooter as SDialogFooter,
-} from '@/ui/components/dialog';
-import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -54,19 +49,19 @@ import { LoadingPage } from '@/ui/loadingPage';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import {
   Alert,
   Box,
   Checkbox,
-  DialogContent,
   FormControlLabel,
   Stack,
   Switch,
   Typography,
-  useTheme,
+  Modal,
+  Grid,
 } from '@mui/material';
 import { addDays } from 'date-fns';
+import { Settings } from 'lucide-react';
 import { useEffect, useId, useMemo, useState, useCallback } from 'react';
 import { useForm, FormProvider, type Resolver } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
@@ -172,16 +167,20 @@ const CreatePurchaseOrderBase = ({
   const [isEditCounterpartProfileOpen, setIsEditCounterpartProfileOpen] =
     useState(false);
   const fallbackCurrency: components['schemas']['CurrencyEnum'] = 'USD';
-  const methods = useForm<CreatePurchaseOrderFormProps>({
-    resolver: zodResolver(
-      getCreatePurchaseOrderValidationSchema(i18n)
-    ) as Resolver<CreatePurchaseOrderFormProps>,
-    defaultValues: useMemo(() => {
-      if (existingPurchaseOrder) {
-        return {
-          counterpart_id: existingPurchaseOrder.counterpart_id || '',
-          line_items:
-            existingPurchaseOrder.items?.map((item) => ({
+  const formDefaultValues = useMemo(() => {
+    if (existingPurchaseOrder) {
+      return {
+        counterpart_id: existingPurchaseOrder.counterpart_id || '',
+        line_items:
+          existingPurchaseOrder.items?.map((item) => {
+            const convertedVatRateValue = isNonVatSupported
+              ? undefined
+              : vatRateBasisPointsToPercentage(item.vat_rate);
+            const convertedTaxRateValue = isNonVatSupported
+              ? vatRateBasisPointsToPercentage(item.vat_rate)
+              : undefined;
+
+            return {
               name: item.name,
               quantity: item.quantity,
               unit: PURCHASE_ORDER_MEASURE_UNITS.includes(
@@ -191,54 +190,63 @@ const CreatePurchaseOrderBase = ({
                 : 'unit',
               price: rateMinorToMajor(item.price),
               currency: item.currency as components['schemas']['CurrencyEnum'],
-              vat_rate_value: isNonVatSupported
-                ? undefined
-                : vatRateBasisPointsToPercentage(item.vat_rate),
-              tax_rate_value: isNonVatSupported
-                ? vatRateBasisPointsToPercentage(item.vat_rate)
-                : undefined,
+              vat_rate_value: convertedVatRateValue,
+              tax_rate_value: convertedTaxRateValue,
               vat_rate_id: undefined,
-            })) || [],
-          valid_for_days:
-            existingPurchaseOrder.valid_for_days ||
-            PURCHASE_ORDER_CONSTANTS.DEFAULT_VALID_FOR_DAYS,
-          expiry_date: existingPurchaseOrder.valid_for_days
-            ? addDays(new Date(), existingPurchaseOrder.valid_for_days)
-            : undefined,
-          message: existingPurchaseOrder.message || '',
-          currency:
-            (existingPurchaseOrder.currency as components['schemas']['CurrencyEnum']) ||
-            fallbackCurrency,
-          entity_vat_id_id:
-            existingPurchaseOrder.entity_vat_id?.id ||
-            entityVatIds?.data?.[0]?.id ||
-            undefined,
-          counterpart_address_id: undefined,
-          project_id: existingPurchaseOrder.project_id || undefined,
-          footer: '',
-        };
-      }
-
-      return {
-        counterpart_id: '',
-        line_items: [],
-        valid_for_days: PURCHASE_ORDER_CONSTANTS.DEFAULT_VALID_FOR_DAYS,
-        expiry_date: undefined,
-        message: '',
-        currency: fallbackCurrency as components['schemas']['CurrencyEnum'],
-        vat_mode: 'exclusive' as const,
-        entity_vat_id_id: entityVatIds?.data?.[0]?.id || undefined,
+            };
+          }) || [],
+        valid_for_days:
+          existingPurchaseOrder.valid_for_days ||
+          PURCHASE_ORDER_CONSTANTS.DEFAULT_VALID_FOR_DAYS,
+        expiry_date: existingPurchaseOrder.valid_for_days
+          ? addDays(new Date(), existingPurchaseOrder.valid_for_days)
+          : undefined,
+        message: existingPurchaseOrder.message || '',
+        currency:
+          (existingPurchaseOrder.currency as components['schemas']['CurrencyEnum']) ||
+          fallbackCurrency,
+        entity_vat_id_id:
+          existingPurchaseOrder.entity_vat_id?.id ||
+          entityVatIds?.data?.[0]?.id ||
+          undefined,
         counterpart_address_id: undefined,
-        project_id: undefined,
+        project_id: existingPurchaseOrder.project_id || undefined,
         footer: '',
       };
-    }, [
-      fallbackCurrency,
-      entityVatIds?.data,
-      existingPurchaseOrder,
-      isNonVatSupported,
-    ]),
+    }
+
+    return {
+      counterpart_id: '',
+      line_items: [],
+      valid_for_days: PURCHASE_ORDER_CONSTANTS.DEFAULT_VALID_FOR_DAYS,
+      expiry_date: undefined,
+      message: '',
+      currency: fallbackCurrency as components['schemas']['CurrencyEnum'],
+      vat_mode: 'exclusive' as const,
+      entity_vat_id_id: entityVatIds?.data?.[0]?.id || undefined,
+      counterpart_address_id: undefined,
+      project_id: undefined,
+      footer: '',
+    };
+  }, [
+    fallbackCurrency,
+    entityVatIds?.data,
+    existingPurchaseOrder,
+    isNonVatSupported,
+  ]);
+
+  const methods = useForm<CreatePurchaseOrderFormProps>({
+    resolver: zodResolver(
+      getCreatePurchaseOrderValidationSchema(i18n, isNonVatSupported)
+    ) as Resolver<CreatePurchaseOrderFormProps>,
+    defaultValues: formDefaultValues,
   });
+
+  useEffect(() => {
+    if (existingPurchaseOrder && formDefaultValues.line_items.length > 0) {
+      methods.reset(formDefaultValues);
+    }
+  }, [existingPurchaseOrder, formDefaultValues, methods]);
 
   const handleEditCounterpartProfileState = (isOpen: boolean) => {
     setIsEditCounterpartProfileOpen(isOpen);
@@ -251,7 +259,6 @@ const CreatePurchaseOrderBase = ({
   const { handleSubmit, watch, getValues, setValue, formState } = methods;
 
   const counterpartId = watch('counterpart_id');
-
   const currentMessage = watch('message');
   const isEditMode = Boolean(existingPurchaseOrder);
 
@@ -310,11 +317,10 @@ const CreatePurchaseOrderBase = ({
     closeUpdateReminderDialog,
   } = useInvoiceReminderDialogs({ getValues });
 
-  const theme = useTheme();
-
   const { data: counterpart } = useCounterpartById(counterpartId);
 
   const className = 'Monite-CreatePurchaseOrder';
+  const { root } = useRootElements();
 
   const { isLoading: isMeasureUnitsLoading } =
     api.measureUnits.getMeasureUnits.useQuery();
@@ -440,30 +446,41 @@ const CreatePurchaseOrderBase = ({
   const [isMyEntityProfileModalOpen, setIsMyEntityProfileModalOpen] =
     useState(false);
 
-  const handleFieldChange = (fieldName: string, value: boolean) => {
-    setVisibleSettingsFields({ ...visibleSettingsFields, [fieldName]: value });
-  };
+  const handleFieldChange = useCallback(
+    (fieldName: keyof typeof visibleSettingsFields, value: boolean) => {
+      setVisibleSettingsFields((prev: typeof visibleSettingsFields) => ({
+        ...prev,
+        [fieldName]: value,
+      }));
+    },
+    [setVisibleSettingsFields]
+  );
 
-  const handleFieldsAlwaysSelectedChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setAreFieldsAlwaysSelected(e.target.checked);
-  };
+  const handleFieldsAlwaysSelectedChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setAreFieldsAlwaysSelected(e.target.checked);
+    },
+    [setAreFieldsAlwaysSelected]
+  );
 
-  const handleCloseCurrencyModal = () => {
+  const handleCloseCurrencyModal = useCallback(() => {
     setIsCurrencyModalOpen(false);
-  };
+  }, []);
 
-  const handleCloseEnableFieldsModal = () => {
+  const handleOpenCurrencyModal = useCallback(() => {
+    setIsCurrencyModalOpen(true);
+  }, []);
+
+  const handleCloseEnableFieldsModal = useCallback(() => {
     setIsEnableFieldsModalOpen(false);
-  };
+  }, []);
 
   const lineItems = watch('line_items');
   const validForDays = watch('valid_for_days');
   const message = watch('message');
   const [removeItemsWarning, setRemoveItemsWarning] = useState(false);
 
-  const handleCurrencySubmit = () => {
+  const handleCurrencySubmit = useCallback(() => {
     if (tempCurrency !== actualCurrency) {
       const validLineItems = lineItems.filter((item) => {
         return item.name?.trim() !== '';
@@ -481,7 +498,7 @@ const CreatePurchaseOrderBase = ({
       setTempCurrency(actualCurrency);
       handleCloseCurrencyModal();
     }
-  };
+  }, [tempCurrency, actualCurrency, lineItems, handleCloseCurrencyModal]);
 
   useEffect(() => {
     if (entityVatIds && entityVatIds.data.length > 0) {
@@ -497,15 +514,8 @@ const CreatePurchaseOrderBase = ({
   }
 
   return (
-    <Stack direction="row" maxHeight={'100vh'} sx={{ overflow: 'hidden' }}>
-      <Box
-        sx={{
-          width: '50%',
-          height: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-        }}
-      >
+    <Stack direction="row" className="mtw:max-h-screen mtw:overflow-hidden">
+      <Box className="mtw:w-1/2 mtw:h-screen mtw:flex mtw:flex-col">
         <FullScreenModalHeader
           className={className + '-Title PurchaseOrder-Preview'}
           title={
@@ -525,23 +535,15 @@ const CreatePurchaseOrderBase = ({
                       updatePurchaseOrder.isPending
                     }
                   >
-                    <SettingsOutlinedIcon />
+                    <Settings />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                  <DropdownMenuItem
-                    onClick={() => setIsCurrencyModalOpen(true)}
-                  >
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        width: '100%',
-                      }}
-                    >
+                  <DropdownMenuItem onClick={handleOpenCurrencyModal}>
+                    <div className="mtw:flex mtw:justify-between mtw:w-full">
                       <Typography>{t(i18n)`Currency`}</Typography>
                       <Typography>{actualCurrency}</Typography>
-                    </Box>
+                    </div>
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={() => setIsEditTemplateModalOpen(true)}
@@ -571,171 +573,225 @@ const CreatePurchaseOrderBase = ({
           }
         />
 
-        <DialogContent
-          className={className + '-Content'}
-          sx={{ overflow: 'auto', flex: 1 }}
+        <div
+          className={
+            className +
+            '-Content' +
+            ' mtw:flex-1 mtw:overflow-auto mtw:px-8 mtw:py-4'
+          }
         >
-          <SDialog
+          {/* Currency Modal */}
+          <Modal
             open={isCurrencyModalOpen}
-            onOpenChange={(open) => {
-              if (!open) handleCloseCurrencyModal();
-            }}
+            container={root}
+            onClose={handleCloseCurrencyModal}
           >
-            <SDialogContent className="mtw:max-w-[600px]">
-              <SDialogHeader>
-                <SDialogTitle>{t(i18n)`Change document currency`}</SDialogTitle>
-              </SDialogHeader>
-              <div className="mtw:space-y-3">
-                <Typography variant="body2" color="black">
-                  {t(
-                    i18n
-                  )`Purchase order will be issued with items in the selected currency`}
-                </Typography>
-                <MoniteCurrency
-                  size="small"
-                  name="currency"
-                  control={control}
-                  defaultValue={actualCurrency}
-                  hideLabel
-                  groups={currencyGroups}
-                  disabled={isLoadingCurrencyGroups}
-                  onChange={(_event, value) => {
-                    if (
-                      value &&
-                      !Array.isArray(value) &&
-                      typeof value !== 'string'
-                    ) {
-                      setTempCurrency(value.code);
-                    }
-                  }}
-                />
-                {removeItemsWarning && (
-                  <Alert severity="warning" sx={{ mt: 2, mb: 1 }}>
-                    <Typography variant="inherit">
-                      {t(
-                        i18n
-                      )`All items in the purchase order must be in this currency. Remove items that don't match it.`}
-                    </Typography>
-                  </Alert>
-                )}
-              </div>
-              <SDialogFooter className="mtw:flex mtw:justify-end mtw:gap-2">
-                <Button variant="ghost" onClick={handleCloseCurrencyModal}>
-                  {t(i18n)`Cancel`}
-                </Button>
-                <Button variant="default" onClick={handleCurrencySubmit}>
-                  {t(i18n)`Save`}
-                </Button>
-              </SDialogFooter>
-            </SDialogContent>
-          </SDialog>
-
-          <SDialog
-            open={isEnableFieldsModalOpen}
-            onOpenChange={(open) => {
-              if (!open) handleCloseEnableFieldsModal();
-            }}
-          >
-            <SDialogContent className="mtw:max-w-[600px]">
-              <SDialogHeader>
-                <SDialogTitle>{t(i18n)`Enable more fields`}</SDialogTitle>
-              </SDialogHeader>
-              <div className="mtw:space-y-6">
-                <Box
-                  display="flex"
-                  alignItems="start"
-                  justifyContent="space-between"
-                  sx={{ pb: 4 }}
-                >
-                  <Box>
-                    <Typography
-                      variant="body2"
-                      sx={{ color: 'rgba(0, 0, 0, 0.84)' }}
-                    >
-                      {t(i18n)`Message`}
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary">
-                      {t(i18n)`Add a message for the vendor`}
-                    </Typography>
-                  </Box>
-                  <Switch
-                    checked={visibleSettingsFields.isMessageShown}
-                    onChange={(e) =>
-                      handleFieldChange('isMessageShown', e.target.checked)
-                    }
-                    color="primary"
-                    aria-label={t(i18n)`Message`}
-                  />
-                </Box>
-                <Box
-                  display="flex"
-                  alignItems="start"
-                  justifyContent="space-between"
-                  sx={{
-                    pb: 4,
-                    pt: 4,
-                    borderTop: 'solid 1px rgba(0, 0, 0, 0.13)',
-                  }}
-                >
-                  <Box>
-                    <Typography
-                      variant="body2"
-                      sx={{ color: 'rgba(0, 0, 0, 0.84)' }}
-                    >
-                      {t(i18n)`Note to vendor`}
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary">
-                      {t(
-                        i18n
-                      )`Add a note that will be displayed below the line items`}
-                    </Typography>
-                  </Box>
-                  <Switch
-                    checked={visibleSettingsFields.isFooterShown}
-                    onChange={(e) =>
-                      handleFieldChange('isFooterShown', e.target.checked)
-                    }
-                    color="primary"
-                    aria-label={t(i18n)`Note to vendor`}
-                  />
-                </Box>
-                <Box sx={{ marginTop: 4, paddingTop: 1 }}>
-                  <FormControlLabel
-                    sx={{ ml: 0 }}
-                    control={
-                      <Checkbox
-                        edge="start"
-                        checked={areFieldsAlwaysSelected}
-                        onChange={handleFieldsAlwaysSelectedChange}
-                        disableRipple
-                      />
-                    }
-                    label={t(
+            <Box
+              sx={{
+                position: 'relative',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                maxWidth: 600,
+                bgcolor: 'background.paper',
+                boxShadow: 24,
+                borderRadius: 2,
+              }}
+            >
+              <Grid container alignItems="center" p={4}>
+                <Grid item width="100%">
+                  <Typography variant="h3" mb={3}>
+                    {t(i18n)`Change document currency`}
+                  </Typography>
+                  <Typography variant="body2" color="black" mb={1}>
+                    {t(
                       i18n
-                    )`Always display selected fields on the form (where available)`}
+                    )`Purchase order will be issued with items in the selected currency`}
+                  </Typography>
+                  <MoniteCurrency
+                    size="small"
+                    name="currency"
+                    control={control}
+                    defaultValue={actualCurrency}
+                    hideLabel
+                    groups={currencyGroups}
+                    disabled={isLoadingCurrencyGroups}
+                    onChange={(_event, value) => {
+                      if (
+                        value &&
+                        !Array.isArray(value) &&
+                        typeof value !== 'string'
+                      ) {
+                        setTempCurrency(value.code);
+                      }
+                    }}
                   />
-                </Box>
-              </div>
-              <SDialogFooter className="mtw:flex mtw:justify-end mtw:gap-2">
-                <Button variant="ghost" onClick={handleCloseEnableFieldsModal}>
-                  {t(i18n)`Cancel`}
-                </Button>
-                <Button
-                  variant="default"
-                  onClick={handleCloseEnableFieldsModal}
+                  {removeItemsWarning && (
+                    <Alert severity="warning" sx={{ mt: 2, mb: 1 }}>
+                      <Typography variant="inherit">
+                        {t(
+                          i18n
+                        )`All items in the purchase order must be in this currency. Remove items that don't match it.`}
+                      </Typography>
+                    </Alert>
+                  )}
+                </Grid>
+                <Grid
+                  item
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    alignItems: 'flex-end',
+                    justifySelf: 'flex-end',
+                    marginLeft: 'auto',
+                    gap: '1rem',
+                    minHeight: 96,
+                  }}
                 >
-                  {t(i18n)`Save`}
-                </Button>
-              </SDialogFooter>
-            </SDialogContent>
-          </SDialog>
+                  <Button variant="ghost" onClick={handleCloseCurrencyModal}>
+                    {t(i18n)`Cancel`}
+                  </Button>
+                  <Button variant="default" onClick={handleCurrencySubmit}>
+                    {t(i18n)`Save`}
+                  </Button>
+                </Grid>
+              </Grid>
+            </Box>
+          </Modal>
+
+          {/* Enable Fields Modal */}
+          <Modal
+            open={isEnableFieldsModalOpen}
+            container={root}
+            onClose={handleCloseEnableFieldsModal}
+          >
+            <Box
+              sx={{
+                position: 'relative',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                maxWidth: 600,
+                bgcolor: 'background.paper',
+                boxShadow: 24,
+                borderRadius: 2,
+              }}
+            >
+              <Grid container alignItems="center" p={4}>
+                <Grid item width="100%">
+                  <Typography variant="h3" mb={3}>
+                    {t(i18n)`Enable more fields`}
+                  </Typography>
+                  <Box
+                    display="flex"
+                    alignItems="start"
+                    justifyContent="space-between"
+                    sx={{ pb: 4 }}
+                  >
+                    <Box>
+                      <Typography
+                        variant="body2"
+                        sx={{ color: 'rgba(0, 0, 0, 0.85)' }}
+                      >
+                        {t(i18n)`Message`}
+                      </Typography>
+                      <Typography variant="body2" color="textSecondary">
+                        {t(i18n)`Add a message for the vendor`}
+                      </Typography>
+                    </Box>
+                    <Switch
+                      checked={visibleSettingsFields.isMessageShown}
+                      onChange={(e) =>
+                        handleFieldChange('isMessageShown', e.target.checked)
+                      }
+                      color="primary"
+                      aria-label={t(i18n)`Message`}
+                    />
+                  </Box>
+                  <Box
+                    display="flex"
+                    alignItems="start"
+                    justifyContent="space-between"
+                    sx={{
+                      pb: 4,
+                      pt: 4,
+                      borderTop: 'solid 1px rgba(0, 0, 0, 0.13)',
+                    }}
+                  >
+                    <Box>
+                      <Typography
+                        variant="body2"
+                        sx={{ color: 'rgba(0, 0, 0, 0.85)' }}
+                      >
+                        {t(i18n)`Note to vendor`}
+                      </Typography>
+                      <Typography variant="body2" color="textSecondary">
+                        {t(
+                          i18n
+                        )`Add a note that will be displayed below the line items`}
+                      </Typography>
+                    </Box>
+                    <Switch
+                      checked={visibleSettingsFields.isFooterShown}
+                      onChange={(e) =>
+                        handleFieldChange('isFooterShown', e.target.checked)
+                      }
+                      color="primary"
+                      aria-label={t(i18n)`Note to vendor`}
+                    />
+                  </Box>
+                  <Box sx={{ mt: 4, pt: 1 }}>
+                    <FormControlLabel
+                      className="mtw:ml-0"
+                      control={
+                        <Checkbox
+                          edge="start"
+                          checked={areFieldsAlwaysSelected}
+                          onChange={handleFieldsAlwaysSelectedChange}
+                          disableRipple
+                        />
+                      }
+                      label={t(
+                        i18n
+                      )`Always display selected fields on the form (where available)`}
+                    />
+                  </Box>
+                </Grid>
+                <Grid
+                  item
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    alignItems: 'flex-end',
+                    justifySelf: 'flex-end',
+                    marginLeft: 'auto',
+                    gap: '1rem',
+                    minHeight: 96,
+                  }}
+                >
+                  <Button
+                    variant="ghost"
+                    onClick={handleCloseEnableFieldsModal}
+                  >
+                    {t(i18n)`Cancel`}
+                  </Button>
+                  <Button
+                    variant="default"
+                    onClick={handleCloseEnableFieldsModal}
+                  >
+                    {t(i18n)`Save`}
+                  </Button>
+                </Grid>
+              </Grid>
+            </Box>
+          </Modal>
 
           <FormProvider {...methods}>
             <form
               id={formName}
               noValidate
               onSubmit={handleSubmit(handleCreatePurchaseOrder)}
-              style={{ marginBottom: theme.spacing(7) }}
+              className="mtw:mb-14"
             >
               <Stack direction="column" spacing={7}>
                 {Object.keys(formState.errors).length > 0 && (
@@ -756,7 +812,7 @@ const CreatePurchaseOrderBase = ({
                   counterpart={counterpart}
                 />
 
-                <ConfigurableItemsSection
+                <ConfigurableItemsSection<CreatePurchaseOrderFormBeforeValidationProps>
                   config={PURCHASE_ORDERS_ITEMS_CONFIG}
                   defaultCurrency={
                     settings?.currency?.default || fallbackCurrency
@@ -765,14 +821,8 @@ const CreatePurchaseOrderBase = ({
                   isNonVatSupported={isNonVatSupported}
                 />
 
-                <Box
-                  sx={{
-                    width: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                  }}
-                >
-                  <Typography sx={{ mb: 2 }} variant="subtitle1">
+                <Box className="mtw:w-full mtw:flex mtw:flex-col">
+                  <Typography className="mtw:mb-2" variant="subtitle1">
                     {t(i18n)`Details`}
                   </Typography>
 
@@ -794,17 +844,10 @@ const CreatePurchaseOrderBase = ({
               </Stack>
             </form>
           </FormProvider>
-        </DialogContent>
+        </div>
       </Box>
 
-      <Box
-        width="50%"
-        sx={{
-          background: 'linear-gradient(180deg, #F6F6F6 0%, #E4E4FF 100%)',
-          height: '100vh',
-          overflow: 'auto',
-        }}
-      >
+      <div className="mtw:w-1/2 mtw:bg-[linear-gradient(180deg,_#F6F6F6_0%,_#E4E4FF_100%)] mtw:h-screen mtw:overflow-auto">
         <PurchaseOrderPreview
           purchaseOrderData={{
             valid_for_days: validForDays,
@@ -820,7 +863,7 @@ const CreatePurchaseOrderBase = ({
           entityVatIds={entityVatIds}
           counterpartVats={counterpartVats}
         />
-      </Box>
+      </div>
       <CreateInvoiceReminderDialog
         open={createReminderDialog.open}
         reminderType={createReminderDialog.reminderType}

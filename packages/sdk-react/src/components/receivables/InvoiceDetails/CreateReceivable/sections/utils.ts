@@ -322,20 +322,22 @@ export const sanitizeLineItems = (
       };
 
       const result: CreateReceivablesFormBeforeValidationLineItemProps = {
-        ...extItem,
         id: extItem.product_id || extItem.id || generateUniqueId(),
         product,
         quantity: extItem.quantity ?? 1,
-        vat_rate_value:
-          typeof extItem.vat_rate_value === 'number'
-            ? extItem.vat_rate_value <= 100
-              ? rateMajorToMinor(extItem.vat_rate_value)
-              : extItem.vat_rate_value
-            : undefined,
-        tax_rate_value:
-          typeof extItem.tax_rate_value === 'number'
-            ? extItem.tax_rate_value
-            : undefined,
+        ...(typeof extItem.vat_rate_value === 'number'
+          ? {
+              vat_rate_value:
+                extItem.vat_rate_value <= 100
+                  ? rateMajorToMinor(extItem.vat_rate_value)
+                  : extItem.vat_rate_value,
+            }
+          : {}),
+        ...(typeof extItem.tax_rate_value === 'number'
+          ? { tax_rate_value: extItem.tax_rate_value }
+          : {}),
+        ...(extItem.vat_rate_id ? { vat_rate_id: extItem.vat_rate_id } : {}),
+        ...(extItem.product_id ? { product_id: extItem.product_id } : {}),
       };
 
       if (

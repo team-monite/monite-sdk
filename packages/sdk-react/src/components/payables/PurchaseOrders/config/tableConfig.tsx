@@ -3,7 +3,8 @@ import {
   TableColumnConfig,
 } from '../../shared/ConfigurableDataTable';
 import { PurchaseOrderStatusChip } from '../PurchaseOrderStatusChip';
-import { TABLE_COLUMN_WIDTHS, PURCHASE_ORDER_CONSTANTS } from '../constants';
+import { TABLE_COLUMN_WIDTHS } from '../consts';
+import { PURCHASE_ORDER_CONSTANTS } from '../consts';
 import { DEFAULT_FIELD_ORDER } from '../consts';
 import { components } from '@/api';
 import { CounterpartNameCellById } from '@/ui/CounterpartCell';
@@ -95,7 +96,7 @@ export const createPurchaseOrderTableConfig = (
       }: GridRenderCellParams<
         components['schemas']['PurchaseOrderResponseSchema']
       >) => formattedValue,
-      valueFormatter: (value: unknown) => {
+      valueFormatter: (value: unknown, _row) => {
         const dateValue =
           value as components['schemas']['PurchaseOrderResponseSchema']['created_at'];
         return i18n.date(dateValue, locale.dateFormat || undefined);
@@ -111,7 +112,7 @@ export const createPurchaseOrderTableConfig = (
       }: GridRenderCellParams<
         components['schemas']['PurchaseOrderResponseSchema']
       >) => formattedValue || <span className="mtw:opacity-40">-</span>,
-      valueFormatter: (value: unknown) => {
+      valueFormatter: (value: unknown, _row) => {
         const dateValue =
           value as components['schemas']['PurchaseOrderResponseSchema']['issued_at'];
         return dateValue
@@ -127,7 +128,6 @@ export const createPurchaseOrderTableConfig = (
       headerName: t(i18n)`Amount`,
       width: TABLE_COLUMN_WIDTHS.AMOUNT,
       valueGetter: (
-        _value: unknown,
         row: components['schemas']['PurchaseOrderResponseSchema']
       ) => {
         const totalAmount =
@@ -136,8 +136,8 @@ export const createPurchaseOrderTableConfig = (
               sum + (item.quantity || 0) * (item.price || 0),
             0
           ) || 0;
-        return totalAmount && row.currency
-          ? formatCurrencyToDisplay(totalAmount, row.currency) || ''
+        return row.currency
+          ? (formatCurrencyToDisplay(totalAmount, row.currency) ?? '')
           : '';
       },
     },

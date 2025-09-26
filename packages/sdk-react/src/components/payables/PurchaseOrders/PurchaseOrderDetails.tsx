@@ -4,7 +4,6 @@ import { PurchaseOrderForm } from './PurchaseOrderForm';
 import { usePurchaseOrderDetails } from './hooks/usePurchaseOrderDetails';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { CustomerTypes } from '@/components/counterparts/types';
-import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
 import { classNames } from '@/utils/css-utils';
@@ -25,9 +24,7 @@ export interface PurchaseOrderDetailsProps {
 }
 
 export const PurchaseOrderDetails = (props: PurchaseOrderDetailsProps) => (
-  <MoniteScopedProviders>
-    <PurchaseOrderDetailsBase {...props} />
-  </MoniteScopedProviders>
+  <PurchaseOrderDetailsBase {...props} />
 );
 
 const PurchaseOrderDetailsBase = ({

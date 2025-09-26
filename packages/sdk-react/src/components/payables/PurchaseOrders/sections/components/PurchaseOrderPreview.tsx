@@ -1,4 +1,4 @@
-import { PURCHASE_ORDER_CONSTANTS } from '../../constants';
+import { PURCHASE_ORDER_CONSTANTS } from '../../consts';
 import type { PurchaseOrderLineItem } from '../../validation';
 import { PurchaseOrderPreviewMonite } from './PurchaseOrderPreviewMonite';
 import { components } from '@/api';
@@ -44,12 +44,20 @@ export const PurchaseOrderPreview = ({
 
   const expiryDate = useMemo(() => {
     if (purchaseOrderData.expiry_date) {
-      return new Date(purchaseOrderData.expiry_date);
+      const d = new Date(purchaseOrderData.expiry_date);
+
+      d.setHours(0, 0, 0, 0);
+
+      return d;
     }
     const validForDays =
       purchaseOrderData.valid_for_days ||
       PURCHASE_ORDER_CONSTANTS.DEFAULT_VALID_FOR_DAYS;
-    return addDays(new Date(), validForDays);
+    const d = addDays(new Date(), validForDays);
+
+    d.setHours(0, 0, 0, 0);
+
+    return d;
   }, [purchaseOrderData.expiry_date, purchaseOrderData.valid_for_days]);
 
   const scale = useAdaptiveScale(containerRef, previewRef, {
