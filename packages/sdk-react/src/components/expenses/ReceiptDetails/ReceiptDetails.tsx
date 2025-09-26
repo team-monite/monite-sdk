@@ -8,7 +8,9 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useEntityUserById } from '@/core/queries';
 import { getUserDisplayName } from '@/core/utils';
+import { toMinorUnits } from '@/core/utils/currency';
 import { getMimetypeFromUrl } from '@/core/utils/files';
+import { safeZodResolver } from '@/core/utils/safeZodResolver';
 import { ConfirmationModal } from '@/ui/ConfirmationModal/ConfirmationModal';
 import { ImageFileViewer } from '@/ui/FileViewer';
 import { RHFTextField } from '@/ui/RHF/RHFTextField';
@@ -33,7 +35,6 @@ import {
   SheetTitle,
 } from '@/ui/components/sheet';
 import { Skeleton } from '@/ui/components/skeleton';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -53,13 +54,23 @@ const getValidationSchema = (i18n: I18n) =>
   z.object({
     merchantName: z
       .string()
-      .min(1, t(i18n)`Required`)
+      .min(1, t(i18n)`Merchant name is required`)
       .max(255, t(i18n)`Value must be at most 255 characters`),
     merchantLocation: z
       .string()
-      .min(1, t(i18n)`Required`)
+      .min(1, t(i18n)`Merchant location is required`)
       .max(255, t(i18n)`Value must be at most 255 characters`),
-    totalAmount: z.number().min(1, t(i18n)`Value must be greater than 1`),
+    totalAmount: z.coerce
+      .number({ error: t(i18n)`Amount is required` })
+      .min(0, t(i18n)`Total amount must be 0 or greater`)
+      .refine(
+        (value) => {
+          return toMinorUnits(value);
+        },
+        {
+          message: t(i18n)`Please enter a valid amount`,
+        }
+      ),
     date: z.date(t(i18n)`Select a valid date and time`),
   });
 
@@ -99,7 +110,7 @@ export const ReceiptDetails = ({
     useDeleteReceipt(receipt.id);
 
   const form = useForm<FormFields>({
-    resolver: zodResolver(getValidationSchema(i18n)),
+    resolver: safeZodResolver(getValidationSchema(i18n)),
     defaultValues: {
       merchantName: receipt.merchant_name || '',
       merchantLocation: receipt.merchant_location || '',
@@ -336,28 +347,31 @@ export const ReceiptDetails = ({
                           />
                         )}
                       />
-                      <FormField
-                        name="totalAmount"
-                        control={control}
-                        render={({ field, fieldState: { error } }) => (
-                          <RHFTextField
-                            {...field}
-                            id={field.name}
-                            label={t(i18n)`Total amount`}
-                            variant="standard"
-                            type="number"
-                            inputProps={{ min: 1 }}
-                            error={Boolean(error)}
-                            helperText={error?.message}
-                            fullWidth
-                            InputProps={{
-                              endAdornment: getSymbolFromCurrency(
-                                receipt.currency ?? 'EUR'
-                              ),
-                            }}
-                          />
-                        )}
-                      />
+                      <div>
+                        <FormField
+                          name="totalAmount"
+                          control={control}
+                          render={({ field, fieldState: { error } }) => (
+                            <RHFTextField
+                              {...field}
+                              id={field.name}
+                              label={t(i18n)`Total amount`}
+                              variant="standard"
+                              type="number"
+                              placeholder="0"
+                              inputProps={{ min: 0 }}
+                              error={Boolean(error)}
+                              helperText={error?.message}
+                              fullWidth
+                              InputProps={{
+                                endAdornment: getSymbolFromCurrency(
+                                  receipt.currency ?? 'EUR'
+                                ),
+                              }}
+                            />
+                          )}
+                        />
+                      </div>
                     </div>
                     <div className="mtw:flex mtw:gap-4">
                       <Button
