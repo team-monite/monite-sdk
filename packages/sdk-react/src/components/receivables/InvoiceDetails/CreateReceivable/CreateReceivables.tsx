@@ -605,9 +605,11 @@ const CreateReceivablesBase = ({
         },
         ...(isNonVatSupported
           ? {
-              tax_rate_value: item?.tax_rate_value
-                ? rateMajorToMinor(item.tax_rate_value)
-                : undefined,
+              tax_rate_value:
+                item?.tax_rate_value !== null &&
+                item?.tax_rate_value !== undefined
+                  ? rateMajorToMinor(item.tax_rate_value)
+                  : undefined,
             }
           : { vat_rate_id: item.vat_rate_id }),
       })),
