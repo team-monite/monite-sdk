@@ -115,7 +115,7 @@ export const CounterpartIndividualForm = ({
     ),
     defaultValues: {
       tax_id: individualCounterpart?.tax_id ?? defaultValuesOCR?.tax_id ?? '',
-      remindersEnabled: individualCounterpart?.reminders_enabled ?? false,
+      remindersEnabled: individualCounterpart?.reminders_enabled ?? true,
       individual: defaultValuesOCR
         ? defaultValuesOCR.counterpart
         : prepareCounterpartIndividual(
@@ -183,7 +183,7 @@ export const CounterpartIndividualForm = ({
   useEffect(() => {
     reset({
       tax_id: individualCounterpart?.tax_id ?? defaultValuesOCR?.tax_id ?? '',
-      remindersEnabled: individualCounterpart?.reminders_enabled ?? false,
+      remindersEnabled: individualCounterpart?.reminders_enabled ?? true,
       individual: defaultValuesOCR
         ? defaultValuesOCR.counterpart
         : prepareCounterpartIndividual(

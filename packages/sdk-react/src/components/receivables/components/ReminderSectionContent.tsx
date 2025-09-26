@@ -2,9 +2,7 @@ import type { SectionGeneralProps } from '../InvoiceDetails/CreateReceivable/sec
 import { ReminderOverdue } from './ReminderOverdue';
 import { CreateReceivablesFormProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { ReminderBeforeDueDate } from '@/components/receivables/components/ReminderBeforeDueDate';
-import { useMoniteContext } from '@/core/context/MoniteContext';
-import { useCounterpartById } from '@/core/queries';
-import { t } from '@lingui/macro';
+import { useCounterpartById, useCounterpartContactList } from '@/core/queries';
 import { useLingui } from '@lingui/react';
 import { Alert } from '@mui/material';
 import { useFormContext } from 'react-hook-form';
@@ -25,7 +23,6 @@ export const ReminderSectionContent = ({
   handleEditCounterpartModal,
   handleEditProfileState,
 }: ReminderSectionProps) => {
-  const { api } = useMoniteContext();
   const { i18n } = useLingui();
 
   const { watch } = useFormContext<CreateReceivablesFormProps>();
@@ -33,27 +30,19 @@ export const ReminderSectionContent = ({
 
   const { data: counterpart, isLoading: isCounterpartLoading } =
     useCounterpartById(counterpartId);
+  const { data: counterpartContacts, isLoading: isCounterpartContactsLoading } =
+    useCounterpartContactList(counterpartId);
 
-  const {
-    data: hasCounterpartDefaultContactEmail,
-    isLoading: isCounterpartDefaultContactEmailLoading,
-  } = api.counterparts.getCounterpartsIdContacts.useQuery(
-    {
-      path: { counterpart_id: counterpartId ?? '' },
-    },
-    {
-      enabled: Boolean(counterpart?.type === 'organization'),
-      select: (data) =>
-        Boolean(data.data.find((contact) => contact.is_default)?.email),
-    }
-  );
+  const counterpartDefaultContactEmail = counterpartContacts?.find((contact) => contact?.is_default)?.email;
 
-  const hasValidReminderEmail =
-    counterpart && 'individual' in counterpart
-      ? Boolean(counterpart.individual.email)
-      : hasCounterpartDefaultContactEmail;
+  const validReminderEmail = 
+    counterpartDefaultContactEmail ? 
+    counterpartDefaultContactEmail : 
+    counterpartContacts && counterpartContacts?.length > 0 ? 
+    counterpartContacts?.[0]?.email : counterpart && 'organization' in counterpart ? counterpart?.organization?.email : undefined;
 
-  const hasValidReminderEmailLoading = isCounterpartLoading || isCounterpartDefaultContactEmailLoading;
+  const hasValidReminderEmail = Boolean(validReminderEmail);
+  const hasValidReminderEmailLoading = isCounterpartLoading || isCounterpartContactsLoading;
 
   const shouldShowAlert = !hasValidReminderEmailLoading && Boolean(counterpartId) && (!hasValidReminderEmail || !counterpart?.reminders_enabled);
 
@@ -64,24 +53,24 @@ export const ReminderSectionContent = ({
         <div className="mtw:flex mtw:flex-col mtw:items-start mtw:gap-2">
           {!counterpart?.reminders_enabled && hasValidReminderEmail && (
             <span>
-              {t(
-                i18n
-              )`Payment reminders are disabled for this customer. Please enable them in the customer details or turn them off.`}
+              {i18n._(
+                `Payment reminders are disabled for this customer. Please enable them in the customer details or turn them off.`
+              )}
             </span>
           )}
           {!hasValidReminderEmail && counterpart?.reminders_enabled && (
             <span>
-              {t(
-                i18n
-              )`No email address is added for the selected customer. Please add it to the customer details or turn off the reminders.`}
+              {i18n._(
+                `No email address is added for the selected customer. Please add it to the customer details or turn off the reminders.`
+              )}
             </span>
           )}
           
           {!hasValidReminderEmail && !counterpart?.reminders_enabled && (
             <span>
-              {t(
-                i18n
-              )`Reminders are disabled for this customer, and no email address has been added for it. Please update the details or turn off reminders.`}
+              {i18n._(
+                `Reminders are disabled for this customer, and no email address has been added for it. Please update the details or turn off reminders.`
+              )}
             </span>
           )}
 
@@ -96,7 +85,7 @@ export const ReminderSectionContent = ({
                 handleEditCounterpartModal(true);
               }}
             >
-              {t(i18n)`Edit customer`}
+              {i18n._(`Edit customer`)}
             </button>
           )}
         </div>
@@ -116,6 +105,13 @@ export const ReminderSectionContent = ({
         disabled={disabled || isCounterpartLoading}
       />
     </div>
+
+    {validReminderEmail && (
+      <p className="mtw:text-muted-foreground mtw:text-sm mtw:font-medium">
+        {i18n._(`Recipient email: ${validReminderEmail}`)}<br />
+        {i18n._(`You can change it in the customer profile.`)}
+      </p>
+    )}
     </>
   );
 };
