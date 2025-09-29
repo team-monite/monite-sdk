@@ -1,3 +1,4 @@
+import { coerceNumber } from '../../../core/utils/zodUtils';
 import { ReceiptPreview } from '../ReceiptPreview';
 import { ReceiptStatusChip } from '../ReceiptsInbox/ReceiptCard';
 import { useDeleteReceipt } from '../hooks/useDeleteReceipt';
@@ -8,7 +9,6 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useEntityUserById } from '@/core/queries';
 import { getUserDisplayName } from '@/core/utils';
-import { toMinorUnits } from '@/core/utils/currency';
 import { getMimetypeFromUrl } from '@/core/utils/files';
 import { safeZodResolver } from '@/core/utils/safeZodResolver';
 import { ConfirmationModal } from '@/ui/ConfirmationModal/ConfirmationModal';
@@ -60,17 +60,12 @@ const getValidationSchema = (i18n: I18n) =>
       .string()
       .min(1, t(i18n)`Merchant location is required`)
       .max(255, t(i18n)`Value must be at most 255 characters`),
-    totalAmount: z.coerce
-      .number({ error: t(i18n)`Amount is required` })
-      .min(0, t(i18n)`Total amount must be 0 or greater`)
-      .refine(
-        (value) => {
-          return toMinorUnits(value);
-        },
-        {
-          message: t(i18n)`Please enter a valid amount`,
-        }
-      ),
+    totalAmount: z.preprocess(
+      coerceNumber,
+      z
+        .number({ error: t(i18n)`Amount is required` })
+        .nonnegative(t(i18n)`Total amount must be 0 or greater`)
+    ),
     date: z.date(t(i18n)`Select a valid date and time`),
   });
 
@@ -347,7 +342,7 @@ export const ReceiptDetails = ({
                           />
                         )}
                       />
-                      <div>
+                      <div className="mtw:flex mtw:flex-col mtw:gap-4">
                         <FormField
                           name="totalAmount"
                           control={control}
