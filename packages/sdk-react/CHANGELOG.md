@@ -1,5 +1,11 @@
 # @monite/sdk-react
 
+## 4.6.5
+
+### Patch Changes
+
+- 3cdedbb: Fixed issue with bank account creation
+
 ## 4.6.4
 
 ### Patch Changes
