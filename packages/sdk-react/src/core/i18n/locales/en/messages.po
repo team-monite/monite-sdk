@@ -810,7 +810,7 @@ msgstr "American Samoa"
 #: src/components/receivables/components/InvoiceDetailsTabDetails.tsx:83
 #: src/components/receivables/components/InvoiceDetailsTabScheduledInvoices.tsx:104
 #: src/components/receivables/components/InvoicesTable.tsx:350
-#: src/components/receivables/components/PaymentRecordForm.tsx:74
+#: src/components/receivables/components/PaymentRecordForm.tsx:73
 #: src/components/receivables/components/QuotesTable.tsx:202
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewLegacy.tsx:229
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewMonite.tsx:282
@@ -1782,7 +1782,7 @@ msgstr "Canadian QST number (Québec)"
 #: src/components/receivables/components/InvoiceDeleteModal.tsx:78
 #: src/components/receivables/components/InvoiceDetailsOverviewRecurrenceSection.tsx:115
 #: src/components/receivables/components/MarkAsUncollectibleModal.tsx:81
-#: src/components/receivables/components/PaymentRecordForm.tsx:140
+#: src/components/receivables/components/PaymentRecordForm.tsx:139
 #: src/components/receivables/components/RecordManualPaymentModal.tsx:144
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:548
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:968
@@ -2753,7 +2753,7 @@ msgstr "Created at"
 
 #: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.tsx:207
 #: src/components/approvalPolicies/useApprovalPolicyTrigger.tsx:59
-#: src/components/receivables/components/ManualPaymentRecordDetails.tsx:104
+#: src/components/receivables/components/ManualPaymentRecordDetails.tsx:103
 #: src/components/tags/TagsTable/TagsTable.tsx:172
 msgid "Created by"
 msgstr "Created by"
@@ -2922,7 +2922,7 @@ msgstr "Danish Krone"
 #: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:152
 #: src/components/expenses/TransactionDetails/TransactionDetails.tsx:117
 #: src/components/receivables/components/InvoiceDetailsTabScheduledInvoices.tsx:101
-#: src/components/receivables/components/PaymentRecordForm.tsx:110
+#: src/components/receivables/components/PaymentRecordForm.tsx:109
 #: src/components/receivables/validation.ts:263
 msgid "Date"
 msgstr "Date"
@@ -3979,7 +3979,7 @@ msgstr "End of the month"
 #~ msgid "Enter a valid email address"
 #~ msgstr "Enter a valid email address"
 
-#: src/components/receivables/components/PaymentRecordForm.tsx:95
+#: src/components/receivables/components/PaymentRecordForm.tsx:94
 msgid "Enter full amount due of"
 msgstr "Enter full amount due of"
 
@@ -4646,7 +4646,7 @@ msgstr "from"
 msgid "From (including)"
 msgstr "From (including)"
 
-#: src/components/receivables/components/ManualPaymentRecordDetails.tsx:79
+#: src/components/receivables/components/ManualPaymentRecordDetails.tsx:78
 msgid "from {0}"
 msgstr "from {0}"
 
@@ -6137,7 +6137,7 @@ msgstr "Managers and owners must be under 120 years old."
 msgid "Manual Cash Disburse"
 msgstr "Manual Cash Disburse"
 
-#: src/components/receivables/components/ManualPaymentRecordDetails.tsx:69
+#: src/components/receivables/components/ManualPaymentRecordDetails.tsx:68
 msgid "Manual payment record"
 msgstr "Manual payment record"
 
@@ -7729,7 +7729,7 @@ msgstr "Please, add at least 1 item to proceed with this invoice"
 #~ "Please, check the details of your payment record.\n"
 #~ "You won't be able to change or delete it after."
 
-#: src/components/receivables/components/ManualPaymentRecordDetails.tsx:117
+#: src/components/receivables/components/ManualPaymentRecordDetails.tsx:116
 msgid ""
 "Please, check the details of your payment record.\n"
 "You won’t be able to change or delete it after."
@@ -8178,7 +8178,7 @@ msgstr "Receivables tabs"
 msgid "Receive payments to"
 msgstr "Receive payments to"
 
-#: src/components/receivables/components/ManualPaymentRecordDetails.tsx:88
+#: src/components/receivables/components/ManualPaymentRecordDetails.tsx:87
 msgid "Received"
 msgstr "Received"
 
@@ -8192,7 +8192,7 @@ msgstr "Reconciliation"
 
 #: src/components/receivables/components/InvoiceDetailsActions.tsx:209
 #: src/components/receivables/components/InvoiceDetailsTabPayments.tsx:174
-#: src/components/receivables/components/PaymentRecordForm.tsx:67
+#: src/components/receivables/components/PaymentRecordForm.tsx:66
 msgid "Record payment"
 msgstr "Record payment"
 
@@ -8258,7 +8258,7 @@ msgstr "Recurring"
 msgid "Recurring invoice"
 msgstr "Recurring invoice"
 
-#: src/components/receivables/components/ManualPaymentRecordDetails.tsx:96
+#: src/components/receivables/components/ManualPaymentRecordDetails.tsx:95
 msgid "Reference"
 msgstr "Reference"
 
@@ -8645,7 +8645,7 @@ msgstr "Saudi Riyal"
 #: src/components/receivables/components/EditCounterpartModal.tsx:439
 #: src/components/receivables/components/EntityProfileModal.tsx:192
 #: src/components/receivables/components/InvoiceDetailsOverviewRecurrenceSection.tsx:123
-#: src/components/receivables/components/PaymentRecordForm.tsx:149
+#: src/components/receivables/components/PaymentRecordForm.tsx:148
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:971
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:1182
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsDialog.tsx:38
@@ -9868,7 +9868,7 @@ msgstr "thumb down"
 msgid "thumb up"
 msgstr "thumb up"
 
-#: src/components/receivables/components/PaymentRecordForm.tsx:117
+#: src/components/receivables/components/PaymentRecordForm.tsx:116
 #: src/components/receivables/validation.ts:266
 msgid "Time"
 msgstr "Time"
