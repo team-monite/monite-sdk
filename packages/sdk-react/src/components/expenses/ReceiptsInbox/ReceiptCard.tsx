@@ -29,7 +29,7 @@ export const ReceiptCard = ({ receipt, user }: ReceiptCardProps) => {
   const NBSP = '\u00A0'; // non-breaking space
   const formattedDate = i18n.date(receipt.created_at, locale.dateFormat);
   const formattedAmount =
-    receipt.total_amount && receipt.currency
+    receipt.total_amount != null && receipt.currency
       ? formatCurrencyToDisplay(receipt.total_amount, receipt.currency)
       : NBSP;
   const formattedIssuedDate = receipt.issued_at
