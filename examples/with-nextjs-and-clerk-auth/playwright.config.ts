@@ -16,6 +16,10 @@ const PORT = process.env.PORT || 3000;
 // Set webServer.url and use.baseURL with the location of the WebServer
 const baseURL = `http://localhost:${PORT}`;
 
+// Determine which command to use based on environment variable
+const isProduction = process.env.E2E_MODE === 'production';
+const serverCommand = isProduction ? 'yarn build && yarn start' : 'yarn dev';
+
 export default defineConfig({
   testDir: './e2e/tests',
   fullyParallel: false,
@@ -39,7 +43,7 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'yarn dev',
+    command: serverCommand,
     url: baseURL,
     timeout: 120_000, // Increase timeout to 120 seconds for CI environments
     reuseExistingServer: !process.env.CI,
