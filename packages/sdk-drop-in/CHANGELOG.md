@@ -1,5 +1,11 @@
 # @monite/sdk-drop-in
 
+## 2.5.5
+
+### Patch Changes
+
+- 3cdedbb: Fixed issue with bank account creation
+
 ## 2.5.4
 
 ### Patch Changes
