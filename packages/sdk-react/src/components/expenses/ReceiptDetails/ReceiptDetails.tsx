@@ -359,7 +359,7 @@ export const ReceiptDetails = ({
                               variant="standard"
                               type="number"
                               placeholder="0"
-                              inputProps={{ min: 0 }}
+                              inputProps={{ min: 0, step: 0.01 }}
                               error={Boolean(error)}
                               helperText={error?.message}
                               fullWidth
