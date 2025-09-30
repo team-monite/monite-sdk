@@ -4236,7 +4236,7 @@ __metadata:
     react-dom: "npm:^18.1.0"
     react-router-dom: "npm:^6.3.0"
     react-use: "npm:^17.3.2"
-    rimraf: "npm:^6.0.1"
+    rimraf: "npm:~6.0.1"
     typescript: "npm:~5.5.4"
     vite: "npm:^7.0.0"
   languageName: unknown
@@ -19734,7 +19734,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rimraf@npm:^6.0.1, rimraf@npm:~6.0.1":
+"rimraf@npm:~6.0.1":
   version: 6.0.1
   resolution: "rimraf@npm:6.0.1"
   dependencies:
