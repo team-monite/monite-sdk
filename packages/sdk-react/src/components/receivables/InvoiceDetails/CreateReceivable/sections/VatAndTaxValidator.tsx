@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react';
-
 import { components } from '@/api';
-import { i18n } from '@lingui/core';
 import { t } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
 import { Alert, Button, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
 
 interface VatAndTaxValidatorProps {
   isEntity?: boolean;
@@ -26,6 +25,7 @@ export const VatAndTaxValidator = ({
   vatIds,
   taxId,
 }: VatAndTaxValidatorProps) => {
+  const { i18n } = useLingui();
   const [isVatMissing, setIsVatMissing] = useState<boolean>(false);
   const [isTaxMissing, setIsTaxMissing] = useState<boolean>(false);
 

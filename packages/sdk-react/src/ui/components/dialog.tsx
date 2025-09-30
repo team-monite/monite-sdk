@@ -1,6 +1,6 @@
 import { cn } from '@/ui/lib/utils';
-import { i18n } from '@lingui/core';
 import { t } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { XIcon } from 'lucide-react';
 import * as React from 'react';
@@ -55,6 +55,8 @@ function DialogContent({
   showCloseButton?: boolean;
   fullScreen?: boolean;
 }) {
+  const { i18n } = useLingui();
+
   return (
     <DialogPortal data-slot="dialog-portal">
       <DialogOverlay />
