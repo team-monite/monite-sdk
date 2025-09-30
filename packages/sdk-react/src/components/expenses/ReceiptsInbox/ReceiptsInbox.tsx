@@ -1,3 +1,4 @@
+import { ReceiptDetails } from '../ReceiptDetails';
 import { useGetMailboxes } from '../hooks/useGetMailboxes';
 import { useGetReceipts } from '../hooks/useGetReceipts';
 import { useInfiniteGetReceipts } from '../hooks/useInfiniteGetReceipts';
@@ -51,6 +52,11 @@ export const ReceiptsInbox = ({
 
   const [isUploadMenuOpen, setUploadMenuOpen] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  const [isReceiptDetailsOpen, setIsReceiptDetailsOpen] = useState(false);
+  const [selectedReceipt, setSelectedReceipt] = useState<
+    components['schemas']['ReceiptResponseSchema'] | undefined
+  >(undefined);
 
   const { data: user } = useEntityUserByAuthToken();
 
@@ -162,22 +168,24 @@ export const ReceiptsInbox = ({
 
   const { receiptUploadFromFileMutation } = useUploadNewReceiptFile();
 
-  const { data: mailboxexData } = useGetMailboxes(isReadReceiptsAllowed);
-  const receiptsEmailAddress = mailboxexData?.data?.find(
+  const { data: mailboxesData } = useGetMailboxes(isReadReceiptsAllowed);
+  const receiptsEmailAddress = mailboxesData?.data?.find(
     (mailbox) =>
       mailbox.related_object_type === 'receipt' && mailbox.status === 'active'
   )?.mailbox_full_address;
 
   const handleReceiptClick = useCallback(
-    (
-      receipt: components['schemas']['ReceiptResponseSchema'],
-      index: number
-    ) => {
-      console.log('Clicked receipt:', receipt, 'at index:', index);
-      // TODO: Handle receipt click - open details modal
+    (receipt: components['schemas']['ReceiptResponseSchema']) => {
+      setSelectedReceipt(receipt);
+      setIsReceiptDetailsOpen(true);
     },
     []
   );
+
+  const handleReceiptClose = useCallback(() => {
+    setSelectedReceipt(undefined);
+    setIsReceiptDetailsOpen(false);
+  }, []);
 
   const handleReceiptUpload = (files: File[]) => {
     files.forEach((file) => {
@@ -215,7 +223,7 @@ export const ReceiptsInbox = ({
         <div className="mtw:space-y-4">
           <div className="mtw:flex mtw:w-full mtw:relative">
             <TabBar
-              defaultValue="all"
+              value={filters[FILTER_TYPE_HAS_TRANSACTION] ?? 'all'}
               onValueChange={(value: string) =>
                 handleChangeTab(value as HasTransactionFilterValue)
               }
@@ -226,12 +234,11 @@ export const ReceiptsInbox = ({
                 <TabBarTrigger value="unmatched">
                   <div className="mtw:flex mtw:items-center">
                     {t(i18n)`Unmatched`}
-                    {unmatchedReceipts?.length &&
-                    unmatchedReceipts?.length > 0 ? (
+                    {(unmatchedReceipts?.length ?? 0) > 0 && (
                       <div className="mtw:ml-1 mtw:rounded-2xl mtw:w-3 mtw:h-3 mtw:bg-primary">
                         &nbsp;
                       </div>
-                    ) : null}
+                    )}
                   </div>
                 </TabBarTrigger>
                 <TabBarTrigger value="matched">{t(
@@ -316,11 +323,19 @@ export const ReceiptsInbox = ({
             )}
           />
         </div>
+        {isReceiptDetailsOpen && selectedReceipt && (
+          <ReceiptDetails
+            receipt={selectedReceipt}
+            open={isReceiptDetailsOpen}
+            onClose={handleReceiptClose}
+          />
+        )}
       </>
     );
   }, [
     isReadReceiptsAllowedLoading,
     isReadReceiptsAllowed,
+    filters,
     i18n,
     unmatchedReceipts?.length,
     receiptsEmailAddress,
@@ -333,9 +348,11 @@ export const ReceiptsInbox = ({
     isFetchingNextPage,
     fetchNextPage,
     errorState,
+    isReceiptDetailsOpen,
+    selectedReceipt,
+    handleReceiptClose,
     handleChangeTab,
     userDataMap,
-    filters,
     error,
     refetch,
   ]);
@@ -345,6 +362,12 @@ export const ReceiptsInbox = ({
       fullScreen
       showCloseButton={false}
       className="mtw:flex mtw:flex-col mtw:h-screen mtw:p-0"
+      onInteractOutside={(e) => {
+        if (isReceiptDetailsOpen) {
+          e.preventDefault();
+          return;
+        }
+      }}
     >
       <div className="mtw:flex mtw:flex-col mtw:gap-4 mtw:px-6 mtw:h-full">
         <DialogHeader className="mtw:py-4">
