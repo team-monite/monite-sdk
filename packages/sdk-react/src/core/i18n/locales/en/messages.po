@@ -693,7 +693,7 @@ msgstr "Algeria"
 msgid "Algerian Dinar"
 msgstr "Algerian Dinar"
 
-#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:229
+#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:233
 msgid "All"
 msgstr "All"
 
@@ -827,7 +827,7 @@ msgstr "Amount due"
 msgid "Amount due ({0})"
 msgstr "Amount due ({0})"
 
-#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:64
+#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:66
 #: src/components/receivables/validation.ts:249
 msgid "Amount is required"
 msgstr "Amount is required"
@@ -1769,8 +1769,8 @@ msgstr "Canadian QST number (Québec)"
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartContactView/CounterpartContactView.tsx:227
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartVatView/CounterpartVatView.tsx:99
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:159
-#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:391
-#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:494
+#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:386
+#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:489
 #: src/components/onboarding/hooks/useOnboardingActions.ts:128
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:85
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:106
@@ -2406,7 +2406,7 @@ msgstr "Copied!"
 msgid "Copy"
 msgstr "Copy"
 
-#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:260
+#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:264
 msgid "Copy inbox email address"
 msgstr "Copy inbox email address"
 
@@ -3043,8 +3043,8 @@ msgstr "Default for Currency"
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.test.tsx:308
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.test.tsx:338
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.test.tsx:370
-#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:469
-#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:493
+#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:464
+#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:488
 #: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:67
 #: src/components/products/ProductDetails/components/ConfirmDeleteMeasureUnitDialogue/ConfirmDeleteMeasureUnitDialogue.tsx:112
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:204
@@ -3162,7 +3162,7 @@ msgstr "Delete Counterpart “{0}“?"
 msgid "Delete payment term?"
 msgstr "Delete payment term?"
 
-#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:491
+#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:486
 msgid "Delete receipt"
 msgstr "Delete receipt"
 
@@ -3270,7 +3270,7 @@ msgstr "Description must be 250 characters or less"
 msgid "Description must be 255 characters or less"
 msgstr "Description must be 255 characters or less"
 
-#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:291
+#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:286
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:361
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:217
 #: src/components/receivables/components/InvoiceDetails.tsx:216
@@ -3493,8 +3493,8 @@ msgstr "Done, continue"
 msgid "Door-To-Door Sales"
 msgstr "Door-To-Door Sales"
 
-#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:278
-#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:216
+#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:273
+#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:217
 msgid "Download"
 msgstr "Download"
 
@@ -3948,8 +3948,8 @@ msgid "Email preview"
 msgstr "Email preview"
 
 #: src/components/expenses/ExpensesTable/ManagerTransactionsTable.tsx:211
-#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:207
-#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:97
+#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:202
+#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:98
 msgid "Employee"
 msgstr "Employee"
 
@@ -4230,11 +4230,11 @@ msgstr "Excluding tax"
 msgid "Executive"
 msgstr "Executive"
 
-#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:79
+#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:80
 msgid "Expense"
 msgstr "Expense"
 
-#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:81
+#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:82
 msgid "Expense {0} details"
 msgstr "Expense {0} details"
 
@@ -5187,7 +5187,7 @@ msgstr "In range"
 msgid "In review"
 msgstr "In review"
 
-#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:248
+#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:252
 msgid "Inbox address:"
 msgstr "Inbox address:"
 
@@ -6199,13 +6199,13 @@ msgstr "Masonry, Stonework, and Plaster"
 msgid "Massage Parlors"
 msgstr "Massage Parlors"
 
-#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:407
-#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:475
+#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:402
+#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:470
 msgid "Match to transaction"
 msgstr "Match to transaction"
 
-#: src/components/expenses/ReceiptsInbox/ReceiptCard.tsx:118
-#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:240
+#: src/components/expenses/ReceiptsInbox/ReceiptCard.tsx:142
+#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:244
 msgid "Matched"
 msgstr "Matched"
 
@@ -6276,7 +6276,7 @@ msgstr "Menu"
 msgid "Merchant"
 msgstr "Merchant"
 
-#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:318
+#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:313
 msgid "Merchant location"
 msgstr "Merchant location"
 
@@ -6284,7 +6284,7 @@ msgstr "Merchant location"
 msgid "Merchant location is required"
 msgstr "Merchant location is required"
 
-#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:305
+#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:300
 msgid "Merchant name"
 msgstr "Merchant name"
 
@@ -6841,12 +6841,12 @@ msgstr "No products or services yet"
 msgid "No Quotes"
 msgstr "No Quotes"
 
-#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:283
-#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:221
+#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:278
+#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:222
 msgid "No receipt file"
 msgstr "No receipt file"
 
-#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:315
+#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:320
 msgid "No receipts yet"
 msgstr "No receipts yet"
 
@@ -7673,8 +7673,8 @@ msgstr "Please correct the errors in persons information."
 #~ msgstr "Please enter a phone number."
 
 #: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:71
-msgid "Please enter a valid amount"
-msgstr "Please enter a valid amount"
+#~ msgid "Please enter a valid amount"
+#~ msgstr "Please enter a valid amount"
 
 #: src/components/onboarding/validators/validators.ts:31
 msgid "Please enter a valid email address."
@@ -7950,7 +7950,7 @@ msgstr "Priority"
 msgid "Priority is required"
 msgstr "Priority is required"
 
-#: src/components/expenses/ReceiptsInbox/ReceiptCard.tsx:49
+#: src/components/expenses/ReceiptsInbox/ReceiptCard.tsx:48
 msgid "Processing"
 msgstr "Processing"
 
@@ -8164,23 +8164,23 @@ msgid "Reason for Payment Code (Russia)"
 msgstr "Reason for Payment Code (Russia)"
 
 #: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:188
-#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:230
-#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:169
+#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:225
+#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:170
 msgid "Receipt"
 msgstr "Receipt"
 
 #: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:220
 #: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:225
 #: src/components/expenses/ReceiptPreview/ReceiptPreview.tsx:29
-#: src/components/expenses/ReceiptsInbox/ReceiptCard.tsx:59
+#: src/components/expenses/ReceiptsInbox/ReceiptCard.tsx:83
 msgid "Receipt {0}"
 msgstr "Receipt {0}"
 
-#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:191
+#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:186
 msgid "Receipt {0} details"
 msgstr "Receipt {0} details"
 
-#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:332
+#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:327
 msgid "Receipt date"
 msgstr "Receipt date"
 
@@ -8192,12 +8192,16 @@ msgstr "Receipt has been moved to trash."
 msgid "Receipt has been updated"
 msgstr "Receipt has been updated"
 
-#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:369
-#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:372
+#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:383
+#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:385
 msgid "Receipt inbox"
 msgstr "Receipt inbox"
 
-#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:312
+#: src/components/expenses/hooks/useUploadNewReceiptFile.ts:16
+msgid "Receipt successfully uploaded"
+msgstr "Receipt successfully uploaded"
+
+#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:317
 msgid "Receipts"
 msgstr "Receipts"
 
@@ -8687,7 +8691,7 @@ msgstr "Saudi Riyal"
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:447
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:464
 #: src/components/counterparts/CounterpartDetails/CounterpartVatForm/CounterpartVatForm.tsx:143
-#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:382
+#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:377
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:87
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:108
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:265
@@ -8728,7 +8732,7 @@ msgstr "Save for later"
 #~ msgid "Save to prompt library"
 #~ msgstr "Save to prompt library"
 
-#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:374
+#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:397
 msgid "Scan receipts"
 msgstr "Scan receipts"
 
@@ -8771,7 +8775,7 @@ msgstr "Script in Monite Script is required"
 msgid "Search"
 msgstr "Search"
 
-#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:271
+#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:275
 msgid "Search by Document ID"
 msgstr "Search by Document ID"
 
@@ -8819,7 +8823,7 @@ msgstr "Security Brokers/Dealers"
 msgid "Select 'Get Paid Now':"
 msgstr "Select 'Get Paid Now':"
 
-#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:74
+#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:69
 msgid "Select a valid date and time"
 msgstr "Select a valid date and time"
 
@@ -8873,8 +8877,8 @@ msgstr "Send failed"
 #~ msgid "Send invoice"
 #~ msgstr "Send invoice"
 
-#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:200
-#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:216
+#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:195
+#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:211
 msgid "Sender"
 msgstr "Sender"
 
@@ -9848,7 +9852,7 @@ msgstr "There was an error loading {0}."
 msgid "They will contact you if your credit score improves and you can reapply."
 msgstr "They will contact you if your credit score improves and you can reapply."
 
-#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:492
+#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:487
 #: src/components/receivables/components/InvoiceCancelModal.tsx:42
 #: src/components/receivables/components/InvoiceDeleteModal.tsx:76
 #: src/components/receivables/components/RecurrenceCancelModal.tsx:85
@@ -10039,7 +10043,7 @@ msgstr "TOTAL"
 msgid "Total ({0})"
 msgstr "Total ({0})"
 
-#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:358
+#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:353
 msgid "Total amount"
 msgstr "Total amount"
 
@@ -10051,7 +10055,7 @@ msgstr "Total amount"
 msgid "Total amount for <0>{totalPendingInvoices}</0> canceled {invoicesPluralForm}: <1>{pendingInvoicesTotalAmountWithCreditNotes}</1>"
 msgstr "Total amount for <0>{totalPendingInvoices}</0> canceled {invoicesPluralForm}: <1>{pendingInvoicesTotalAmountWithCreditNotes}</1>"
 
-#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:65
+#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:67
 msgid "Total amount must be 0 or greater"
 msgstr "Total amount must be 0 or greater"
 
@@ -10091,12 +10095,12 @@ msgstr "Towing Services"
 msgid "Trailer Parks, Campgrounds"
 msgstr "Trailer Parks, Campgrounds"
 
-#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:400
+#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:395
 #: src/components/userRoles/consts.ts:51
 msgid "Transaction"
 msgstr "Transaction"
 
-#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:89
+#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:90
 msgid "Transaction details"
 msgstr "Transaction details"
 
@@ -10351,12 +10355,12 @@ msgstr "Unknown"
 msgid "Unknown payment method"
 msgstr "Unknown payment method"
 
-#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:446
+#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:441
 msgid "Unmatch transaction"
 msgstr "Unmatch transaction"
 
-#: src/components/expenses/ReceiptsInbox/ReceiptCard.tsx:118
-#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:232
+#: src/components/expenses/ReceiptsInbox/ReceiptCard.tsx:142
+#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:236
 msgid "Unmatched"
 msgstr "Unmatched"
 
@@ -10446,7 +10450,7 @@ msgstr "Updating the invoice"
 msgid "Upload a document here."
 msgstr "Upload a document here."
 
-#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:387
+#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:410
 msgid "Upload card transaction receipts and we'll automatically match them to the correct transaction."
 msgstr "Upload card transaction receipts and we'll automatically match them to the correct transaction."
 
@@ -10462,11 +10466,15 @@ msgstr "Upload payable file"
 msgid "Upload payable files"
 msgstr "Upload payable files"
 
-#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:316
+#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:407
+msgid "Upload receipts"
+msgstr "Upload receipts"
+
+#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:321
 msgid "Uploaded receipts will appear here"
 msgstr "Uploaded receipts will appear here"
 
-#: src/components/payables/Payables.tsx:129
+#: src/components/payables/Payables.tsx:121
 msgid "Uploading {0}"
 msgstr "Uploading {0}"
 
@@ -10826,8 +10834,8 @@ msgstr "Vietnam"
 msgid "Vietnamese Đồng"
 msgstr "Vietnamese Đồng"
 
-#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:268
-#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:206
+#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:263
+#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:207
 #: src/components/userRoles/consts.ts:69
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:118
 #: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:174
