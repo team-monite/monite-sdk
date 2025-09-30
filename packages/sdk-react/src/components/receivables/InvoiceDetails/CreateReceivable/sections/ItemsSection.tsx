@@ -9,7 +9,7 @@ import { InvoiceTotals } from './components/Items/InvoiceTotals';
 import { CUSTOM_ID, ProductItem } from './components/Items/ItemSelector';
 import { useLineItemManagement } from './hooks/useLineItemManagement';
 import type { FormLineItemPath, CurrencyEnum } from './types';
-import { VatModeMenu } from '@/components/receivables/components';
+import { VatModeMenu } from '@/components/receivables/components/VatModeMenu';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -161,14 +161,14 @@ export const ItemsSection = ({
           undefined
         );
 
-                 if (itemMeasureUnitId || currentMeasureUnitId) {
-           const fieldPath = `line_items.${index}` as FormLineItemPath;
-           const currentValue = getValues(`line_items.${index}`) || {};
+        if (itemMeasureUnitId || currentMeasureUnitId) {
+          const fieldPath = `line_items.${index}` as FormLineItemPath;
+          const currentValue = getValues(`line_items.${index}`) || {};
 
-           setValueWithValidationLocal(fieldPath, currentValue, {
-             shouldValidate: true,
-           });
-         }
+          setValueWithValidationLocal(fieldPath, currentValue, {
+            shouldValidate: true,
+          });
+        }
       } else if (measureUnitsData?.data?.length) {
         const defaultUnitId = measureUnitsData.data[0]?.id;
         if (defaultUnitId) {
@@ -176,12 +176,12 @@ export const ItemsSection = ({
             `line_items.${index}.product.measure_unit_id`,
             defaultUnitId
           );
-                     const fieldPath = `line_items.${index}` as FormLineItemPath;
-           const currentValue = getValues(`line_items.${index}`) || {};
+          const fieldPath = `line_items.${index}` as FormLineItemPath;
+          const currentValue = getValues(`line_items.${index}`) || {};
 
-           setValueWithValidationLocal(fieldPath, currentValue, {
-             shouldValidate: true,
-           });
+          setValueWithValidationLocal(fieldPath, currentValue, {
+            shouldValidate: true,
+          });
         }
       }
     },

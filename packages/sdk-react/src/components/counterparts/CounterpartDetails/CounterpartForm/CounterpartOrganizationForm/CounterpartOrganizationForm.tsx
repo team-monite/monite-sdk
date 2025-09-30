@@ -23,6 +23,7 @@ import { components } from '@/api';
 import { CounterpartAddressForm } from '@/components/counterparts/CounterpartDetails/CounterpartAddressForm';
 import { CounterpartReminderToggle } from '@/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartReminderToggle';
 import { type DefaultValuesOCROrganization } from '@/components/counterparts/types';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { LanguageCodeEnum } from '@/enums/LanguageCodeEnum';
 import { useDialog } from '@/ui/Dialog';
@@ -69,6 +70,7 @@ export const CounterpartOrganizationForm = (
   props: CounterpartOrganizationFormProps
 ) => {
   const { i18n } = useLingui();
+  const { componentSettings } = useMoniteContext();
   const dialogContext = useDialog();
 
   const {
@@ -119,7 +121,11 @@ export const CounterpartOrganizationForm = (
           ? defaultValuesOCR.counterpart
           : prepareCounterpartOrganization(
               organizationCounterpart?.organization,
-              defaultValues
+              defaultValues,
+              componentSettings?.onboarding?.allowedCountries &&
+                componentSettings?.onboarding?.allowedCountries.length === 1
+                ? componentSettings?.onboarding?.allowedCountries[0]
+                : undefined
             ),
       }),
       [
@@ -128,6 +134,7 @@ export const CounterpartOrganizationForm = (
         organizationCounterpart?.organization,
         defaultValues,
         defaultValuesOCR,
+        componentSettings?.onboarding?.allowedCountries,
       ]
     ),
   });
@@ -201,7 +208,11 @@ export const CounterpartOrganizationForm = (
         ? defaultValuesOCR.counterpart
         : prepareCounterpartOrganization(
             organizationCounterpart?.organization,
-            defaultValues
+            defaultValues,
+            componentSettings?.onboarding?.allowedCountries &&
+              componentSettings?.onboarding?.allowedCountries.length === 1
+              ? componentSettings?.onboarding?.allowedCountries[0]
+              : undefined
           ),
     });
   }, [
@@ -211,6 +222,7 @@ export const CounterpartOrganizationForm = (
     organizationCounterpart?.tax_id,
     organizationCounterpart?.reminders_enabled,
     reset,
+    componentSettings?.onboarding?.allowedCountries,
   ]);
 
   if (!isCreateAllowed && !counterpartId) {

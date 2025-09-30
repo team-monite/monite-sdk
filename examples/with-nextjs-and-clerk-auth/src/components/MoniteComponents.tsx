@@ -21,7 +21,6 @@ import {
   UserRoles as UserRolesBase,
   TemplateSettings as TemplateSettingsBase,
 } from '@monite/sdk-react';
-import { Theme } from '@monite/sdk-react/mui-styles';
 import {
   Box,
   Button,
@@ -137,7 +136,7 @@ enum USPayDialogPage {
 const ChooseBankAccountPage = () => {
   const [selectedValue, setSelectedValue] = useState('option1');
 
-  const itemProps: SxProps<Theme> = {
+  const itemProps: SxProps = {
     borderRadius: '3px',
     borderWidth: '1px',
     m: '1px',
@@ -145,7 +144,7 @@ const ChooseBankAccountPage = () => {
     borderColor: 'divider',
     p: 2,
   };
-  const selectedProps: SxProps<Theme> = {
+  const selectedProps: SxProps = {
     borderRadius: '3px',
     borderWidth: '2px',
     borderStyle: 'solid',
@@ -158,8 +157,9 @@ const ChooseBankAccountPage = () => {
       <DialogTitle variant="h3">Choose bank account</DialogTitle>
       <DialogContent sx={{ p: 3 }}>
         <Stack direction="column" alignItems="stretch" gap={2}>
-          <Stack
-            direction="row"
+          <Box
+            display="flex"
+            flexDirection="row"
             alignItems="center"
             sx={selectedValue == 'option1' ? selectedProps : itemProps}
             onClick={() => setSelectedValue('option1')}
@@ -179,10 +179,11 @@ const ChooseBankAccountPage = () => {
                 Checking account • 7004 8841 7002 1630 0
               </Typography>
             </Stack>
-          </Stack>
+          </Box>
 
-          <Stack
-            direction="row"
+          <Box
+            display="flex"
+            flexDirection="row"
             alignItems="center"
             sx={selectedValue == 'option2' ? selectedProps : itemProps}
             onClick={() => setSelectedValue('option2')}
@@ -202,10 +203,11 @@ const ChooseBankAccountPage = () => {
                 Checking account • 8744 3360 8539 9580
               </Typography>
             </Stack>
-          </Stack>
+          </Box>
 
-          <Stack
-            direction="row"
+          <Box
+            display="flex"
+            flexDirection="row"
             alignItems="center"
             sx={selectedValue == 'option3' ? selectedProps : itemProps}
             onClick={() => setSelectedValue('option3')}
@@ -225,7 +227,7 @@ const ChooseBankAccountPage = () => {
                 Checking account • 3690 8597 4129 4280
               </Typography>
             </Stack>
-          </Stack>
+          </Box>
         </Stack>
       </DialogContent>
     </>
@@ -241,7 +243,7 @@ const TransferTypePage = () => {
     setSelectedValue(event.target.value);
   };
 
-  const itemProps: SxProps<Theme> = {
+  const itemProps: SxProps = {
     borderRadius: '6px',
     borderWidth: '1px',
     ml: '1px',
@@ -252,7 +254,7 @@ const TransferTypePage = () => {
     borderColor: 'divider',
     p: '2px 12px 6px 2px',
   };
-  const selectedProps: SxProps<Theme> = {
+  const selectedProps: SxProps = {
     borderRadius: '6px',
     borderWidth: '2px',
     borderStyle: 'solid',

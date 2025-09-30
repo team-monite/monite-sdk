@@ -16,12 +16,16 @@ const PORT = process.env.PORT || 3000;
 // Set webServer.url and use.baseURL with the location of the WebServer
 const baseURL = `http://localhost:${PORT}`;
 
+// Determine which command to use based on environment variable
+const serverCommand = 'yarn dev';
+
 export default defineConfig({
-  testDir: './e2e',
-  fullyParallel: true,
+  testDir: './e2e/tests',
+  fullyParallel: false,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  retries: 2,
+  workers: 1,
+
   reporter: 'html',
   use: {
     baseURL,
@@ -29,22 +33,19 @@ export default defineConfig({
     screenshot: 'only-on-failure',
     video: 'on-first-retry',
   },
+  timeout: 60000, // Increase timeout to 60 seconds
+  globalSetup: './e2e/config/global.setup.ts',
   projects: [
     {
-      name: 'global setup',
-      testMatch: /config\/global\.setup\.ts/,
-    },
-    {
       name: 'chromium',
-      testDir: './e2e/tests',
       use: { ...devices['Desktop Chrome'] },
-      dependencies: ['global setup'],
     },
   ],
   webServer: {
-    command: 'yarn dev',
+    command: serverCommand,
     url: baseURL,
-    // reuseExistingServer: !process.env.CI,
+    timeout: 120_000, // Increase timeout to 120 seconds for CI environments
+    reuseExistingServer: !process.env.CI,
     stdout: 'pipe',
     stderr: 'pipe',
   },

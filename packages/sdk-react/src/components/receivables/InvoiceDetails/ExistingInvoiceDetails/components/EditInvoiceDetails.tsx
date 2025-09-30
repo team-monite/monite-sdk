@@ -7,11 +7,9 @@ import {
   UpdateReceivablesFormProps,
 } from '../../CreateReceivable/validation';
 import { components } from '@/api';
-import {
-  RemindersSection,
-  CreateInvoiceReminderDialog,
-  EditInvoiceReminderDialog,
-} from '@/components/receivables/components';
+import { CreateInvoiceReminderDialog } from '@/components/receivables/components/CreateInvoiceReminderDialog';
+import { EditInvoiceReminderDialog } from '@/components/receivables/components/EditInvoiceReminderDialog';
+import { RemindersSection } from '@/components/receivables/components/RemindersSection';
 import { INVOICE_DOCUMENT_AUTO_ID } from '@/components/receivables/consts';
 import { useInvoiceReminderDialogs } from '@/components/receivables/hooks/useInvoiceReminderDialogs';
 import { useMeasureUnitsMapping } from '@/components/receivables/hooks/useMeasureUnitsMapping';

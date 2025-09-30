@@ -1,15 +1,10 @@
-import { FormProvider } from 'react-hook-form';
-
-import { components } from '@/api';
-import { RHFCheckbox } from '@/ui/RHF/RHFCheckbox';
-import { RHFDatePicker } from '@/ui/RHF/RHFDatePicker';
-import { RHFTextField } from '@/ui/RHF/RHFTextField';
-import { RHFTextFieldPhone } from '@/ui/RHF/RHFTextFieldPhone';
-import type { I18n } from '@lingui/core';
-import { t } from '@lingui/macro';
-import { useLingui } from '@lingui/react';
-import { FormGroup, FormHelperText } from '@mui/material';
-
+import { OnboardingAddress } from '../OnboardingAddress';
+import { OnboardingFormActions } from '../OnboardingFormActions';
+import {
+  OnboardingForm,
+  OnboardingStepContent,
+  OnboardingSubTitle,
+} from '../OnboardingLayout';
 import { useOnboardingRequirementsContext } from '../context';
 import { getIdentificationLabel } from '../helpers';
 import {
@@ -20,15 +15,18 @@ import {
   requirementToRelationship,
 } from '../helpers';
 import { useOnboardingPerson } from '../hooks';
-import { OnboardingAddress } from '../OnboardingAddress';
-import { OnboardingFormActions } from '../OnboardingFormActions';
-import {
-  OnboardingForm,
-  OnboardingStepContent,
-  OnboardingSubTitle,
-} from '../OnboardingLayout';
 import type { OnboardingRelationshipCode } from '../types';
 import { OnboardingRepresentativeRole } from './OnboardingRepresentativeRole';
+import { components } from '@/api';
+import { RHFCheckbox } from '@/ui/RHF/RHFCheckbox';
+import { RHFDatePicker } from '@/ui/RHF/RHFDatePicker';
+import { RHFTextField } from '@/ui/RHF/RHFTextField';
+import { RHFTextFieldPhone } from '@/ui/RHF/RHFTextFieldPhone';
+import type { I18n } from '@lingui/core';
+import { t } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
+import { FormGroup, FormHelperText } from '@mui/material';
+import { FormProvider } from 'react-hook-form';
 
 export function OnboardingPerson() {
   const { i18n } = useLingui();
@@ -239,6 +237,7 @@ export function OnboardingPerson() {
                 label={t(i18n)`Date of birth`}
                 name="date_of_birth"
                 control={control}
+                valueAs="string"
               />
             )}
           </OnboardingStepContent>

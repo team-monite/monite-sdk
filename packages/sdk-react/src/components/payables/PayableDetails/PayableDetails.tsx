@@ -1,5 +1,7 @@
-import { useId, useState } from 'react';
-
+import { OptionalFields } from '../types';
+import { PayableDetailsForceActionDialog } from './PayableDetailsApprovalFlow/PayableDetailsForceActionDialog';
+import { PayableDetailsForm } from './PayableDetailsForm';
+import { usePayableDetails, UsePayableDetailsProps } from './usePayableDetails';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { CustomerTypes } from '@/components/counterparts/types';
 import { PayableDetailsAttachFile } from '@/components/payables/PayableDetails/PayableDetailsAttachFile';
@@ -9,25 +11,22 @@ import { PayableDetailsNoAttachedFile } from '@/components/payables/PayableDetai
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
-import { AccessRestriction } from '@/ui/accessRestriction';
 import { FileViewer } from '@/ui/FileViewer';
+import { AccessRestriction } from '@/ui/accessRestriction';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
 import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Alert, Backdrop, Box, DialogContent, Grid } from '@mui/material';
-
-import { OptionalFields } from '../types';
-import { PayableDetailsForceActionDialog } from './PayableDetailsApprovalFlow/PayableDetailsForceActionDialog';
-import { PayableDetailsForm } from './PayableDetailsForm';
-import { usePayableDetails, UsePayableDetailsProps } from './usePayableDetails';
+import { useId, useState } from 'react';
 
 export interface PayablesDetailsProps extends UsePayableDetailsProps {
-  onClose?: () => void;
   optionalFields?: OptionalFields;
   /** @see {@link CustomerTypes} */
   customerTypes?: CustomerTypes;
+  enableGLCodes?: boolean;
+  onClose?: () => void;
 }
 
 export const PayableDetails = (props: PayablesDetailsProps) => (
@@ -40,6 +39,7 @@ const PayableDetailsBase = ({
   id,
   optionalFields,
   customerTypes,
+  enableGLCodes,
   onClose,
   onSaved,
   onCanceled,
@@ -77,6 +77,7 @@ const PayableDetailsBase = ({
     },
   } = usePayableDetails({
     id,
+    enableGLCodes,
     onSaved,
     onCanceled,
     onSubmitted,
@@ -234,6 +235,7 @@ const PayableDetailsBase = ({
                     customerTypes ||
                     componentSettings?.counterparts?.customerTypes
                   }
+                  enableGLCodes={enableGLCodes}
                 />
               ) : (
                 payable && (
@@ -241,6 +243,7 @@ const PayableDetailsBase = ({
                     updateTags={(tags) => id && updateTags(id, tags || [])}
                     payable={payable}
                     optionalFields={optionalFields}
+                    enableGLCodes={enableGLCodes}
                   />
                 )
               )}
