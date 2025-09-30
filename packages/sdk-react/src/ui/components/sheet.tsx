@@ -1,6 +1,6 @@
 import { cn } from '@/ui/lib/utils';
-import { i18n } from '@lingui/core';
 import { t } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
 import * as SheetPrimitive from '@radix-ui/react-dialog';
 import { XIcon } from 'lucide-react';
 import * as React from 'react';
@@ -64,6 +64,8 @@ function SheetContent({
   container?: Element;
   showCloseButton?: boolean;
 }) {
+  const { i18n } = useLingui();
+
   return (
     <SheetPortal container={container}>
       <SheetOverlay />

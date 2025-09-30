@@ -2139,8 +2139,8 @@ msgstr "Cleaning and Maintenance"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:204
 #: src/components/userRoles/UserRoleDetails/UserRoleDeleteDialog/UserRoleDeleteDialog.tsx:60
 #: src/ui/accessRestriction/AccessRestrictionModal.tsx:37
-#: src/ui/components/dialog.tsx:86
-#: src/ui/components/sheet.tsx:90
+#: src/ui/components/dialog.tsx:80
+#: src/ui/components/sheet.tsx:92
 msgid "Close"
 msgstr "Close"
 
@@ -3567,7 +3567,7 @@ msgid "Door-To-Door Sales"
 msgstr "Door-To-Door Sales"
 
 #: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:273
-#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:217
+#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:216
 msgid "Download"
 msgstr "Download"
 
@@ -4026,7 +4026,7 @@ msgstr "Email preview"
 
 #: src/components/expenses/ExpensesTable/ManagerTransactionsTable.tsx:211
 #: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:202
-#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:98
+#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:97
 msgid "Employee"
 msgstr "Employee"
 
@@ -4313,7 +4313,7 @@ msgid "Expense"
 msgstr "Expense"
 
 #. placeholder {0}: transaction?.id
-#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:82
+#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:81
 msgid "Expense {0} details"
 msgstr "Expense {0} details"
 
@@ -4429,8 +4429,8 @@ msgstr "Failed to Load {entityName}"
 msgid "Failed to load GL codes"
 msgstr "Failed to load GL codes"
 
-#: src/ui/ResponsiveGrid/ResponsiveGrid.tsx:322
-#: src/ui/ResponsiveGrid/ResponsiveGrid.tsx:357
+#: src/ui/ResponsiveGrid/ResponsiveGrid.tsx:304
+#: src/ui/ResponsiveGrid/ResponsiveGrid.tsx:339
 msgid "Failed to load more items"
 msgstr "Failed to load more items"
 
@@ -4746,7 +4746,7 @@ msgid "From (including)"
 msgstr "From (including)"
 
 #. placeholder {0}: invoice.counterpart_name
-#: src/components/receivables/components/ManualPaymentRecordDetails.tsx:78
+#: src/components/receivables/components/ManualPaymentRecordDetails.tsx:79
 msgid "from {0}"
 msgstr "from {0}"
 
@@ -6986,7 +6986,7 @@ msgid "No Quotes"
 msgstr "No Quotes"
 
 #: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:278
-#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:222
+#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:221
 msgid "No receipt file"
 msgstr "No receipt file"
 
@@ -7930,7 +7930,7 @@ msgstr "Please use some of the rows before adding new ones."
 msgid "Please, add at least 1 item to proceed with this invoice"
 msgstr "Please, add at least 1 item to proceed with this invoice"
 
-#: src/components/receivables/components/ManualPaymentRecordDetails.tsx:116
+#: src/components/receivables/components/ManualPaymentRecordDetails.tsx:117
 msgid ""
 "Please, check the details of your payment record.\n"
 "  You won’t be able to change or delete it after."
@@ -8349,7 +8349,7 @@ msgstr "Reason for Payment Code (Russia)"
 
 #: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:188
 #: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:225
-#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:170
+#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:169
 msgid "Receipt"
 msgstr "Receipt"
 
@@ -8891,7 +8891,7 @@ msgstr "Saudi Riyal"
 #: src/components/receivables/components/EditCounterpartModal.tsx:439
 #: src/components/receivables/components/EntityProfileModal.tsx:192
 #: src/components/receivables/components/InvoiceDetailsOverviewRecurrenceSection.tsx:123
-#: src/components/receivables/components/PaymentRecordForm.tsx:148
+#: src/components/receivables/components/PaymentRecordForm.tsx:149
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:973
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:1184
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsDialog.tsx:38
@@ -10695,11 +10695,7 @@ msgstr "Upload payable file"
 msgid "Upload payable files"
 msgstr "Upload payable files"
 
-#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:407
-msgid "Upload receipts"
-msgstr "Upload receipts"
-
-#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:321
+#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:316
 msgid "Uploaded receipts will appear here"
 msgstr "Uploaded receipts will appear here"
 
@@ -11067,7 +11063,7 @@ msgid "Vietnamese Đồng"
 msgstr "Vietnamese Đồng"
 
 #: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:263
-#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:207
+#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:206
 #: src/components/userRoles/consts.ts:69
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:118
 #: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:174
