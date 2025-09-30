@@ -2,7 +2,6 @@ import { ReceiptPreview } from '../ReceiptPreview';
 import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
-import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useCurrencies } from '@/core/hooks';
 import { useEntityUserById } from '@/core/queries/useEntityUsers';
 import { getMimetypeFromUrl } from '@/core/utils/files';
@@ -43,7 +42,6 @@ const TransactionDetailsBase = ({
 }: TagFormModalProps) => {
   const { i18n } = useLingui();
   const { api, locale } = useMoniteContext();
-  const { root } = useRootElements();
   const { formatCurrencyToDisplay } = useCurrencies();
 
   const [isReceiptViewerOpen, setIsReceiptViewerOpen] = useState(false);
@@ -76,7 +74,7 @@ const TransactionDetailsBase = ({
         }}
         modal={false}
       >
-        <SheetContent container={root} className="mtw:w-[600px]">
+        <SheetContent className="mtw:w-[600px]">
           <SheetHeader>
             <SheetTitle>{t(i18n)`Expense`}</SheetTitle>
             <SheetDescription className="mtw:sr-only">
@@ -99,7 +97,9 @@ const TransactionDetailsBase = ({
                             {t(i18n)`Employee`}
                           </td>
                           <td className="mtw:p-3 mtw:font-medium">
-                            {getUserDisplayName({ ...transactionUser }) || '-'}
+                            {transactionUser
+                              ? getUserDisplayName(transactionUser)
+                              : '-'}
                           </td>
                         </tr>
                       )}

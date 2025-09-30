@@ -22,7 +22,6 @@ export const ReceiptCard = ({ receipt, user }: ReceiptCardProps) => {
 
   const userDisplayName = useMemo(() => getUserDisplayName(user || {}), [user]);
 
-  const isMatched = !!receipt.transaction_id;
   const isImageFile =
     receipt.file_url &&
     getMimetypeFromUrl(receipt.file_url) !== 'application/pdf';
@@ -30,7 +29,7 @@ export const ReceiptCard = ({ receipt, user }: ReceiptCardProps) => {
   const NBSP = '\u00A0'; // non-breaking space
   const formattedDate = i18n.date(receipt.created_at, locale.dateFormat);
   const formattedAmount =
-    receipt.total_amount && receipt.currency
+    receipt.total_amount != null && receipt.currency
       ? formatCurrencyToDisplay(receipt.total_amount, receipt.currency)
       : NBSP;
   const formattedIssuedDate = receipt.issued_at
@@ -42,15 +41,7 @@ export const ReceiptCard = ({ receipt, user }: ReceiptCardProps) => {
       <CardHeader className="mtw:gap-1 mtw:px-5">
         <div className="mtw:flex mtw:justify-start mtw:items-center mtw:gap-1">
           <CardTitle className="mtw:font-medium">{formattedDate}</CardTitle>
-          <span
-            className={`mtw:inline-block mtw:rounded-sm mtw:px-2 mtw:py-0.5 mtw:text-[0.80rem] mtw:font-bold mtw:whitespace-nowrap ${
-              isMatched
-                ? 'mtw:bg-success-95 mtw:text-success-30'
-                : 'mtw:bg-danger-100 mtw:text-danger-10'
-            }`}
-          >
-            {isMatched ? t(i18n)`Matched` : t(i18n)`Unmatched`}
-          </span>
+          <ReceiptStatusChip isMatched={Boolean(receipt.transaction_id)} />
         </div>
         <p className="mtw:text-sm mtw:text-muted-foreground mtw:overflow-hidden mtw:text-ellipsis mtw:whitespace-nowrap">
           {userDisplayName || NBSP}
@@ -110,5 +101,21 @@ export const ReceiptCardSkeleton = () => {
         </div>
       </CardContent>
     </Card>
+  );
+};
+
+export const ReceiptStatusChip = ({ isMatched }: { isMatched: boolean }) => {
+  const { i18n } = useLingui();
+
+  return (
+    <span
+      className={`mtw:inline-block mtw:rounded-sm mtw:px-2 mtw:py-0.5 mtw:text-[0.80rem] mtw:font-bold mtw:whitespace-nowrap ${
+        isMatched
+          ? 'mtw:bg-success-95 mtw:text-success-30'
+          : 'mtw:bg-danger-100 mtw:text-danger-10'
+      }`}
+    >
+      {isMatched ? t(i18n)`Matched` : t(i18n)`Unmatched`}
+    </span>
   );
 };
