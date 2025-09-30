@@ -22,7 +22,6 @@
   "license": "MIT",
   "workspaces": [
     "packages/*",
-    "e2e",
     "examples/*"
   ],
   "devDependencies": {
