@@ -76,6 +76,7 @@ msgstr "."
 #~ msgid "(.pdf, .png, .jpg supported)"
 #~ msgstr "(.pdf, .png, .jpg supported)"
 
+#. placeholder {0}: OcrFileTypesValues.map((format) => format.split('/')[1]).join(', ')
 #: src/ui/components/file-upload.tsx:153
 msgid "({0} files up to 20 MB)"
 msgstr "({0} files up to 20 MB)"
@@ -95,7 +96,7 @@ msgid "{0, select, credit_note {Credit Note has been canceled} invoice {Invoice 
 msgstr "{0, select, credit_note {Credit Note has been canceled} invoice {Invoice has been canceled} quote {Quote has been canceled} other {Receivable has been canceled}}"
 
 #. placeholder {0}: previousReceivable?.type ?? ''
-#: src/components/receivables/hooks/useDeleteReceivableById.ts:37
+#: src/components/receivables/hooks/useDeleteReceivableById.ts:36
 msgid "{0, select, credit_note {Credit Note has been deleted} invoice {Invoice has been deleted} quote {Quote has been deleted} other {Receivable has been deleted}}"
 msgstr "{0, select, credit_note {Credit Note has been deleted} invoice {Invoice has been deleted} quote {Quote has been deleted} other {Receivable has been deleted}}"
 
@@ -127,9 +128,15 @@ msgstr "{0} - {1}"
 #~ msgid "{0} ({code})"
 #~ msgstr "{0} ({code})"
 
+#. placeholder {0}: table.getFilteredRowModel().rows.length
+#. placeholder {1}: table.getFilteredRowModel().rows.length
+#: src/ui/components/data-table.tsx:181
+msgid "{0} {1, plural, one {result} other {results}}"
+msgstr "{0} {1, plural, one {result} other {results}}"
+
 #. placeholder {0}: term.days_after
 #. placeholder {1}: term?.days_after === 1 ? 'day' : 'days'
-#: src/components/receivables/components/InvoiceDetailsOverviewReminders.tsx:143
+#: src/components/receivables/components/InvoiceDetailsOverviewReminders.tsx:156
 #: src/components/receivables/components/ReminderDetails.tsx:67
 msgid "{0} {1} after"
 msgstr "{0} {1} after"
@@ -140,9 +147,9 @@ msgstr "{0} {1} after"
 #. placeholder {1}: paymentReminder?.term_1_reminder?.days_before === 1 ? 'day' : 'days'
 #. placeholder {1}: paymentReminder?.term_2_reminder?.days_before === 1 ? 'day' : 'days'
 #. placeholder {1}: paymentReminder?.term_final_reminder?.days_before === 1 ? 'day' : 'days'
-#: src/components/receivables/components/InvoiceDetailsOverviewReminders.tsx:94
-#: src/components/receivables/components/InvoiceDetailsOverviewReminders.tsx:110
-#: src/components/receivables/components/InvoiceDetailsOverviewReminders.tsx:126
+#: src/components/receivables/components/InvoiceDetailsOverviewReminders.tsx:107
+#: src/components/receivables/components/InvoiceDetailsOverviewReminders.tsx:123
+#: src/components/receivables/components/InvoiceDetailsOverviewReminders.tsx:139
 #: src/components/receivables/components/ReminderDetails.tsx:38
 #: src/components/receivables/components/ReminderDetails.tsx:47
 #: src/components/receivables/components/ReminderDetails.tsx:56
@@ -168,7 +175,7 @@ msgid "{0} has been created"
 msgstr "{0} has been created"
 
 #. placeholder {0}: receivable.type
-#: src/components/receivables/hooks/useIssueReceivableById.ts:48
+#: src/components/receivables/hooks/useIssueReceivableById.ts:47
 msgid "{0} has been issued"
 msgstr "{0} has been issued"
 
@@ -316,7 +323,7 @@ msgstr "|"
 
 #. Counterpart Organization create form Business address Section description.
 #. js-lingui-explicit-id
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:414
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:420
 msgid "CounterpartDetails--CounterpartOrganizationForm--businessAddressSection--caption"
 msgstr "🚫"
 
@@ -559,7 +566,7 @@ msgstr "Add discount"
 msgid "Add Discount"
 msgstr "Add Discount"
 
-#: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:204
+#: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:199
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:305
 msgid "Add item"
 msgstr "Add item"
@@ -639,10 +646,10 @@ msgid "Added on"
 msgstr "Added on"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartContactForm/CounterpartContactForm.tsx:129
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:412
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:418
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartContactView/CounterpartContactView.tsx:188
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:197
-#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:153
+#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:151
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingPersonView/OnboardingPersonView.tsx:75
 #: src/components/receivables/components/EntityProfileFormContent.tsx:261
 msgid "Address"
@@ -867,7 +874,7 @@ msgid "Amount due"
 msgstr "Amount due"
 
 #. placeholder {0}: invoice?.currency
-#: src/components/receivables/components/InvoiceDetailsSummary.tsx:139
+#: src/components/receivables/components/InvoiceDetailsSummary.tsx:144
 msgid "Amount due ({0})"
 msgstr "Amount due ({0})"
 
@@ -1110,11 +1117,11 @@ msgstr "Are you sure you want to quit without saving?"
 #~ msgid "Are you sure you want to regenerate this PDF file to contain the amount paid and amount due sums?"
 #~ msgstr "Are you sure you want to regenerate this PDF file to contain the amount paid and amount due sums?"
 
-#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:192
+#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:190
 msgid "Are you the only person on the governing board of the company?"
 msgstr "Are you the only person on the governing board of the company?"
 
-#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:172
+#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:170
 msgid "Are you the only person who owns 25% or more of the company?"
 msgstr "Are you the only person who owns 25% or more of the company?"
 
@@ -1260,8 +1267,8 @@ msgstr "Azerbaijan"
 msgid "Azerbaijani Manat"
 msgstr "Azerbaijani Manat"
 
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:466
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:484
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:472
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:490
 #: src/components/products/ProductCancelEditModal/ProductCancelEditModal.tsx:26
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:271
 msgid "Back"
@@ -1348,6 +1355,11 @@ msgstr "Bangladesh"
 msgid "Bangladeshi Taka"
 msgstr "Bangladeshi Taka"
 
+#: src/components/expenses/ExpensesTable/ManagerTransactionsTable.tsx:252
+#: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:180
+msgid "Bank {maskedIban}"
+msgstr "Bank {maskedIban}"
+
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:471
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:315
 msgid "Bank account"
@@ -1372,7 +1384,7 @@ msgid "Bank Account “{0}” has been updated."
 msgstr "Bank Account “{0}” has been updated."
 
 #. placeholder {0}: bankAccounts?.length + 1
-#: src/components/receivables/components/BankAccountFormContent.tsx:65
+#: src/components/receivables/components/BankAccountFormContent.tsx:62
 msgid "Bank account {0}"
 msgstr "Bank account {0}"
 
@@ -1405,7 +1417,7 @@ msgstr "Bank accounts"
 #~ msgid "Bank Identifier Code for international transfers"
 #~ msgstr "Bank Identifier Code for international transfers"
 
-#: src/components/receivables/components/BankAccountFormContent.tsx:215
+#: src/components/receivables/components/BankAccountFormContent.tsx:218
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewLegacy.tsx:410
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewMonite.tsx:455
 msgid "Bank name"
@@ -1510,11 +1522,11 @@ msgstr "Bicycle Shops"
 msgid "Bill"
 msgstr "Bill"
 
-#: src/components/payables/Payables.tsx:229
+#: src/components/payables/Payables.tsx:221
 msgid "Bill #{payableId} has been deleted"
 msgstr "Bill #{payableId} has been deleted"
 
-#: src/components/payables/Payables.tsx:173
+#: src/components/payables/Payables.tsx:165
 msgid "Bill Pay"
 msgstr "Bill Pay"
 
@@ -1663,7 +1675,7 @@ msgstr "Burundian Franc"
 msgid "Bus Lines"
 msgstr "Bus Lines"
 
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:411
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:417
 msgid "Business address"
 msgstr "Business address"
 
@@ -1811,8 +1823,8 @@ msgstr "Canadian QST number (Québec)"
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyDetailsFormAdvanced/ApprovalPolicyDetailsFormAdvanced.tsx:275
 #: src/components/counterparts/components/CreateCounterpartDialog.tsx:139
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.test.tsx:124
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:466
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:484
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:472
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:490
 #: src/components/counterparts/CounterpartDetails/CounterpartTestHelpers.ts:27
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartBankView/CounterpartBankView.tsx:130
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartContactView/CounterpartContactView.tsx:227
@@ -2274,7 +2286,7 @@ msgstr "Company details"
 msgid "Company logo"
 msgstr "Company logo"
 
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:265
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:271
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView/CounterpartOrganizationView.tsx:75
 msgid "Company name"
 msgstr "Company name"
@@ -2619,8 +2631,8 @@ msgstr "Court Costs, Including Alimony and Child Support - Courts of Law"
 #: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.tsx:316
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyDetailsFormAdvanced/ApprovalPolicyDetailsFormAdvanced.tsx:288
 #: src/components/counterparts/CounterpartDetails/CounterpartDetails.test.tsx:593
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:452
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:470
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:458
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:476
 #: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:145
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsDialog.tsx:38
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:462
@@ -2682,8 +2694,8 @@ msgstr "Create counterpart"
 msgid "Create Credit Note"
 msgstr "Create Credit Note"
 
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:216
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:233
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:222
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:239
 msgid "Create customer"
 msgstr "Create customer"
 
@@ -2729,8 +2741,8 @@ msgstr "Create New"
 
 #: src/components/counterparts/components/CounterpartAutocomplete.tsx:334
 #: src/components/counterparts/components/CounterpartAutocomplete.tsx:471
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:219
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:236
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:225
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:242
 #: src/components/receivables/components/CounterpartSelector.tsx:184
 msgid "Create new counterpart"
 msgstr "Create new counterpart"
@@ -2842,7 +2854,7 @@ msgstr "Credit applied"
 #~ msgstr "Credit applied {0}"
 
 #. placeholder {0}: i18n.date(creditNote?.issue_date, locale.dateTimeFormat)
-#: src/components/receivables/components/InvoiceDetailsSummary.tsx:127
+#: src/components/receivables/components/InvoiceDetailsSummary.tsx:130
 msgid "Credit applied on {0}"
 msgstr "Credit applied on {0}"
 
@@ -2852,7 +2864,7 @@ msgstr "Credit applied on {0}"
 msgid "Credit note"
 msgstr "Credit note"
 
-#: src/core/componentSettings/index.ts:396
+#: src/core/componentSettings/index.ts:402
 msgid "Credit notes"
 msgstr "Credit notes"
 
@@ -2922,10 +2934,10 @@ msgstr "Custom prefix (15 chars max)"
 #~ msgstr "Custom prefix (50 chars max)"
 
 #: src/components/counterparts/components/CounterpartStatusChip.tsx:79
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:315
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:318
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:316
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:319
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:321
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:324
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:322
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:325
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartIndividualView/CounterpartIndividualView.tsx:49
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView/CounterpartOrganizationView.tsx:83
 #: src/components/financing/components/FinancedInvoicesTable.tsx:156
@@ -2989,8 +3001,8 @@ msgstr "Date"
 msgid "Date is required"
 msgstr "Date is required"
 
-#: src/components/onboarding/OnboardingEntity/OnboardingEntityIndividual/OnboardingEntityIndividual.tsx:64
-#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:239
+#: src/components/onboarding/OnboardingEntity/OnboardingEntityIndividual/OnboardingEntityIndividual.tsx:63
+#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:237
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingPersonView/OnboardingPersonView.tsx:64
 #: src/components/onboarding/validators/validationSchemas.ts:33
 #: src/components/onboarding/validators/validationSchemas.ts:101
@@ -3073,7 +3085,7 @@ msgstr "default"
 msgid "Default"
 msgstr "Default"
 
-#: src/components/receivables/components/BankAccountFormContent.tsx:247
+#: src/components/receivables/components/BankAccountFormContent.tsx:250
 msgid "Default currency switch"
 msgstr "Default currency switch"
 
@@ -3330,6 +3342,7 @@ msgstr "Description must be 250 characters or less"
 msgid "Description must be 255 characters or less"
 msgstr "Description must be 255 characters or less"
 
+#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:286
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:362
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:239
 #: src/components/receivables/components/InvoiceDetails.tsx:216
@@ -3457,7 +3470,7 @@ msgstr "Display bank display options"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.tsx:104
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartBankView/CounterpartBankView.tsx:82
-#: src/components/receivables/components/BankAccountFormContent.tsx:198
+#: src/components/receivables/components/BankAccountFormContent.tsx:201
 msgid "Display name"
 msgstr "Display name"
 
@@ -3630,7 +3643,7 @@ msgstr "Due"
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:207
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:577
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:347
-#: src/components/receivables/components/InvoiceDetailsOverviewReminders.tsx:201
+#: src/components/receivables/components/InvoiceDetailsOverviewReminders.tsx:216
 #: src/components/receivables/components/InvoiceDetailsTabOverview.tsx:144
 #: src/components/receivables/components/InvoicesTable.tsx:364
 #: src/components/receivables/components/QuotesTable.tsx:195
@@ -3658,7 +3671,7 @@ msgstr "Due Date"
 msgid "Due date is required"
 msgstr "Due date is required"
 
-#: src/components/payables/PayableDetails/PayableDetails.tsx:222
+#: src/components/payables/PayableDetails/PayableDetails.tsx:220
 msgid "Due to an error, the OCR failed to read the data from the document. Please input the data manually."
 msgstr "Due to an error, the OCR failed to read the data from the document. Please input the data manually."
 
@@ -3795,7 +3808,7 @@ msgstr "Edit bank account"
 msgid "Edit bill"
 msgstr "Edit bill"
 
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:235
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:241
 msgid "Edit company"
 msgstr "Edit company"
 
@@ -3825,7 +3838,7 @@ msgstr "Edit customer's profile"
 msgid "Edit documents for person"
 msgstr "Edit documents for person"
 
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:218
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:224
 #: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:112
 msgid "Edit individual"
 msgstr "Edit individual"
@@ -3966,8 +3979,8 @@ msgid "Elementary, Secondary Schools"
 msgstr "Elementary, Secondary Schools"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartContactForm/CounterpartContactForm.tsx:97
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:358
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:358
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:364
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:364
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartContactView/CounterpartContactView.tsx:206
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartIndividualView/CounterpartIndividualView.tsx:58
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView/CounterpartOrganizationView.tsx:92
@@ -3980,7 +3993,7 @@ msgid "Email"
 msgstr "Email"
 
 #: src/components/onboarding/OnboardingEntity/OnboardingEntity.tsx:73
-#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:113
+#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:111
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingPersonView/OnboardingPersonView.tsx:61
 #: src/components/onboarding/validators/validationSchemas.ts:21
 #: src/components/onboarding/validators/validationSchemas.ts:99
@@ -4299,6 +4312,7 @@ msgstr "Executive"
 msgid "Expense"
 msgstr "Expense"
 
+#. placeholder {0}: transaction?.id
 #: src/components/expenses/TransactionDetails/TransactionDetails.tsx:82
 msgid "Expense {0} details"
 msgstr "Expense {0} details"
@@ -4415,6 +4429,11 @@ msgstr "Failed to Load {entityName}"
 msgid "Failed to load GL codes"
 msgstr "Failed to load GL codes"
 
+#: src/ui/ResponsiveGrid/ResponsiveGrid.tsx:322
+#: src/ui/ResponsiveGrid/ResponsiveGrid.tsx:357
+msgid "Failed to load more items"
+msgstr "Failed to load more items"
+
 #: src/components/receivables/components/InvoicePDFViewer.tsx:70
 msgid "Failed to load PDF Viewer"
 msgstr "Failed to load PDF Viewer"
@@ -4525,7 +4544,7 @@ msgid "Fijian Dollar"
 msgstr "Fijian Dollar"
 
 #. placeholder {0}: file.name
-#: src/core/hooks/useFileInput.tsx:92
+#: src/core/hooks/useFileInput.tsx:90
 msgid "File {0} size exceeds {maxFileSizeInMB} MB limit."
 msgstr "File {0} size exceeds {maxFileSizeInMB} MB limit."
 
@@ -4620,9 +4639,9 @@ msgstr "Fireplace, Fireplace Screens, and Accessories Stores"
 #~ msgstr "First day of the month"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartContactForm/CounterpartContactForm.tsx:59
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:249
-#: src/components/onboarding/OnboardingEntity/OnboardingEntityIndividual/OnboardingEntityIndividual.tsx:37
-#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:95
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:255
+#: src/components/onboarding/OnboardingEntity/OnboardingEntityIndividual/OnboardingEntityIndividual.tsx:36
+#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:93
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingPersonView/OnboardingPersonView.tsx:55
 #: src/components/onboarding/validators/validationSchemas.ts:30
 #: src/components/onboarding/validators/validationSchemas.ts:97
@@ -4653,7 +4672,7 @@ msgstr "Flow"
 
 #. placeholder {0}: invoice?.counterpart_name
 #. placeholder {0}: mockInvoice.counterpart_name
-#: src/components/receivables/components/InvoiceDetails.test.tsx:170
+#: src/components/receivables/components/InvoiceDetails.test.tsx:180
 #: src/components/receivables/components/InvoiceDetails.tsx:196
 msgid "for {0}"
 msgstr "for {0}"
@@ -5082,7 +5101,7 @@ msgstr "here."
 
 #. placeholder {0}: defaultContact.first_name
 #. placeholder {1}: me.first_name
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:77
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:76
 msgid ""
 "Hi {0},\n"
 "\n"
@@ -5188,7 +5207,7 @@ msgstr "Hungary"
 msgid "Hungary tax number (adószám)"
 msgstr "Hungary tax number (adószám)"
 
-#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:183
+#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:181
 msgid "I am a member of the governing board of the company."
 msgstr "I am a member of the governing board of the company."
 
@@ -5196,7 +5215,7 @@ msgstr "I am a member of the governing board of the company."
 msgid "I confirm that any person owning 25% or more of {entityName} or any person with significant management responsibility of {entityName}has their information provided."
 msgstr "I confirm that any person owning 25% or more of {entityName} or any person with significant management responsibility of {entityName}has their information provided."
 
-#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:165
+#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:163
 msgid "I own 25% or more of the company."
 msgstr "I own 25% or more of the company."
 
@@ -5441,7 +5460,7 @@ msgid "Invoice {0}"
 msgstr "Invoice {0}"
 
 #. placeholder {0}: receivable.document_id
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:91
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:90
 msgid "Invoice {0} from {entityName}"
 msgstr "Invoice {0} from {entityName}"
 
@@ -5552,7 +5571,7 @@ msgid "Invoice will be issued with items in the selected currency"
 msgstr "Invoice will be issued with items in the selected currency"
 
 #: src/components/receivables/components/InvoicesTable.tsx:512
-#: src/core/componentSettings/index.ts:388
+#: src/core/componentSettings/index.ts:394
 msgid "Invoices"
 msgstr "Invoices"
 
@@ -5859,8 +5878,8 @@ msgstr "Jersey"
 msgid "Jewelry Stores, Watches, Clocks, and Silverware Stores"
 msgstr "Jewelry Stores, Watches, Clocks, and Silverware Stores"
 
-#: src/components/onboarding/OnboardingEntity/OnboardingEntityIndividual/OnboardingEntityIndividual.tsx:55
-#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:211
+#: src/components/onboarding/OnboardingEntity/OnboardingEntityIndividual/OnboardingEntityIndividual.tsx:54
+#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:209
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingPersonView/OnboardingPersonView.tsx:58
 #: src/components/onboarding/validators/validationSchemas.ts:135
 msgid "Job title"
@@ -5964,9 +5983,9 @@ msgstr "Laotian Kip"
 #~ msgstr "Last day of the month"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartContactForm/CounterpartContactForm.tsx:77
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:268
-#: src/components/onboarding/OnboardingEntity/OnboardingEntityIndividual/OnboardingEntityIndividual.tsx:46
-#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:104
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:274
+#: src/components/onboarding/OnboardingEntity/OnboardingEntityIndividual/OnboardingEntityIndividual.tsx:45
+#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:102
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingPersonView/OnboardingPersonView.tsx:56
 #: src/components/onboarding/validators/validationSchemas.ts:31
 #: src/components/onboarding/validators/validationSchemas.ts:98
@@ -6028,7 +6047,7 @@ msgstr "Legal business name"
 msgid "Legal name"
 msgstr "Legal name"
 
-#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:89
+#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:87
 msgid "Legal name of person"
 msgstr "Legal name of person"
 
@@ -6641,7 +6660,7 @@ msgstr "N/A"
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartContactView/CounterpartContactView.tsx:184
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartIndividualView/CounterpartIndividualView.tsx:41
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:501
-#: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:50
+#: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:49
 #: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:105
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:137
 #: src/components/receivables/components/EntityProfileFormContent.tsx:74
@@ -7092,6 +7111,10 @@ msgstr "NOT allowed"
 msgid "Not available"
 msgstr "Not available"
 
+#: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:203
+msgid "Not matched"
+msgstr "Not matched"
+
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:432
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewLegacy.tsx:95
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewLegacy.tsx:140
@@ -7493,11 +7516,11 @@ msgid "Payable “{0}” has been updated"
 msgstr "Payable “{0}” has been updated"
 
 #. placeholder {0}: file.name
-#: src/components/payables/Payables.tsx:139
+#: src/components/payables/Payables.tsx:131
 msgid "Payable {0} uploaded successfully"
 msgstr "Payable {0} uploaded successfully"
 
-#: src/components/payables/PayableDetails/PayableDetails.tsx:136
+#: src/components/payables/PayableDetails/PayableDetails.tsx:134
 msgid "Payable not found"
 msgstr "Payable not found"
 
@@ -7658,7 +7681,7 @@ msgstr "Pending"
 #~ msgid "Per document"
 #~ msgstr "Per document"
 
-#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:220
+#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:218
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingPersonView/OnboardingPersonView.tsx:68
 #: src/components/onboarding/validators/validationSchemas.ts:136
 msgid "Percent ownership"
@@ -7729,13 +7752,13 @@ msgid "Phone"
 msgstr "Phone"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartContactForm/CounterpartContactForm.tsx:115
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:390
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:390
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:396
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:396
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartContactView/CounterpartContactView.tsx:202
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartIndividualView/CounterpartIndividualView.tsx:54
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView/CounterpartOrganizationView.tsx:88
 #: src/components/onboarding/OnboardingEntity/OnboardingEntity.tsx:43
-#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:230
+#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:228
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingPersonView/OnboardingPersonView.tsx:62
 #: src/components/onboarding/validators/validationSchemas.ts:100
 msgid "Phone number"
@@ -7828,7 +7851,7 @@ msgstr "Please enter a valid phone number."
 #~ msgstr "Please fill in all required fields"
 
 #. placeholder {0}: me?.first_name ?? ''
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:83
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:82
 msgid ""
 "Please find the invoice attached as discussed.\n"
 "\n"
@@ -8058,6 +8081,7 @@ msgstr "Preview email"
 msgid "Preview of {0}"
 msgstr "Preview of {0}"
 
+#. placeholder {0}: receipt.document_id
 #: src/components/expenses/ReceiptPreview/ReceiptPreview.tsx:30
 msgid "Preview of receipt {0}"
 msgstr "Preview of receipt {0}"
@@ -8069,7 +8093,7 @@ msgstr "Previous page"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/validation.ts:33
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:503
-#: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:137
+#: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:130
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:126
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewLegacy.tsx:218
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewMonite.tsx:281
@@ -8263,7 +8287,7 @@ msgstr "Qty x Price"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/validation.ts:29
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:502
-#: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:67
+#: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:66
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:301
 msgid "Quantity"
 msgstr "Quantity"
@@ -8294,8 +8318,8 @@ msgstr "Quit without saving"
 msgid "Quote"
 msgstr "Quote"
 
-#: src/components/receivables/components/QuotesTable.tsx:299
-#: src/core/componentSettings/index.ts:392
+#: src/components/receivables/components/QuotesTable.tsx:297
+#: src/core/componentSettings/index.ts:398
 msgid "Quotes"
 msgstr "Quotes"
 
@@ -8329,6 +8353,7 @@ msgstr "Reason for Payment Code (Russia)"
 msgid "Receipt"
 msgstr "Receipt"
 
+#. placeholder {0}: receipt.document_id
 #: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:220
 #: src/components/expenses/ExpensesTable/UserTransactionsTable.tsx:225
 #: src/components/expenses/ReceiptPreview/ReceiptPreview.tsx:29
@@ -8336,6 +8361,7 @@ msgstr "Receipt"
 msgid "Receipt {0}"
 msgstr "Receipt {0}"
 
+#. placeholder {0}: receipt.document_id
 #: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:186
 msgid "Receipt {0} details"
 msgstr "Receipt {0} details"
@@ -8852,8 +8878,8 @@ msgstr "Saudi Riyal"
 #: src/components/counterparts/CounterpartDetails/CounterpartAddressFormUpdate/CounterpartAddressFormUpdate.tsx:217
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.tsx:256
 #: src/components/counterparts/CounterpartDetails/CounterpartContactForm/CounterpartContactForm.tsx:143
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:452
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:470
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:458
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:476
 #: src/components/counterparts/CounterpartDetails/CounterpartVatForm/CounterpartVatForm.tsx:143
 #: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:377
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:87
@@ -9127,7 +9153,7 @@ msgstr "Set a VAT ID for this customer to issue invoice"
 msgid "Set as default"
 msgstr "Set as default"
 
-#: src/components/receivables/components/BankAccountFormContent.tsx:249
+#: src/components/receivables/components/BankAccountFormContent.tsx:252
 msgid "Set as default for this currency"
 msgstr "Set as default for this currency"
 
@@ -9143,8 +9169,8 @@ msgstr "Set on issuance"
 #~ msgid "Set reminders"
 #~ msgstr "Set reminders"
 
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:289
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:290
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:295
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:296
 msgid "Set this counterpart as:"
 msgstr "Set this counterpart as:"
 
@@ -9524,7 +9550,7 @@ msgstr "Submit message"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:625
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:560
-#: src/components/receivables/components/InvoiceDetailsSummary.tsx:67
+#: src/components/receivables/components/InvoiceDetailsSummary.tsx:66
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewLegacy.tsx:317
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewMonite.tsx:359
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Items/InvoiceTotals.tsx:52
@@ -9671,15 +9697,15 @@ msgid "Tanzanian Shilling"
 msgstr "Tanzanian Shilling"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/validation.ts:38
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.utils.ts:92
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.utils.ts:98
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewLegacy.tsx:222
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewLegacy.tsx:231
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:317
 msgid "Tax"
 msgstr "Tax"
 
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:429
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:447
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:435
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:453
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartIndividualView/CounterpartIndividualView.tsx:62
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView/CounterpartOrganizationView.tsx:96
 #: src/components/receivables/components/EntityProfileFormContent.tsx:209
@@ -9990,7 +10016,7 @@ msgstr "There is no counterpart by provided id: {0}"
 #~ msgstr "There is no invoice by provided id: {0}"
 
 #. placeholder {0}: defaultProps.id
-#: src/components/receivables/components/InvoiceDetails.test.tsx:120
+#: src/components/receivables/components/InvoiceDetails.test.tsx:119
 msgid "There is no invoice for the provided id: {0}"
 msgstr "There is no invoice for the provided id: {0}"
 
@@ -9998,7 +10024,7 @@ msgstr "There is no invoice for the provided id: {0}"
 msgid "There is no invoice for the provided id: {invoiceId}"
 msgstr "There is no invoice for the provided id: {invoiceId}"
 
-#: src/components/payables/PayableDetails/PayableDetails.tsx:137
+#: src/components/payables/PayableDetails/PayableDetails.tsx:135
 msgid "There is no payable by provided id: {id}"
 msgstr "There is no payable by provided id: {id}"
 
@@ -10052,7 +10078,7 @@ msgstr "This action can't be undone."
 msgid "This action can’t be undone."
 msgstr "This action can’t be undone."
 
-#: src/components/receivables/components/BankAccountFormContent.tsx:160
+#: src/components/receivables/components/BankAccountFormContent.tsx:163
 msgid "This bank account will receive payments for your invoices"
 msgstr "This bank account will receive payments for your invoices"
 
@@ -10103,15 +10129,15 @@ msgstr "This invoice will change its status, and you won't be able to receive or
 msgid "This month"
 msgstr "This month"
 
-#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:279
+#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:277
 msgid "This person is a member of the governing board of the company."
 msgstr "This person is a member of the governing board of the company."
 
-#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:283
+#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:281
 msgid "This person is an executive or senior manager with significant management responsibility."
 msgstr "This person is an executive or senior manager with significant management responsibility."
 
-#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:277
+#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:275
 msgid "This person owns 25% or more of the company."
 msgstr "This person owns 25% or more of the company."
 
@@ -10229,7 +10255,7 @@ msgid "TOTAL"
 msgstr "TOTAL"
 
 #. placeholder {0}: invoice?.currency
-#: src/components/receivables/components/InvoiceDetailsSummary.tsx:96
+#: src/components/receivables/components/InvoiceDetailsSummary.tsx:95
 msgid "Total ({0})"
 msgstr "Total ({0})"
 
@@ -10258,7 +10284,7 @@ msgid "Total Tax"
 msgstr "Total Tax"
 
 #. placeholder {0}: rateMinorToMajor( vatRate?.value )
-#: src/components/receivables/components/InvoiceDetailsSummary.tsx:81
+#: src/components/receivables/components/InvoiceDetailsSummary.tsx:80
 msgid "Total tax ({0}%)"
 msgstr "Total tax ({0}%)"
 
@@ -10568,7 +10594,7 @@ msgid "Unspecified"
 msgstr "Unspecified"
 
 #. placeholder {0}: file.name
-#: src/core/hooks/useFileInput.tsx:88
+#: src/core/hooks/useFileInput.tsx:86
 msgid "Unsupported file type for {0}"
 msgstr "Unsupported file type for {0}"
 
@@ -10619,8 +10645,8 @@ msgstr "Update PDF files for paid invoices"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartAddressFormUpdate/CounterpartAddressFormUpdate.tsx:224
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.tsx:263
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:459
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:477
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:465
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:483
 #: src/components/counterparts/CounterpartDetails/CounterpartVatForm/CounterpartVatForm.tsx:150
 msgid "Update to match bill"
 msgstr "Update to match bill"
@@ -10650,8 +10676,12 @@ msgid "Upload a document here."
 msgstr "Upload a document here."
 
 #: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:410
-msgid "Upload card transaction receipts and we'll automatically match them to the correct transaction."
-msgstr "Upload card transaction receipts and we'll automatically match them to the correct transaction."
+#~ msgid "Upload card transaction receipts and we'll automatically match them to the correct transaction."
+#~ msgstr "Upload card transaction receipts and we'll automatically match them to the correct transaction."
+
+#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:410
+msgid "Upload card transaction receipts and we'll automatically match them to the correct transaction. "
+msgstr "Upload card transaction receipts and we'll automatically match them to the correct transaction. "
 
 #: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:42
 msgid "Upload files"
@@ -10661,13 +10691,20 @@ msgstr "Upload files"
 msgid "Upload payable file"
 msgstr "Upload payable file"
 
-#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:131
-#: src/components/payables/Payables.tsx:198
+#: src/components/payables/Payables.tsx:190
 msgid "Upload payable files"
 msgstr "Upload payable files"
 
+#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:407
+msgid "Upload receipts"
+msgstr "Upload receipts"
+
+#: src/components/expenses/ReceiptsInbox/ReceiptsInbox.tsx:321
+msgid "Uploaded receipts will appear here"
+msgstr "Uploaded receipts will appear here"
+
 #. placeholder {0}: file.name
-#: src/components/payables/Payables.tsx:138
+#: src/components/payables/Payables.tsx:130
 msgid "Uploading {0}"
 msgstr "Uploading {0}"
 
@@ -10826,8 +10863,8 @@ msgstr "Vanuatu Vatu"
 msgid "Variety Stores"
 msgstr "Variety Stores"
 
-#: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:157
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.utils.ts:98
+#: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:152
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.utils.ts:104
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:317
 msgid "VAT"
 msgstr "VAT"
@@ -10961,9 +10998,9 @@ msgid "VAT Value is required"
 msgstr "VAT Value is required"
 
 #: src/components/counterparts/components/CounterpartStatusChip.tsx:81
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:338
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:342
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:342
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:344
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:348
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:348
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartIndividualView/CounterpartIndividualView.tsx:50
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView/CounterpartOrganizationView.tsx:84
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:388
@@ -10992,7 +11029,7 @@ msgstr "Vendors"
 msgid "Venezuela"
 msgstr "Venezuela"
 
-#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:250
+#: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:248
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingPersonView/OnboardingPersonView.tsx:83
 msgid "Verify identity"
 msgstr "Verify identity"
@@ -11029,6 +11066,8 @@ msgstr "Vietnam"
 msgid "Vietnamese Đồng"
 msgstr "Vietnamese Đồng"
 
+#: src/components/expenses/ReceiptDetails/ReceiptDetails.tsx:263
+#: src/components/expenses/TransactionDetails/TransactionDetails.tsx:207
 #: src/components/userRoles/consts.ts:69
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:118
 #: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:174
