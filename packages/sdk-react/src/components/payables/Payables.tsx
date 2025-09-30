@@ -8,6 +8,7 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useFileInput } from '@/core/hooks';
+import { useComponentSettings } from '@/core/hooks/useComponentSettings';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
@@ -23,6 +24,12 @@ import { toast } from 'react-hot-toast';
 export type PayablesProps = {
   /** @see {@link CustomerTypes} */
   customerTypes?: CustomerTypes;
+  /**
+   * Enable GL code selection for payable line items.
+   * When true, users can assign GL codes to individual line items.
+   * GL codes are fetched from the connected accounting system.
+   */
+  enableGLCodes?: boolean;
 } & Pick<
   UsePayableDetailsProps,
   | 'onSaved'
@@ -45,6 +52,8 @@ export const Payables = (props: PayablesProps) => {
 };
 
 const PayablesBase = ({
+  customerTypes,
+  enableGLCodes,
   onSaved,
   onCanceled,
   onSubmitted,
@@ -54,10 +63,10 @@ const PayablesBase = ({
   onDeleted,
   onPay,
   onPayUS,
-  customerTypes,
 }: PayablesProps) => {
   const { i18n } = useLingui();
-  const { api, queryClient, componentSettings } = useMoniteContext();
+  const { api, queryClient } = useMoniteContext();
+  const { componentSettings } = useComponentSettings();
 
   const {
     handleSaved,
@@ -151,8 +160,9 @@ const PayablesBase = ({
     });
 
   const { root } = useRootElements();
-
   const className = 'Monite-Payables-Header';
+  const finalEnableGLCodes =
+    enableGLCodes ?? componentSettings?.payables?.enableGLCodes ?? false;
 
   return (
     <>
@@ -202,6 +212,10 @@ const PayablesBase = ({
       >
         <PayableDetails
           id={invoiceIdDialog.invoiceId}
+          customerTypes={
+            customerTypes || componentSettings?.counterparts?.customerTypes
+          }
+          enableGLCodes={finalEnableGLCodes}
           onClose={closeEditDialog}
           onSaved={handleSaved}
           onCanceled={handleCanceled}
@@ -218,9 +232,6 @@ const PayablesBase = ({
           }}
           onPay={handlePay}
           onPayUS={onPayUS}
-          customerTypes={
-            customerTypes || componentSettings?.counterparts?.customerTypes
-          }
         />
       </Dialog>
 
@@ -232,11 +243,12 @@ const PayablesBase = ({
         fullScreen
       >
         <PayableDetails
-          onClose={() => setIsCreateInvoiceDialogOpen(false)}
-          onSaved={handleSaved}
           customerTypes={
             customerTypes || componentSettings?.counterparts?.customerTypes
           }
+          enableGLCodes={finalEnableGLCodes}
+          onClose={() => setIsCreateInvoiceDialogOpen(false)}
+          onSaved={handleSaved}
         />
       </Dialog>
     </>

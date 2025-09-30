@@ -14,8 +14,60 @@ export const isFieldRequiredByValidations = (
   return Boolean(payablesValidations?.required_fields?.includes(fieldName));
 };
 
-const getPayableDetailsFormSchemaInternal = (i18n: I18n) =>
-  z.object({
+const getPayableDetailsFormSchemaInternal = (i18n: I18n) => {
+  const lineItemsSchema = z
+    .array(
+      z.object({
+        id: z.string().meta({ title: t(i18n)`Item ID` }),
+        name: z
+          .string()
+          .min(1, t(i18n)`Item name is required`)
+          .meta({ title: t(i18n)`Item Name` }),
+        quantity: z.coerce
+          .number()
+          .positive(t(i18n)`Item quantity must be positive`)
+          .meta({ title: t(i18n)`Quantity` }),
+        price: z.coerce
+          .number()
+          .min(0, t(i18n)`Item price cannot be negative`)
+          .meta({ title: t(i18n)`Price` }),
+        tax: z.coerce
+          .number()
+          .min(0, t(i18n)`Item tax cannot be negative`)
+          .max(100, t(i18n)`Item tax cannot exceed 100%`)
+          .meta({ title: t(i18n)`Tax` }),
+        ledger_account_id: z
+          .string()
+          .nullable()
+          .optional()
+          .meta({ title: t(i18n)`GL Code` }),
+      })
+    )
+    .meta({ title: t(i18n)`Line Items` });
+
+  const tagSchema = z
+    .object({
+      id: z.string(),
+      name: z.string(),
+      created_at: z.string(),
+      updated_at: z.string(),
+      category: z
+        .enum([
+          'document_type',
+          'department',
+          'project',
+          'cost_center',
+          'vendor_type',
+          'payment_method',
+          'approval_status',
+        ])
+        .optional(),
+      created_by_entity_user_id: z.string().optional(),
+      description: z.string().optional(),
+    })
+    .meta({ title: t(i18n)`Tag` });
+
+  return z.object({
     invoiceNumber: z
       .string()
       .min(1, t(i18n)`Invoice Number is required`)
@@ -36,38 +88,14 @@ const getPayableDetailsFormSchemaInternal = (i18n: I18n) =>
     currency: getCurrencyEnum(i18n)
       .optional()
       .meta({ title: t(i18n)`Currency` }),
-    tags: z
-      .array(z.object({ id: z.string(), name: z.string() }).loose())
-      .meta({ title: t(i18n)`Tags` }),
-    lineItems: z
-      .array(
-        z.object({
-          id: z.string().meta({ title: t(i18n)`Item ID` }),
-          name: z
-            .string()
-            .min(1, t(i18n)`Item name is required`)
-            .meta({ title: t(i18n)`Item Name` }),
-          quantity: z.coerce
-            .number()
-            .positive(t(i18n)`Item quantity must be positive`)
-            .meta({ title: t(i18n)`Quantity` }),
-          price: z.coerce
-            .number()
-            .min(0, t(i18n)`Item price must be 0 or greater`)
-            .meta({ title: t(i18n)`Price` }),
-          tax: z.coerce
-            .number()
-            .min(0, t(i18n)`Item tax must be 0 or greater`)
-            .max(100, t(i18n)`Item tax must be 100 or less`)
-            .meta({ title: t(i18n)`Tax` }),
-        })
-      )
-      .meta({ title: t(i18n)`Line Items` }),
+    tags: z.array(tagSchema).meta({ title: t(i18n)`Tags` }),
+    lineItems: lineItemsSchema,
     discount: z
       .union([z.coerce.number().min(0), z.null()])
       .optional()
       .meta({ title: t(i18n)`Discount` }),
   });
+};
 
 export const getPayableDetailsFormSchema = (
   i18n: I18n,

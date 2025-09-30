@@ -1,5 +1,32 @@
 # @monite/sdk-drop-in
 
+## 2.5.5
+
+### Patch Changes
+
+- 3cdedbb: Fixed issue with bank account creation
+
+## 2.5.4
+
+### Patch Changes
+
+- 0aa15c1: Allow 0 tax rate on US entities
+- 7835a67: Fix payment terms creation issue on the Invoice creation flow
+- f9934ad: Fix country selector availability when only one country is allowed
+
+## 2.5.3
+
+### Patch Changes
+
+- d78c732: Fixed issue with country selection when creating a counterpart
+
+## 2.5.2
+
+### Patch Changes
+
+- def4a1a: Fixed onboarding logic for country selection and representative requirements
+- ca0ceff: Added GL codes selection for payables
+
 ## 2.5.1
 
 ### Patch Changes

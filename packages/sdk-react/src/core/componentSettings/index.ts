@@ -242,6 +242,7 @@ interface PayableSettings
   extends MonitePayableTableProps,
     MonitePayableDetailsInfoProps {
   pageSizeOptions: number[];
+  enableGLCodes?: boolean;
   onSaved?: (id: string) => void;
   onCanceled?: (id: string) => void;
   onSubmitted?: (id: string) => void;
@@ -370,6 +371,7 @@ export const getDefaultComponentSettings = (
       counterpart_bank_account_id: false,
     },
     isTagsDisabled: componentSettings?.payables?.isTagsDisabled,
+    enableGLCodes: componentSettings?.payables?.enableGLCodes ?? false,
     onSaved: componentSettings?.payables?.onSaved,
     onCanceled: componentSettings?.payables?.onCanceled,
     onSubmitted: componentSettings?.payables?.onSubmitted,

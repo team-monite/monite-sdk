@@ -1,10 +1,3 @@
-import { Controller, FieldPath } from 'react-hook-form';
-import type {
-  FieldValues,
-  FieldError,
-  UseControllerProps,
-} from 'react-hook-form';
-
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import {
   Autocomplete,
@@ -16,12 +9,18 @@ import type {
   AutocompleteProps,
   AutocompleteRenderInputParams,
 } from '@mui/material';
+import { Controller, FieldPath } from 'react-hook-form';
+import type {
+  FieldValues,
+  FieldError,
+  UseControllerProps,
+} from 'react-hook-form';
 
 type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
 
 interface RHFAutocompleteBaseProps<
   TFieldValues extends FieldValues,
-  TName extends FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues>,
 > extends UseControllerProps<TFieldValues, TName> {
   label: string;
 }
@@ -50,9 +49,10 @@ type AutocompleteOnChangeHandler<TOption> = NonNullable<
 export type RHFAutocompleteProps<
   TFieldValues extends FieldValues,
   TName extends FieldPath<TFieldValues>,
-  TOption
+  TOption,
 > = RHFAutocompleteBaseProps<TFieldValues, TName> &
   Optional<CustomAutocompleteProps<TOption>, 'renderInput'> & {
+    readOnly?: boolean;
     renderInput?: RenderInputFunction;
     onChange?: AutocompleteOnChangeHandler<TOption>;
   } & Omit<TextFieldProps, 'onChange'>;
@@ -78,7 +78,7 @@ type CustomAutocompleteValue<TOption> = AutocompleteValue<
 export const RHFAutocomplete = <
   TFieldValues extends FieldValues,
   TName extends FieldPath<TFieldValues>,
-  TOption
+  TOption,
 >({
   control,
   name,
@@ -93,6 +93,7 @@ export const RHFAutocomplete = <
   shouldUnregister,
   disabled,
   defaultValue,
+  readOnly,
   onChange,
   ...other
 }: RHFAutocompleteProps<TFieldValues, TName, TOption>) => {
@@ -193,6 +194,7 @@ export const RHFAutocomplete = <
           renderInput={getRenderInput(
             isTouched || !isValid ? error : undefined
           )}
+          readOnly={readOnly}
         />
       )}
     />

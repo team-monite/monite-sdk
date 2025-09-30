@@ -17,6 +17,12 @@ test('unauthenticated user is redirected to sign-in and authenticated user is re
 }) => {
   await receivablesPage.open();
   await checkURL(page, /.*sign-in.*/);
-  await signInUser(page);
+
+  const authResult = await signInUser(page);
+  if (!authResult.success) {
+    throw new Error(`Authentication failed: ${authResult.error}`);
+  }
+
+  // After successful authentication, we should be on the home page
   await checkURL(page, '/');
 });

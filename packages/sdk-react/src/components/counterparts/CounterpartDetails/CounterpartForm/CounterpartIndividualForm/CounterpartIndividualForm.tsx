@@ -23,6 +23,7 @@ import {
   CounterpartsFormProps,
 } from '@/components/counterparts/CounterpartDetails/CounterpartForm/useCounterpartForm';
 import { type DefaultValuesOCRIndividual } from '@/components/counterparts/types';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { LanguageCodeEnum } from '@/enums/LanguageCodeEnum';
 import { useDialog } from '@/ui/Dialog';
@@ -70,6 +71,7 @@ export const CounterpartIndividualForm = ({
 }: CounterpartIndividualFormProps) => {
   const { i18n } = useLingui();
   const dialogContext = useDialog();
+  const { componentSettings } = useMoniteContext();
 
   const {
     id: counterpartId,
@@ -118,7 +120,11 @@ export const CounterpartIndividualForm = ({
         ? defaultValuesOCR.counterpart
         : prepareCounterpartIndividual(
             individualCounterpart?.individual,
-            defaultValues
+            defaultValues,
+            componentSettings?.onboarding?.allowedCountries &&
+              componentSettings?.onboarding?.allowedCountries.length === 1
+              ? componentSettings?.onboarding?.allowedCountries[0]
+              : undefined
           ),
     },
   });
@@ -185,7 +191,11 @@ export const CounterpartIndividualForm = ({
         ? defaultValuesOCR.counterpart
         : prepareCounterpartIndividual(
             individualCounterpart?.individual,
-            defaultValues
+            defaultValues,
+            componentSettings?.onboarding?.allowedCountries &&
+              componentSettings?.onboarding?.allowedCountries.length === 1
+              ? componentSettings?.onboarding?.allowedCountries[0]
+              : undefined
           ),
     });
   }, [
@@ -195,6 +205,7 @@ export const CounterpartIndividualForm = ({
     individualCounterpart?.tax_id,
     reset,
     defaultValuesOCR,
+    componentSettings?.onboarding?.allowedCountries,
   ]);
 
   if (!isCreateAllowed && !counterpartId) {

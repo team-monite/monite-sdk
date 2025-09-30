@@ -1,11 +1,5 @@
-import { useMemo } from 'react';
-import {
-  type UseControllerProps,
-  type FieldValues,
-  type FieldPath,
-  useController,
-} from 'react-hook-form';
-
+import { CountryInput } from './CountryInput';
+import { CountryOption } from './CountryOption';
 import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { CountryType, getCountriesArray } from '@/core/utils/countries';
@@ -17,13 +11,17 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { TextFieldProps } from '@mui/material';
 import type { AutocompleteRenderInputParams } from '@mui/material';
-
-import { CountryInput } from './CountryInput';
-import { CountryOption } from './CountryOption';
+import { useMemo, useEffect } from 'react';
+import {
+  type UseControllerProps,
+  type FieldValues,
+  type FieldPath,
+  useController,
+} from 'react-hook-form';
 
 export type MoniteCountryProps<
   TFieldValues extends FieldValues,
-  TName extends FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues>,
 > = UseControllerProps<TFieldValues, TName> & {
   disabled?: boolean;
   required?: TextFieldProps['required'];
@@ -35,12 +33,14 @@ export type MoniteCountryProps<
   countryOptions?: CountryType[];
   allowedCountries?: components['schemas']['AllowedCountries'][];
   showFlag?: boolean;
+  readOnly?: boolean;
+  setDefaultIfOnlyOneCountry?: boolean;
   onChange?: RHFAutocompleteProps<TFieldValues, TName, CountryType>['onChange'];
 };
 
 export const MoniteCountry = <
   TFieldValues extends FieldValues,
-  TName extends FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues>,
 >({
   disabled,
   required,
@@ -55,6 +55,8 @@ export const MoniteCountry = <
   countryOptions: customCountryOptions,
   allowedCountries,
   showFlag = true,
+  readOnly,
+  setDefaultIfOnlyOneCountry = true,
   onChange: customOnChange,
   ...props
 }: MoniteCountryProps<TFieldValues, TName>) => {
@@ -101,6 +103,14 @@ export const MoniteCountry = <
     return baseOptions;
   }, [componentSettings, customCountryOptions, allowedCountries, i18n]);
 
+  useEffect(() => {
+    if (!setDefaultIfOnlyOneCountry) return;
+
+    if (countryOptions?.length === 1 && !field.value) {
+      field.onChange(countryOptions[0].code);
+    }
+  }, [countryOptions, field, setDefaultIfOnlyOneCountry]);
+
   return (
     <RHFAutocomplete
       {...props}
@@ -110,7 +120,8 @@ export const MoniteCountry = <
       rules={rules}
       shouldUnregister={shouldUnregister}
       onChange={customOnChange}
-      disabled={countryOptions?.length === 1 || disabled}
+      disabled={disabled}
+      readOnly={readOnly ?? countryOptions?.length === 1}
       className={`Monite-Country ${hideLabel ? 'Monite-Label-Hidden' : ''}`}
       label={countryLabel}
       options={countryOptions}

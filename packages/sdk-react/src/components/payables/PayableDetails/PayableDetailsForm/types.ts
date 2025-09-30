@@ -6,6 +6,7 @@ export type LineItem = {
   quantity: number;
   price: number;
   tax: number;
+  ledger_account_id?: string | null;
 };
 
 type PayableTag = { id: string; name: string } & Record<string, unknown>;

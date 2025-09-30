@@ -3,7 +3,9 @@ import { AbstractPage } from './AbstractPage';
 
 class PayablesPage extends AbstractPage {
   public async open() {
-    await sessionStorage.get().goto('/payables');
+    await sessionStorage
+      .get()
+      .goto('/payables', { waitUntil: 'domcontentloaded', timeout: 30000 });
   }
 }
 

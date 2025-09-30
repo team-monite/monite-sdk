@@ -56,7 +56,7 @@ function SheetContent({
   className,
   children,
   side = 'right',
-  container = document.body,
+  container = typeof document !== 'undefined' ? document.body : undefined,
   showCloseButton = true,
   ...props
 }: React.ComponentProps<typeof SheetPrimitive.Content> & {

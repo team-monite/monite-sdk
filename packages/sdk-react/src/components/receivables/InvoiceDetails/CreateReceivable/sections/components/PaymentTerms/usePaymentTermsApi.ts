@@ -1,9 +1,8 @@
-import { toast } from 'react-hot-toast';
-
 import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
-import { i18n } from '@lingui/core';
 import { t } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
+import { toast } from 'react-hot-toast';
 
 interface UsePaymentTermsApiParams {
   onDelete?: () => void;
@@ -19,6 +18,7 @@ export const usePaymentTermsApi = ({
   onSuccessfullChange,
 }: UsePaymentTermsApiParams = {}) => {
   const { api, queryClient } = useMoniteContext();
+  const { i18n } = useLingui();
 
   const createMutation = api.paymentTerms.postPaymentTerms.useMutation(
     undefined,
