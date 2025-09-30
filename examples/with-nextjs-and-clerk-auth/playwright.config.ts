@@ -17,8 +17,7 @@ const PORT = process.env.PORT || 3000;
 const baseURL = `http://localhost:${PORT}`;
 
 // Determine which command to use based on environment variable
-const isProduction = process.env.E2E_MODE === 'production';
-const serverCommand = isProduction ? 'yarn build && yarn start' : 'yarn dev';
+const serverCommand = 'yarn dev';
 
 export default defineConfig({
   testDir: './e2e/tests',
