@@ -4236,7 +4236,7 @@ __metadata:
     react-dom: "npm:^18.1.0"
     react-router-dom: "npm:^6.3.0"
     react-use: "npm:^17.3.2"
-    rimraf: "npm:~5.0.0"
+    rimraf: "npm:^6.0.1"
     typescript: "npm:~5.5.4"
     vite: "npm:^7.0.0"
   languageName: unknown
@@ -4351,7 +4351,7 @@ __metadata:
     recharts: "npm:~2.15.2"
     rehype-raw: "npm:~7.0.0"
     remark-gfm: "npm:~4.0.1"
-    rimraf: "npm:~5.0.0"
+    rimraf: "npm:~6.0.1"
     rollup: "npm:~3.29.5"
     rollup-plugin-dts: "npm:~6.2.1"
     rollup-plugin-peer-deps-external: "npm:~2.2.4"
@@ -7430,7 +7430,7 @@ __metadata:
     eslint-plugin-react-refresh: "npm:~0.3.4"
     eslint-plugin-testing-library: "npm:~5.11.0"
     jest: "npm:~29.7.0"
-    rimraf: "npm:~5.0.0"
+    rimraf: "npm:~6.0.1"
     typescript: "npm:~5.5.4"
   peerDependencies:
     "@types/react": ^18.0.28
@@ -9718,11 +9718,11 @@ __metadata:
   linkType: hard
 
 "brace-expansion@npm:^2.0.1":
-  version: 2.0.1
-  resolution: "brace-expansion@npm:2.0.1"
+  version: 2.0.2
+  resolution: "brace-expansion@npm:2.0.2"
   dependencies:
     balanced-match: "npm:^1.0.0"
-  checksum: 10/a61e7cd2e8a8505e9f0036b3b6108ba5e926b4b55089eeb5550cd04a471fe216c96d4fe7e4c7f995c728c554ae20ddfc4244cad10aef255e72b62930afd233d1
+  checksum: 10/01dff195e3646bc4b0d27b63d9bab84d2ebc06121ff5013ad6e5356daa5a9d6b60fa26cf73c74797f2dc3fbec112af13578d51f75228c1112b26c790a87b0488
   languageName: node
   linkType: hard
 
@@ -19734,14 +19734,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rimraf@npm:~5.0.0":
-  version: 5.0.0
-  resolution: "rimraf@npm:5.0.0"
+"rimraf@npm:^6.0.1, rimraf@npm:~6.0.1":
+  version: 6.0.1
+  resolution: "rimraf@npm:6.0.1"
   dependencies:
-    glob: "npm:^10.0.0"
+    glob: "npm:^11.0.0"
+    package-json-from-dist: "npm:^1.0.0"
   bin:
-    rimraf: dist/cjs/src/bin.js
-  checksum: 10/739d5aaad0d50157ef9c329473d150eb8ebcb50dcce64379b8f24e6c819826b7496c99ada93c1f8dc6cc660a68d58037bcb9d08ecb040f8055eb4fbf19b69d91
+    rimraf: dist/esm/bin.mjs
+  checksum: 10/0eb7edf08aa39017496c99ba675552dda11a20811ba78f8232da2ba945308c91e9cd673f95998b1a8202bc7436d33390831d23ea38ae52751038d56373ad99e2
   languageName: node
   linkType: hard
 
