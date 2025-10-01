@@ -84,8 +84,7 @@ const EditInvoiceDetailsContent = ({
 }: EditInvoiceDetailsProps) => {
   const { i18n } = useLingui();
   const { api, entityId } = useMoniteContext();
-  const { data: entityData } = useMyEntity();
-  const { isLoading: isEntityLoading, isNonVatSupported } = useMyEntity();
+  const { data: entityData, isLoading: isEntityLoading, isNonVatSupported } = useMyEntity();
   const { data: paymentTerms } = useGetPaymentTerms();
   const { data: entityVatIds } = useGetEntityVatIds(entityId);
 
@@ -245,10 +244,10 @@ const EditInvoiceDetailsContent = ({
         <DialogContent fullScreen showCloseButton={false} className="mtw:flex">
           <div className="mtw:flex-1/2 mtw:overflow-y-auto mtw:pr-14">
             <DialogHeader className="mtw:flex-row mtw:justify-between mtw:bg-white mtw:pb-4 mtw:sticky mtw:top-0 mtw:z-9999">
-              <DialogTitle hidden>
+              <DialogTitle className="mtw:sr-only">
                 {i18n._(`Edit invoice`)}
               </DialogTitle>
-              <DialogDescription hidden>
+              <DialogDescription className="mtw:sr-only">
                 {i18n._(`Edit invoice`)}
               </DialogDescription>
 
@@ -257,6 +256,7 @@ const EditInvoiceDetailsContent = ({
                   variant="ghost"
                   onClick={handleCancelWithAlert}
                   disabled={isLoading}
+                  aria-label={i18n._(`Close`)}
                 >
                   <X />
                 </Button>

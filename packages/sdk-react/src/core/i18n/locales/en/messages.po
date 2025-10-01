@@ -14,8 +14,43 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. js-lingui-explicit-id
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:249
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:252
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:259
+msgid "Close"
+msgstr "Close"
+
+#. js-lingui-explicit-id
+#: src/core/context/MoniteI18nProvider.test.tsx:29
+msgid "Delete {type} “{name}”?"
+msgstr "Delete {type} “{name}”?"
+
+#. js-lingui-explicit-id
+#: src/components/receivables/components/ReminderSectionContent.tsx:56
+msgid "Payment reminders are disabled for this customer. Please enable them in the customer details or turn them off."
+msgstr "Payment reminders are disabled for this customer. Please enable them in the customer details or turn them off."
+
+#. js-lingui-explicit-id
+#: src/components/receivables/components/ReminderSectionContent.tsx:63
+msgid "No email address is added for the selected customer. Please add it to the customer details or turn off the reminders."
+msgstr "No email address is added for the selected customer. Please add it to the customer details or turn off the reminders."
+
+#. js-lingui-explicit-id
+#: src/components/receivables/components/ReminderSectionContent.tsx:71
+msgid "Reminders are disabled for this customer, and no email address has been added for it. Please update the details or turn off reminders."
+msgstr "Reminders are disabled for this customer, and no email address has been added for it. Please update the details or turn off reminders."
+
+#. js-lingui-explicit-id
+#: src/components/receivables/components/ReminderSectionContent.tsx:88
+msgid "Edit customer"
+msgstr "Edit customer"
+
+#. js-lingui-explicit-id
+#: src/components/receivables/components/ReminderSectionContent.tsx:112
+msgid "You can change it in the customer profile."
+msgstr "You can change it in the customer profile."
+
+#. js-lingui-explicit-id
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:248
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:251
 msgid "Edit invoice"
 msgstr "Edit invoice"
 
@@ -48,36 +83,6 @@ msgstr "Yes"
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:466
 msgid "No"
 msgstr "No"
-
-#. js-lingui-explicit-id
-#: src/core/context/MoniteI18nProvider.test.tsx:29
-msgid "Delete {type} “{name}”?"
-msgstr "Delete {type} “{name}”?"
-
-#. js-lingui-explicit-id
-#: src/components/receivables/components/ReminderSectionContent.tsx:56
-msgid "Payment reminders are disabled for this customer. Please enable them in the customer details or turn them off."
-msgstr "Payment reminders are disabled for this customer. Please enable them in the customer details or turn them off."
-
-#. js-lingui-explicit-id
-#: src/components/receivables/components/ReminderSectionContent.tsx:63
-msgid "No email address is added for the selected customer. Please add it to the customer details or turn off the reminders."
-msgstr "No email address is added for the selected customer. Please add it to the customer details or turn off the reminders."
-
-#. js-lingui-explicit-id
-#: src/components/receivables/components/ReminderSectionContent.tsx:71
-msgid "Reminders are disabled for this customer, and no email address has been added for it. Please update the details or turn off reminders."
-msgstr "Reminders are disabled for this customer, and no email address has been added for it. Please update the details or turn off reminders."
-
-#. js-lingui-explicit-id
-#: src/components/receivables/components/ReminderSectionContent.tsx:88
-msgid "Edit customer"
-msgstr "Edit customer"
-
-#. js-lingui-explicit-id
-#: src/components/receivables/components/ReminderSectionContent.tsx:112
-msgid "You can change it in the customer profile."
-msgstr "You can change it in the customer profile."
 
 #. js-lingui-explicit-id
 #: src/components/payables/PayablesTable/components/PayablesTableAction.tsx:108
