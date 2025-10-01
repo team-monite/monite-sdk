@@ -1,17 +1,16 @@
-import { ReactNode } from 'react';
-
+import { LoadingSpinner } from '../loading';
+import { Button } from '@/ui/components/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/ui/components/dialog';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Button } from '@/ui/components/button';
-import { LoadingSpinner } from '../loading';
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogDescription, 
-  DialogFooter, 
-  DialogHeader, 
-  DialogTitle 
-} from '@/ui/components/dialog';
+import { ReactNode } from 'react';
 
 type BaseConfirmationModalProps = {
   open: boolean;
@@ -21,6 +20,7 @@ type BaseConfirmationModalProps = {
   onClose: () => void;
   onConfirm: () => void;
   isLoading?: boolean;
+  container?: Element;
 };
 
 type MessageConfirmationModalProps = BaseConfirmationModalProps & {
@@ -46,6 +46,7 @@ export const ConfirmationModal = ({
   cancelLabel,
   onClose,
   onConfirm,
+  container,
   isLoading = false,
 }: ConfirmationModalProps) => {
   const { i18n } = useLingui();
@@ -56,7 +57,10 @@ export const ConfirmationModal = ({
       onOpenChange={onClose}
       aria-label={t(i18n)`Confirmation dialog`}
     >
-      <DialogContent showCloseButton={false}>
+      <DialogContent
+        container={container as HTMLElement}
+        showCloseButton={false}
+      >
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
@@ -72,7 +76,9 @@ export const ConfirmationModal = ({
             disabled={isLoading}
             variant="destructive"
           >
-            {isLoading && <LoadingSpinner className="mtw:w-5 mtw:h-5 mtw:border-inherit mtw:border-t-transparent" />}
+            {isLoading && (
+              <LoadingSpinner className="mtw:w-5 mtw:h-5 mtw:border-inherit mtw:border-t-transparent" />
+            )}
             {confirmLabel}
           </Button>
         </DialogFooter>
