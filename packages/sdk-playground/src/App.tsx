@@ -9,7 +9,7 @@ import {
   ProductsPage,
   RolesApprovalsPage,
   TagsPage,
-  ExpensesPage,
+  TransactionsPage,
   OnboardingPage,
   IntegrationsPage,
   TemplateSettingsPage,
@@ -36,7 +36,7 @@ function ProtectedApp() {
           <Route path="/products" element={<ProductsPage />} />
           <Route path="/roles-and-approvals" element={<RolesApprovalsPage />} />
           <Route path="/tags" element={<TagsPage />} />
-          <Route path="/expenses" element={<ExpensesPage />} />
+          <Route path="/transactions" element={<TransactionsPage />} />
           <Route path="/template-settings" element={<TemplateSettingsPage />} />
           <Route path="/onboarding" element={<OnboardingPage />} />
           <Route path="/integrations" element={<IntegrationsPage />} />

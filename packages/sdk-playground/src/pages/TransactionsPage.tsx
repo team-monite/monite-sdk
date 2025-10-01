@@ -1,10 +1,10 @@
 import { AppMoniteProvider } from '@/components/app-monite-provider';
-import { Expenses } from '@monite/sdk-react';
+import { Transactions } from '@monite/sdk-react';
 
-export function ExpensesPage() {
+export function TransactionsPage() {
   return (
     <AppMoniteProvider>
-      <Expenses />
+      <Transactions />
     </AppMoniteProvider>
   );
 }

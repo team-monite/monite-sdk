@@ -5,7 +5,7 @@ import {
   ApprovalPolicies as ApprovalPoliciesBase,
   Counterparts as CounterpartsBase,
   Dialog,
-  Expenses as ExpensesBase,
+  Transactions as TransactionsBase,
   getCounterpartName,
   MoniteProvider as MoniteProviderBase,
   Payables as PayablesBase,
@@ -564,8 +564,8 @@ export const Tags = () => {
   return <TagsBase />;
 };
 
-export const Expenses = () => {
-  return <ExpensesBase />;
+export const Transactions = () => {
+  return <TransactionsBase />;
 };
 
 export const UserRoles = () => {

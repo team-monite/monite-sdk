@@ -298,7 +298,7 @@ export interface ComponentSettings {
      */
     customerTypes?: CustomerTypes;
   };
-  expenses: {
+  transactions: {
     pageSizeOptions: number[];
   };
   payables: Partial<PayableSettings>;
@@ -350,9 +350,10 @@ export const getDefaultComponentSettings = (
       'vendor',
     ],
   },
-  expenses: {
+  transactions: {
     pageSizeOptions:
-      componentSettings?.expenses?.pageSizeOptions || defaultPageSizeOptions,
+      componentSettings?.transactions?.pageSizeOptions ||
+      defaultPageSizeOptions,
   },
   payables: {
     pageSizeOptions:

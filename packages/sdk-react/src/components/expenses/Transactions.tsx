@@ -1,5 +1,5 @@
-import { UserTransactionsTable } from './ExpensesTable/UserTransactionsTable';
 import { ReceiptsInbox } from './ReceiptsInbox';
+import { TransactionsTable } from './TransactionsTable';
 import { useEntityUserByAuthToken } from '@/core/queries/useEntityUsers';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { PageHeader } from '@/ui/PageHeader';
@@ -10,7 +10,7 @@ import { useLingui } from '@lingui/react';
 import { ArchiveIcon } from 'lucide-react';
 import { useState } from 'react';
 
-export const Expenses = () => {
+export const Transactions = () => {
   const { i18n } = useLingui();
   const { data: user } = useEntityUserByAuthToken();
 
@@ -25,12 +25,12 @@ export const Expenses = () => {
 
   return (
     <div
-      className="mtw:flex mtw:flex-col mtw:h-full Monite-ExpensesPage"
-      data-testid="Monite-ExpensesPage"
+      className="mtw:flex mtw:flex-col mtw:h-full Monite-TransactionsPage"
+      data-testid="Monite-TransactionsPage"
     >
       <div className="mtw:flex-shrink-0">
         <PageHeader
-          title={t(i18n)`Expenses`}
+          title={t(i18n)`Transactions`}
           extra={
             <div>
               <Button
@@ -48,7 +48,7 @@ export const Expenses = () => {
         />
       </div>
       <div className="mtw:flex-1 mtw:min-h-0">
-        <UserTransactionsTable />
+        <TransactionsTable />
       </div>
       {receiptsInboxOpened && (
         <Dialog
