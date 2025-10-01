@@ -12,7 +12,7 @@ import {
 import type { ValidationSchema } from './validators';
 import { components } from '@/api';
 import { I18n } from '@lingui/core';
-import { t } from '@lingui/macro';
+import { t } from '@lingui/core/macro';
 import { z } from 'zod';
 
 export const entitySchema = (
@@ -170,6 +170,21 @@ export const agreementsSchema = (
     .describe(t(i18n)`Ownership declaration`)
     .refine((v) => v === true, {
       message: t(i18n)`Please accept Ownership Declaration to proceed.`,
+    }),
+});
+
+export type OnboardingTreasuryTermsSchema = {
+  treasury_tos_acceptance: boolean;
+};
+
+export const treasuryTermsSchema = (
+  i18n: I18n
+): ValidationSchema<OnboardingTreasuryTermsSchema> => ({
+  treasury_tos_acceptance: z
+    .boolean()
+    .describe(t(i18n)`Treasury Terms of Service`)
+    .refine((v) => v === true, {
+      message: t(i18n)`Please accept Treasury Terms of Service to proceed.`,
     }),
 });
 

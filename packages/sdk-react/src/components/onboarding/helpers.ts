@@ -1,11 +1,12 @@
 import { components } from '@/api';
 import type { I18n } from '@lingui/core';
-import { t } from '@lingui/macro';
+import { t } from '@lingui/core/macro';
 
 import type {
   EntityOrganizationRelationshipCode,
   OnboardingPersonId,
   OnboardingRequirementMask,
+  OnboardingRequirementExtended,
 } from './types';
 
 /**
@@ -15,7 +16,7 @@ import type {
  * @returns A boolean value indicating if the requirement is for a representative.
  */
 export function isRepresentative(
-  requirement: OnboardingRequirement | undefined
+  requirement: OnboardingRequirementExtended | undefined
 ): boolean {
   return requirement === 'representative';
 }
@@ -27,7 +28,7 @@ export function isRepresentative(
  * @returns A boolean value indicating if the requirement is for directors.
  */
 export function isDirectors(
-  requirement: OnboardingRequirement | undefined
+  requirement: OnboardingRequirementExtended | undefined
 ): boolean {
   return requirement === 'directors';
 }
@@ -39,7 +40,7 @@ export function isDirectors(
  * @returns A boolean value indicating if the requirement is for owners.
  */
 export function isOwners(
-  requirement: OnboardingRequirement | undefined
+  requirement: OnboardingRequirementExtended | undefined
 ): boolean {
   return requirement === 'owners';
 }
@@ -51,7 +52,7 @@ export function isOwners(
  * @returns A boolean value indicating if the requirement is for executives.
  */
 export function isExecutives(
-  requirement: OnboardingRequirement | undefined
+  requirement: OnboardingRequirementExtended | undefined
 ): boolean {
   return requirement === 'executives';
 }
@@ -63,7 +64,7 @@ export function isExecutives(
  * @returns A boolean value indicating if the requirement is entity.
  */
 export function isEntity(
-  requirement: OnboardingRequirement | undefined
+  requirement: OnboardingRequirementExtended | undefined
 ): boolean {
   return requirement === 'entity';
 }
@@ -75,9 +76,49 @@ export function isEntity(
  * @returns A boolean value indicating if the requirement is for a bank account.
  */
 export function isBankAccount(
-  requirement: OnboardingRequirement | undefined
+  requirement: OnboardingRequirementExtended | undefined
 ): boolean {
   return requirement === 'bank_accounts';
+}
+
+/**
+ * Determines if the given requirement is for Treasury terms acceptance.
+ * Treasury terms are required for US entities with us_ach payment methods
+ * to enable Stripe Treasury financial services.
+ *
+ * @param requirement - The onboarding requirement to be checked.
+ * @returns A boolean value indicating if the requirement is for Treasury terms.
+ */
+export function isTreasuryTosAcceptance(
+  requirement: OnboardingRequirementExtended | undefined
+): boolean {
+  return requirement === 'treasury_tos_acceptance';
+}
+
+/**
+ * Converts an extended onboarding requirement to a standard requirement.
+ * Filters out Treasury-specific requirements which are not part of the standard
+ * OnboardingRequirement union type.
+ *
+ * This is needed because Treasury requirements are frontend-only extensions
+ * that don't exist in the backend schema.
+ *
+ * @param requirement - The extended onboarding requirement to convert.
+ * @returns A standard OnboardingRequirement, or undefined if the requirement
+ *          is undefined, null, or a Treasury-specific requirement.
+ *
+ * @example
+ * toStandardRequirement('entity') // 'entity'
+ * toStandardRequirement('treasury_tos_acceptance') // undefined
+ * toStandardRequirement(undefined) // undefined
+ */
+export function toStandardRequirement(
+  requirement?: OnboardingRequirementExtended
+): OnboardingRequirement | undefined {
+  if (!requirement || requirement === 'treasury_tos_acceptance') {
+    return undefined;
+  }
+  return requirement as OnboardingRequirement;
 }
 
 /**
@@ -87,7 +128,7 @@ export function isBankAccount(
  * @returns A boolean value indicating if the requirement is for a person.
  */
 export function isPersons(
-  requirement: OnboardingRequirement | undefined
+  requirement: OnboardingRequirementExtended | undefined
 ): boolean {
   return requirement === 'persons';
 }
@@ -99,7 +140,7 @@ export function isPersons(
  * @returns A boolean value indicating if the requirement is for a business profile.
  */
 export function isBusinessProfile(
-  requirement: OnboardingRequirement | undefined
+  requirement: OnboardingRequirementExtended | undefined
 ): boolean {
   return requirement === 'business_profile';
 }
@@ -110,7 +151,7 @@ export function isBusinessProfile(
  * @returns A boolean value indicating if the requirement is for a TOS acceptance.
  */
 export function isTosAcceptance(
-  requirement: OnboardingRequirement | undefined
+  requirement: OnboardingRequirementExtended | undefined
 ): boolean {
   return requirement === 'tos_acceptance';
 }
@@ -122,7 +163,7 @@ export function isTosAcceptance(
  * @returns A boolean value indicating if the requirement is for an ownership declaration.
  */
 export function isOwnershipDeclaration(
-  requirement: OnboardingRequirement | undefined
+  requirement: OnboardingRequirementExtended | undefined
 ): boolean {
   return requirement === 'ownership_declaration';
 }
@@ -134,7 +175,7 @@ export function isOwnershipDeclaration(
  * @returns A boolean value indicating if the requirement is for entity documents.
  */
 export const isEntityDocuments = (
-  requirement: OnboardingRequirement | undefined
+  requirement: OnboardingRequirementExtended | undefined
 ): boolean => {
   return requirement === 'entity_documents';
 };

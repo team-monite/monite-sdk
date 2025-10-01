@@ -6,8 +6,10 @@ import {
 import type { ValidationSchema } from '../validators';
 import {
   OnboardingAgreementsSchema,
+  OnboardingTreasuryTermsSchema,
   addressSchema,
   agreementsSchema,
+  treasuryTermsSchema,
   bankAccountSchema,
   businessProfileSchema,
   entityIndividualSchema,
@@ -34,7 +36,8 @@ export type ValidationSchemasType =
   | 'businessProfile'
   | 'relationship'
   | 'address'
-  | 'agreements';
+  | 'agreements'
+  | 'treasury_terms';
 
 type UnifiedSchemaType =
   | UpdateEntityBankAccountRequest
@@ -46,7 +49,8 @@ type UnifiedSchemaType =
   | OptionalPersonRelationship
   | EntityAddressSchema
   | OptionalPersonAddress
-  | OnboardingAgreementsSchema;
+  | OnboardingAgreementsSchema
+  | OnboardingTreasuryTermsSchema;
 
 export type GenerateValidationSchemaType = {
   fields: OnboardingFieldsType;
@@ -126,6 +130,8 @@ const getSchemaByType = (type: ValidationSchemasType) => {
       return addressSchema;
     case 'agreements':
       return agreementsSchema;
+    case 'treasury_terms':
+      return treasuryTermsSchema;
   }
 };
 

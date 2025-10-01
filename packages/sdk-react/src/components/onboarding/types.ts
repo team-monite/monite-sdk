@@ -3,6 +3,25 @@ import type { OnboardingSettings } from '@/core/componentSettings';
 
 export type OnboardingPersonId = string | null;
 
+/**
+ * Extended onboarding requirement type that includes Treasury requirements
+ * TODO: Remove this when backend adds 'treasury_tos_acceptance' to the union type
+ */
+export type OnboardingRequirementExtended = 
+  | components['schemas']['OnboardingRequirement']
+  | 'treasury_tos_acceptance';
+
+/**
+ * Treasury-specific onboarding data
+ */
+export interface TreasuryOnboardingData {
+  treasury_tos_acceptance?: {
+    date?: string;
+  };
+  stripe_account_id?: string;
+  stripe_setup_intent_id?: string;
+}
+
 export type OnboardingField =
   | components['schemas']['OnboardingCurrencyField']
   | components['schemas']['OnboardingDateField']
