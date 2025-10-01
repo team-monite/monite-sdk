@@ -14,6 +14,14 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. js-lingui-explicit-id
+#: src/components/onboarding/OnboardingStripeBankAccount/helpers.ts:14
+#: src/components/onboarding/OnboardingStripeBankAccount/helpers.ts:17
+#: src/components/onboarding/OnboardingStripeBankAccount/helpers.ts:24
+#: src/components/onboarding/OnboardingStripeBankAccount/helpers.ts:27
+msgid "Account Holder"
+msgstr "Account Holder"
+
+#. js-lingui-explicit-id
 #: src/core/context/MoniteI18nProvider.test.tsx:29
 msgid "Delete {type} “{name}”?"
 msgstr "Delete {type} “{name}”?"
@@ -67,6 +75,10 @@ msgstr "- they are already overdue."
 #: src/components/financing/components/FinanceHowItWorks.tsx:23
 msgid "- they are due within 7 days."
 msgstr "- they are due within 7 days."
+
+#: src/components/onboarding/OnboardingBankAccountFlow/OnboardingBankAccountFlow.tsx:212
+msgid ", including, the SEPA Direct Debit Mandate."
+msgstr ", including, the SEPA Direct Debit Mandate."
 
 #: src/components/templateSettings/components/CommonSettingsBlock.tsx:71
 msgid "."
@@ -356,6 +368,22 @@ msgstr "A provider can’t offer you financing"
 msgid "A/C, Refrigeration Repair"
 msgstr "A/C, Refrigeration Repair"
 
+#: src/components/onboarding/OnboardingStripeBankAccount/TreasuryTermsAcceptanceModal.tsx:69
+msgid "Accept"
+msgstr "Accept"
+
+#: src/components/onboarding/OnboardingStripeBankAccount/TreasuryBankAccountConfirmationModal.tsx:150
+msgid "Accept & Continue"
+msgstr "Accept & Continue"
+
+#: src/components/onboarding/OnboardingTreasuryTerms/OnboardingTreasuryTerms.tsx:68
+msgid "Accept and Continue"
+msgstr "Accept and Continue"
+
+#: src/components/onboarding/OnboardingStripeBankAccount/TreasuryTermsAcceptanceModal.tsx:39
+msgid "Accept attaching bank account"
+msgstr "Accept attaching bank account"
+
 #: src/components/onboarding/OnboardingAgreements/OnboardingAgreements.tsx:45
 msgid "Accept ownership declaration"
 msgstr "Accept ownership declaration"
@@ -364,9 +392,17 @@ msgstr "Accept ownership declaration"
 msgid "Accept Service Agreement"
 msgstr "Accept Service Agreement"
 
+#: src/components/onboarding/OnboardingTreasuryTerms/OnboardingTreasuryTerms.tsx:182
+msgid "Accept service agreements"
+msgstr "Accept service agreements"
+
 #: src/components/receivables/utils/invoiceStatus.ts:15
 msgid "Accepted"
 msgstr "Accepted"
+
+#: src/components/onboarding/OnboardingStripeBankAccount/TreasuryBankAccountConfirmationModal.tsx:148
+msgid "Accepting..."
+msgstr "Accepting..."
 
 #: src/components/financing/components/FinanceHowItWorks.tsx:35
 msgid "Access funding through the invoice list, within the invoice details, or the 'My Financing' tab. If approved, you will receive the invoice amount instantly, minus the fee associated with the payment offer chosen."
@@ -383,7 +419,17 @@ msgstr "Access restricted"
 msgid "Access Restricted"
 msgstr "Access Restricted"
 
+#: src/components/onboarding/OnboardingBankAccountFlow/OnboardingBankAccountFlow.tsx:433
+msgid "Account holder"
+msgstr "Account holder"
+
+#: src/components/onboarding/OnboardingStripeBankAccount/BankAccountDetailsTable.tsx:44
+#: src/components/onboarding/OnboardingStripeBankAccount/TreasuryBankAccountConfirmationModal.tsx:89
+msgid "Account Holder"
+msgstr "Account Holder"
+
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartBankView/CounterpartBankView.tsx:98
+#: src/components/onboarding/OnboardingBankAccountFlow/OnboardingBankAccountFlow.tsx:281
 #: src/components/onboarding/validators/validationSchemas.ts:110
 #: src/components/receivables/components/BankAccountCustomFields.tsx:113
 #: src/components/receivables/components/BankAccountCustomFields.tsx:173
@@ -395,6 +441,7 @@ msgstr "Account holder name"
 msgid "Account Holder Name"
 msgstr "Account Holder Name"
 
+#: src/components/onboarding/OnboardingBankAccountFlow/OnboardingBankAccountFlow.tsx:287
 #: src/components/receivables/validation.ts:65
 msgid "Account holder name is required"
 msgstr "Account holder name is required"
@@ -406,6 +453,8 @@ msgstr "Account holder name is required"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.tsx:167
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartBankView/CounterpartBankView.tsx:94
+#: src/components/onboarding/OnboardingBankAccountFlow/OnboardingBankAccountFlow.tsx:314
+#: src/components/onboarding/OnboardingBankAccountFlow/OnboardingBankAccountFlow.tsx:449
 #: src/components/onboarding/validators/validationSchemas.ts:111
 #: src/components/receivables/components/BankAccountCustomFields.tsx:77
 #: src/components/receivables/components/BankAccountCustomFields.tsx:137
@@ -416,9 +465,12 @@ msgid "Account number"
 msgstr "Account number"
 
 #: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:131
+#: src/components/onboarding/OnboardingStripeBankAccount/BankAccountDetailsTable.tsx:68
+#: src/components/onboarding/OnboardingStripeBankAccount/TreasuryBankAccountConfirmationModal.tsx:109
 msgid "Account Number"
 msgstr "Account Number"
 
+#: src/components/onboarding/OnboardingBankAccountFlow/OnboardingBankAccountFlow.tsx:320
 #: src/components/receivables/validation.ts:52
 msgid "Account number is required"
 msgstr "Account number is required"
@@ -426,6 +478,11 @@ msgstr "Account number is required"
 #: src/components/onboarding/utils/codeToLabel.ts:36
 msgid "Account representative"
 msgstr "Account representative"
+
+#: src/components/onboarding/OnboardingStripeBankAccount/BankAccountDetailsTable.tsx:52
+#: src/components/onboarding/OnboardingStripeBankAccount/TreasuryBankAccountConfirmationModal.tsx:99
+msgid "Account Type"
+msgstr "Account Type"
 
 #: src/components/onboarding/dicts/mccCodes.ts:17
 msgid "Accounting/Bookkeeping Services"
@@ -450,7 +507,7 @@ msgid "Active"
 msgstr "Active"
 
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:1171
-#: src/components/onboarding/hooks/useOnboardingActions.ts:134
+#: src/components/onboarding/hooks/useOnboardingActions.ts:137
 #: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/components/MeasureUnitsFormRow/MeasureUnitsFormRow.tsx:212
 #: src/components/receivables/components/BankAccountFormDialog.tsx:216
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:551
@@ -459,12 +516,18 @@ msgid "Add"
 msgstr "Add"
 
 #: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:120
-msgid "Add a bank account to receive payments"
-msgstr "Add a bank account to receive payments"
+#~ msgid "Add a bank account to receive payments"
+#~ msgstr "Add a bank account to receive payments"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:189
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:206
 msgid "Add a bank account to receive transfers of funds to your business."
 msgstr "Add a bank account to receive transfers of funds to your business."
+
+#: src/components/onboarding/OnboardingBankAccountFlow/OnboardingBankAccountFlow.tsx:172
+#: src/components/onboarding/OnboardingBankAccountFlow/OnboardingBankAccountFlow.tsx:260
+#: src/components/onboarding/OnboardingStripeBankAccount/OnboardingStripeBankAccount.tsx:395
+msgid "Add a bank to make transfers of funds from your bank account to Stripe account and to vendors."
+msgstr "Add a bank to make transfers of funds from your bank account to Stripe account and to vendors."
 
 #: src/components/onboarding/OnboardingPersonList/OnboardingPersonList.tsx:178
 msgid "Add a business executive"
@@ -486,7 +549,7 @@ msgstr "Add a date when the product will be delivered or the service provided"
 msgid "Add a dedicated space for signature on PDF"
 msgstr "Add a dedicated space for signature on PDF"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:101
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:109
 #: src/components/onboarding/OnboardingPersonList/OnboardingPersonList.tsx:176
 msgid "Add a director"
 msgstr "Add a director"
@@ -499,15 +562,20 @@ msgstr "Add a note that will be displayed below the line items"
 msgid "Add a note to be displayed below the line items"
 msgstr "Add a note to be displayed below the line items"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:104
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:112
 msgid "Add a person"
 msgstr "Add a person"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:103
+#: src/components/onboarding/OnboardingBankAccountFlow/OnboardingBankAccountFlow.tsx:228
+#: src/components/onboarding/OnboardingBankAccountFlow/OnboardingBankAccountFlow.tsx:376
+msgid "Add account"
+msgstr "Add account"
+
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:111
 msgid "Add an executive"
 msgstr "Add an executive"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:102
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:110
 msgid "Add an owner"
 msgstr "Add an owner"
 
@@ -692,7 +760,7 @@ msgstr "Afghan Afghani"
 msgid "Afghanistan"
 msgstr "Afghanistan"
 
-#: src/components/onboarding/hooks/useOnboardingActions.ts:122
+#: src/components/onboarding/hooks/useOnboardingActions.ts:125
 msgid "Agree & Submit"
 msgstr "Agree & Submit"
 
@@ -1133,6 +1201,10 @@ msgstr "Aruba"
 msgid "Aruban Florin"
 msgstr "Aruban Florin"
 
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:145
+msgid "As a Treasury-eligible entity, please review and accept the additional Treasury Services Agreement to enable financial services."
+msgstr "As a Treasury-eligible entity, please review and accept the additional Treasury Services Agreement to enable financial services."
+
 #: src/components/aiAssistant/AIAssistant.tsx:85
 msgid "Ask AI"
 msgstr "Ask AI"
@@ -1241,6 +1313,7 @@ msgstr "Azerbaijani Manat"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:466
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:484
+#: src/components/onboarding/OnboardingBankAccountFlow/OnboardingBankAccountFlow.tsx:370
 #: src/components/products/ProductCancelEditModal/ProductCancelEditModal.tsx:26
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:271
 msgid "Back"
@@ -1327,11 +1400,14 @@ msgstr "Bangladesh"
 msgid "Bangladeshi Taka"
 msgstr "Bangladeshi Taka"
 
+#: src/components/onboarding/OnboardingBankAccountFlow/OnboardingBankAccountFlow.tsx:129
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:127
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:471
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:315
 msgid "Bank account"
 msgstr "Bank account"
 
+#: src/components/onboarding/OnboardingStripeBankAccount/BankAccountDetailsTable.tsx:27
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:477
 msgid "Bank Account"
 msgstr "Bank Account"
@@ -1354,6 +1430,11 @@ msgstr "Bank Account “{0}” has been updated."
 #: src/components/receivables/components/BankAccountFormContent.tsx:65
 msgid "Bank account {0}"
 msgstr "Bank account {0}"
+
+#: src/components/onboarding/OnboardingStripeBankAccount/OnboardingStripeBankAccount.tsx:306
+#: src/components/onboarding/OnboardingStripeBankAccount/TreasuryBankAccountConfirmationModal.tsx:53
+msgid "Bank Account Connected"
+msgstr "Bank Account Connected"
 
 #: src/components/receivables/components/BankAccountDeleteModal.tsx:27
 #~ msgid "Bank account delete confirmation"
@@ -1390,9 +1471,10 @@ msgstr "Bank accounts"
 msgid "Bank name"
 msgstr "Bank name"
 
-#: src/components/receivables/InvoiceDetails/InvoicePaymentDetails/InvoicePaymentDetails.tsx:29
-#~ msgid "Bank Name"
-#~ msgstr "Bank Name"
+#: src/components/onboarding/OnboardingStripeBankAccount/BankAccountDetailsTable.tsx:36
+#: src/components/onboarding/OnboardingStripeBankAccount/TreasuryBankAccountConfirmationModal.tsx:79
+msgid "Bank Name"
+msgstr "Bank Name"
 
 #: src/components/receivables/components/InvoiceDetailsTabDetails.tsx:147
 msgid "Bank name:"
@@ -1646,15 +1728,15 @@ msgstr "Bus Lines"
 msgid "Business address"
 msgstr "Business address"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:121
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:128
 msgid "Business details"
 msgstr "Business details"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:117
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:125
 msgid "Business directors"
 msgstr "Business directors"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:118
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:126
 msgid "Business executives"
 msgstr "Business executives"
 
@@ -1666,7 +1748,7 @@ msgstr "Business Identification Number (Liechtenstein)"
 msgid "Business Number (Canada)"
 msgstr "Business Number (Canada)"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:116
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:124
 msgid "Business owners"
 msgstr "Business owners"
 
@@ -1683,7 +1765,7 @@ msgstr "Business Registration (Hong Kong)"
 msgid "Business Registration Number (South Korea)"
 msgstr "Business Registration Number (South Korea)"
 
-#: src/components/onboarding/OnboardingBusinessProfile/OnboardingBusinessProfile.tsx:82
+#: src/components/onboarding/OnboardingBusinessProfile/OnboardingBusinessProfile.tsx:96
 #: src/components/onboarding/validators/validationSchemas.ts:129
 msgid "Business URL"
 msgstr "Business URL"
@@ -1703,6 +1785,14 @@ msgstr "Buying/Shopping Services"
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:380
 #~ msgid "by"
 #~ msgstr "by"
+
+#: src/components/onboarding/OnboardingStripeBankAccount/TreasuryBankAccountConfirmationModal.tsx:132
+msgid "By accepting, you confirm that this bank account belongs to your organization and authorize its use for Treasury transactions."
+msgstr "By accepting, you confirm that this bank account belongs to your organization and authorize its use for Treasury transactions."
+
+#: src/components/onboarding/OnboardingStripeBankAccount/TreasuryTermsAcceptanceModal.tsx:44
+msgid "By clicking \"Accept\", you authorize Monite to debit the bank account specified above for any amount owed for charges arising from your use of Monite's services and/or purchase of products from Monite, pursuant to Monite's website and terms, until this authorization is revoked. You may amend or cancel this authorization at any time by providing notice to Monite with 30 (thirty) days notice."
+msgstr "By clicking \"Accept\", you authorize Monite to debit the bank account specified above for any amount owed for charges arising from your use of Monite's services and/or purchase of products from Monite, pursuant to Monite's website and terms, until this authorization is revoked. You may amend or cancel this authorization at any time by providing notice to Monite with 30 (thirty) days notice."
 
 #: src/components/onboarding/dicts/mccCodes.ts:204
 msgid "Cable, Satellite, and Other Pay Television and Radio"
@@ -1797,7 +1887,8 @@ msgstr "Canadian QST number (Québec)"
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartContactView/CounterpartContactView.tsx:227
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartVatView/CounterpartVatView.tsx:99
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:159
-#: src/components/onboarding/hooks/useOnboardingActions.ts:128
+#: src/components/onboarding/hooks/useOnboardingActions.ts:131
+#: src/components/onboarding/OnboardingStripeBankAccount/TreasuryBankAccountConfirmationModal.tsx:140
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:85
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:106
 #: src/components/payables/PayableDetails/PayableDetailsApprovalFlow/PayableDetailsForceActionDialog.tsx:71
@@ -2085,6 +2176,10 @@ msgid "Cleaning and Maintenance"
 msgstr "Cleaning and Maintenance"
 
 #: src/components/financing/components/FinanceBanner.tsx:300
+#: src/components/onboarding/OnboardingBankAccountFlow/OnboardingBankAccountFlow.tsx:221
+#: src/components/onboarding/OnboardingBankAccountFlow/OnboardingBankAccountFlow.tsx:495
+#: src/components/onboarding/OnboardingStripeBankAccount/TreasuryTermsAcceptanceModal.tsx:74
+#: src/components/onboarding/OnboardingTreasuryTerms/OnboardingTreasuryTerms.tsx:82
 #: src/components/payables/PayableDetails/PayableDetailsCancelModal/PayableDetailsCancelModal.tsx:26
 #: src/components/receivables/components/InvoiceCancelModal.tsx:52
 #: src/components/receivables/components/RecurrenceCancelModal.tsx:61
@@ -2227,7 +2322,12 @@ msgstr "Comoros"
 msgid "Companies"
 msgstr "Companies"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:113
+#: src/components/onboarding/OnboardingStripeBankAccount/BankAccountDetailsTable.tsx:58
+#: src/components/onboarding/OnboardingStripeBankAccount/BankAccountDetailsTable.tsx:62
+msgid "Company"
+msgstr "Company"
+
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:121
 msgid "Company details"
 msgstr "Company details"
 
@@ -2320,6 +2420,19 @@ msgstr "Congo, Democratic Republic"
 msgid "Congolese Franc"
 msgstr "Congolese Franc"
 
+#: src/components/settings/TreasuryConnect/TreasuryConnect.tsx:83
+msgid "Connect"
+msgstr "Connect"
+
+#: src/components/settings/TreasuryConnect/TreasuryConnect.tsx:90
+msgid "Connected"
+msgstr "Connected"
+
+#: src/components/onboarding/OnboardingStripeBankAccount/BankAccountDetailsTable.tsx:25
+#: src/components/onboarding/OnboardingStripeBankAccount/TreasuryBankAccountConfirmationModal.tsx:71
+msgid "Connected Bank Account"
+msgstr "Connected Bank Account"
+
 #: src/components/onboarding/dicts/mccCodes.ts:363
 msgid "Construction Materials (Not Elsewhere Classified)"
 msgstr "Construction Materials (Not Elsewhere Classified)"
@@ -2374,21 +2487,22 @@ msgstr "Contact support"
 msgid "Contact your system administrator for details."
 msgstr "Contact your system administrator for details."
 
-#: src/components/onboarding/hooks/useOnboardingActions.ts:124
-#: src/components/onboarding/hooks/useOnboardingActions.ts:132
+#: src/components/onboarding/hooks/useOnboardingActions.ts:127
+#: src/components/onboarding/hooks/useOnboardingActions.ts:135
+#: src/components/onboarding/OnboardingBankAccountFlow/OnboardingBankAccountFlow.tsx:500
 #: src/components/onboarding/OnboardingCompleted/OnboardingCompleted.tsx:46
 msgid "Continue"
 msgstr "Continue"
 
-#: src/components/onboarding/hooks/useOnboardingActions.ts:144
+#: src/components/onboarding/hooks/useOnboardingActions.ts:147
 msgid "Continue with no directors"
 msgstr "Continue with no directors"
 
-#: src/components/onboarding/hooks/useOnboardingActions.ts:142
+#: src/components/onboarding/hooks/useOnboardingActions.ts:145
 msgid "Continue with no executives"
 msgstr "Continue with no executives"
 
-#: src/components/onboarding/hooks/useOnboardingActions.ts:140
+#: src/components/onboarding/hooks/useOnboardingActions.ts:143
 msgid "Continue with no owners"
 msgstr "Continue with no owners"
 
@@ -2535,6 +2649,7 @@ msgstr "Counterparts"
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartAddressView/CounterpartAddressView.tsx:42
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartBankView/CounterpartBankView.tsx:110
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartVatView/CounterpartVatView.tsx:75
+#: src/components/onboarding/OnboardingBankAccountFlow/OnboardingBankAccountFlow.tsx:425
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingAddressView/OnboardingAddressView.tsx:26
 #: src/components/onboarding/validators/validationSchemas.ts:108
 #: src/components/onboarding/validators/validationSchemas.ts:146
@@ -2556,6 +2671,11 @@ msgstr "Country Clubs"
 #: src/components/receivables/validation.ts:32
 msgid "Country is required"
 msgstr "Country is required"
+
+#: src/components/onboarding/OnboardingBankAccountFlow/OnboardingBankAccountFlow.tsx:181
+#: src/components/onboarding/OnboardingBankAccountFlow/OnboardingBankAccountFlow.tsx:270
+msgid "Country of the bank account"
+msgstr "Country of the bank account"
 
 #: src/components/receivables/validation.ts:184
 msgid "Country where VAT is registered"
@@ -2842,6 +2962,8 @@ msgstr "Cuba"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartBankView/CounterpartBankView.tsx:114
 #: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:83
+#: src/components/onboarding/OnboardingBankAccountFlow/OnboardingBankAccountFlow.tsx:307
+#: src/components/onboarding/OnboardingBankAccountFlow/OnboardingBankAccountFlow.tsx:441
 #: src/components/onboarding/validators/validationSchemas.ts:109
 #: src/components/payables/PayableDetails/PayableDetailsForm/validation.ts:90
 #: src/components/products/ProductDetails/validation.ts:40
@@ -3027,6 +3149,10 @@ msgstr "default"
 #: src/components/templateSettings/components/TemplateOption.tsx:42
 msgid "Default"
 msgstr "Default"
+
+#: src/components/onboarding/OnboardingBankAccountFlow/OnboardingBankAccountFlow.tsx:409
+msgid "Default account"
+msgstr "Default account"
 
 #: src/components/receivables/components/BankAccountFormContent.tsx:247
 msgid "Default currency switch"
@@ -3274,6 +3400,10 @@ msgstr "Description must be 250 characters or less"
 msgid "Description must be 255 characters or less"
 msgstr "Description must be 255 characters or less"
 
+#: src/components/onboarding/OnboardingBusinessProfile/OnboardingBusinessProfile.tsx:119
+msgid "Description of goods or services"
+msgstr "Description of goods or services"
+
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:362
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:239
 #: src/components/receivables/components/InvoiceDetails.tsx:216
@@ -3304,6 +3434,10 @@ msgstr "Digital Goods – Large Digital Goods Merchant"
 #: src/components/onboarding/dicts/mccCodes.ts:445
 msgid "Digital Goods Media – Books, Movies, Music"
 msgstr "Digital Goods Media – Books, Movies, Music"
+
+#: src/components/settings/TreasuryConnect/TreasuryConnect.tsx:65
+msgid "Direct debits via Stripe"
+msgstr "Direct debits via Stripe"
 
 #: src/components/onboarding/dicts/mccCodes.ts:465
 msgid "Direct Marketing - Catalog Merchant"
@@ -3489,7 +3623,7 @@ msgstr "Don’t wait for your client to pay"
 msgid "Done"
 msgstr "Done"
 
-#: src/components/onboarding/hooks/useOnboardingActions.ts:138
+#: src/components/onboarding/hooks/useOnboardingActions.ts:141
 msgid "Done, continue"
 msgstr "Done, continue"
 
@@ -3606,7 +3740,7 @@ msgstr "Due to late payment your financing is currently on hold. Please, contact
 #~ msgid "Due to regulations, we're required to collect information about a company's directors."
 #~ msgstr "Due to regulations, we're required to collect information about a company's directors."
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:179
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:196
 msgid "Due to regulations, we’re required to collect information about a company’s directors."
 msgstr "Due to regulations, we’re required to collect information about a company’s directors."
 
@@ -3614,7 +3748,7 @@ msgstr "Due to regulations, we’re required to collect information about a comp
 #~ msgid "Due to regulatory guidelines, we're required to collect information on anyone who has significant ownership of your business."
 #~ msgstr "Due to regulatory guidelines, we're required to collect information on anyone who has significant ownership of your business."
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:174
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:191
 msgid "Due to regulatory guidelines, we’re required to collect information on anyone who has significant ownership of your business."
 msgstr "Due to regulatory guidelines, we’re required to collect information on anyone who has significant ownership of your business."
 
@@ -3667,6 +3801,7 @@ msgstr "Ecuador"
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:115
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.test.tsx:258
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.test.tsx:284
+#: src/components/onboarding/OnboardingBankAccountFlow/OnboardingBankAccountFlow.tsx:416
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingPersonsReview.tsx:44
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:100
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:121
@@ -3756,12 +3891,12 @@ msgstr "Edit Customer Close"
 msgid "Edit customer's profile"
 msgstr "Edit customer's profile"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:108
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:116
 msgid "Edit documents for person"
 msgstr "Edit documents for person"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:218
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:112
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:120
 msgid "Edit individual"
 msgstr "Edit individual"
 
@@ -3996,7 +4131,7 @@ msgstr "Entity"
 msgid "Entity bank account"
 msgstr "Entity bank account"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:125
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:134
 msgid "Entity documents"
 msgstr "Entity documents"
 
@@ -4256,6 +4391,10 @@ msgstr "Exterminating Services"
 #~ msgid "Failed to a create payment link. Please try again."
 #~ msgstr "Failed to a create payment link. Please try again."
 
+#: src/components/onboarding/OnboardingStripeBankAccount/useStripeBankAccountVerification.ts:44
+msgid "Failed to check verification status"
+msgstr "Failed to check verification status"
+
 #: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:78
 msgid "Failed to create"
 msgstr "Failed to create"
@@ -4334,6 +4473,10 @@ msgstr "Failed to load GL codes"
 msgid "Failed to load PDF Viewer"
 msgstr "Failed to load PDF Viewer"
 
+#: src/components/onboarding/OnboardingStripeBankAccount/StripeFinancialConnectionsModal.tsx:134
+msgid "Failed to load Stripe verification"
+msgstr "Failed to load Stripe verification"
+
 #: src/components/receivables/hooks/useMarkInvoiceAsPaid.ts:32
 msgid "Failed to mark invoice as paid: {errorMessage}"
 msgstr "Failed to mark invoice as paid: {errorMessage}"
@@ -4349,6 +4492,10 @@ msgstr "Failed to retrieve payment link. Please try again."
 #: src/components/receivables/hooks/useSetDefaultBankAccount.ts:26
 msgid "Failed to set Bank Account as default."
 msgstr "Failed to set Bank Account as default."
+
+#: src/components/onboarding/OnboardingStripeBankAccount/useStripeBankAccountVerification.ts:27
+msgid "Failed to start bank account verification"
+msgstr "Failed to start bank account verification"
 
 #: src/components/payables/PayableDetails/usePayableDetails.tsx:960
 msgid "Failed to submit Payable with AI suggestion. Please try editing the Payable and submit again."
@@ -4569,6 +4716,10 @@ msgstr "For bookkeeping purposes, this is a write-off and has tax implications."
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:344
 msgid "For this reminder to be sent for your invoice, please make sure to set payment terms that include a discount"
 msgstr "For this reminder to be sent for your invoice, please make sure to set payment terms that include a discount"
+
+#: src/components/onboarding/OnboardingBankAccountFlow/OnboardingBankAccountFlow.tsx:132
+msgid "For US Treasury-enabled entities, verify your bank using Stripe Financial Connections. No manual bank details are required."
+msgstr "For US Treasury-enabled entities, verify your bank using Stripe Financial Connections. No manual bank details are required."
 
 #: src/components/receivables/components/InvoiceDetails.tsx:58
 #~ msgid "for Yosemite Labs GmbH"
@@ -5082,6 +5233,10 @@ msgstr "I confirm that any person owning 25% or more of {entityName} or any pers
 msgid "I own 25% or more of the company."
 msgstr "I own 25% or more of the company."
 
+#: src/components/onboarding/OnboardingBankAccountFlow/OnboardingBankAccountFlow.tsx:202
+msgid "I, the account holder, am the only person required to authorise debits. By submitting a bank account, I authorise Monite to transfer to and from this bank account through the Single Euro Payments Area (SEPA) debit system and confirm that I have read and agree to the "
+msgstr "I, the account holder, am the only person required to authorise debits. By submitting a bank account, I authorise Monite to transfer to and from this bank account through the Single Euro Payments Area (SEPA) debit system and confirm that I have read and agree to the "
+
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.tsx:145
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartBankView/CounterpartBankView.tsx:90
 #: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:113
@@ -5152,6 +5307,10 @@ msgstr "If you leave this page, you will lose all the changes you have made."
 msgid "If you switch the invoice currency and add corresponding items, it will automatically replace the previously added ones."
 msgstr "If you switch the invoice currency and add corresponding items, it will automatically replace the previously added ones."
 
+#: src/components/onboarding/OnboardingStripeBankAccount/TreasuryTermsAcceptanceModal.tsx:54
+msgid "If you use Monite's services or purchase additional products periodically pursuant to Monite's terms, you authorize Monite to debit your bank account periodically. Payments that fall outside of the regular debits authorized above will only be debited after your authorization is obtained."
+msgstr "If you use Monite's services or purchase additional products periodically pursuant to Monite's terms, you authorize Monite to debit your bank account periodically. Payments that fall outside of the regular debits authorized above will only be debited after your authorization is obtained."
+
 #: src/components/approvalRequests/helpers.ts:15
 #: src/components/payables/consts.ts:34
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:175
@@ -5194,9 +5353,10 @@ msgstr "Indian GST number"
 msgid "Indian Rupee"
 msgstr "Indian Rupee"
 
-#: src/components/receivables/components/EntityProfileModal.tsx:173
-#~ msgid "Individual"
-#~ msgstr "Individual"
+#: src/components/onboarding/OnboardingStripeBankAccount/BankAccountDetailsTable.tsx:56
+#: src/components/onboarding/OnboardingStripeBankAccount/BankAccountDetailsTable.tsx:60
+msgid "Individual"
+msgstr "Individual"
 
 #: src/components/counterparts/components/CreateCounterpartDialog.tsx:119
 #: src/components/counterparts/components/CreateCounterpartModal.tsx:113
@@ -5223,7 +5383,7 @@ msgstr "Indonesian Rupiah"
 msgid "Industrial Supplies (Not Elsewhere Classified)"
 msgstr "Industrial Supplies (Not Elsewhere Classified)"
 
-#: src/components/onboarding/OnboardingBusinessProfile/OnboardingBusinessProfile.tsx:71
+#: src/components/onboarding/OnboardingBusinessProfile/OnboardingBusinessProfile.tsx:85
 #: src/components/onboarding/validators/validationSchemas.ts:128
 msgid "Industry"
 msgstr "Industry"
@@ -5578,7 +5738,7 @@ msgstr "It will remain in all the documents where it is added. You can’t undo 
 #~ msgid "It’s required to add any individual who is on the governing board of the company."
 #~ msgstr "It’s required to add any individual who is on the governing board of the company."
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:137
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:151
 msgid ""
 "It’s required to add any individual who is on the governing board of the company.\n"
 ""
@@ -5586,7 +5746,7 @@ msgstr ""
 "It’s required to add any individual who is on the governing board of the company.\n"
 ""
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:152
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:166
 msgid "It’s required to add any individual who is on the governing board, owns 25% or more of the company or otherwise has significant management control of the company."
 msgstr "It’s required to add any individual who is on the governing board, owns 25% or more of the company or otherwise has significant management control of the company."
 
@@ -6893,6 +7053,12 @@ msgstr "NOT allowed"
 msgid "Not available"
 msgstr "Not available"
 
+#: src/components/onboarding/OnboardingStripeBankAccount/BankAccountDetailsTable.tsx:39
+#: src/components/onboarding/OnboardingStripeBankAccount/BankAccountDetailsTable.tsx:74
+#: src/components/onboarding/OnboardingStripeBankAccount/BankAccountDetailsTable.tsx:83
+msgid "Not connected"
+msgstr "Not connected"
+
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:432
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewLegacy.tsx:95
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewLegacy.tsx:140
@@ -7202,6 +7368,10 @@ msgstr "Pay in {0} days"
 msgid "Pay in the first {0} days"
 msgstr "Pay in the first {0} days"
 
+#: src/components/settings/TreasuryConnect/TreasuryConnect.tsx:72
+msgid "Pay invoices directly from your bank account and track when payments are made and automatically matched on this platform via Stripe"
+msgstr "Pay invoices directly from your bank account and track when payments are made and automatically matched on this platform via Stripe"
+
 #: src/components/financing/components/FinanceHowItWorks.tsx:41
 msgid "Pay out the financed sum:"
 msgstr "Pay out the financed sum:"
@@ -7350,8 +7520,16 @@ msgstr "Payment Method"
 #~ msgstr "Payment not allowed"
 
 #: src/components/onboarding/OnboardingAgreements/OnboardingAgreements.tsx:54
-msgid "Payment processing services for {entityName} are provided by Stripe and are subject to the <0>Stripe Connected Account Agreement</0>, which includes the <1>Stripe Terms of Service</1> (collectively, the “Stripe Services Agreement”). By agreeing to these terms or continuing to operate as {entityName} on {platformName}, you agree to be bound by the Stripe Services Agreement, as the same may be modified by Stripe from time to time. As a condition of {platformName} enabling payment processing services through Stripe, you agree to provide {platformName} accurate and complete information about you and your business, and you authorize {platformName} to share it and transaction information related to your use of the payment processing services provided by Stripe."
-msgstr "Payment processing services for {entityName} are provided by Stripe and are subject to the <0>Stripe Connected Account Agreement</0>, which includes the <1>Stripe Terms of Service</1> (collectively, the “Stripe Services Agreement”). By agreeing to these terms or continuing to operate as {entityName} on {platformName}, you agree to be bound by the Stripe Services Agreement, as the same may be modified by Stripe from time to time. As a condition of {platformName} enabling payment processing services through Stripe, you agree to provide {platformName} accurate and complete information about you and your business, and you authorize {platformName} to share it and transaction information related to your use of the payment processing services provided by Stripe."
+msgid "Payment processing services for {entityName} are provided by Stripe and are subject to the <0><1>Stripe Connected Account Agreement</1></0>, which includes the <2><3>Stripe Terms of Service</3></2> (collectively, the “Stripe Services Agreement”). By agreeing to these terms or continuing to operate as {entityName} on {platformName}, you agree to be bound by the Stripe Services Agreement, as the same may be modified by Stripe from time to time. As a condition of {platformName} enabling payment processing services through Stripe, you agree to provide {platformName} accurate and complete information about you and your business, and you authorize {platformName} to share it and transaction information related to your use of the payment processing services provided by Stripe."
+msgstr "Payment processing services for {entityName} are provided by Stripe and are subject to the <0><1>Stripe Connected Account Agreement</1></0>, which includes the <2><3>Stripe Terms of Service</3></2> (collectively, the “Stripe Services Agreement”). By agreeing to these terms or continuing to operate as {entityName} on {platformName}, you agree to be bound by the Stripe Services Agreement, as the same may be modified by Stripe from time to time. As a condition of {platformName} enabling payment processing services through Stripe, you agree to provide {platformName} accurate and complete information about you and your business, and you authorize {platformName} to share it and transaction information related to your use of the payment processing services provided by Stripe."
+
+#: src/components/onboarding/OnboardingTreasuryTerms/OnboardingTreasuryTerms.tsx:124
+msgid "Payment processing services for {entityName} are provided by Stripe and are subject to the <0>Stripe Connected Account Agreement</0>, which includes the <1>Stripe Terms of Service</1> (collectively, the \"Stripe Services Agreement\")."
+msgstr "Payment processing services for {entityName} are provided by Stripe and are subject to the <0>Stripe Connected Account Agreement</0>, which includes the <1>Stripe Terms of Service</1> (collectively, the \"Stripe Services Agreement\")."
+
+#: src/components/onboarding/OnboardingAgreements/OnboardingAgreements.tsx:54
+#~ msgid "Payment processing services for {entityName} are provided by Stripe and are subject to the <0>Stripe Connected Account Agreement</0>, which includes the <1>Stripe Terms of Service</1> (collectively, the “Stripe Services Agreement”). By agreeing to these terms or continuing to operate as {entityName} on {platformName}, you agree to be bound by the Stripe Services Agreement, as the same may be modified by Stripe from time to time. As a condition of {platformName} enabling payment processing services through Stripe, you agree to provide {platformName} accurate and complete information about you and your business, and you authorize {platformName} to share it and transaction information related to your use of the payment processing services provided by Stripe."
+#~ msgstr "Payment processing services for {entityName} are provided by Stripe and are subject to the <0>Stripe Connected Account Agreement</0>, which includes the <1>Stripe Terms of Service</1> (collectively, the “Stripe Services Agreement”). By agreeing to these terms or continuing to operate as {entityName} on {platformName}, you agree to be bound by the Stripe Services Agreement, as the same may be modified by Stripe from time to time. As a condition of {platformName} enabling payment processing services through Stripe, you agree to provide {platformName} accurate and complete information about you and your business, and you authorize {platformName} to share it and transaction information related to your use of the payment processing services provided by Stripe."
 
 #: src/components/receivables/components/InvoiceDetailsTabPayments.tsx:60
 msgid "Payment received"
@@ -7482,11 +7660,11 @@ msgstr "Permissions"
 msgid "Person"
 msgstr "Person"
 
-#: src/components/onboarding/helpers.ts:360
+#: src/components/onboarding/helpers.ts:401
 msgid "Personal identification number"
 msgstr "Personal identification number"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:122
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:129
 msgid "Persons review"
 msgstr "Persons review"
 
@@ -7580,15 +7758,19 @@ msgstr "Please accept Ownership Declaration to proceed."
 msgid "Please accept Service Agreement to proceed."
 msgstr "Please accept Service Agreement to proceed."
 
+#: src/components/onboarding/validators/validationSchemas.ts:187
+msgid "Please accept Treasury Terms of Service to proceed."
+msgstr "Please accept Treasury Terms of Service to proceed."
+
 #: src/components/onboarding/OnboardingPersonList/OnboardingPersonList.tsx:166
 msgid "Please add any individual who owns 25% or more of the company."
 msgstr "Please add any individual who owns 25% or more of the company."
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:143
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:157
 msgid "Please add any individual who owns 25% or more of your business."
 msgstr "Please add any individual who owns 25% or more of your business."
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:197
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:214
 msgid "Please correct the errors in persons information."
 msgstr "Please correct the errors in persons information."
 
@@ -7656,11 +7838,11 @@ msgstr "Please list all individuals who are members of the governing board of th
 msgid "Please provide a valid date."
 msgstr "Please provide a valid date."
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:148
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:162
 msgid "Please provide information about an executive or senior manager who has significant management responsibility for this business."
 msgstr "Please provide information about an executive or senior manager who has significant management responsibility for this business."
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:194
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:211
 msgid "Please provide information about your business."
 msgstr "Please provide information about your business."
 
@@ -7668,8 +7850,8 @@ msgstr "Please provide information about your business."
 msgid "Please provide the following documents for the person"
 msgstr "Please provide the following documents for the person"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:200
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:205
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:217
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:222
 msgid "Please review the terms and conditions and accept them to continue."
 msgstr "Please review the terms and conditions and accept them to continue."
 
@@ -7682,9 +7864,9 @@ msgstr "Please try again later."
 msgid "Please try to reload."
 msgstr "Please try to reload."
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:159
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:161
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:210
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:175
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:177
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:227
 msgid "Please upload the required documents to continue."
 msgstr "Please upload the required documents to continue."
 
@@ -7903,6 +8085,7 @@ msgstr "Processing file"
 #~ msgstr "Processing payment..."
 
 #: src/components/onboarding/OnboardingFile/OnboardingFileUploader/OnboardingFileUploader.tsx:93
+#: src/components/onboarding/OnboardingStripeBankAccount/TreasuryTermsAcceptanceModal.tsx:69
 msgid "Processing..."
 msgstr "Processing..."
 
@@ -7991,7 +8174,7 @@ msgstr "Prompts"
 msgid "Provide documents"
 msgstr "Provide documents"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:109
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:117
 msgid "Provide documents for persons"
 msgstr "Provide documents for persons"
 
@@ -8200,13 +8383,13 @@ msgstr "Recurrence start date is a required field"
 #~ msgid "Recurrence was completed, all invoices were issued"
 #~ msgstr "Recurrence was completed, all invoices were issued"
 
-#: src/components/receivables/components/InvoicesTable.tsx:252
-#: src/components/receivables/utils/invoiceStatus.ts:21
+#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:239
+msgctxt "InvoicesTableRowActionMenu"
 msgid "Recurring"
 msgstr "Recurring"
 
-#: src/components/receivables/hooks/useInvoiceRowActionMenuCell.tsx:239
-msgctxt "InvoicesTableRowActionMenu"
+#: src/components/receivables/components/InvoicesTable.tsx:252
+#: src/components/receivables/utils/invoiceStatus.ts:21
 msgid "Recurring"
 msgstr "Recurring"
 
@@ -8393,6 +8576,14 @@ msgstr "Results per page"
 msgid "Resume application"
 msgstr "Resume application"
 
+#: src/components/onboarding/OnboardingStripeBankAccount/OnboardingStripeBankAccount.tsx:424
+msgid "Retry"
+msgstr "Retry"
+
+#: src/components/onboarding/OnboardingStripeBankAccount/VerificationStatusCards.tsx:103
+msgid "Retry Verification"
+msgstr "Retry Verification"
+
 #: src/core/utils/countries.ts:197
 msgid "Reunion"
 msgstr "Reunion"
@@ -8462,6 +8653,8 @@ msgstr "Roofing/Siding, Sheet Metal"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.tsx:212
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartBankView/CounterpartBankView.tsx:106
+#: src/components/onboarding/OnboardingBankAccountFlow/OnboardingBankAccountFlow.tsx:340
+#: src/components/onboarding/OnboardingBankAccountFlow/OnboardingBankAccountFlow.tsx:457
 #: src/components/onboarding/validators/validationSchemas.ts:119
 #: src/components/receivables/components/BankAccountCustomFields.tsx:97
 #: src/components/receivables/components/BankAccountCustomFields.tsx:275
@@ -8472,9 +8665,12 @@ msgid "Routing number"
 msgstr "Routing number"
 
 #: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:140
+#: src/components/onboarding/OnboardingStripeBankAccount/BankAccountDetailsTable.tsx:80
+#: src/components/onboarding/OnboardingStripeBankAccount/TreasuryBankAccountConfirmationModal.tsx:119
 msgid "Routing Number"
 msgstr "Routing Number"
 
+#: src/components/onboarding/OnboardingBankAccountFlow/OnboardingBankAccountFlow.tsx:345
 #: src/components/receivables/validation.ts:78
 msgid "Routing number is required"
 msgstr "Routing number is required"
@@ -8615,14 +8811,14 @@ msgstr "Save"
 msgid "Save and continue"
 msgstr "Save and continue"
 
-#: src/components/onboarding/hooks/useOnboardingActions.ts:126
-#: src/components/onboarding/hooks/useOnboardingActions.ts:136
+#: src/components/onboarding/hooks/useOnboardingActions.ts:129
+#: src/components/onboarding/hooks/useOnboardingActions.ts:139
 #: src/components/templateSettings/components/DocumentNumberForm.tsx:120
 #: src/components/templateSettings/components/OtherSettingsForm.tsx:174
 msgid "Save changes"
 msgstr "Save changes"
 
-#: src/components/onboarding/hooks/useOnboardingActions.ts:130
+#: src/components/onboarding/hooks/useOnboardingActions.ts:133
 msgid "Save for later"
 msgstr "Save for later"
 
@@ -8797,6 +8993,10 @@ msgstr "Service {0} was created."
 #: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:73
 msgid "Service {0} was updated."
 msgstr "Service {0} was updated."
+
+#: src/components/onboarding/OnboardingBankAccountFlow/OnboardingBankAccountFlow.tsx:210
+msgid "Service Agreement"
+msgstr "Service Agreement"
 
 #: src/components/financing/components/FinanceDetails.tsx:193
 msgid "Service Fee"
@@ -8994,7 +9194,7 @@ msgstr "Small Appliance Repair"
 msgid "Snowmobile Dealers"
 msgstr "Snowmobile Dealers"
 
-#: src/components/onboarding/helpers.ts:357
+#: src/components/onboarding/helpers.ts:398
 msgid "Social Security Number"
 msgstr "Social Security Number"
 
@@ -9148,6 +9348,11 @@ msgstr "Start"
 msgid "Start of the month"
 msgstr "Start of the month"
 
+#: src/components/onboarding/OnboardingStripeBankAccount/OnboardingStripeBankAccount.tsx:412
+#: src/components/onboarding/OnboardingStripeBankAccount/OnboardingStripeBankAccount.tsx:424
+msgid "Starting verification..."
+msgstr "Starting verification..."
+
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartAddressView/CounterpartAddressView.tsx:38
 #: src/components/onboarding/OnboardingAddress/OnboardingAddress.tsx:73
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingAddressView/OnboardingAddressView.tsx:30
@@ -9193,6 +9398,14 @@ msgstr "Stationery Stores, Office, and School Supply Stores"
 msgid "Status"
 msgstr "Status"
 
+#: src/components/onboarding/OnboardingTreasuryTerms/OnboardingTreasuryTerms.tsx:119
+msgid "Stripe Connect"
+msgstr "Stripe Connect"
+
+#: src/components/onboarding/OnboardingTreasuryTerms/OnboardingTreasuryTerms.tsx:154
+msgid "Stripe Treasury"
+msgstr "Stripe Treasury"
+
 #: src/components/templateSettings/utils.ts:32
 msgid "Stylish"
 msgstr "Stylish"
@@ -9212,6 +9425,7 @@ msgstr "Subject"
 msgid "Subject is required"
 msgstr "Subject is required"
 
+#: src/components/onboarding/OnboardingTreasuryTerms/OnboardingTreasuryTerms.tsx:89
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:144
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:381
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:88
@@ -9509,7 +9723,7 @@ msgstr "Telegraph Services"
 msgid "Tell us more"
 msgstr "Tell us more"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:166
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:183
 msgid "Tell us more about your business"
 msgstr "Tell us more about your business"
 
@@ -9529,8 +9743,8 @@ msgstr "Tent and Awning Shops"
 msgid "Terms"
 msgstr "Terms"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:123
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:124
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:131
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:133
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:1122
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:1139
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:149
@@ -9763,7 +9977,7 @@ msgstr "This action can’t be undone."
 msgid "This bank account will receive payments for your invoices"
 msgstr "This bank account will receive payments for your invoices"
 
-#: src/components/onboarding/OnboardingBusinessProfile/OnboardingBusinessProfile.tsx:95
+#: src/components/onboarding/OnboardingBusinessProfile/OnboardingBusinessProfile.tsx:109
 msgid "This can be a website, social media profile link or any other unique reachable URL that describes the account's business nature."
 msgstr "This can be a website, social media profile link or any other unique reachable URL that describes the account's business nature."
 
@@ -9771,7 +9985,7 @@ msgstr "This can be a website, social media profile link or any other unique rea
 #~ msgid "This form must be completed by someone with control and management of your business. If that's not you, ask the right person."
 #~ msgstr "This form must be completed by someone with control and management of your business. If that's not you, ask the right person."
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:169
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:186
 msgid "This form must be completed by someone with control and management of your business. If that’s not you, ask the right person."
 msgstr "This form must be completed by someone with control and management of your business. If that’s not you, ask the right person."
 
@@ -9996,6 +10210,46 @@ msgstr "Transportation Services (Not Elsewhere Classified)"
 #: src/components/onboarding/dicts/mccCodes.ts:1350
 msgid "Travel Agencies, Tour Operators"
 msgstr "Travel Agencies, Tour Operators"
+
+#: src/components/onboarding/OnboardingTreasuryTerms/OnboardingTreasuryTerms.tsx:159
+msgid "Treasury and financial account services for {entityName} are provided by Stripe and are subject to additional terms including the <0>Stripe Treasury Terms of Service</0> and applicable banking regulations. By proceeding, you acknowledge understanding of these additional compliance requirements."
+msgstr "Treasury and financial account services for {entityName} are provided by Stripe and are subject to additional terms including the <0>Stripe Treasury Terms of Service</0> and applicable banking regulations. By proceeding, you acknowledge understanding of these additional compliance requirements."
+
+#: src/components/onboarding/OnboardingStripeBankAccount/VerificationStatusCards.tsx:53
+msgid "Treasury bank account verification failed. This may be due to incorrect account information or connectivity issues. Please try again or contact support if the problem persists."
+msgstr "Treasury bank account verification failed. This may be due to incorrect account information or connectivity issues. Please try again or contact support if the problem persists."
+
+#: src/components/onboarding/OnboardingStripeBankAccount/OnboardingStripeBankAccount.tsx:353
+msgid "Treasury bank verification is not available for this entity."
+msgstr "Treasury bank verification is not available for this entity."
+
+#: src/components/onboarding/OnboardingStripeBankAccount/VerificationStatusCards.tsx:51
+msgid "Treasury Financial Connections verification failed. {error}"
+msgstr "Treasury Financial Connections verification failed. {error}"
+
+#: src/components/onboarding/OnboardingStripeBankAccount/VerificationStatusCards.tsx:77
+msgid "Treasury Financial Connections was canceled. Click \"Retry\" to try again."
+msgstr "Treasury Financial Connections was canceled. Click \"Retry\" to try again."
+
+#: src/components/onboarding/OnboardingTreasuryTerms/OnboardingTreasuryTerms.tsx:194
+msgid "Treasury Services Agreement"
+msgstr "Treasury Services Agreement"
+
+#: src/components/onboarding/OnboardingTreasuryTerms/OnboardingTreasuryTerms.tsx:107
+msgid "Treasury services require additional verification. Please review and accept the terms below to enable financial services for your entity."
+msgstr "Treasury services require additional verification. Please review and accept the terms below to enable financial services for your entity."
+
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:104
+msgid "Treasury terms and conditions"
+msgstr "Treasury terms and conditions"
+
+#: src/components/onboarding/validators/validationSchemas.ts:185
+msgid "Treasury Terms of Service"
+msgstr "Treasury Terms of Service"
+
+#: src/components/onboarding/OnboardingStripeBankAccount/VerificationStatusCards.tsx:31
+msgid "Treasury verification in progress. Please wait while we confirm your bank account connection through Financial Connections..."
+msgstr "Treasury verification in progress. Please wait while we confirm your bank account connection through Financial Connections..."
 
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyDetailsFormAdvanced/ApprovalPolicyDetailsFormAdvanced.tsx:212
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyDetailsFormAdvanced/ApprovalPolicyDetailsFormAdvanced.tsx:230
@@ -10240,6 +10494,10 @@ msgstr "Unknown"
 #: src/components/receivables/utils/getPaymentMethodName.ts:42
 msgid "Unknown payment method"
 msgstr "Unknown payment method"
+
+#: src/components/onboarding/OnboardingBankAccountFlow/OnboardingBankAccountFlow.tsx:527
+msgid "Unknown step: {currentStep}"
+msgstr "Unknown step: {currentStep}"
 
 #: src/core/context/createQueryClient.ts:28
 msgid "Unrecognized error. Please contact support."
@@ -10666,12 +10924,30 @@ msgstr "Vendors"
 msgid "Venezuela"
 msgstr "Venezuela"
 
+#: src/components/onboarding/OnboardingStripeBankAccount/BankAccountDetailsTable.tsx:89
+msgid "Verification Status"
+msgstr "Verification Status"
+
+#: src/components/onboarding/OnboardingStripeBankAccount/VerificationStatusCards.tsx:13
+msgid "Verification Successful"
+msgstr "Verification Successful"
+
+#: src/components/onboarding/OnboardingStripeBankAccount/BankAccountDetailsTable.tsx:104
+msgid "Verified"
+msgstr "Verified"
+
+#: src/components/onboarding/OnboardingBankAccountFlow/OnboardingBankAccountFlow.tsx:144
+#: src/components/onboarding/OnboardingBankAccountFlow/OnboardingBankAccountFlow.tsx:476
+#: src/components/onboarding/OnboardingStripeBankAccount/OnboardingStripeBankAccount.tsx:413
+msgid "Verify account"
+msgstr "Verify account"
+
 #: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:250
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingPersonView/OnboardingPersonView.tsx:83
 msgid "Verify identity"
 msgstr "Verify identity"
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:115
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:123
 msgid "Verify that you represent this business"
 msgstr "Verify that you represent this business"
 
@@ -10759,7 +11035,7 @@ msgstr "Watch/Jewelry Repair"
 #~ msgid "We're required to collect information about any executives or senior managers who have significant management responsibility for this business."
 #~ msgstr "We're required to collect information about any executives or senior managers who have significant management responsibility for this business."
 
-#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:184
+#: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:201
 msgid "We’re required to collect information about any executives or senior managers who have significant management responsibility for this business."
 msgstr "We’re required to collect information about any executives or senior managers who have significant management responsibility for this business."
 
@@ -11076,6 +11352,14 @@ msgstr "Your application is in review"
 #: src/components/financing/components/FinanceBanner.tsx:191
 msgid "Your application was approved"
 msgstr "Your application was approved"
+
+#: src/components/onboarding/OnboardingStripeBankAccount/TreasuryBankAccountConfirmationModal.tsx:60
+msgid "Your bank account has been successfully connected through Stripe Financial Connections. Please review the details below and confirm to complete the setup."
+msgstr "Your bank account has been successfully connected through Stripe Financial Connections. Please review the details below and confirm to complete the setup."
+
+#: src/components/onboarding/OnboardingStripeBankAccount/VerificationStatusCards.tsx:16
+msgid "Your bank account has been successfully verified and connected through Treasury."
+msgstr "Your bank account has been successfully verified and connected through Treasury."
 
 #: src/components/receivables/components/BankAccountCustomFields.tsx:82
 #: src/components/receivables/components/BankAccountCustomFields.tsx:142
