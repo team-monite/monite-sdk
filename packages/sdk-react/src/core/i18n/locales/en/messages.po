@@ -14,6 +14,11 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. js-lingui-explicit-id
+#: src/core/context/MoniteI18nProvider.test.tsx:29
+msgid "Delete {type} “{name}”?"
+msgstr "Delete {type} “{name}”?"
+
+#. js-lingui-explicit-id
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:249
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:252
 msgid "Edit invoice"
@@ -48,11 +53,6 @@ msgstr "Yes"
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:466
 msgid "No"
 msgstr "No"
-
-#. js-lingui-explicit-id
-#: src/core/context/MoniteI18nProvider.test.tsx:29
-msgid "Delete {type} “{name}”?"
-msgstr "Delete {type} “{name}”?"
 
 #. js-lingui-explicit-id
 #: src/components/payables/PayablesTable/components/PayablesTableAction.tsx:108
