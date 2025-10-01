@@ -8,10 +8,11 @@ import {
   isEditingPerson,
   isPersonList,
   isRepresentative,
+  toStandardRequirement,
 } from '../helpers';
 import { useOnboardingRequirementsData } from '@/core/queries/useOnboarding';
 import type { I18n } from '@lingui/core';
-import { t } from '@lingui/macro';
+import { t } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
 import { useMemo } from 'react';
 
@@ -71,19 +72,21 @@ export function useOnboardingActions(): OnboardingActionsReturnType {
     if (isCreatingPerson(personId)) return 'createPerson';
     if (isEditingPerson(personId)) return 'updatePerson';
 
-    if (isRepresentative(currentRequirement)) return 'createRepresentative';
+    const standardRequirement = toStandardRequirement(currentRequirement);
+    
+    if (isRepresentative(standardRequirement)) return 'createRepresentative';
 
-    if (isPersonList(currentRequirement)) {
+    if (isPersonList(standardRequirement)) {
       const isEmptyPersonList = isRequirementPresentInPersonList(
         persons,
-        currentRequirement,
+        standardRequirement,
         true
       );
 
       if (isEmptyPersonList) return 'updateEntityOrganizationRequirement';
-      if (isOwners(currentRequirement)) return 'noOwners';
-      if (isDirectors(currentRequirement)) return 'noDirectors';
-      if (isExecutives(currentRequirement)) return 'noExecutives';
+      if (isOwners(standardRequirement)) return 'noOwners';
+      if (isDirectors(standardRequirement)) return 'noDirectors';
+      if (isExecutives(standardRequirement)) return 'noExecutives';
       return 'addRequirement';
     }
 

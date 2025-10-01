@@ -6,6 +6,7 @@ import {
   useOnboardingRequirementsData,
   usePatchOnboardingRequirementsData,
 } from '@/core/queries/useOnboarding';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 
 import { useOnboardingRequirementsContext } from '../context';
 import {
@@ -17,6 +18,7 @@ import {
   findEmptyRequiredFields,
   generateErrorsByFields,
 } from '../transformers';
+import { toStandardRequirement } from '../helpers';
 import { useOnboardingForm } from './useOnboardingForm';
 import { useOnboardingPerson } from './useOnboardingPerson';
 
@@ -47,6 +49,8 @@ export function useOnboardingPersonList(): OnboardingPersonListReturnType {
 
   const { data: entity } = useMyEntity();
 
+  const { api, queryClient } = useMoniteContext();
+
   const form = useOnboardingForm({}, 'person', entity?.address?.country);
 
   const { updatePerson, isPending, updateOrganizationRequirements } =
@@ -55,12 +59,18 @@ export function useOnboardingPersonList(): OnboardingPersonListReturnType {
   const patchOnboardingRequirementsData = usePatchOnboardingRequirementsData();
 
   const updatePersonRelationship = useCallback(
-    (id: string, value: boolean) =>
-      updatePerson(id, {
+    async (id: string, value: boolean): Promise<PersonResponse> => {
+      const standardRequirement = toStandardRequirement(currentRequirement);
+      if (!standardRequirement) {
+        throw new Error('Invalid requirement: Treasury requirements cannot be used for person relationships');
+      }
+      
+      return await updatePerson(id, {
         relationship: {
-          [requirementToRelationship(currentRequirement!)]: value,
+          [requirementToRelationship(standardRequirement)]: value,
         },
-      }),
+      });
+    },
     [currentRequirement, updatePerson]
   );
 
@@ -72,16 +82,22 @@ export function useOnboardingPersonList(): OnboardingPersonListReturnType {
   const personsWithRequirement = useMemo(() => {
     if (!currentRequirement) return persons;
 
+    const standardRequirement = toStandardRequirement(currentRequirement);
+    if (!standardRequirement) return [];
+
     return persons.filter((person) =>
-      hasPersonRequirement(person, currentRequirement)
+      hasPersonRequirement(person, standardRequirement)
     );
   }, [currentRequirement, persons]);
 
   const personsWithoutRequirement = useMemo(() => {
     if (!currentRequirement) return persons;
 
+    const standardRequirement = toStandardRequirement(currentRequirement);
+    if (!standardRequirement) return persons;
+
     return persons.filter(
-      (person) => !hasPersonRequirement(person, currentRequirement)
+      (person) => !hasPersonRequirement(person, standardRequirement)
     );
   }, [currentRequirement, persons]);
 
@@ -94,15 +110,16 @@ export function useOnboardingPersonList(): OnboardingPersonListReturnType {
     });
   }, [persons]);
 
+  const standardRequirement = toStandardRequirement(currentRequirement);
   const shouldRenderPersonList = isRequirementPresentInPersonList(
     persons,
-    currentRequirement,
+    standardRequirement,
     true
   );
 
   const shouldRenderMenu = isRequirementPresentInPersonList(
     persons,
-    currentRequirement,
+    standardRequirement,
     false
   );
 
@@ -132,15 +149,30 @@ export function useOnboardingPersonList(): OnboardingPersonListReturnType {
     });
   }, [errors]);
 
-  const submitPersonsReview = useCallback(() => {
+  const submitPersonsReview = useCallback(async () => {
     if (errors.length > 0) {
       return scrollToError();
     }
 
-    patchOnboardingRequirementsData({
-      requirements: ['persons'],
-    });
-  }, [errors.length, patchOnboardingRequirementsData, scrollToError]);
+    patchOnboardingRequirementsData({ requirements: ['persons'] });
+
+    try {
+      await updateOrganizationRequirements();
+    } catch (error) {
+      console.error('Failed to update organization requirements:', error);
+    }
+
+    try {
+      await api.onboardingRequirements.getOnboardingRequirements.invalidateQueries(queryClient);
+    } catch (error) {
+      console.error('Failed to invalidate main onboarding requirements:', error);
+    }
+    try {
+      await api.frontend.getFrontendOnboardingRequirements.invalidateQueries(queryClient);
+    } catch (error) {
+      console.error('Failed to invalidate frontend onboarding requirements:', error);
+    }
+  }, [errors.length, patchOnboardingRequirementsData, scrollToError, updateOrganizationRequirements, api.onboardingRequirements.getOnboardingRequirements, api.frontend.getFrontendOnboardingRequirements, queryClient]);
 
   return {
     shouldRenderPersonList,

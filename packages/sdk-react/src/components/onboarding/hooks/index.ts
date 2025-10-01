@@ -6,3 +6,4 @@ export * from './useOnboardingRequirements';
 export * from './useOnboardingValidationSchema';
 export * from './useOnboardingPersonList';
 export * from './useOnboardingAgreements';
+export * from './useTreasuryEligibility';
