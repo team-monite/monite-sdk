@@ -2,11 +2,12 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { components } from '@/api';
 import { useMyEntity } from '@/core/queries';
-import { useOnboardingRequirementsData } from '@/core/queries/useOnboarding';
+import { useOnboardingRequirementsAdapter } from '@/core/queries/useOnboardingRequirementsAdapter';
 import { OnboardingRequirement } from '@/enums/OnboardingRequirement';
+import { useTreasuryEligibility } from './useTreasuryEligibility';
 
 import { getEntityName } from '../helpers';
-import { OnboardingPersonId } from '../types';
+import { OnboardingPersonId, OnboardingRequirementExtended } from '../types';
 
 export type OnboardingRequirementsType = {
   /**
@@ -23,18 +24,18 @@ export type OnboardingRequirementsType = {
   /**
    * requirement: the current onboarding requirement.
    */
-  currentRequirement: OnboardingRequirement | undefined;
+  currentRequirement: OnboardingRequirementExtended | undefined;
 
   /**
    * requirementList: an array of onboarding requirements.
    */
-  requirementList: OnboardingRequirement[];
+  requirementList: OnboardingRequirementExtended[];
 
   /**
    * enableEditMode: a function that takes in a requirement object and enables edit mode with that requirement.
    * @param requirement
    */
-  enableEditMode: (requirement: OnboardingRequirement) => void;
+  enableEditMode: (requirement: OnboardingRequirementExtended) => void;
 
   /**
    * disableEditMode: a function that disables edit mode and sets
@@ -76,8 +77,9 @@ export type OnboardingRequirementsType = {
 };
 
 export const useOnboardingRequirements = (): OnboardingRequirementsType => {
-  const { data: onboarding } = useOnboardingRequirementsData();
+  const { data: onboarding } = useOnboardingRequirementsAdapter();
   const { data: entity } = useMyEntity();
+  const { isEligible: isTreasuryEligible } = useTreasuryEligibility();
 
   const entityName = useMemo(() => {
     return getEntityName(entity);
@@ -93,7 +95,8 @@ export const useOnboardingRequirements = (): OnboardingRequirementsType => {
   const hasRepresentative = useMemo(
     () =>
       Boolean(
-        onboarding?.data?.persons?.some(
+        Array.isArray(onboarding?.data?.persons) &&
+        onboarding.data.persons.some(
           (person) => person?.relationship?.representative
         )
       ),
@@ -110,14 +113,32 @@ export const useOnboardingRequirements = (): OnboardingRequirementsType => {
     return base.filter((req) => req !== 'representative');
   }, [onboarding?.requirements, hasRepresentative]);
 
-  const requirements = useMemo(() => {
-    return OnboardingRequirement.filter((requirement) =>
-      onboardingRequirements.includes(requirement)
-    );
-  }, [onboardingRequirements]);
+  const requirements = useMemo((): OnboardingRequirementExtended[] => {
+    const base = onboarding?.requirements ?? [];
+    if (!hasRepresentative) return base;
+    const standardRequirements = OnboardingRequirement.filter((requirement) =>
+      (onboardingRequirements as string[]).includes(requirement)
+    ) as OnboardingRequirementExtended[];
+
+    if ((onboardingRequirements as string[]).includes('treasury_tos_acceptance')) {
+      standardRequirements.push('treasury_tos_acceptance');
+    }
+
+    const backendHasBankAccounts = (onboardingRequirements as string[]).includes('bank_accounts');
+
+    if (
+      isTreasuryEligible &&
+      backendHasBankAccounts &&
+      !standardRequirements.includes('bank_accounts')
+    ) {
+      standardRequirements.push('bank_accounts');
+    }
+
+    return standardRequirements;
+  }, [onboardingRequirements, isTreasuryEligible, hasRepresentative, onboarding?.requirements]);
 
   const [requirement, setRequirement] = useState<
-    OnboardingRequirement | undefined
+    OnboardingRequirementExtended | undefined
   >(undefined);
 
   const index = useMemo<number>(() => {
@@ -128,14 +149,21 @@ export const useOnboardingRequirements = (): OnboardingRequirementsType => {
 
   const getCurrentRequirement = useCallback(
     () =>
-      requirements.find((requirement) =>
-        onboardingRequirements.includes(requirement)
-      ),
+      [...requirements]
+        .sort((a, b) => {
+          if (a === 'treasury_tos_acceptance') return -1;
+          if (b === 'treasury_tos_acceptance') return 1;
+
+          return 0;
+        })
+        .find((requirement) =>
+          (onboardingRequirements as string[]).includes(requirement)
+        ),
     [requirements, onboardingRequirements]
   );
 
   useEffect(() => {
-    if (onboarding?.data?.persons) {
+    if (Array.isArray(onboarding?.data?.persons)) {
       const representativePerson = onboarding.data.persons.find(
         (person) => person.relationship.representative
       );
@@ -153,7 +181,7 @@ export const useOnboardingRequirements = (): OnboardingRequirementsType => {
     setRequirement(getCurrentRequirement);
   }, [getCurrentRequirement, isEditMode]);
 
-  const enableEditMode = useCallback((requirement: OnboardingRequirement) => {
+  const enableEditMode = useCallback((requirement: OnboardingRequirementExtended) => {
     setEditMode(true);
     setRequirement(requirement);
   }, []);
@@ -172,8 +200,10 @@ export const useOnboardingRequirements = (): OnboardingRequirementsType => {
     return requirements.length === 0;
   }, [requirements.length]);
 
+  const denominator = Math.max(requirements.length, 1);
+
   return {
-    progress: ((index + 1) / (requirements.length ?? 1)) * 100,
+    progress: requirements.length ? ((index + 1) / denominator) * 100 : 100,
     currentRequirement: requirement,
     requirementList: requirements,
     isEditMode,

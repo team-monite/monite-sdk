@@ -1,22 +1,20 @@
+import { OnboardingFormActions } from '../OnboardingFormActions';
+import { OnboardingForm, OnboardingStepContent } from '../OnboardingLayout';
+import { getMccCodes } from '../dicts/mccCodes';
+import { useOnboardingForm } from '../hooks';
+import { enrichFieldsByValues } from '../transformers';
 import { components } from '@/api';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useMyEntity } from '@/core/queries';
 import { useUpdateEntityOnboardingData } from '@/core/queries/useEntitiyOnboardingData';
-import {
-  useOnboardingRequirementsData,
-  usePatchOnboardingRequirementsData,
-} from '@/core/queries/useOnboarding';
+import { usePatchOnboardingRequirementsData } from '@/core/queries/useOnboarding';
+import { useOnboardingRequirementsData } from '@/core/queries/useOnboarding';
 import { RHFAutocomplete } from '@/ui/RHF/RHFAutocomplete';
 import { RHFTextField } from '@/ui/RHF/RHFTextField';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { InfoOutlined } from '@mui/icons-material';
 import { Alert, Box } from '@mui/material';
-
-import { getMccCodes } from '../dicts/mccCodes';
-import { useOnboardingForm } from '../hooks';
-import { OnboardingFormActions } from '../OnboardingFormActions';
-import { OnboardingForm, OnboardingStepContent } from '../OnboardingLayout';
-import { enrichFieldsByValues } from '../transformers';
 
 export const OnboardingBusinessProfile = () => {
   const { i18n } = useLingui();
@@ -33,6 +31,7 @@ export const OnboardingBusinessProfile = () => {
   } = onboarding?.data?.business_profile ?? {};
 
   const { data: entity } = useMyEntity();
+  const { api, queryClient } = useMoniteContext();
 
   const { defaultValues, methods, checkValue, handleSubmit } =
     useOnboardingForm<
@@ -58,6 +57,21 @@ export const OnboardingBusinessProfile = () => {
             business_profile: enrichFieldsByValues(fields, values),
           },
         });
+
+        try {
+          await api.onboardingRequirements.getOnboardingRequirements.invalidateQueries(
+            queryClient
+          );
+        } catch {
+          // Ignore invalidation errors
+        }
+        try {
+          await api.frontend.getFrontendOnboardingRequirements.invalidateQueries(
+            queryClient
+          );
+        } catch {
+          // Ignore invalidation errors
+        }
 
         return response;
       })}
@@ -97,6 +111,18 @@ export const OnboardingBusinessProfile = () => {
               )`This can be a website, social media profile link or any other unique reachable URL that describes the account's business nature.`}
             </Alert>
           </Box>
+        )}
+
+        {checkValue('description_of_goods_or_services') && (
+          <RHFTextField
+            disabled={isPending}
+            label={t(i18n)`Description of goods or services`}
+            name="description_of_goods_or_services"
+            control={control}
+            fullWidth
+            multiline
+            minRows={3}
+          />
         )}
       </OnboardingStepContent>
     </OnboardingForm>

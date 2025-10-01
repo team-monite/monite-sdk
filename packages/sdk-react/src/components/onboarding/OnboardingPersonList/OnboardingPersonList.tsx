@@ -1,8 +1,19 @@
-import { FormProvider } from 'react-hook-form';
-
+import { OnboardingFormActions } from '../OnboardingFormActions';
+import { OnboardingForm, OnboardingStepContent } from '../OnboardingLayout';
+import { useOnboardingRequirementsContext } from '../context';
+import { toStandardRequirement } from '../helpers';
+import {
+  isDirectors,
+  isExecutives,
+  isOwners,
+  PERSON_CREATION,
+} from '../helpers';
+import { useOnboardingPersonList } from '../hooks';
+import { OnboardingPersonListItem } from './OnboardingPersonListItem';
+import { OnboardingPersonMenu } from './OnboardingPersonMenu';
 import { components } from '@/api';
 import { I18n } from '@lingui/core';
-import { t } from '@lingui/macro';
+import { t } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {
@@ -15,19 +26,7 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-
-import { useOnboardingRequirementsContext } from '../context';
-import {
-  isDirectors,
-  isExecutives,
-  isOwners,
-  PERSON_CREATION,
-} from '../helpers';
-import { useOnboardingPersonList } from '../hooks';
-import { OnboardingFormActions } from '../OnboardingFormActions';
-import { OnboardingForm, OnboardingStepContent } from '../OnboardingLayout';
-import { OnboardingPersonListItem } from './OnboardingPersonListItem';
-import { OnboardingPersonMenu } from './OnboardingPersonMenu';
+import { FormProvider } from 'react-hook-form';
 
 export const OnboardingPersonList = () => {
   const { i18n } = useLingui();
@@ -51,9 +50,10 @@ export const OnboardingPersonList = () => {
 
   if (!currentRequirement) return null;
 
+  const standardRequirement = toStandardRequirement(currentRequirement);
   const title = shouldRenderPersonList
-    ? getFillListTitle(currentRequirement, i18n)
-    : getEmptyListTitle(currentRequirement, i18n);
+    ? getFillListTitle(standardRequirement!, i18n)
+    : getEmptyListTitle(standardRequirement!, i18n);
 
   const { handleSubmit } = methods;
 
@@ -65,7 +65,7 @@ export const OnboardingPersonList = () => {
       >
         <OnboardingStepContent>
           <Typography variant="body1">
-            {getDescription(currentRequirement, i18n)}
+            {getDescription(standardRequirement!, i18n)}
           </Typography>
 
           {shouldRenderPersonList && (

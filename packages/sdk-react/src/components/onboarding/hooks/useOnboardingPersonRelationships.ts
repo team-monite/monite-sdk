@@ -26,6 +26,7 @@ import {
 import { generateFieldsByMask } from '../transformers';
 import type { OrganizationRequirements } from '../types';
 import { OnboardingFormType, useOnboardingForm } from './useOnboardingForm';
+import { toStandardRequirement } from '../helpers';
 
 type PersonRole = {
   requirement: OnboardingRequirement;
@@ -175,14 +176,15 @@ export function useOnboardingPersonRelationships(): OnboardingRelationshipReturn
   useEffect(() => {
     if (isEditingPerson(personId)) return;
 
-    if (isMask(currentRequirement)) {
+    const standardRequirement = toStandardRequirement(currentRequirement);
+    if (isMask(standardRequirement)) {
       setValue(
-        `relationship.${requirementToRelationship(currentRequirement)}`,
+        `relationship.${requirementToRelationship(standardRequirement)}`,
         true
       );
     }
 
-    if (isRepresentative(currentRequirement)) {
+    if (isRepresentative(standardRequirement)) {
       setValue('relationship.executive', true);
     }
   }, [currentRequirement, setValue, personId]);
@@ -213,11 +215,14 @@ export function useOnboardingPersonRelationships(): OnboardingRelationshipReturn
   );
 
   const getOrganizationRequirements = useCallback(() => {
+    const standardRequirement = toStandardRequirement(currentRequirement);
+    if (!standardRequirement) return {};
+    
     const payload: OrganizationRequirements = {
-      [requirementToCompanyRole(currentRequirement!)]: true,
+      [requirementToCompanyRole(standardRequirement)]: true,
     };
 
-    if (isRepresentative(currentRequirement!)) {
+    if (isRepresentative(standardRequirement)) {
       if (isRoleProvided('owners') && isOwnerProvided)
         payload.owners_provided = true;
 

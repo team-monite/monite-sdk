@@ -9,4 +9,5 @@ export * from './useDebounce';
 export * from './useMobile';
 export * from './useComponentSettings';
 export * from './useIsMounted';
+export * from './useDidMount';
 export * from './useMediaQuery';

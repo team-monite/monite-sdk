@@ -2,6 +2,8 @@ import { components } from '@/api';
 
 const schema: {
   [key in components['schemas']['OnboardingRequirement']]: key;
+} & {
+  treasury_tos_acceptance: 'treasury_tos_acceptance';
 } = {
   entity: 'entity',
   business_profile: 'business_profile',
@@ -15,6 +17,7 @@ const schema: {
   ownership_declaration: 'ownership_declaration',
   persons_documents: 'persons_documents',
   tos_acceptance: 'tos_acceptance',
+  treasury_tos_acceptance: 'treasury_tos_acceptance',
 };
 
 export const OnboardingRequirement = Object.values(schema);

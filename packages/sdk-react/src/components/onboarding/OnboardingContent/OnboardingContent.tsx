@@ -1,11 +1,16 @@
-import { components } from '@/api';
-import { useOnboardingRequirementsData } from '@/core/queries/useOnboarding';
-import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
-import type { I18n } from '@lingui/core';
-import { t } from '@lingui/macro';
-import { useLingui } from '@lingui/react';
-import { Alert, LinearProgress } from '@mui/material';
-
+import { OnboardingAgreements } from '../OnboardingAgreements';
+import { OnboardingBankAccountWrapper } from '../OnboardingBankAccountWrapper';
+import { OnboardingBusinessProfile } from '../OnboardingBusinessProfile';
+import { OnboardingCompleted } from '../OnboardingCompleted';
+import { OnboardingEntity } from '../OnboardingEntity';
+import { OnboardingEntityDocuments } from '../OnboardingEntityDocuments';
+import { OnboardingTitle, OnboardingLayout } from '../OnboardingLayout';
+import { OnboardingPerson } from '../OnboardingPerson';
+import { OnboardingPersonDocumentList } from '../OnboardingPersonDocumentList';
+import { OnboardingPersonDocuments } from '../OnboardingPersonDocuments';
+import { OnboardingPersonList } from '../OnboardingPersonList';
+import { OnboardingPersonsReview } from '../OnboardingPersonsReview';
+import { OnboardingTreasuryTerms } from '../OnboardingTreasuryTerms';
 import { useOnboardingRequirementsContext } from '../context';
 import {
   isBankAccount,
@@ -23,22 +28,20 @@ import {
   isPersons,
   isEntityDocuments,
   isPersonsDocuments,
+  isTreasuryTosAcceptance,
 } from '../helpers';
-import { OnboardingAgreements } from '../OnboardingAgreements';
-import { OnboardingBankAccount } from '../OnboardingBankAccount';
-import { OnboardingBusinessProfile } from '../OnboardingBusinessProfile';
-import { OnboardingCompleted } from '../OnboardingCompleted';
-import { OnboardingEntity } from '../OnboardingEntity';
-import { OnboardingEntityDocuments } from '../OnboardingEntityDocuments';
-import { OnboardingTitle, OnboardingLayout } from '../OnboardingLayout';
-import { OnboardingPerson } from '../OnboardingPerson';
-import { OnboardingPersonDocumentList } from '../OnboardingPersonDocumentList';
-import { OnboardingPersonDocuments } from '../OnboardingPersonDocuments';
-import { OnboardingPersonList } from '../OnboardingPersonList';
-import { OnboardingPersonsReview } from '../OnboardingPersonsReview';
-import type { OnboardingPersonId, OnboardingProps } from '../types';
-
-type OnboardingRequirement = components['schemas']['OnboardingRequirement'];
+import { toStandardRequirement } from '../helpers';
+import type {
+  OnboardingPersonId,
+  OnboardingProps,
+  OnboardingRequirementExtended,
+} from '../types';
+import { useOnboardingRequirementsAdapter } from '@/core/queries/useOnboardingRequirementsAdapter';
+import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
+import type { I18n } from '@lingui/core';
+import { t } from '@lingui/core/macro';
+import { useLingui } from '@lingui/react';
+import { Alert, LinearProgress } from '@mui/material';
 
 export function OnboardingContent({
   onComplete,
@@ -49,7 +52,7 @@ export function OnboardingContent({
   const { i18n } = useLingui();
   const { currentRequirement, personId, onboardingCompleted } =
     useOnboardingRequirementsContext();
-  const { isLoading, error } = useOnboardingRequirementsData();
+  const { isLoading, error } = useOnboardingRequirementsAdapter();
 
   if (onboardingCompleted) {
     return (
@@ -93,45 +96,56 @@ export function OnboardingContent({
 }
 
 const getTitle = (
-  requirement: OnboardingRequirement,
+  requirement: OnboardingRequirementExtended,
   personId: OnboardingPersonId,
   i18n: I18n
 ) => {
+  if (isTreasuryTosAcceptance(requirement))
+    return t(i18n)`Treasury terms and conditions`;
+
+  const standardRequirement = toStandardRequirement(requirement);
+
   if (isCreatingPerson(personId)) {
-    if (isDirectors(requirement)) return t(i18n)`Add a director`;
-    if (isOwners(requirement)) return t(i18n)`Add an owner`;
-    if (isExecutives(requirement)) return t(i18n)`Add an executive`;
+    if (isDirectors(standardRequirement)) return t(i18n)`Add a director`;
+    if (isOwners(standardRequirement)) return t(i18n)`Add an owner`;
+    if (isExecutives(standardRequirement)) return t(i18n)`Add an executive`;
     return t(i18n)`Add a person`;
   }
 
-  if (isPersonsDocuments(requirement)) {
+  if (isPersonsDocuments(standardRequirement)) {
     if (isEditingPerson(personId)) return t(i18n)`Edit documents for person`;
     return t(i18n)`Provide documents for persons`;
   }
 
   if (isEditingPerson(personId)) return t(i18n)`Edit individual`;
-  if (isEntity(requirement)) return t(i18n)`Company details`;
-  if (isRepresentative(requirement))
+  if (isEntity(standardRequirement)) return t(i18n)`Company details`;
+  if (isRepresentative(standardRequirement))
     return t(i18n)`Verify that you represent this business`;
-  if (isOwners(requirement)) return t(i18n)`Business owners`;
-  if (isDirectors(requirement)) return t(i18n)`Business directors`;
-  if (isExecutives(requirement)) return t(i18n)`Business executives`;
-  if (isBankAccount(requirement))
-    return t(i18n)`Add a bank account to receive payments`;
-  if (isBusinessProfile(requirement)) return t(i18n)`Business details`;
-  if (isPersons(requirement)) return t(i18n)`Persons review`;
-  if (isTosAcceptance(requirement)) return t(i18n)`Terms and conditions`;
-  if (isOwnershipDeclaration(requirement)) return t(i18n)`Terms and conditions`;
-  if (isEntityDocuments(requirement)) return t(i18n)`Entity documents`;
+  if (isOwners(standardRequirement)) return t(i18n)`Business owners`;
+  if (isDirectors(standardRequirement)) return t(i18n)`Business directors`;
+  if (isExecutives(standardRequirement)) return t(i18n)`Business executives`;
+  if (isBankAccount(standardRequirement)) return t(i18n)`Bank account`;
+  if (isBusinessProfile(standardRequirement)) return t(i18n)`Business details`;
+  if (isPersons(standardRequirement)) return t(i18n)`Persons review`;
+  if (isTosAcceptance(standardRequirement))
+    return t(i18n)`Terms and conditions`;
+  if (isOwnershipDeclaration(standardRequirement))
+    return t(i18n)`Terms and conditions`;
+  if (isEntityDocuments(standardRequirement)) return t(i18n)`Entity documents`;
 
   throw new Error(`Unknown step title ${JSON.stringify(requirement)}`);
 };
 
 const getDescription = (
-  requirement: OnboardingRequirement,
+  requirement: OnboardingRequirementExtended,
   personId: OnboardingPersonId,
   i18n: I18n
 ) => {
+  if (isTreasuryTosAcceptance(requirement))
+    return t(
+      i18n
+    )`As a Treasury-eligible entity, please review and accept the additional Treasury Services Agreement to enable financial services.`;
+
   if (isCreatingPerson(personId)) {
     if (isDirectors(requirement))
       return t(
@@ -154,7 +168,9 @@ const getDescription = (
     )`It’s required to add any individual who is on the governing board, owns 25% or more of the company or otherwise has significant management control of the company.`;
   }
 
-  if (isPersonsDocuments(requirement)) {
+  const standardRequirement = toStandardRequirement(requirement);
+
+  if (isPersonsDocuments(standardRequirement)) {
     if (isEditingPerson(personId))
       return t(i18n)`Please upload the required documents to continue.`;
 
@@ -163,77 +179,82 @@ const getDescription = (
 
   if (isEditingPerson(personId)) return '';
 
-  if (isEntity(requirement)) return t(i18n)`Tell us more about your business`;
+  if (isEntity(standardRequirement))
+    return t(i18n)`Tell us more about your business`;
 
-  if (isRepresentative(requirement))
+  if (isRepresentative(standardRequirement))
     return t(
       i18n
     )`This form must be completed by someone with control and management of your business. If that’s not you, ask the right person.`;
 
-  if (isOwners(requirement))
+  if (isOwners(standardRequirement))
     return t(
       i18n
     )`Due to regulatory guidelines, we’re required to collect information on anyone who has significant ownership of your business.`;
 
-  if (isDirectors(requirement))
+  if (isDirectors(standardRequirement))
     return t(
       i18n
     )`Due to regulations, we’re required to collect information about a company’s directors.`;
 
-  if (isExecutives(requirement))
+  if (isExecutives(standardRequirement))
     return t(
       i18n
     )`We’re required to collect information about any executives or senior managers who have significant management responsibility for this business.`;
 
-  if (isBankAccount(requirement))
+  if (isBankAccount(standardRequirement))
     return t(
       i18n
     )`Add a bank account to receive transfers of funds to your business.`;
 
-  if (isBusinessProfile(requirement))
+  if (isBusinessProfile(standardRequirement))
     return t(i18n)`Please provide information about your business.`;
 
-  if (isPersons(requirement))
+  if (isPersons(standardRequirement))
     return t(i18n)`Please correct the errors in persons information.`;
 
-  if (isTosAcceptance(requirement))
+  if (isTosAcceptance(standardRequirement))
     return t(
       i18n
     )`Please review the terms and conditions and accept them to continue.`;
 
-  if (isOwnershipDeclaration(requirement))
+  if (isOwnershipDeclaration(standardRequirement))
     return t(
       i18n
     )`Please review the terms and conditions and accept them to continue.`;
 
-  if (isEntityDocuments(requirement))
+  if (isEntityDocuments(standardRequirement))
     return t(i18n)`Please upload the required documents to continue.`;
 
   throw new Error(`Unknown step description ${JSON.stringify(requirement)}`);
 };
 
 const getComponent = (
-  requirement: OnboardingRequirement,
+  requirement: OnboardingRequirementExtended,
   personId: OnboardingPersonId
 ) => {
-  if (isEntity(requirement)) return OnboardingEntity;
-  if (isBusinessProfile(requirement)) return OnboardingBusinessProfile;
+  if (isTreasuryTosAcceptance(requirement)) return OnboardingTreasuryTerms;
 
-  if (isPersonsDocuments(requirement)) {
+  const standardRequirement = toStandardRequirement(requirement);
+
+  if (isEntity(standardRequirement)) return OnboardingEntity;
+  if (isBusinessProfile(standardRequirement)) return OnboardingBusinessProfile;
+
+  if (isPersonsDocuments(standardRequirement)) {
     if (isEditingPerson(personId)) return OnboardingPersonDocuments;
     return OnboardingPersonDocumentList;
   }
 
   if (isPersonEditingEnabled(personId)) return OnboardingPerson;
-  if (isRepresentative(requirement)) return OnboardingPerson;
-  if (isOwners(requirement)) return OnboardingPersonList;
-  if (isDirectors(requirement)) return OnboardingPersonList;
-  if (isExecutives(requirement)) return OnboardingPersonList;
-  if (isPersons(requirement)) return OnboardingPersonsReview;
-  if (isBankAccount(requirement)) return OnboardingBankAccount;
-  if (isTosAcceptance(requirement)) return OnboardingAgreements;
-  if (isOwnershipDeclaration(requirement)) return OnboardingAgreements;
-  if (isEntityDocuments(requirement)) return OnboardingEntityDocuments;
+  if (isRepresentative(standardRequirement)) return OnboardingPerson;
+  if (isOwners(standardRequirement)) return OnboardingPersonList;
+  if (isDirectors(standardRequirement)) return OnboardingPersonList;
+  if (isExecutives(standardRequirement)) return OnboardingPersonList;
+  if (isPersons(standardRequirement)) return OnboardingPersonsReview;
+  if (isBankAccount(standardRequirement)) return OnboardingBankAccountWrapper;
+  if (isTosAcceptance(standardRequirement)) return OnboardingAgreements;
+  if (isOwnershipDeclaration(standardRequirement)) return OnboardingAgreements;
+  if (isEntityDocuments(standardRequirement)) return OnboardingEntityDocuments;
 
   throw new Error(`Unknown step component ${JSON.stringify(requirement)}`);
 };
@@ -245,7 +266,7 @@ const getStepProps = (
     'onComplete' | 'onContinue' | 'showContinueButton'
   >
 ) => {
-  if (StepComponent === OnboardingBankAccount) {
+  if (StepComponent === OnboardingBankAccountWrapper) {
     return {
       allowedCurrencies: restProps.allowedCurrencies,
       allowedCountries: restProps.allowedCountries,

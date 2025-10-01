@@ -18,6 +18,7 @@ import type {
   OnboardingRelationshipReturnType,
 } from './useOnboardingPersonRelationships';
 import { useOnboardingPersonRelationships } from './useOnboardingPersonRelationships';
+import { toStandardRequirement } from '../helpers';
 
 export type OnboardingPersonReturnType = {
   /**  isPending a boolean flag indicating whether the form data is being loaded. */
@@ -115,8 +116,9 @@ export function useOnboardingPerson(): OnboardingPersonReturnType {
         body: payload,
       });
 
-      const requirement = isRepresentative(currentRequirement)
-        ? currentRequirement
+      const standardRequirement = toStandardRequirement(currentRequirement);
+      const requirement = isRepresentative(standardRequirement)
+        ? standardRequirement
         : undefined;
 
       patchOnboardingRequirements({
@@ -187,8 +189,9 @@ export function useOnboardingPerson(): OnboardingPersonReturnType {
         body: filterRequestBody(payload),
       });
 
+      const standardRequirement = toStandardRequirement(currentRequirement);
       patchOnboardingRequirements({
-        requirements: currentRequirement ? [currentRequirement] : undefined,
+        requirements: standardRequirement ? [standardRequirement] : undefined,
         data: {
           persons: persons.map((person) =>
             person.id === personId

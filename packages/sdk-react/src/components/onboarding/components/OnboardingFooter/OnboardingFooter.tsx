@@ -1,6 +1,5 @@
 import {
   StyledFooter,
-  StyledLink,
   StyledText,
   StyledList,
   StyledFooterWrapper,
@@ -8,6 +7,7 @@ import {
 import { MoniteLogo } from '@/components/onboarding/components/MoniteLogo';
 import { OnboardingContainer } from '@/components/onboarding/components/OnboardingContainer/OnboardingContainer';
 import { useMoniteContext } from '@/core/context/MoniteContext';
+import { Button } from '@/ui/components/button';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
@@ -28,26 +28,38 @@ function OnboardingFooterContent() {
           <StyledText>
             <Typography variant="body2">{t(i18n)`Powered by`}</Typography>
             {customLogoUrl && customWebsiteUrl ? (
-              <StyledLink
-                href={customWebsiteUrl}
-                target="_blank"
-                rel="noopener noreferrer"
+              <Button 
+                variant="link" 
+                asChild
+                className="mtw:h-auto mtw:p-0 mtw:text-sm mtw:text-muted-foreground mtw:flex"
               >
-                <Box
-                  component="img"
-                  src={customLogoUrl}
-                  alt={customWebsiteUrl}
-                  sx={{ width: 'auto', height: '1rem' }}
-                />
-              </StyledLink>
+                <a
+                  href={customWebsiteUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Box
+                    component="img"
+                    src={customLogoUrl}
+                    alt={customWebsiteUrl}
+                    sx={{ width: 'auto', height: '1rem' }}
+                  />
+                </a>
+              </Button>
             ) : (
-              <StyledLink
-                href={DEFAULT_WEBSITE_URL}
-                rel="noopener noreferrer"
-                target="_blank"
+              <Button 
+                variant="link" 
+                asChild
+                className="mtw:h-auto mtw:p-0 mtw:text-sm mtw:text-muted-foreground mtw:flex"
               >
-                <MoniteLogo />
-              </StyledLink>
+                <a
+                  href={DEFAULT_WEBSITE_URL}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <MoniteLogo />
+                </a>
+              </Button>
             )}
           </StyledText>
         </li>
