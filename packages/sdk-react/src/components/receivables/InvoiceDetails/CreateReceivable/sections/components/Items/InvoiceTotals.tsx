@@ -52,7 +52,7 @@ export const InvoiceTotals = ({
   const { formatCurrencyToDisplay } = useCurrencies();
 
   return (
-    <ul className="mtw:w-full mtw:flex mtw:flex-col mtw:gap-2 mtw:list-none">
+    <ul className="mtw:w-full mtw:flex mtw:flex-col mtw:gap-2 mtw:list-none mtw:mt-4">
       <TotalTableItem
         label={t(i18n)`Subtotal`}
         value={subtotalPrice}

@@ -25,6 +25,7 @@ interface VatRateFieldProps {
     defaultTaxRate?: number | null
   ) => void;
   onModified?: () => void;
+  shouldOverrideVatRateDefaults?: boolean;
 }
 
 export const VatRateField = ({
@@ -38,12 +39,13 @@ export const VatRateField = ({
   onChange,
   onInitializeDefaults,
   onModified,
+  shouldOverrideVatRateDefaults,
 }: VatRateFieldProps) => {
   const { root } = useRootElements();
   const [hasInitialized, setHasInitialized] = useState(false);
 
   useEffect(() => {
-    if (hasInitialized || !onInitializeDefaults) {
+    if (hasInitialized || !onInitializeDefaults || shouldOverrideVatRateDefaults) {
       return;
     }
 
@@ -75,6 +77,7 @@ export const VatRateField = ({
     onInitializeDefaults,
     value,
     currentTaxRateValue,
+    shouldOverrideVatRateDefaults,
   ]);
 
   // If we're in a non-VAT region, we don't need to show the VAT rate selector

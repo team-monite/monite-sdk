@@ -14,6 +14,42 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. js-lingui-explicit-id
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:249
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:252
+msgid "Edit invoice"
+msgstr "Edit invoice"
+
+#. js-lingui-explicit-id
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:270
+msgid "Update"
+msgstr "Update"
+
+#. js-lingui-explicit-id
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:397
+msgid "Invoice"
+msgstr "Invoice"
+
+#. js-lingui-explicit-id
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:463
+msgid "Cancel without saving?"
+msgstr "Cancel without saving?"
+
+#. js-lingui-explicit-id
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:464
+msgid "There are unsaved changes. If you leave, they will be lost."
+msgstr "There are unsaved changes. If you leave, they will be lost."
+
+#. js-lingui-explicit-id
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:465
+msgid "Yes"
+msgstr "Yes"
+
+#. js-lingui-explicit-id
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:466
+msgid "No"
+msgstr "No"
+
+#. js-lingui-explicit-id
 #: src/core/context/MoniteI18nProvider.test.tsx:29
 msgid "Delete {type} “{name}”?"
 msgstr "Delete {type} “{name}”?"
@@ -1820,7 +1856,6 @@ msgstr "Canadian QST number (Québec)"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsDialog.tsx:85
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:452
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/OverdueReminderForm.tsx:298
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:228
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.test.tsx:24
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.tsx:77
 #: src/components/tags/TagFormModal/TagFormModal.tsx:282
@@ -1886,8 +1921,8 @@ msgid "Cancel Recurring Invoice"
 msgstr "Cancel Recurring Invoice"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:404
-msgid "Cancel without saving?"
-msgstr "Cancel without saving?"
+#~ msgid "Cancel without saving?"
+#~ msgstr "Cancel without saving?"
 
 #: src/components/approvalRequests/helpers.ts:13
 #: src/components/payables/consts.ts:39
@@ -5306,7 +5341,6 @@ msgstr "Invalid URL. Please ensure it starts with 'http://' or 'https://'."
 #: src/components/receivables/components/QuotesTable.tsx:303
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewLegacy.tsx:77
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewMonite.tsx:92
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:370
 #: src/components/receivables/utils/getTypeLabel.ts:11
 #: src/components/templateSettings/components/DisplayBankSection.tsx:106
 #: src/components/templateSettings/utils.ts:9
@@ -5357,7 +5391,7 @@ msgstr "Invoice date is required"
 #~ msgstr "Invoice delete confirmation"
 
 #: src/components/receivables/components/InvoiceDetails.tsx:183
-#: src/components/receivables/components/InvoiceDetails.tsx:315
+#: src/components/receivables/components/InvoiceDetails.tsx:318
 msgid "Invoice details"
 msgstr "Invoice details"
 
@@ -5604,7 +5638,7 @@ msgid "Item ID"
 msgstr "Item ID"
 
 #: src/components/receivables/components/InvoiceDetailsTabDetails.tsx:77
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:298
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:304
 msgid "Item name"
 msgstr "Item name"
 
@@ -5688,7 +5722,7 @@ msgstr "items"
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:495
 #: src/components/receivables/components/InvoiceDetailsTabDetails.tsx:69
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:120
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:282
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:285
 msgid "Items"
 msgstr "Items"
 
@@ -6654,7 +6688,6 @@ msgid "Niue"
 msgstr "Niue"
 
 #: src/components/onboarding/OnboardingPerson/OnboardingRepresentativeRole/OnboardingRepresentativeRole.tsx:40
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:409
 msgid "No"
 msgstr "No"
 
@@ -7439,8 +7472,8 @@ msgstr "PDF Layout"
 msgid "PDF view"
 msgstr "PDF view"
 
-#: src/components/receivables/components/InvoiceDetails.tsx:323
-#: src/components/receivables/components/InvoiceDetails.tsx:324
+#: src/components/receivables/components/InvoiceDetails.tsx:326
+#: src/components/receivables/components/InvoiceDetails.tsx:327
 msgid "PDF Viewer"
 msgstr "PDF Viewer"
 
@@ -7688,7 +7721,7 @@ msgstr "Please try to reload."
 msgid "Please upload the required documents to continue."
 msgstr "Please upload the required documents to continue."
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:423
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:424
 msgid "Please use some of the rows before adding new ones."
 msgstr "Please use some of the rows before adding new ones."
 
@@ -7859,7 +7892,7 @@ msgstr "Previous page"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:126
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewLegacy.tsx:218
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewMonite.tsx:281
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:313
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:319
 msgid "Price"
 msgstr "Price"
 
@@ -8046,7 +8079,7 @@ msgstr "Qty x Price"
 #: src/components/payables/PayableDetails/PayableDetailsForm/validation.ts:29
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:502
 #: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:67
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:301
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:307
 msgid "Quantity"
 msgstr "Quantity"
 
@@ -8483,7 +8516,7 @@ msgstr "Routing number is required"
 msgid "Routing number must be 9 digits"
 msgstr "Routing number must be 9 digits"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:420
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:421
 msgid "Row"
 msgstr "Row"
 
@@ -9382,7 +9415,7 @@ msgstr "Tanzanian Shilling"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.utils.ts:92
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewLegacy.tsx:222
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewLegacy.tsx:231
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:317
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:323
 msgid "Tax"
 msgstr "Tax"
 
@@ -9685,8 +9718,8 @@ msgstr "There are no items created with this measure unit."
 #~ msgstr "There are no items here"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:405
-msgid "There are unsaved changes. If you leave, they will be lost."
-msgstr "There are unsaved changes. If you leave, they will be lost."
+#~ msgid "There are unsaved changes. If you leave, they will be lost."
+#~ msgstr "There are unsaved changes. If you leave, they will be lost."
 
 #. placeholder {0}: props.id
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:138
@@ -10261,7 +10294,6 @@ msgstr "Unsupported file type for {0}"
 #: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:206
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:462
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/OverdueReminderForm.tsx:311
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:237
 #: src/ui/tagsModal/tagsModal.tsx:53
 msgid "Update"
 msgstr "Update"
@@ -10502,7 +10534,7 @@ msgstr "Variety Stores"
 
 #: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:157
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreview.utils.ts:98
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:317
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:323
 msgid "VAT"
 msgstr "VAT"
 
@@ -10524,7 +10556,7 @@ msgstr "Vat “{0}” has been updated."
 msgid "VAT Country"
 msgstr "VAT Country"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:438
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:439
 msgid "VAT Exempt Rationale"
 msgstr "VAT Exempt Rationale"
 
@@ -10849,7 +10881,6 @@ msgid "Yemeni Rial"
 msgstr "Yemeni Rial"
 
 #: src/components/onboarding/OnboardingPerson/OnboardingRepresentativeRole/OnboardingRepresentativeRole.tsx:35
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:408
 msgid "Yes"
 msgstr "Yes"
 

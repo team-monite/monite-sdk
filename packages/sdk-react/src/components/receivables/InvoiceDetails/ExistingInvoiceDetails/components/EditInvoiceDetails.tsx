@@ -1,8 +1,8 @@
-import { ActiveInvoiceTitleTestId } from '../../CreateReceivable/components/ProductsTable.types';
 import { useLineItemSubmitCleanup } from '../../CreateReceivable/hooks/useLineItemSubmitCleanup';
 import { EntitySection } from '../../CreateReceivable/sections/EntitySection';
 import { ItemsSection } from '../../CreateReceivable/sections/ItemsSection';
 import {
+  CreateReceivablesFormBeforeValidationLineItemProps,
   getUpdateInvoiceValidationSchema,
   UpdateReceivablesFormProps,
 } from '../../CreateReceivable/validation';
@@ -16,29 +16,28 @@ import { useMeasureUnitsMapping } from '@/components/receivables/hooks/useMeasur
 import { useUpdateReceivable } from '@/components/receivables/hooks/useUpdateReceivable';
 import { useUpdateReceivableLineItems } from '@/components/receivables/hooks/useUpdateReceivableLineItems';
 import { useMoniteContext } from '@/core/context/MoniteContext';
-import { useMyEntity } from '@/core/queries';
+import { useCounterpartAddresses, useCounterpartById, useCounterpartVatList, useMyEntity } from '@/core/queries';
 import { rateMajorToMinor } from '@/core/utils/vatUtils';
 import { rateMinorToMajor } from '@/core/utils/vatUtils';
 import { ConfirmationModal } from '@/ui/ConfirmationModal';
-import { Dialog } from '@/ui/Dialog';
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogTitle, 
+  DialogDescription, 
+  DialogHeader, 
+  DialogClose
+} from '@/ui/components/dialog';
+import { Button } from '@/ui/components/button';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import {
-  Box,
-  Button,
-  DialogContent,
-  DialogTitle,
-  Divider,
-  Stack,
-  Toolbar,
-  Typography,
-  useTheme,
-} from '@mui/material';
 import { format } from 'date-fns';
 import { useCallback, useId, useMemo, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+import { X } from 'lucide-react';
+import { InvoicePreview } from '../../CreateReceivable/sections/components/InvoicePreview';
+import { useGetPaymentTerms } from '@/components/receivables/hooks/useGetPaymentTerms';
+import { useGetEntityVatIds } from '@/components/receivables/hooks/useGetEntityVatIds';
 
 type Schemas = components['schemas'];
 
@@ -73,6 +72,10 @@ interface ExtendedLineItem {
   };
 }
 
+export const EditInvoiceDetails = (props: EditInvoiceDetailsProps) => {
+  return <EditInvoiceDetailsContent {...props} />;
+};
+
 const EditInvoiceDetailsContent = ({
   invoice,
   onCancel,
@@ -80,8 +83,11 @@ const EditInvoiceDetailsContent = ({
   isOpen,
 }: EditInvoiceDetailsProps) => {
   const { i18n } = useLingui();
-  const { api } = useMoniteContext();
+  const { api, entityId } = useMoniteContext();
+  const { data: entityData } = useMyEntity();
   const { isLoading: isEntityLoading, isNonVatSupported } = useMyEntity();
+  const { data: paymentTerms } = useGetPaymentTerms();
+  const { data: entityVatIds } = useGetEntityVatIds(entityId);
 
   const { data: measureUnits, isLoading: isMeasureUnitsLoading } =
     api.measureUnits.getMeasureUnits.useQuery();
@@ -170,6 +176,7 @@ const EditInvoiceDetailsContent = ({
     getValues,
     setValue,
     reset,
+    watch,
   } = methods;
 
   const { registerLineItemCleanupFn, runLineItemCleanup } =
@@ -211,208 +218,255 @@ const EditInvoiceDetailsContent = ({
     closeUpdateReminderDialog,
   } = useInvoiceReminderDialogs({ getValues });
 
-  const className = 'Monite-EditInvoiceDetails';
+  const lineItems = watch('line_items');
+  const paymentTermsId = watch('payment_terms_id');
+  const fulfillmentDate = watch('fulfillment_date');
+  const memo = watch('memo');
+  const footer = watch('footer');
+  const entityBankAccountId = watch('entity_bank_account_id');
+  const vatMode = watch('vat_mode');
+  const counterpartId = watch('counterpart_id');
+  const billingAddressId = watch('default_billing_address_id');
 
-  const theme = useTheme();
+  const { data: counterpart } = useCounterpartById(counterpartId);
+  const { data: counterpartAddresses } = useCounterpartAddresses(counterpartId);
+  const { data: counterpartVats } = useCounterpartVatList(counterpartId);
+  const counterpartBillingAddress = useMemo(
+    () =>
+      counterpartAddresses?.data?.find(
+        (address) => address.id === billingAddressId
+      ),
+    [billingAddressId, counterpartAddresses?.data]
+  );
 
   return (
-    <Dialog fullScreen open={isOpen} onClose={onCancel}>
-      <DialogTitle className={className + '-Title'}>
-        <Toolbar>
-          <Button
-            variant="text"
-            color={isDirty ? 'error' : 'primary'}
-            onClick={handleCancelWithAlert}
-            startIcon={<ArrowBackIcon />}
-            disabled={isLoading}
-          >{t(i18n)`Cancel`}</Button>
-          <Box sx={{ marginLeft: 'auto' }}>
-            <Button
-              variant="contained"
-              key="next"
-              color="primary"
-              type="submit"
-              form={formName}
-              disabled={isLoading}
-            >{t(i18n)`Update`}</Button>
-          </Box>
-        </Toolbar>
-      </DialogTitle>
-      <Divider className={className + '-Divider'} />
-      <DialogContent className={className + '-Content'}>
-        <FormProvider {...methods}>
-          <form
-            id={formName}
-            noValidate
-            onSubmit={async (e) => {
-              e.preventDefault();
-              runLineItemCleanup();
-              await handleSubmit((values) => {
-                const lineItems: Schemas['UpdateLineItems'] = {
-                  data: values.line_items.map((lineItem) => {
-                    const extendedLineItem =
-                      lineItem as unknown as ExtendedLineItem;
+    <>
+      <Dialog open={isOpen} modal={false}>
+        <DialogContent fullScreen showCloseButton={false} className="mtw:flex">
+          <div className="mtw:flex-1/2 mtw:overflow-y-auto mtw:pr-14">
+            <DialogHeader className="mtw:flex-row mtw:justify-between mtw:bg-white mtw:pb-4 mtw:sticky mtw:top-0 mtw:z-9999">
+              <DialogTitle hidden>
+                {i18n._(`Edit invoice`)}
+              </DialogTitle>
+              <DialogDescription hidden>
+                {i18n._(`Edit invoice`)}
+              </DialogDescription>
 
-                    let measureUnitName: string | undefined;
+              <DialogClose asChild>
+                <Button
+                  variant="ghost"
+                  onClick={handleCancelWithAlert}
+                  disabled={isLoading}
+                >
+                  <X />
+                </Button>
+              </DialogClose>
 
-                    // Case 1: We have a valid measure_unit_id - look up its name
-                    if (extendedLineItem.product.measure_unit_id) {
-                      const measureUnitId =
-                        extendedLineItem.product.measure_unit_id;
-                      const unit = measureUnits?.data?.find(
-                        (u) => u.id === measureUnitId
-                      );
-                      measureUnitName = unit?.name;
-                    }
-                    // Case 2: We have a custom measure unit name but no ID
-                    else if (
-                      extendedLineItem.product.measure_unit_name ||
-                      extendedLineItem.measure_unit?.name
-                    ) {
-                      measureUnitName =
-                        extendedLineItem.product.measure_unit_name ||
-                        extendedLineItem.measure_unit?.name;
-                    }
+              <Button
+                type="submit"
+                form={formName}
+                disabled={isLoading}
+              >
+                {i18n._(`Update`)}
+              </Button>
+            </DialogHeader>
 
-                    const processedLineItem = {
-                      quantity: lineItem.quantity,
-                      product: {
-                        name: lineItem.product.name,
-                        type: lineItem.product
-                          .type as Schemas['ProductServiceTypeEnum'],
-                        measure_unit: measureUnitName
-                          ? { name: measureUnitName }
-                          : undefined,
-                        price: lineItem.product.price
-                          ? {
-                              currency: (lineItem.product.price.currency ??
-                                'USD') as components['schemas']['CurrencyEnum'],
-                              value: Math.round(
-                                lineItem.product.price.value ?? 0
-                              ),
-                            }
-                          : (undefined as unknown as Schemas['LineItemProductCreate']['price']),
-                      },
-                      // For non-VAT supported regions, use tax_rate_value
-                      ...(isNonVatSupported
-                        ? {
-                            tax_rate_value:
-                              lineItem.tax_rate_value !== undefined
-                                ? rateMajorToMinor(lineItem.tax_rate_value)
-                                : undefined,
-                          }
-                        : {
-                            vat_rate_id: lineItem.vat_rate_id,
-                          }),
+            <FormProvider {...methods}>
+              <form
+                id={formName}
+                noValidate
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  runLineItemCleanup();
+                  await handleSubmit((values) => {
+                    const lineItems: Schemas['UpdateLineItems'] = {
+                      data: values.line_items.map((lineItem) => {
+                        const extendedLineItem =
+                          lineItem as unknown as ExtendedLineItem;
+
+                        let measureUnitName: string | undefined;
+
+                        // Case 1: We have a valid measure_unit_id - look up its name
+                        if (extendedLineItem.product.measure_unit_id) {
+                          const measureUnitId =
+                            extendedLineItem.product.measure_unit_id;
+                          const unit = measureUnits?.data?.find(
+                            (u) => u.id === measureUnitId
+                          );
+                          measureUnitName = unit?.name;
+                        }
+                        // Case 2: We have a custom measure unit name but no ID
+                        else if (
+                          extendedLineItem.product.measure_unit_name ||
+                          extendedLineItem.measure_unit?.name
+                        ) {
+                          measureUnitName =
+                            extendedLineItem.product.measure_unit_name ||
+                            extendedLineItem.measure_unit?.name;
+                        }
+
+                        const processedLineItem = {
+                          quantity: lineItem.quantity,
+                          product: {
+                            name: lineItem.product.name,
+                            type: lineItem.product
+                              .type as Schemas['ProductServiceTypeEnum'],
+                            measure_unit: measureUnitName
+                              ? { name: measureUnitName }
+                              : undefined,
+                            price: lineItem.product.price
+                              ? {
+                                  currency: (lineItem.product.price.currency ??
+                                    'USD') as components['schemas']['CurrencyEnum'],
+                                  value: Math.round(
+                                    lineItem.product.price.value ?? 0
+                                  ),
+                                }
+                              : (undefined as unknown as Schemas['LineItemProductCreate']['price']),
+                          },
+                          // For non-VAT supported regions, use tax_rate_value
+                          ...(isNonVatSupported
+                            ? {
+                                tax_rate_value:
+                                  lineItem.tax_rate_value !== undefined
+                                    ? rateMajorToMinor(lineItem.tax_rate_value)
+                                    : undefined,
+                              }
+                            : {
+                                vat_rate_id: lineItem.vat_rate_id,
+                              }),
+                        };
+
+                        return processedLineItem;
+                      }),
                     };
 
-                    return processedLineItem;
-                  }),
-                };
+                    const invoicePayload: Schemas['ReceivableUpdatePayload'] = {
+                      invoice: {
+                        /** Customer section */
+                        counterpart_id: values.counterpart_id,
+                        counterpart_vat_id_id:
+                          values.counterpart_vat_id_id || undefined,
+                        currency: actualCurrency,
+                        memo: values.memo,
+                        vat_exemption_rationale: values.vat_exemption_rationale,
+                        // @ts-expect-error - we need to send `null`, but the backend doesn't provide a correct type
+                        counterpart_shipping_address_id:
+                          values?.default_shipping_address_id || null,
+                        counterpart_billing_address_id:
+                          values?.default_billing_address_id,
+                        /** We shouldn't send an empty string to the server if the value is not set */
+                        entity_bank_account_id:
+                          values.entity_bank_account_id || undefined,
+                        payment_terms_id: values.payment_terms_id,
+                        entity_vat_id_id: values.entity_vat_id_id || undefined,
+                        // @ts-expect-error - we need to send `null`, but the backend doesn't provide a correct type
+                        fulfillment_date: values.fulfillment_date
+                          ? /**
+                            * We have to change the date as Backend accepts it.
+                            * There is no `time` in request, only year, month and date
+                            */
+                            format(values.fulfillment_date, 'yyyy-MM-dd')
+                          : null,
+                        // @ts-expect-error - we need to send `null`, but the backend doesn't provide a correct type
+                        payment_reminder_id: values.payment_reminder_id || null,
+                        // @ts-expect-error - we need to send `null`, but the backend doesn't provide a correct type
+                        overdue_reminder_id: values.overdue_reminder_id || null,
+                        /** !!! Note !!! Backend is not supported to edit `purchase_order` so we have to remove it */
+                        // purchase_order: values.purchase_order || undefined,
+                      },
+                    };
 
-                const invoicePayload: Schemas['ReceivableUpdatePayload'] = {
-                  invoice: {
-                    /** Customer section */
-                    counterpart_id: values.counterpart_id,
-                    counterpart_vat_id_id:
-                      values.counterpart_vat_id_id || undefined,
-                    currency: actualCurrency,
-                    memo: values.memo,
-                    vat_exemption_rationale: values.vat_exemption_rationale,
-                    // @ts-expect-error - we need to send `null`, but the backend doesn't provide a correct type
-                    counterpart_shipping_address_id:
-                      values?.default_shipping_address_id || null,
-                    counterpart_billing_address_id:
-                      values?.default_billing_address_id,
-                    /** We shouldn't send an empty string to the server if the value is not set */
-                    entity_bank_account_id:
-                      values.entity_bank_account_id || undefined,
-                    payment_terms_id: values.payment_terms_id,
-                    entity_vat_id_id: values.entity_vat_id_id || undefined,
-                    // @ts-expect-error - we need to send `null`, but the backend doesn't provide a correct type
-                    fulfillment_date: values.fulfillment_date
-                      ? /**
-                         * We have to change the date as Backend accepts it.
-                         * There is no `time` in request, only year, month and date
-                         */
-                        format(values.fulfillment_date, 'yyyy-MM-dd')
-                      : null,
-                    // @ts-expect-error - we need to send `null`, but the backend doesn't provide a correct type
-                    payment_reminder_id: values.payment_reminder_id || null,
-                    // @ts-expect-error - we need to send `null`, but the backend doesn't provide a correct type
-                    overdue_reminder_id: values.overdue_reminder_id || null,
-                    /** !!! Note !!! Backend is not supported to edit `purchase_order` so we have to remove it */
-                    // purchase_order: values.purchase_order || undefined,
-                  },
-                };
-
-                updateReceivableLineItems.mutate(lineItems, {
-                  onSuccess: () => {
-                    updateReceivable.mutate(invoicePayload, {
-                      onSuccess: (receivable) => {
-                        onUpdated(
-                          receivable as Schemas['InvoiceResponsePayload']
-                        );
+                    updateReceivableLineItems.mutate(lineItems, {
+                      onSuccess: () => {
+                        updateReceivable.mutate(invoicePayload, {
+                          onSuccess: (receivable) => {
+                            onUpdated(
+                              receivable as Schemas['InvoiceResponsePayload']
+                            );
+                          },
+                        });
                       },
                     });
-                  },
-                });
-              })(e);
-            }}
-            style={{ marginBottom: theme.spacing(7) }}
-          >
-            <Stack direction="column" spacing={4}>
-              <Typography
-                variant="h1"
-                sx={{ mb: 2 }}
-                data-testid={ActiveInvoiceTitleTestId.ActiveInvoiceTitleTestId}
-              >
-                {t(i18n)`Invoice`}{' '}
-                <Typography component="span" variant="h1" color="textSecondary">
-                  #{invoice.document_id ?? INVOICE_DOCUMENT_AUTO_ID}
-                </Typography>
-              </Typography>
-              <ItemsSection
-                isNonVatSupported={isNonVatSupported}
-                actualCurrency={actualCurrency}
-                isVatSelectionDisabled
-                registerLineItemCleanupFn={registerLineItemCleanupFn}
-              />
-              {/** Show 'Note to customer'|'Purchase order' fields only if invoice.footer|purchase_order
-               * is defined and non-empty */}
-              <EntitySection
-                disabled={isLoading}
-                hidden={['purchase_order']}
-                visibleFields={{
-                  isFooterShown:
-                    typeof invoice.footer === 'string' &&
-                    invoice.footer?.trim() !== '',
-                  isPurchaseOrderShown:
-                    typeof invoice.purchase_order === 'string' &&
-                    invoice.purchase_order?.trim() !== '',
+                  })(e);
                 }}
-              />
-              <RemindersSection
-                disabled={isLoading}
-                onUpdateOverdueReminder={onEditOverdueReminder}
-                onUpdatePaymentReminder={onEditPaymentReminder}
-                onCreateReminder={onCreateReminder}
-              />
-            </Stack>
-            <ConfirmationModal
-              open={isAlertOpen}
-              title={t(i18n)`Cancel without saving?`}
-              message={t(
-                i18n
-              )`There are unsaved changes. If you leave, they will be lost.`}
-              confirmLabel={t(i18n)`Yes`}
-              cancelLabel={t(i18n)`No`}
-              onClose={() => setIsAlertOpen(false)}
-              onConfirm={onCancel}
+                className="mtw:mb-14"
+              >
+                <div className="mtw:flex mtw:flex-col mtw:gap-8">
+                  <h1 className="mtw:text-2xl mtw:font-bold">
+                    {i18n._(`Invoice`)}{' '}
+                    <span className="mtw:text-gray-500">
+                      #{invoice.document_id ?? INVOICE_DOCUMENT_AUTO_ID}
+                    </span>
+                  </h1>
+                  <ItemsSection
+                    isNonVatSupported={isNonVatSupported}
+                    actualCurrency={actualCurrency}
+                    isVatSelectionDisabled
+                    shouldOverrideVatRateDefaults
+                    registerLineItemCleanupFn={registerLineItemCleanupFn}
+                  />
+                  {/** Show 'Note to customer'|'Purchase order' fields only if invoice.footer|purchase_order
+                   * is defined and non-empty */}
+                  <EntitySection
+                    disabled={isLoading}
+                    hidden={['purchase_order']}
+                    visibleFields={{
+                      isFooterShown:
+                        typeof invoice.footer === 'string' &&
+                        invoice.footer?.trim() !== '',
+                      isPurchaseOrderShown:
+                        typeof invoice.purchase_order === 'string' &&
+                        invoice.purchase_order?.trim() !== '',
+                    }}
+                  />
+                  <RemindersSection
+                    disabled={isLoading}
+                    onUpdateOverdueReminder={onEditOverdueReminder}
+                    onUpdatePaymentReminder={onEditPaymentReminder}
+                    onCreateReminder={onCreateReminder}
+                  />
+                </div>
+              </form>
+            </FormProvider>
+          </div>
+
+          <div className="mtw:flex-1/2 mtw:w-1/2">
+            <InvoicePreview
+              invoiceData={{
+                payment_terms_id: paymentTermsId,
+                line_items: (lineItems || []).map((item) => ({
+                  ...item,
+                  id: item.id || `temp-${Math.random().toString(36).substr(2, 9)}`,
+                })) as CreateReceivablesFormBeforeValidationLineItemProps[],
+                fulfillment_date: fulfillmentDate,
+                memo,
+                footer,
+                entity_bank_account_id: entityBankAccountId,
+                vat_mode: vatMode,
+              }}
+              counterpart={counterpart}
+              currency={actualCurrency}
+              isNonVatSupported={isNonVatSupported}
+              entityData={entityData}
+              address={counterpartBillingAddress}
+              paymentTerms={paymentTerms}
+              entityVatIds={entityVatIds}
+              counterpartVats={counterpartVats}
             />
-          </form>
-        </FormProvider>
-      </DialogContent>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <ConfirmationModal
+        open={isAlertOpen}
+        title={i18n._(`Cancel without saving?`)}
+        message={i18n._(`There are unsaved changes. If you leave, they will be lost.`)}
+        confirmLabel={i18n._(`Yes`)}
+        cancelLabel={i18n._(`No`)}
+        onClose={() => setIsAlertOpen(false)}
+        onConfirm={onCancel}
+      />
 
       <CreateInvoiceReminderDialog
         open={createReminderDialog.open}
@@ -435,10 +489,6 @@ const EditInvoiceDetailsContent = ({
           onClose={closeUpdateReminderDialog}
         />
       )}
-    </Dialog>
+    </>
   );
-};
-
-export const EditInvoiceDetails = (props: EditInvoiceDetailsProps) => {
-  return <EditInvoiceDetailsContent {...props} />;
 };

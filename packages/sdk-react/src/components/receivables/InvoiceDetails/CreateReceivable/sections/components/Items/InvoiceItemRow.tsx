@@ -25,6 +25,7 @@ interface InvoiceItemRowProps {
   vatRates?: VatRateItemType[];
   highestVatRate?: VatRateItemType;
   tableRowClassName: string;
+  shouldOverrideVatRateDefaults?: boolean;
 
   onLineItemValueChange: (
     fieldPathSuffix: LineItemPath,
@@ -55,6 +56,7 @@ const InvoiceItemRowComponent = ({
   vatRates,
   highestVatRate,
   tableRowClassName,
+  shouldOverrideVatRateDefaults,
   onRequestLineItemValue,
   onLineItemValueChange,
   onLineItemManuallyChanged,
@@ -220,6 +222,7 @@ const InvoiceItemRowComponent = ({
                 onRequestLineItemValue('tax_rate_value') as number | undefined
               }
               onInitializeDefaults={handleVatRateDefaults}
+              shouldOverrideVatRateDefaults={shouldOverrideVatRateDefaults}
               onModified={onLineItemManuallyChanged}
             />
           </FormControl>

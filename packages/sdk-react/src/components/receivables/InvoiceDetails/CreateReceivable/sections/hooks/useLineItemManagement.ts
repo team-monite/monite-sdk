@@ -1,3 +1,4 @@
+import { components } from '@/api';
 import { useCreateInvoiceProductsTable } from '../../components/useCreateInvoiceProductsTable';
 import type {
   CreateReceivablesFormBeforeValidationProps,
@@ -24,6 +25,7 @@ interface UseLineItemManagementProps {
   isNonVatSupported: boolean;
   isInclusivePricing: boolean;
   maxAllowedEmptyRows?: number;
+  highestVatRate?: components["schemas"]["VatRateResponse"];
 }
 
 const DEFAULT_MAX_ALLOWED_EMPTY_ROWS = 4;
@@ -34,6 +36,7 @@ export const useLineItemManagement = ({
   isNonVatSupported,
   isInclusivePricing,
   maxAllowedEmptyRows = DEFAULT_MAX_ALLOWED_EMPTY_ROWS,
+  highestVatRate,
 }: UseLineItemManagementProps) => {
   const {
     control,
@@ -63,15 +66,7 @@ export const useLineItemManagement = ({
   const [tooManyEmptyRows, setTooManyEmptyRows] = useState(false);
 
   const watchedLineItems = watch('line_items');
-  const currentLineItems = useMemo(
-    () => watchedLineItems ?? [],
-    [watchedLineItems]
-  );
-
-  const sanitizedLineItemsForTable = useMemo(
-    () => sanitizeLineItems(currentLineItems),
-    [currentLineItems]
-  );
+  const sanitizedLineItemsForTable = sanitizeLineItems(watchedLineItems);
 
   const { formatCurrencyToDisplay } = useCurrencies();
 
@@ -112,12 +107,12 @@ export const useLineItemManagement = ({
         product,
         quantity: template?.quantity ?? 1,
         // Preserve VAT values or set defaults based on region
-        vat_rate_id: isNonVatSupported ? undefined : template?.vat_rate_id,
+        vat_rate_id: isNonVatSupported ? undefined : template?.vat_rate_id ?? highestVatRate?.id,
         vat_rate_value: isNonVatSupported
           ? undefined
-          : template?.vat_rate_value,
+          : template?.vat_rate_value ?? highestVatRate?.value,
         tax_rate_value: isNonVatSupported
-          ? template?.tax_rate_value
+          ? template?.tax_rate_value ?? 0
           : undefined,
         // Preserve measure_unit for custom units
         ...(template?.measure_unit
@@ -125,7 +120,7 @@ export const useLineItemManagement = ({
           : {}),
       };
     },
-    [actualCurrency, defaultCurrency, isNonVatSupported]
+    [actualCurrency, defaultCurrency, isNonVatSupported, highestVatRate]
   );
 
   const countEmptyRows = useCallback(

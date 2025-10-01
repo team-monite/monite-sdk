@@ -35,8 +35,8 @@ export const RemindersSection = (props: ReminderSectionProps) => {
           checked={showReminders}
           onChange={(e) => {
             if (!e.target.checked) {
-              setValue('payment_reminder_id', '');
-              setValue('overdue_reminder_id', '');
+              setValue('payment_reminder_id', '', { shouldDirty: true });
+              setValue('overdue_reminder_id', '', { shouldDirty: true });
             }
             setShowReminders(e.target.checked);
           }}

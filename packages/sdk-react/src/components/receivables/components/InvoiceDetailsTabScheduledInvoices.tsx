@@ -49,7 +49,7 @@ const IterationInvoice = ({
       </td>
       <td className="mtw:text-left mtw:h-9 mtw:py-2 mtw:px-2">
         {iterationInvoice ? (
-          <InvoiceStatusChip status={invoice?.status} />
+          <InvoiceStatusChip status={iterationInvoice?.status} />
         ) : (
           <InvoiceRecurrenceIterationStatusChip status={iteration.status} />
         )}

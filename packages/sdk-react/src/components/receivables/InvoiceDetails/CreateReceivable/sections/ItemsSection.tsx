@@ -27,7 +27,6 @@ import {
   TableContainer,
   Box,
   Collapse,
-  CircularProgress,
 } from '@mui/material';
 import { useState, useCallback, useMemo, useEffect } from 'react';
 import {
@@ -36,6 +35,7 @@ import {
   FieldPath,
   FieldPathValue,
 } from 'react-hook-form';
+import { LoadingSpinner } from '@/ui/loading';
 
 interface CreateInvoiceProductsTableProps {
   actualCurrency?: CurrencyEnum;
@@ -43,6 +43,7 @@ interface CreateInvoiceProductsTableProps {
   isNonVatSupported: boolean;
   isVatSelectionDisabled?: boolean;
   registerLineItemCleanupFn?: (fn: (() => void) | null) => void;
+  shouldOverrideVatRateDefaults?: boolean;
 }
 
 export const ItemsSection = ({
@@ -51,17 +52,30 @@ export const ItemsSection = ({
   isNonVatSupported,
   isVatSelectionDisabled,
   registerLineItemCleanupFn,
+  shouldOverrideVatRateDefaults = false,
 }: CreateInvoiceProductsTableProps) => {
   const { i18n } = useLingui();
   const { control, formState, getValues, trigger, watch } =
     useFormContext<CreateReceivablesFormBeforeValidationProps>();
 
-  const isInclusivePricing = watch('vat_mode') === 'inclusive';
+  const isInclusivePricing = watch('vat_mode') === 'inclusive'
 
   const { api } = useMoniteContext();
-  const { data: vatRates } = api.vatRates.getVatRates.useQuery();
+  const { data: vatRates, isLoading: isVatRatesLoading } = api.vatRates.getVatRates.useQuery();
   const { data: measureUnitsData, isLoading: isMeasureUnitsLoading } =
     api.measureUnits.getMeasureUnits.useQuery();
+
+  const highestVatRate = useMemo(() => {
+    const rates = vatRates?.data;
+
+    if (!rates?.length) {
+      return undefined;
+    }
+
+    return rates.reduce((maxRate, currentRate) =>
+      currentRate.value > maxRate.value ? currentRate : maxRate
+    );
+  }, [vatRates]);
 
   const {
     fields,
@@ -83,6 +97,7 @@ export const ItemsSection = ({
     defaultCurrency,
     isNonVatSupported,
     isInclusivePricing,
+    highestVatRate,
   });
 
   const setValueWithoutValidation = useCallback(
@@ -106,18 +121,6 @@ export const ItemsSection = ({
 
   const className = 'Monite-CreateReceivable-ItemsSection';
   const tableRowClassName = 'Monite-CreateReceivable-ItemsSection-Table';
-
-  const highestVatRate = useMemo(() => {
-    const rates = vatRates?.data;
-
-    if (!rates?.length) {
-      return undefined;
-    }
-
-    return rates.reduce((maxRate, currentRate) =>
-      currentRate.value > maxRate.value ? currentRate : maxRate
-    );
-  }, [vatRates]);
 
   const handleOpenCreateDialog = () => {
     setIsCreateDialogOpen(true);
@@ -282,7 +285,10 @@ export const ItemsSection = ({
         {t(i18n)`Items`}
       </Typography>
 
-      <FormErrorDisplay generalError={generalError} fieldErrors={fieldErrors} />
+      <FormErrorDisplay 
+        generalError={formState?.errors?.line_items?.root?.message ?? generalError} 
+        fieldErrors={fieldErrors} 
+      />
 
       <Box>
         <TableContainer
@@ -321,18 +327,12 @@ export const ItemsSection = ({
             </TableHead>
 
             <TableBody>
-              {isMeasureUnitsLoading ? (
+              {(isVatRatesLoading || isMeasureUnitsLoading) ? (
                 <TableRow>
                   <TableCell colSpan={5} align="center">
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                    >
-                      <CircularProgress size={20} />
-                    </Box>
+                    <div className="mtw:flex mtw:items-center mtw:justify-center">
+                      <LoadingSpinner className="mtw:w-5 mtw:h-5" />
+                    </div>
                   </TableCell>
                 </TableRow>
               ) : (
@@ -389,6 +389,7 @@ export const ItemsSection = ({
                       isNonVatSupported={isNonVatSupported}
                       vatRates={vatRates?.data}
                       highestVatRate={highestVatRate}
+                      shouldOverrideVatRateDefaults={shouldOverrideVatRateDefaults}
                       onRequestLineItemValue={
                         getLineItemFieldValueForCurrentRow
                       }
