@@ -59,7 +59,7 @@ export const ReceivableFilters = <T extends keyof ReceivableFilterType>({
     <FilterContainer
       className={className}
       searchField={
-        <div className="relative">
+        <div className="mtw:relative">
           <SearchIcon className="mtw:absolute mtw:left-2 mtw:top-1/2 mtw:-translate-y-1/2 mtw:size-4 mtw:text-muted-foreground" />
           <Input
             placeholder={t(i18n)`Search`}

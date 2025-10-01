@@ -254,7 +254,6 @@ const CounterpartsTableBase = ({
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        overflow: 'hidden',
         height: 'inherit',
         minHeight: '500px',
       }}
@@ -262,7 +261,6 @@ const CounterpartsTableBase = ({
       <FiltersComponent
         onChangeFilter={onChangeFilter}
         showCategories={showCategories}
-        sx={{ mb: 2 }}
       />
       <DataGrid
         rowSelection={false}
