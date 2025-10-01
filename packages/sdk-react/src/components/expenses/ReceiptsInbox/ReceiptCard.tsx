@@ -1,11 +1,13 @@
 import { components } from '@/api/schema';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
+import { OcrFileType } from '@/core/types/filetypes';
 import { getMimetypeFromUrl } from '@/core/utils/files';
 import { getUserDisplayName } from '@/core/utils/userUtils';
 import { ImageFileViewer } from '@/ui/FileViewer/FileViewer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/ui/components/card';
 import { Skeleton } from '@/ui/components/skeleton';
+import { LoadingSpinner } from '@/ui/loading';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { useMemo } from 'react';
@@ -22,9 +24,10 @@ export const ReceiptCard = ({ receipt, user }: ReceiptCardProps) => {
 
   const userDisplayName = useMemo(() => getUserDisplayName(user || {}), [user]);
 
+  const isOcrProcessing = receipt.ocr_status === 'processing';
   const isImageFile =
     receipt.file_url &&
-    getMimetypeFromUrl(receipt.file_url) !== 'application/pdf';
+    getMimetypeFromUrl(receipt.file_url) !== OcrFileType.PDF;
 
   const NBSP = '\u00A0'; // non-breaking space
   const formattedDate = i18n.date(receipt.created_at, locale.dateFormat);
@@ -35,6 +38,27 @@ export const ReceiptCard = ({ receipt, user }: ReceiptCardProps) => {
   const formattedIssuedDate = receipt.issued_at
     ? i18n.date(receipt.issued_at, locale.dateFormat)
     : NBSP;
+
+  if (isOcrProcessing) {
+    return (
+      <Card className="mtw:h-full mtw:w-full mtw:shadow-none mtw:gap-4 mtw:py-4 mtw:border-neutral-80 mtw:rounded-md">
+        <CardHeader className="mtw:gap-1 mtw:px-5">
+          <div className="mtw:flex mtw:justify-start mtw:items-center mtw:gap-2 mtw:font-medium">
+            <LoadingSpinner className="mtw:w-4 mtw:h-4 mtw:border-neutral-50 mtw:border-t-transparent" />
+            <span>{t(i18n)`Processing`}</span>
+          </div>
+          <Skeleton className="mtw:w-1/4 mtw:h-3" />
+        </CardHeader>
+        <CardContent className="mtw:h-full mtw:flex mtw:flex-col mtw:px-5 mtw:gap-4">
+          <Skeleton className="mtw:w-full mtw:h-38" />
+          <div className="mtw:flex mtw:flex-col mtw:gap-1">
+            <Skeleton className="mtw:w-full mtw:h-4" />
+            <Skeleton className="mtw:w-full mtw:h-3" />
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card className="mtw:h-full mtw:w-full mtw:shadow-none mtw:hover:shadow-md mtw:transition-shadow mtw:gap-4 mtw:py-4 mtw:border-neutral-80 mtw:rounded-md">

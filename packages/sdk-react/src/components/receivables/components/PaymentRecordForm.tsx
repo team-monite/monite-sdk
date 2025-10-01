@@ -6,7 +6,6 @@ import { safeZodResolver } from '@/core/utils/safeZodResolver';
 import { RHFDatePicker } from '@/ui/RHF/RHFDatePicker';
 import { RHFTextField } from '@/ui/RHF/RHFTextField';
 import { RHFTimePicker } from '@/ui/RHF/RHFTimePicker';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {

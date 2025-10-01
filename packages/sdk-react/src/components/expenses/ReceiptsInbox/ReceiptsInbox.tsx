@@ -2,6 +2,7 @@ import { ReceiptDetails } from '../ReceiptDetails';
 import { useGetMailboxes } from '../hooks/useGetMailboxes';
 import { useGetReceipts } from '../hooks/useGetReceipts';
 import { useInfiniteGetReceipts } from '../hooks/useInfiniteGetReceipts';
+import { useUploadNewReceiptFile } from '../hooks/useUploadNewReceiptFile';
 import { ReceiptCard, ReceiptCardSkeleton } from './ReceiptCard';
 import { components } from '@/api/schema';
 import { useDebounce } from '@/core/hooks';
@@ -17,13 +18,19 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/ui/components/dialog';
+import { FileUpload } from '@/ui/components/file-upload';
 import { Input } from '@/ui/components/input';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/ui/components/popover';
 import { Separator } from '@/ui/components/separator';
 import { TabBar, TabBarList, TabBarTrigger } from '@/ui/components/tab-bar';
 import { LoadingPage } from '@/ui/loadingPage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { CopyIcon, XIcon } from 'lucide-react';
+import { CopyIcon, FocusIcon, XIcon } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 const FILTER_TYPE_SEARCH = 'search';
@@ -43,6 +50,7 @@ export const ReceiptsInbox = ({
 }) => {
   const { i18n } = useLingui();
 
+  const [isUploadMenuOpen, setUploadMenuOpen] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const [isReceiptDetailsOpen, setIsReceiptDetailsOpen] = useState(false);
@@ -158,6 +166,8 @@ export const ReceiptsInbox = ({
     isReadReceiptsAllowed
   );
 
+  const { receiptUploadFromFileMutation } = useUploadNewReceiptFile();
+
   const { data: mailboxesData } = useGetMailboxes(isReadReceiptsAllowed);
   const receiptsEmailAddress = mailboxesData?.data?.find(
     (mailbox) =>
@@ -177,6 +187,15 @@ export const ReceiptsInbox = ({
     setIsReceiptDetailsOpen(false);
   }, []);
 
+  const handleReceiptUpload = (files: File[]) => {
+    files.forEach((file) => {
+      receiptUploadFromFileMutation.mutateAsync({
+        file,
+      });
+    });
+    setUploadMenuOpen(false);
+  };
+
   const handleChangeTab = useCallback(
     (value: HasTransactionFilterValue) => {
       onFilterChange(FILTER_TYPE_HAS_TRANSACTION, value);
@@ -191,158 +210,152 @@ export const ReceiptsInbox = ({
     [onFilterChange]
   );
 
-  // Early returns for loading and access restriction states
-  if (isReadReceiptsAllowedLoading) {
+  const getPageContent = useCallback(() => {
+    if (isReadReceiptsAllowedLoading) {
+      <LoadingPage />;
+    }
+    if (!isReadReceiptsAllowed) {
+      <AccessRestriction />;
+    }
     return (
-      <DialogAndHeader setIsOpen={setIsOpen}>
-        <LoadingPage />
-      </DialogAndHeader>
-    );
-  }
-
-  if (!isReadReceiptsAllowed) {
-    return (
-      <DialogAndHeader setIsOpen={setIsOpen}>
-        <AccessRestriction />
-      </DialogAndHeader>
-    );
-  }
-
-  return (
-    <>
-      <DialogAndHeader
-        setIsOpen={setIsOpen}
-        isReceiptDetailsOpen={isReceiptDetailsOpen}
-      >
-        <>
-          {/* Fixed Tabs and Search Section */}
-          <div className="mtw:space-y-4">
-            <div className="mtw:flex mtw:w-full mtw:relative">
-              <TabBar
-                value={filters[FILTER_TYPE_HAS_TRANSACTION] ?? 'all'}
-                onValueChange={(value: string) =>
-                  handleChangeTab(value as HasTransactionFilterValue)
-                }
-                className="mtw:flex-1"
-              >
-                <TabBarList>
-                  <TabBarTrigger value="all">{t(i18n)`All`}</TabBarTrigger>
-                  <TabBarTrigger value="unmatched">
-                    <div className="mtw:flex mtw:items-center">
-                      {t(i18n)`Unmatched`}
-                      {(unmatchedReceipts?.length ?? 0) > 0 && (
-                        <div className="mtw:ml-1 mtw:rounded-2xl mtw:w-3 mtw:h-3 mtw:bg-primary">
-                          &nbsp;
-                        </div>
-                      )}
-                    </div>
-                  </TabBarTrigger>
-                  <TabBarTrigger value="matched">{t(
-                    i18n
-                  )`Matched`}</TabBarTrigger>
-                </TabBarList>
-              </TabBar>
-              {receiptsEmailAddress && (
-                <div className="mtw:flex mtw:flex-col">
-                  <div className="mtw:absolute mtw:-top-4 mtw:right-0 mtw:md:relative mtw:md:top-auto mtw:md:right-auto mtw:flex-1 mtw:items-center mtw:flex mtw:gap-1 mtw:text-sm mtw:md:pl-1">
-                    <span className="mtw:text-neutral-50">{t(
-                      i18n
-                    )`Inbox address:`}</span>
-                    <a href={`mailto:${receiptsEmailAddress}`}>
-                      {receiptsEmailAddress}
-                    </a>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => {
-                        navigator.clipboard.writeText(receiptsEmailAddress);
-                      }}
-                      aria-label={t(i18n)`Copy inbox email address`}
-                    >
-                      <CopyIcon />
-                    </Button>
+      <>
+        {/* Fixed Tabs and Search Section */}
+        <div className="mtw:space-y-4">
+          <div className="mtw:flex mtw:w-full mtw:relative">
+            <TabBar
+              value={filters[FILTER_TYPE_HAS_TRANSACTION] ?? 'all'}
+              onValueChange={(value: string) =>
+                handleChangeTab(value as HasTransactionFilterValue)
+              }
+              className="mtw:flex-1"
+            >
+              <TabBarList>
+                <TabBarTrigger value="all">{t(i18n)`All`}</TabBarTrigger>
+                <TabBarTrigger value="unmatched">
+                  <div className="mtw:flex mtw:items-center">
+                    {t(i18n)`Unmatched`}
+                    {(unmatchedReceipts?.length ?? 0) > 0 && (
+                      <div className="mtw:ml-1 mtw:rounded-2xl mtw:w-3 mtw:h-3 mtw:bg-primary">
+                        &nbsp;
+                      </div>
+                    )}
                   </div>
-                  <Separator />
-                </div>
-              )}
-            </div>
-
-            <Input
-              placeholder={t(i18n)`Search by Document ID`}
-              value={searchInputValue}
-              onChange={handleSearchChange}
-              className="mtw:max-w-sm"
-            />
-          </div>
-
-          <div
-            ref={scrollContainerRef}
-            className="mtw:flex-1 mtw:overflow-auto mtw:px-6 mtw:py-4"
-          >
-            <ResponsiveGrid
-              data={receipts || []}
-              renderItem={(receipt) => (
-                <ReceiptCard
-                  receipt={receipt}
-                  user={userDataMap.get(receipt.created_by_entity_user_id)}
-                />
-              )}
-              onItemClick={handleReceiptClick}
-              minItemWidth={240}
-              loadingSkeleton={ReceiptCardSkeleton}
-              skeletonCount={6}
-              loading={isLoading}
-              hasNextPage={hasNextPage}
-              isFetchingNextPage={isFetchingNextPage}
-              fetchNextPage={fetchNextPage}
-              autoLoadMore={true}
-              error={errorState}
-              scrollContainer={scrollContainerRef}
-              noItemsOverlay={() => (
-                <GetNoRowsOverlay
-                  isLoading={isLoading}
-                  dataLength={receipts?.length || 0}
-                  isFiltering={
-                    filters[FILTER_TYPE_HAS_TRANSACTION] === 'all'
-                      ? false
-                      : !!filters[FILTER_TYPE_HAS_TRANSACTION]
-                  }
-                  isSearching={!!filters[FILTER_TYPE_SEARCH]}
-                  isError={!!error}
-                  entityName={t(i18n)`Receipts`}
-                  refetch={refetch}
-                  type="no-data=receipts"
-                  noDataDescription1={t(i18n)`No receipts yet`}
-                  noDataDescription2={t(
+                </TabBarTrigger>
+                <TabBarTrigger value="matched">{t(
+                  i18n
+                )`Matched`}</TabBarTrigger>
+              </TabBarList>
+            </TabBar>
+            {receiptsEmailAddress && (
+              <div className="mtw:flex mtw:flex-col">
+                <div className="mtw:absolute mtw:-top-4 mtw:right-0 mtw:md:relative mtw:md:top-auto mtw:md:right-auto mtw:flex-1 mtw:items-center mtw:flex mtw:gap-1 mtw:text-sm mtw:md:pl-1">
+                  <span className="mtw:text-neutral-50">{t(
                     i18n
-                  )`Uploaded receipts will appear here`}
-                />
-              )}
-            />
+                  )`Inbox address:`}</span>
+                  <a href={`mailto:${receiptsEmailAddress}`}>
+                    {receiptsEmailAddress}
+                  </a>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => {
+                      navigator.clipboard.writeText(receiptsEmailAddress);
+                    }}
+                    aria-label={t(i18n)`Copy inbox email address`}
+                  >
+                    <CopyIcon />
+                  </Button>
+                </div>
+                <Separator />
+              </div>
+            )}
           </div>
-        </>
-      </DialogAndHeader>
-      {isReceiptDetailsOpen && selectedReceipt && (
-        <ReceiptDetails
-          receipt={selectedReceipt}
-          open={isReceiptDetailsOpen}
-          onClose={handleReceiptClose}
-        />
-      )}
-    </>
-  );
-};
 
-const DialogAndHeader = ({
-  children,
-  setIsOpen,
-  isReceiptDetailsOpen,
-}: {
-  children: React.ReactNode;
-  setIsOpen: (open: boolean) => void;
-  isReceiptDetailsOpen?: boolean;
-}) => {
-  const { i18n } = useLingui();
+          <Input
+            placeholder={t(i18n)`Search by Document ID`}
+            value={searchInputValue}
+            onChange={handleSearchChange}
+            className="mtw:max-w-sm"
+          />
+        </div>
+
+        <div
+          ref={scrollContainerRef}
+          className="mtw:flex-1 mtw:overflow-auto mtw:px-6 mtw:py-4"
+        >
+          <ResponsiveGrid
+            data={receipts || []}
+            renderItem={(receipt) => (
+              <ReceiptCard
+                receipt={receipt}
+                user={userDataMap.get(receipt.created_by_entity_user_id)}
+              />
+            )}
+            onItemClick={handleReceiptClick}
+            isItemClickable={(receipt) => receipt.ocr_status !== 'processing'}
+            minItemWidth={240}
+            loadingSkeleton={ReceiptCardSkeleton}
+            skeletonCount={6}
+            loading={isLoading}
+            hasNextPage={hasNextPage}
+            isFetchingNextPage={isFetchingNextPage}
+            fetchNextPage={fetchNextPage}
+            autoLoadMore={true}
+            error={errorState}
+            scrollContainer={scrollContainerRef}
+            noItemsOverlay={() => (
+              <GetNoRowsOverlay
+                isLoading={isLoading}
+                dataLength={receipts?.length || 0}
+                isFiltering={
+                  filters[FILTER_TYPE_HAS_TRANSACTION] === 'all'
+                    ? false
+                    : !!filters[FILTER_TYPE_HAS_TRANSACTION]
+                }
+                isSearching={!!filters[FILTER_TYPE_SEARCH]}
+                isError={!!error}
+                entityName={t(i18n)`Receipts`}
+                refetch={refetch}
+                type="no-data=receipts"
+                noDataDescription1={t(i18n)`No receipts yet`}
+                noDataDescription2={t(i18n)`Uploaded receipts will appear here`}
+              />
+            )}
+          />
+        </div>
+        {isReceiptDetailsOpen && selectedReceipt && (
+          <ReceiptDetails
+            receipt={selectedReceipt}
+            open={isReceiptDetailsOpen}
+            onClose={handleReceiptClose}
+          />
+        )}
+      </>
+    );
+  }, [
+    isReadReceiptsAllowedLoading,
+    isReadReceiptsAllowed,
+    filters,
+    i18n,
+    unmatchedReceipts?.length,
+    receiptsEmailAddress,
+    searchInputValue,
+    handleSearchChange,
+    receipts,
+    handleReceiptClick,
+    isLoading,
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+    errorState,
+    isReceiptDetailsOpen,
+    selectedReceipt,
+    handleReceiptClose,
+    handleChangeTab,
+    userDataMap,
+    error,
+    refetch,
+  ]);
 
   return (
     <DialogContent
@@ -366,16 +379,51 @@ const DialogAndHeader = ({
             >
               <XIcon className="mtw:size-6" />
             </Button>
-            <DialogTitle className="mtw:font-semibold mtw:text-2xl">{t(
-              i18n
-            )`Receipt inbox`}</DialogTitle>
+            <DialogTitle className="mtw:font-semibold mtw:text-2xl">
+              {t(i18n)`Receipt inbox`}
+            </DialogTitle>
             <DialogDescription className="mtw:sr-only">{t(
               i18n
             )`Receipt inbox`}</DialogDescription>
+
+            <Popover
+              open={isUploadMenuOpen}
+              onOpenChange={setUploadMenuOpen}
+              modal={true}
+            >
+              <PopoverTrigger asChild>
+                <Button variant="secondary" className="mtw:ml-auto">
+                  <FocusIcon className="mtw:size-6" />
+                  {t(i18n)`Scan receipts`}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent
+                align="end"
+                className="mtw:w-auto mtw:min-w-[550px] mtw:border-none"
+              >
+                <div className="mtw:p-4 mtw:w-[550px] mtw:space-y-4">
+                  <div className="mtw:space-y-2">
+                    <p className="mtw:text-xl mtw:font-semibold">
+                      {t(i18n)`Upload receipts`}
+                    </p>
+                    <p>
+                      {t(
+                        i18n
+                      )`Upload card transaction receipts and we'll automatically match them to the correct transaction. `}
+                    </p>
+                  </div>
+                  <FileUpload
+                    onFileUpload={handleReceiptUpload}
+                    multiple={true}
+                    height="200px"
+                  />
+                </div>
+              </PopoverContent>
+            </Popover>
           </div>
         </DialogHeader>
 
-        {children}
+        {getPageContent()}
       </div>
     </DialogContent>
   );

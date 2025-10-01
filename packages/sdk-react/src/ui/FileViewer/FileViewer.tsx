@@ -1,3 +1,4 @@
+import { OcrFileType } from '@/core/types/filetypes';
 import { Button } from '@/ui/components/button';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -31,7 +32,7 @@ export const FileViewer = ({
   showCloseButton,
   onClose,
 }: FileViewerProps) => {
-  if (mimetype === 'application/pdf')
+  if (mimetype === OcrFileType.PDF)
     return (
       <PdfFileViewer
         url={url}
