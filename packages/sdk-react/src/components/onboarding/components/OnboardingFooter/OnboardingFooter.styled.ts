@@ -1,4 +1,4 @@
-import { Box, Link, styled } from '@mui/material';
+import { Box, styled } from '@mui/material';
 
 export const StyledFooter = styled(Box)`
   padding: ${({ theme }) => theme.spacing(2)};
@@ -8,12 +8,6 @@ export const StyledFooter = styled(Box)`
   }
 `;
 
-export const StyledLink = styled(Link)`
-  color: ${({ theme }) => theme.palette.text.secondary};
-  font-size: 14px;
-  line-height: 20px;
-  display: flex;
-`;
 
 export const StyledText = styled(Box)`
   color: ${({ theme }) => theme.palette.text.secondary};

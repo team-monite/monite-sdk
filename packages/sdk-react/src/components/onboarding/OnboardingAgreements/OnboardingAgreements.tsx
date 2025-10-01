@@ -1,12 +1,12 @@
-import { RHFCheckbox } from '@/ui/RHF/RHFCheckbox';
-import { t } from '@lingui/macro';
-import { Trans } from '@lingui/macro';
-import { useLingui } from '@lingui/react';
-import { Link, Typography } from '@mui/material';
-
-import { useOnboardingRequirements, useOnboardingAgreements } from '../hooks';
 import { OnboardingFormActions } from '../OnboardingFormActions';
 import { OnboardingForm, OnboardingStepContent } from '../OnboardingLayout';
+import { useOnboardingRequirements, useOnboardingAgreements } from '../hooks';
+import { RHFCheckbox } from '@/ui/RHF/RHFCheckbox';
+import { Button } from '@/ui/components/button';
+import { t } from '@lingui/core/macro';
+import { useLingui } from '@lingui/react';
+import { Trans } from '@lingui/react/macro';
+import { Typography } from '@mui/material';
 
 export const OnboardingAgreements = () => {
   const { i18n } = useLingui();
@@ -54,25 +54,25 @@ export const OnboardingAgreements = () => {
             <Trans>
               Payment processing services for {entityName} are provided by
               Stripe and are subject to the{' '}
-              <Link
-                underline="hover"
-                target="_blank"
-                rel="noopener noreferrer"
-                href="https://stripe.com/en-gb-us/legal/connect-account"
-                display="contents"
-              >
-                Stripe Connected Account Agreement
-              </Link>
+              <Button variant="link" asChild className="mtw:h-auto mtw:p-0">
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://stripe.com/en-gb-us/legal/connect-account"
+                >
+                  Stripe Connected Account Agreement
+                </a>
+              </Button>
               , which includes the{' '}
-              <Link
-                underline="hover"
-                target="_blank"
-                rel="noopener noreferrer"
-                href="https://stripe.com/en-gb-us/legal/ssa"
-                display="contents"
-              >
-                Stripe Terms of Service
-              </Link>{' '}
+              <Button variant="link" asChild className="mtw:h-auto mtw:p-0">
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://stripe.com/en-gb-us/legal/ssa"
+                >
+                  Stripe Terms of Service
+                </a>
+              </Button>{' '}
               (collectively, the “Stripe Services Agreement”). By agreeing to
               these terms or continuing to operate as {entityName} on{' '}
               {platformName}, you agree to be bound by the Stripe Services
