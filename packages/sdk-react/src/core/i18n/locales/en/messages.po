@@ -611,7 +611,7 @@ msgstr "Add new rule"
 msgid "Add number"
 msgstr "Add number"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:408
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:387
 msgid "Add reminder"
 msgstr "Add reminder"
 
@@ -1549,9 +1549,9 @@ msgstr "Boat Dealers"
 msgid "Boat Rentals and Leases"
 msgstr "Boat Rentals and Leases"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:268
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:323
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:378
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:265
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:314
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:363
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/OverdueReminderForm.tsx:250
 #: src/components/receivables/validation.ts:286
 msgid "Body"
@@ -1843,7 +1843,7 @@ msgstr "Canadian QST number (Québec)"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:1181
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/DeletePaymentTerms.tsx:33
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsDialog.tsx:85
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:452
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:431
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/OverdueReminderForm.tsx:298
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:228
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.test.tsx:24
@@ -2113,7 +2113,7 @@ msgstr "Cleaning and Maintenance"
 #: src/components/payables/PayableDetails/PayableDetailsCancelModal/PayableDetailsCancelModal.tsx:26
 #: src/components/receivables/components/InvoiceCancelModal.tsx:52
 #: src/components/receivables/components/RecurrenceCancelModal.tsx:61
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:204
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:201
 #: src/components/userRoles/UserRoleDetails/UserRoleDeleteDialog/UserRoleDeleteDialog.tsx:60
 #: src/ui/accessRestriction/AccessRestrictionModal.tsx:37
 msgid "Close"
@@ -2606,7 +2606,7 @@ msgstr "Court Costs, Including Alimony and Child Support - Courts of Law"
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:470
 #: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:145
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsDialog.tsx:38
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:462
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:441
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/OverdueReminderForm.tsx:311
 #: src/components/tags/TagFormModal/TagFormModal.test.tsx:27
 #: src/components/tags/TagFormModal/TagFormModal.test.tsx:97
@@ -2618,7 +2618,7 @@ msgstr "Court Costs, Including Alimony and Child Support - Courts of Law"
 msgid "Create"
 msgstr "Create"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:194
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:191
 msgid "Create “Before due date” reminder"
 msgstr "Create “Before due date” reminder"
 
@@ -3011,15 +3011,15 @@ msgstr "Days after must be at most 10000"
 #~ msgid "Days after must be at most 9999"
 #~ msgstr "Days after must be at most 9999"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:308
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:299
 msgid "days before discount date 1"
 msgstr "days before discount date 1"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:363
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:348
 msgid "days before discount date 2"
 msgstr "days before discount date 2"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:253
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:250
 msgid "days before due date"
 msgstr "days before due date"
 
@@ -3395,14 +3395,14 @@ msgstr "Discount {0}"
 #~ msgstr "Discount cannot be negative"
 
 #: src/components/receivables/components/ReminderDetails.tsx:42
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:288
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:425
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:279
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:404
 msgid "Discount date 1"
 msgstr "Discount date 1"
 
 #: src/components/receivables/components/ReminderDetails.tsx:51
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:343
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:432
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:328
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:411
 msgid "Discount date 2"
 msgstr "Discount date 2"
 
@@ -3599,8 +3599,8 @@ msgstr "Due"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Billing/FullfillmentSummary.tsx:116
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewLegacy.tsx:136
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewMonite.tsx:186
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:233
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:418
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:230
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:397
 msgid "Due date"
 msgstr "Due date"
 
@@ -4588,9 +4588,9 @@ msgstr "For {invoiceAmount} | Issued {issueDate}"
 msgid "For bookkeeping purposes, this is a write-off and has tax implications."
 msgstr "For bookkeeping purposes, this is a write-off and has tax implications."
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:234
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:289
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:344
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:231
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:280
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:329
 msgid "For this reminder to be sent for your invoice, please make sure to set payment terms that include a discount"
 msgstr "For this reminder to be sent for your invoice, please make sure to set payment terms that include a discount"
 
@@ -7837,7 +7837,7 @@ msgstr "Precious Stones and Metals, Watches and Jewelry"
 msgid "Prefix separator"
 msgstr "Prefix separator"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:225
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:222
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/OverdueReminderForm.tsx:209
 msgid "Preset name"
 msgstr "Preset name"
@@ -8286,9 +8286,9 @@ msgstr "Reload"
 msgid "Remaining limit"
 msgstr "Remaining limit"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:240
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:295
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:350
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:237
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:286
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:335
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/OverdueReminderForm.tsx:222
 msgid "Remind"
 msgstr "Remind"
@@ -8302,7 +8302,7 @@ msgstr "Reminder {0}"
 msgid "Reminder emails"
 msgstr "Reminder emails"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:149
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:146
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/OverdueReminderForm.tsx:136
 msgid "Reminder has been created"
 msgstr "Reminder has been created"
@@ -8311,7 +8311,7 @@ msgstr "Reminder has been created"
 #~ msgid "Reminder has been deleted"
 #~ msgstr "Reminder has been deleted"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:177
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:174
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/OverdueReminderForm.tsx:163
 msgid "Reminder has been updated"
 msgstr "Reminder has been updated"
@@ -9221,9 +9221,9 @@ msgstr "Status"
 msgid "Stylish"
 msgstr "Stylish"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:259
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:314
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:369
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:256
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:305
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:354
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/OverdueReminderForm.tsx:241
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.form.components.tsx:155
 #: src/components/receivables/validation.ts:282
@@ -10283,14 +10283,14 @@ msgstr "Unsupported file type for {0}"
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:1171
 #: src/components/counterparts/CounterpartDetails/CounterpartTestHelpers.ts:47
 #: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:206
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:462
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:441
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/OverdueReminderForm.tsx:311
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:237
 #: src/ui/tagsModal/tagsModal.tsx:53
 msgid "Update"
 msgstr "Update"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:193
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:190
 msgid "Update “Before due date” reminder"
 msgstr "Update “Before due date” reminder"
 
