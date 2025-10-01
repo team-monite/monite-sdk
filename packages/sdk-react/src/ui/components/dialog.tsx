@@ -50,6 +50,7 @@ const DialogContent = React.forwardRef<
   React.ComponentProps<typeof DialogPrimitive.Content> & {
     showCloseButton?: boolean;
     fullScreen?: boolean;
+    container?: HTMLElement;
   }
 >(
   (
@@ -58,6 +59,7 @@ const DialogContent = React.forwardRef<
       children,
       showCloseButton = true,
       fullScreen = false,
+      container,
       ...props
     },
     ref
@@ -77,6 +79,13 @@ const DialogContent = React.forwardRef<
             className
           )}
           {...props}
+          // Fix Radix UI issue with pointer events when using the Dialog component
+          // closing the dialog when used together with dialogs from other libraries
+          // https://github.com/shadcn-ui/ui/issues/1859
+          onCloseAutoFocus={(event) => {
+            event.preventDefault();
+            (container ?? document.body).style.pointerEvents = '';
+          }}
         >
           {children}
           {showCloseButton && (

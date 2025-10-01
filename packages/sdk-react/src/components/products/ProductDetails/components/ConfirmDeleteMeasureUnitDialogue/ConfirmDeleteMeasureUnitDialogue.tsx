@@ -1,4 +1,5 @@
 import { useMoniteContext } from '@/core/context/MoniteContext';
+import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useCurrencies } from '@/core/hooks';
 import { ConfirmationModal } from '@/ui/ConfirmationModal';
 import { t } from '@lingui/macro';
@@ -33,6 +34,7 @@ export const ConfirmDeleteMeasureUnitDialogue = ({
   const { i18n } = useLingui();
   const { api } = useMoniteContext();
   const { formatCurrencyToDisplay } = useCurrencies();
+  const root = useRootElements();
 
   const { data: products, isLoading: isLoadingProducts } =
     api.products.getProducts.useQuery(
@@ -104,6 +106,7 @@ export const ConfirmDeleteMeasureUnitDialogue = ({
   return (
     <ConfirmationModal
       open={open}
+      container={root?.root}
       title={
         isEmpty
           ? t(i18n)`Delete "${name}" unit?`

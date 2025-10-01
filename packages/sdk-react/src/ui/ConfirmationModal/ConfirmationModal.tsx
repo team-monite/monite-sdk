@@ -20,6 +20,7 @@ type BaseConfirmationModalProps = {
   onClose: () => void;
   onConfirm: () => void;
   isLoading?: boolean;
+  container?: Element;
 };
 
 type MessageConfirmationModalProps = BaseConfirmationModalProps & {
@@ -45,6 +46,7 @@ export const ConfirmationModal = ({
   cancelLabel,
   onClose,
   onConfirm,
+  container,
   isLoading = false,
 }: ConfirmationModalProps) => {
   const { i18n } = useLingui();
@@ -55,7 +57,10 @@ export const ConfirmationModal = ({
       onOpenChange={onClose}
       aria-label={t(i18n)`Confirmation dialog`}
     >
-      <DialogContent showCloseButton={false}>
+      <DialogContent
+        container={container as HTMLElement}
+        showCloseButton={false}
+      >
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>

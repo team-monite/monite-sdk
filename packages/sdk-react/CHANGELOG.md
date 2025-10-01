@@ -1,5 +1,12 @@
 # @monite/sdk-react
 
+## 4.6.6
+
+### Patch Changes
+
+- c38f169: Fix an issue when stacked dialogs could result on disabled pointer events
+- ea589be: Made payment reminders be turned on by default when creating a counterpart and fixed issue when creating an invoice not finding the correct email for payment reminders even when there is one available
+
 ## 4.6.5
 
 ### Patch Changes
