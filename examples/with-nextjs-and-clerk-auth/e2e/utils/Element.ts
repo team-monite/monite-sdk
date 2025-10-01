@@ -10,7 +10,7 @@ export class Element {
   public async waitForElementPresent() {
     await sessionStorage
       .get()
-      .waitForSelector(this.locator, { state: 'visible' });
+      .waitForSelector(this.locator, { state: 'visible', timeout: 30000 });
   }
 
   public async fill(text: string) {
