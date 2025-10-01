@@ -120,12 +120,9 @@ const CreateBeforeDueDateReminderComponent = ({
     resolver: zodResolver(getBeforeDueDateValidationSchema(i18n)),
     defaultValues: ((): components['schemas']['PaymentReminder'] => ({
       name: reminder?.name ?? '',
-      // @ts-expect-error - back-end does not support `null` values
-      term_1_reminder: reminder?.term_1_reminder ?? null,
-      // @ts-expect-error - back-end does not support `null` values
-      term_2_reminder: reminder?.term_2_reminder ?? null,
-      // @ts-expect-error - back-end does not support `null` values
-      term_final_reminder: reminder?.term_final_reminder ?? null,
+      term_1_reminder: reminder?.term_1_reminder ?? undefined,
+      term_2_reminder: reminder?.term_2_reminder ?? undefined,
+      term_final_reminder: reminder?.term_final_reminder ?? undefined,
     }))(),
   });
 
@@ -274,13 +271,7 @@ const CreateBeforeDueDateReminderComponent = ({
                     rows={5}
                   />
                 }
-                onDelete={() =>
-                  setValue(
-                    'term_final_reminder',
-                    // @ts-expect-error - back-end does not support `null` values
-                    null
-                  )
-                }
+                onDelete={() => setValue('term_final_reminder', undefined)}
               />
             )}
             {Boolean(term1ReminderFieldValue) && (
@@ -329,13 +320,7 @@ const CreateBeforeDueDateReminderComponent = ({
                     rows={5}
                   />
                 }
-                onDelete={() =>
-                  setValue(
-                    'term_1_reminder',
-                    // @ts-expect-error - back-end does not support `null` values
-                    null
-                  )
-                }
+                onDelete={() => setValue('term_1_reminder', undefined)}
               />
             )}
             {Boolean(term2ReminderFieldValue) && (
@@ -384,13 +369,7 @@ const CreateBeforeDueDateReminderComponent = ({
                     rows={5}
                   />
                 }
-                onDelete={() =>
-                  setValue(
-                    'term_2_reminder',
-                    // @ts-expect-error - back-end does not support `null` values
-                    null
-                  )
-                }
+                onDelete={() => setValue('term_2_reminder', undefined)}
               />
             )}
             {!(
