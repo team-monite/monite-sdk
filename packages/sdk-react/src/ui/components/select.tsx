@@ -1,9 +1,7 @@
-import * as React from 'react';
-
 import { cn } from '@/ui/lib/utils';
 import * as SelectPrimitive from '@radix-ui/react-select';
-
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from 'lucide-react';
+import * as React from 'react';
 
 function Select({
   ...props
@@ -36,7 +34,7 @@ function SelectTrigger({
       data-slot="select-trigger"
       data-size={size}
       className={cn(
-        'mtw:border-input mtw:data-[placeholder]:text-muted-foreground mtw:[&_svg:not([class*=text-])]:text-muted-foreground mtw:focus-visible:border-ring mtw:focus-visible:ring-ring/50 mtw:aria-invalid:ring-destructive/20 mtw:dark:aria-invalid:ring-destructive/40 mtw:aria-invalid:border-destructive mtw:dark:bg-input/30 mtw:dark:hover:bg-input/50 mtw:flex mtw:w-fit mtw:items-center mtw:justify-between mtw:gap-2 mtw:rounded-md mtw:border mtw:bg-transparent mtw:px-3 mtw:py-2 mtw:text-sm mtw:whitespace-nowrap mtw:shadow-xs mtw:transition-[color,box-shadow] mtw:outline-none mtw:focus-visible:ring-[3px] mtw:disabled:cursor-not-allowed mtw:disabled:opacity-50 mtw:data-[size=default]:h-9 mtw:data-[size=sm]:h-8 mtw:*:data-[slot=select-value]:line-clamp-1 mtw:*:data-[slot=select-value]:flex mtw:*:data-[slot=select-value]:items-center mtw:*:data-[slot=select-value]:gap-2 mtw:[&_svg]:pointer-events-none mtw:[&_svg]:shrink-0 mtw:[&_svg:not([class*=size-])]:size-4',
+        'mtw:border-input mtw:cursor-pointer mtw:data-[placeholder]:text-muted-foreground mtw:[&_svg:not([class*=text-])]:text-muted-foreground mtw:focus-visible:border-ring mtw:focus-visible:ring-ring/50 mtw:aria-invalid:ring-destructive/20 mtw:dark:aria-invalid:ring-destructive/40 mtw:aria-invalid:border-destructive mtw:dark:bg-input/30 mtw:dark:hover:bg-input/50 mtw:flex mtw:w-fit mtw:items-center mtw:justify-between mtw:gap-2 mtw:rounded-md mtw:border mtw:bg-transparent mtw:px-3 mtw:py-2 mtw:text-sm mtw:whitespace-nowrap mtw:shadow-xs mtw:transition-[color,box-shadow] mtw:outline-none mtw:focus-visible:ring-[3px] mtw:disabled:cursor-not-allowed mtw:disabled:opacity-50 mtw:data-[size=default]:h-9 mtw:data-[size=sm]:h-8 mtw:*:data-[slot=select-value]:line-clamp-1 mtw:*:data-[slot=select-value]:flex mtw:*:data-[slot=select-value]:items-center mtw:*:data-[slot=select-value]:gap-2 mtw:[&_svg]:pointer-events-none mtw:[&_svg]:shrink-0 mtw:[&_svg:not([class*=size-])]:size-4',
         className
       )}
       {...props}
