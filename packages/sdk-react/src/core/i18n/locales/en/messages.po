@@ -14,9 +14,9 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. js-lingui-explicit-id
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:259
-msgid "Close"
-msgstr "Close"
+#: src/components/receivables/hooks/useCreateReceivablePaymentLink.ts:27
+msgid "You haven't onboarded for any payment method. Invoice is issued without a payment link."
+msgstr "You haven't onboarded for any payment method. Invoice is issued without a payment link."
 
 #. js-lingui-explicit-id
 #: src/core/context/MoniteI18nProvider.test.tsx:29
@@ -53,6 +53,11 @@ msgstr "You can change it in the customer profile."
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:251
 msgid "Edit invoice"
 msgstr "Edit invoice"
+
+#. js-lingui-explicit-id
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:259
+msgid "Close"
+msgstr "Close"
 
 #. js-lingui-explicit-id
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:270
@@ -1916,7 +1921,7 @@ msgstr "Cancel bill"
 msgid "Cancel bill?"
 msgstr "Cancel bill?"
 
-#: src/components/receivables/components/InvoiceDetailsActions.tsx:320
+#: src/components/receivables/components/InvoiceDetailsActions.tsx:328
 msgid "Cancel invoice"
 msgstr "Cancel invoice"
 
@@ -1937,7 +1942,7 @@ msgstr "Cancel receivable “{0}”?"
 msgid "Cancel receivable?"
 msgstr "Cancel receivable?"
 
-#: src/components/receivables/components/InvoiceDetailsActions.tsx:162
+#: src/components/receivables/components/InvoiceDetailsActions.tsx:170
 #: src/components/receivables/components/RecurrenceCancelModal.tsx:60
 msgid "Cancel recurrence"
 msgstr "Cancel recurrence"
@@ -3128,7 +3133,7 @@ msgstr "Default for Currency"
 #: src/components/receivables/components/BankAccountDeleteModal.tsx:27
 #: src/components/receivables/components/BankAccountFormDialog.tsx:194
 #: src/components/receivables/components/InvoiceDeleteModal.tsx:74
-#: src/components/receivables/components/InvoiceDetailsActions.tsx:310
+#: src/components/receivables/components/InvoiceDetailsActions.tsx:318
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/DeletePaymentTerms.tsx:32
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/DiscountForm.tsx:80
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsDialog.tsx:82
@@ -3562,7 +3567,7 @@ msgstr "Done, continue"
 msgid "Door-To-Door Sales"
 msgstr "Door-To-Door Sales"
 
-#: src/components/receivables/components/InvoiceDetailsActions.tsx:296
+#: src/components/receivables/components/InvoiceDetailsActions.tsx:304
 msgid "Download draft"
 msgstr "Download draft"
 
@@ -3688,8 +3693,8 @@ msgctxt "InvoicesTableRowActionMenu"
 msgid "Duplicate"
 msgstr "Duplicate"
 
-#: src/components/receivables/components/InvoiceDetailsActions.tsx:247
-#: src/components/receivables/components/InvoiceDetailsActions.tsx:283
+#: src/components/receivables/components/InvoiceDetailsActions.tsx:255
+#: src/components/receivables/components/InvoiceDetailsActions.tsx:291
 msgid "Duplicate"
 msgstr "Duplicate"
 
@@ -3745,8 +3750,8 @@ msgstr "Ecuador"
 #: src/components/products/Products.test.tsx:272
 #: src/components/products/ProductsTable/ProductsTable.test.tsx:246
 #: src/components/receivables/components/BankAccountSection.tsx:145
-#: src/components/receivables/components/InvoiceDetailsActions.tsx:194
-#: src/components/receivables/components/InvoiceDetailsActions.tsx:276
+#: src/components/receivables/components/InvoiceDetailsActions.tsx:202
+#: src/components/receivables/components/InvoiceDetailsActions.tsx:284
 #: src/components/tags/TagsTable/TagsTable.test.tsx:376
 #: src/components/tags/TagsTable/TagsTable.test.tsx:407
 #: src/components/tags/TagsTable/TagsTable.test.tsx:438
@@ -3890,7 +3895,7 @@ msgstr "Edit tag ”{0}”"
 msgid "Edit tags"
 msgstr "Edit tags"
 
-#: src/components/receivables/components/InvoiceDetailsActions.tsx:302
+#: src/components/receivables/components/InvoiceDetailsActions.tsx:310
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:868
 #: src/components/templateSettings/TemplateSettings.tsx:177
 msgid "Edit template settings"
@@ -5546,12 +5551,12 @@ msgctxt "InvoicesTableRowActionMenu"
 msgid "Issue"
 msgstr "Issue"
 
-#: src/components/receivables/components/InvoiceDetailsActions.tsx:185
-#: src/components/receivables/components/InvoiceDetailsActions.tsx:270
+#: src/components/receivables/components/InvoiceDetailsActions.tsx:193
+#: src/components/receivables/components/InvoiceDetailsActions.tsx:278
 msgid "Issue"
 msgstr "Issue"
 
-#: src/components/receivables/components/InvoiceDetailsActions.tsx:174
+#: src/components/receivables/components/InvoiceDetailsActions.tsx:182
 msgid "Issue and send"
 msgstr "Issue and send"
 
@@ -6209,7 +6214,7 @@ msgstr "Manually recorded"
 msgid "Marinas, Service and Supplies"
 msgstr "Marinas, Service and Supplies"
 
-#: src/components/receivables/components/InvoiceDetailsActions.tsx:330
+#: src/components/receivables/components/InvoiceDetailsActions.tsx:338
 #: src/components/receivables/components/MarkAsUncollectibleModal.tsx:74
 msgid "Mark as uncollectible"
 msgstr "Mark as uncollectible"
@@ -6729,8 +6734,8 @@ msgid "No {entityName} Found"
 msgstr "No {entityName} Found"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:188
-msgid "No active payment methods available. The email will be sent without a payment link"
-msgstr "No active payment methods available. The email will be sent without a payment link"
+#~ msgid "No active payment methods available. The email will be sent without a payment link"
+#~ msgstr "No active payment methods available. The email will be sent without a payment link"
 
 #: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.tsx:240
 msgid "No Approval Policies"
@@ -7489,7 +7494,7 @@ msgstr "Payments"
 msgid "Payments history"
 msgstr "Payments history"
 
-#: src/components/receivables/components/InvoiceDetailsActions.tsx:236
+#: src/components/receivables/components/InvoiceDetailsActions.tsx:244
 msgid "PDF"
 msgstr "PDF"
 
@@ -7497,7 +7502,7 @@ msgstr "PDF"
 msgid "PDF Layout"
 msgstr "PDF Layout"
 
-#: src/components/receivables/components/InvoiceDetailsActions.tsx:343
+#: src/components/receivables/components/InvoiceDetailsActions.tsx:351
 msgid "PDF view"
 msgstr "PDF view"
 
@@ -8208,7 +8213,7 @@ msgstr "Recipients"
 msgid "Reconciliation"
 msgstr "Reconciliation"
 
-#: src/components/receivables/components/InvoiceDetailsActions.tsx:209
+#: src/components/receivables/components/InvoiceDetailsActions.tsx:217
 #: src/components/receivables/components/InvoiceDetailsTabPayments.tsx:174
 #: src/components/receivables/components/PaymentRecordForm.tsx:66
 msgid "Record payment"
@@ -8807,12 +8812,12 @@ msgctxt "InvoicesTableRowActionMenu"
 msgid "Send"
 msgstr "Send"
 
-#: src/components/receivables/components/InvoiceDetailsActions.tsx:225
+#: src/components/receivables/components/InvoiceDetailsActions.tsx:233
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:321
 msgid "Send"
 msgstr "Send"
 
-#: src/components/receivables/components/InvoiceDetailsActions.tsx:293
+#: src/components/receivables/components/InvoiceDetailsActions.tsx:301
 msgid "Send draft"
 msgstr "Send draft"
 
@@ -11075,7 +11080,7 @@ msgstr "You don't have permission to delete this document. Please, contact your 
 #~ msgid "You don’t have permission to issue this document. Please, contact your system administrator for details."
 #~ msgstr "You don’t have permission to issue this document. Please, contact your system administrator for details."
 
-#: src/components/receivables/components/InvoiceDetailsActions.tsx:62
+#: src/components/receivables/components/InvoiceDetailsActions.tsx:63
 msgid "You don't have permission to update this document. Please, contact your system administrator for details."
 msgstr "You don't have permission to update this document. Please, contact your system administrator for details."
 
@@ -11108,6 +11113,10 @@ msgstr "You have unsaved changes"
 #: src/components/financing/components/FinanceBanner.tsx:217
 msgid "You haven’t accepted the offer and it has expired"
 msgstr "You haven’t accepted the offer and it has expired"
+
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:188
+msgid "You haven’t onboarded for any payment method. Invoice is issued without a payment link."
+msgstr "You haven’t onboarded for any payment method. Invoice is issued without a payment link."
 
 #: src/components/receivables/components/BankAccountDeleteModal.tsx:39
 #~ msgid "You might need to update draft documents created with this bank account to ensure a correct payment."

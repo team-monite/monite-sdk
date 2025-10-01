@@ -33,3 +33,4 @@ export { useUpdateRecurrenceById } from './useUpdateRecurrenceById';
 export { useGetInvoiceRequiredFields } from './useGetInvoiceRequiredFields';
 export { useCreateEntityVatId } from './useCreateEntityVatId';
 export { useGetPaymentTerms } from './useGetPaymentTerms';
+export { useCreateReceivablePaymentLink } from './useCreateReceivablePaymentLink';
