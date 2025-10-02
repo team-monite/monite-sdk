@@ -390,6 +390,7 @@ export const EditCounterpartModal = ({
                         )
                       }
                     >
+                      <MenuItem value="">{t(i18n)`None`}</MenuItem>
                       {counterpartAddresses?.data.map((address) => (
                         <MenuItem key={address.id} value={address.id}>
                           {prepareAddressView({ address })}
