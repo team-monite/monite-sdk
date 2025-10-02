@@ -12,10 +12,7 @@ import { FormSelect } from './FormSelect';
 import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useMyEntity } from '@/core/queries';
-import {
-  countryCurrencyList,
-  CountryType,
-} from '@/core/utils/countries';
+import { countryCurrencyList, CountryType } from '@/core/utils/countries';
 import { safeZodResolver } from '@/core/utils/safeZodResolver';
 import { MoniteCountry } from '@/ui/Country';
 import { MoniteCurrency } from '@/ui/Currency';
@@ -147,8 +144,14 @@ export const BankAccountFormContent = ({
           sort_code: values?.sort_code,
           bank_name: values?.bank_name,
           display_name: values?.display_name,
-          country: componentSettings?.receivables?.bankAccountCountries?.length === 1 ? componentSettings?.receivables?.bankAccountCountries[0] : values?.country as components['schemas']['AllowedCountries'],
-          currency: componentSettings?.receivables?.bankAccountCurrencies?.length === 1 ? componentSettings?.receivables?.bankAccountCurrencies[0] : values?.currency as components['schemas']['CurrencyEnum'],
+          country:
+            componentSettings?.receivables?.bankAccountCountries?.length === 1
+              ? componentSettings?.receivables?.bankAccountCountries[0]
+              : (values?.country as components['schemas']['AllowedCountries']),
+          currency:
+            componentSettings?.receivables?.bankAccountCurrencies?.length === 1
+              ? componentSettings?.receivables?.bankAccountCurrencies[0]
+              : (values?.currency as components['schemas']['CurrencyEnum']),
         })
       );
     }

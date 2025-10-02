@@ -1,12 +1,11 @@
+import { t } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
+import { Box, Paper, Switch, Typography } from '@mui/material';
 import {
   Controller,
   type FieldValues,
   type UseControllerProps,
 } from 'react-hook-form';
-
-import { t } from '@lingui/macro';
-import { useLingui } from '@lingui/react';
-import { Box, Paper, Switch, Typography } from '@mui/material';
 
 export const CounterpartReminderToggle = <T extends FieldValues>(
   props: UseControllerProps<T>

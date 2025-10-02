@@ -1,12 +1,10 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
-
+import { getEntityName } from '../helpers';
+import { OnboardingPersonId } from '../types';
 import { components } from '@/api';
 import { useMyEntity } from '@/core/queries';
 import { useOnboardingRequirementsData } from '@/core/queries/useOnboarding';
 import { OnboardingRequirement } from '@/enums/OnboardingRequirement';
-
-import { getEntityName } from '../helpers';
-import { OnboardingPersonId } from '../types';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 export type OnboardingRequirementsType = {
   /**

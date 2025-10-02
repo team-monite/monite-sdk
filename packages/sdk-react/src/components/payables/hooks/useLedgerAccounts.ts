@@ -2,7 +2,7 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 
 export const useLedgerAccounts = (enabled = true) => {
   const { api } = useMoniteContext();
-  
+
   return api.ledgerAccounts.getLedgerAccounts.useQuery(
     {
       query: {
@@ -10,7 +10,7 @@ export const useLedgerAccounts = (enabled = true) => {
         sort: 'name',
       },
     },
-    { 
+    {
       enabled,
       staleTime: 5 * 60 * 1000,
     }

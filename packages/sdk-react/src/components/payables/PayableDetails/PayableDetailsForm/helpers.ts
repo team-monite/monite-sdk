@@ -9,12 +9,12 @@ import {
   OcrRequiredFields,
   OptionalFields,
 } from '@/components/payables/types';
+import { resolveNullableUpdate } from '@/components/payables/utils/resolveNullableUpdate';
 import { CounterpartResponse } from '@/core/queries';
 import { getIndividualName } from '@/core/utils';
 import { toMinorUnits, fromMinorUnits } from '@/core/utils/currency';
 import { format } from 'date-fns';
 import { FieldValue, FieldValues } from 'react-hook-form';
-import { resolveNullableUpdate } from '@/components/payables/utils/resolveNullableUpdate';
 
 export type Option = { label: string; value: string };
 export interface SubmitPayload extends PayableDetailsFormFields {
@@ -311,7 +311,7 @@ type PayableResponseSchema = components['schemas']['PayableResponseSchema'];
 type LineItemResponse = components['schemas']['LineItemResponse'];
 type CounterpartBankAccountResponse =
   components['schemas']['CounterpartBankAccountResponse'];
-type LineItemRequest  = components['schemas']['LineItemRequest'];
+type LineItemRequest = components['schemas']['LineItemRequest'];
 type LineItemRequestLocal = Omit<LineItemRequest, 'ledger_account_id'> & {
   ledger_account_id?: string | null;
 };

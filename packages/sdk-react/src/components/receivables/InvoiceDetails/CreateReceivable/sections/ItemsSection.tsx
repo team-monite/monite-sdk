@@ -161,14 +161,14 @@ export const ItemsSection = ({
           undefined
         );
 
-                 if (itemMeasureUnitId || currentMeasureUnitId) {
-           const fieldPath = `line_items.${index}` as FormLineItemPath;
-           const currentValue = getValues(`line_items.${index}`) || {};
+        if (itemMeasureUnitId || currentMeasureUnitId) {
+          const fieldPath = `line_items.${index}` as FormLineItemPath;
+          const currentValue = getValues(`line_items.${index}`) || {};
 
-           setValueWithValidationLocal(fieldPath, currentValue, {
-             shouldValidate: true,
-           });
-         }
+          setValueWithValidationLocal(fieldPath, currentValue, {
+            shouldValidate: true,
+          });
+        }
       } else if (measureUnitsData?.data?.length) {
         const defaultUnitId = measureUnitsData.data[0]?.id;
         if (defaultUnitId) {
@@ -176,12 +176,12 @@ export const ItemsSection = ({
             `line_items.${index}.product.measure_unit_id`,
             defaultUnitId
           );
-                     const fieldPath = `line_items.${index}` as FormLineItemPath;
-           const currentValue = getValues(`line_items.${index}`) || {};
+          const fieldPath = `line_items.${index}` as FormLineItemPath;
+          const currentValue = getValues(`line_items.${index}`) || {};
 
-           setValueWithValidationLocal(fieldPath, currentValue, {
-             shouldValidate: true,
-           });
+          setValueWithValidationLocal(fieldPath, currentValue, {
+            shouldValidate: true,
+          });
         }
       }
     },

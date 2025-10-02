@@ -1,5 +1,5 @@
-import { type HTMLAttributes, type ReactNode, forwardRef } from 'react';
 import { cn } from '@/ui/lib/utils';
+import { type HTMLAttributes, type ReactNode, forwardRef } from 'react';
 
 interface AspectRatioProps extends HTMLAttributes<HTMLDivElement> {
   ratio: number;

@@ -1,1 +1,7 @@
-/*eslint-disable*/import type{Messages}from"@lingui/core";export const messages=(JSON.parse("{\"b9Y4up\":\"Client ID\",\"Bdj4LI\":\"Client Secret\",\"dU8ZD6\":\"Counterparts\",\"oRVm8M\":\"Dark Mode\",\"cYh1Vn\":\"Entity User ID\",\"ubywYC\":[\"Error: <0>\",[\"0\"],\"</0>\"],\"nbfdhU\":\"Integrations\",\"z0t9bb\":\"Login\",\"nOhz3x\":\"Logout\",\"tcVBwJ\":\"Material UI\",\"GUNeuK\":\"Monite\",\"Q3KR12\":\"Onboard Entity\",\"HjWVjB\":\"Payables\",\"N0qXpE\":\"Products\",\"McU8nI\":\"Roles & Approvals\",\"mUv9U4\":\"Sales\",\"Tz0i8g\":\"Settings\",\"OYHzN1\":\"Tags\",\"FEr96N\":\"Theme\",\"9eF5oV\":\"Welcome back\"}")as Messages);
+/*eslint-disable*/
+import type { Messages } from '@lingui/core';
+
+import type { Messages } from '@lingui/core';
+export const messages = JSON.parse(
+  '{"b9Y4up":"Client ID","Bdj4LI":"Client Secret","dU8ZD6":"Counterparts","oRVm8M":"Dark Mode","cYh1Vn":"Entity User ID","ubywYC":["Error: <0>",["0"],"</0>"],"nbfdhU":"Integrations","z0t9bb":"Login","nOhz3x":"Logout","tcVBwJ":"Material UI","GUNeuK":"Monite","Q3KR12":"Onboard Entity","HjWVjB":"Payables","N0qXpE":"Products","McU8nI":"Roles & Approvals","mUv9U4":"Sales","Tz0i8g":"Settings","OYHzN1":"Tags","FEr96N":"Theme","9eF5oV":"Welcome back"}'
+) as Messages;

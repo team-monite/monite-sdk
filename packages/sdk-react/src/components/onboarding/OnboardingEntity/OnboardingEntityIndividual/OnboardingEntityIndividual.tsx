@@ -1,11 +1,10 @@
-import { useFormContext } from 'react-hook-form';
-
 import { components } from '@/api';
 import { getIdentificationLabel } from '@/components/onboarding/helpers';
 import { RHFDatePicker } from '@/ui/RHF/RHFDatePicker';
 import { RHFTextField } from '@/ui/RHF/RHFTextField';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { useFormContext } from 'react-hook-form';
 
 type IndividualType = {
   individual: OptionalIndividualSchema;

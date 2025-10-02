@@ -40,7 +40,7 @@ export const useA4Dimensions = () => {
       // Method 2: Alternative approach using devicePixelRatio
       // This is more reliable but gives us the CSS pixel ratio, not true DPI
       const pixelRatio = window.devicePixelRatio || 1;
-      
+
       // For high-DPI displays (Retina, etc.), we need to account for pixel ratio
       // Standard displays: ratio = 1, Retina: ratio = 2, etc.
       const effectiveDpi = detectedDpi * pixelRatio;
@@ -53,10 +53,10 @@ export const useA4Dimensions = () => {
       testElement.style.position = 'absolute';
       testElement.style.left = '-9999px';
       document.body.appendChild(testElement);
-      
+
       const rect = testElement.getBoundingClientRect();
       const measuredDpi = Math.round(rect.width);
-      
+
       document.body.removeChild(testElement);
 
       const finalDpi = measuredDpi > 0 ? measuredDpi : effectiveDpi;

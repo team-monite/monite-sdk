@@ -1,13 +1,10 @@
+import { components } from '@/api';
+import { useCurrencies } from '@/core/hooks';
 import { Price } from '@/core/utils/price';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { ReactNode } from 'react';
 import { twMerge } from 'tailwind-merge';
-
-import { useCurrencies } from '@/core/hooks';
-import { components } from '@/api';
-
-
 
 interface TotalTableItemProps {
   label: string | ReactNode;
@@ -28,8 +25,6 @@ const TotalTableItem = ({ label, value, className }: TotalTableItemProps) => {
     </li>
   );
 };
-
-
 
 interface InvoiceTotalsProps {
   subtotalPrice?: Price;

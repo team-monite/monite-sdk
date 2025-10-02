@@ -447,8 +447,13 @@ const CreateReceivablesBase = ({
     const customerDefaultEmail =
       counterpart &&
       counterpartContacts?.find((contact) => contact.is_default)?.email;
-    const validReminderEmail = customerDefaultEmail ? customerDefaultEmail : counterpartContacts && counterpartContacts?.length > 0 ? 
-      counterpartContacts?.[0]?.email : counterpart && 'organization' in counterpart ? counterpart?.organization?.email : undefined;
+    const validReminderEmail = customerDefaultEmail
+      ? customerDefaultEmail
+      : counterpartContacts && counterpartContacts?.length > 0
+        ? counterpartContacts?.[0]?.email
+        : counterpart && 'organization' in counterpart
+          ? counterpart?.organization?.email
+          : undefined;
     const customerHasDefaultEmail = Boolean(validReminderEmail);
 
     if (values.type !== 'invoice') {

@@ -1,22 +1,21 @@
-import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
-
-import {
-  calculateTotalPriceForLineItem,
-} from '@/components/payables/PayableDetails/PayableDetailsForm/helpers';
-import type { PayableDetailsFormFields } from '@/components/payables/PayableDetails/PayableDetailsForm/types';
 import { GLCodeSelector } from '@/components/payables/PayableDetails/GLCodeSelector';
+import { calculateTotalPriceForLineItem } from '@/components/payables/PayableDetails/PayableDetailsForm/helpers';
+import type { PayableDetailsFormFields } from '@/components/payables/PayableDetails/PayableDetailsForm/types';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
 import { Button, Grid, IconButton, TextField, Typography } from '@mui/material';
+import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 
 export interface PayableLineItemsFormProps {
   enableGLCodes?: boolean;
 }
 
-export const PayableLineItemsForm = ({ enableGLCodes }: PayableLineItemsFormProps) => {
+export const PayableLineItemsForm = ({
+  enableGLCodes,
+}: PayableLineItemsFormProps) => {
   const { i18n } = useLingui();
   const { getSymbolFromCurrency, formatCurrencyToDisplay, formatToMinorUnits } =
     useCurrencies();
@@ -94,13 +93,7 @@ export const PayableLineItemsForm = ({ enableGLCodes }: PayableLineItemsFormProp
             </Grid>
           </Grid>
           {enableGLCodes && (
-            <Grid
-              item
-              xs={12}
-              gap={2}
-              container
-              flexWrap="nowrap"
-            >
+            <Grid item xs={12} gap={2} container flexWrap="nowrap">
               <Grid item xs={11}>
                 <Controller
                   name={`lineItems.${index}.ledger_account_id`}
@@ -141,7 +134,9 @@ export const PayableLineItemsForm = ({ enableGLCodes }: PayableLineItemsFormProp
                     error={Boolean(error)}
                     helperText={error?.message}
                     fullWidth
-                    InputProps={{ endAdornment: getSymbolFromCurrency(watch('currency')) }}
+                    InputProps={{
+                      endAdornment: getSymbolFromCurrency(watch('currency')),
+                    }}
                   />
                 )}
               />
@@ -192,11 +187,11 @@ export const PayableLineItemsForm = ({ enableGLCodes }: PayableLineItemsFormProp
         <Button
           startIcon={<AddIcon />}
           onClick={() =>
-            append({ 
-              id: '', 
-              name: '', 
-              quantity: 1, 
-              price: 0, 
+            append({
+              id: '',
+              name: '',
+              quantity: 1,
+              price: 0,
               tax: 19,
             })
           }

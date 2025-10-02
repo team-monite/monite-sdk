@@ -1,8 +1,8 @@
-import { useState, useRef, useEffect, RefObject, useCallback } from 'react';
+import { useA4Dimensions } from './useA4Dimensions';
 import { useResizeObserver } from './useResizeObserver';
 import { useWindowResize } from './useWindowResize';
 import { useIsMounted } from '@/core/hooks';
-import { useA4Dimensions } from './useA4Dimensions';
+import { useState, useRef, useEffect, RefObject, useCallback } from 'react';
 
 interface UseAdaptiveScaleOptions {
   minWidth?: number;
@@ -36,13 +36,15 @@ export const useAdaptiveScale = (
   const isMountedRef = useIsMounted();
   const a4Dimensions = useA4Dimensions();
 
-  const minWidth = overrideWidth ?? (useAdaptiveDimensions ? a4Dimensions.width : 794);
-  const minHeight = overrideHeight ?? (useAdaptiveDimensions ? a4Dimensions.height : 1123);
+  const minWidth =
+    overrideWidth ?? (useAdaptiveDimensions ? a4Dimensions.width : 794);
+  const minHeight =
+    overrideHeight ?? (useAdaptiveDimensions ? a4Dimensions.height : 1123);
 
   const calculateScale = useCallback(() => {
     if (
-      !containerRef.current || 
-      !previewRef.current || 
+      !containerRef.current ||
+      !previewRef.current ||
       typeof window === 'undefined' ||
       !isMountedRef.current
     ) {
@@ -54,7 +56,12 @@ export const useAdaptiveScale = (
     const containerWidth = container.clientWidth - containerPadding;
     const containerHeight = container.clientHeight - containerPadding;
 
-    if (containerWidth <= 0 || containerHeight <= 0 || minWidth <= 0 || minHeight <= 0) {
+    if (
+      containerWidth <= 0 ||
+      containerHeight <= 0 ||
+      minWidth <= 0 ||
+      minHeight <= 0
+    ) {
       setScale(minScale);
 
       return;
@@ -70,7 +77,15 @@ export const useAdaptiveScale = (
     const newScale = Math.max(Math.min(scaleX, scaleY), minScale);
 
     setScale(newScale);
-  }, [containerRef, previewRef, isMountedRef, containerPadding, minWidth, minHeight, minScale]);
+  }, [
+    containerRef,
+    previewRef,
+    isMountedRef,
+    containerPadding,
+    minWidth,
+    minHeight,
+    minScale,
+  ]);
 
   useWindowResize(calculateScale, 100);
 

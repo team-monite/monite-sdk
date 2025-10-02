@@ -31,7 +31,7 @@ msgstr "Bill Pay"
 #~ msgid "Continue"
 #~ msgstr "Continue"
 
-#: src/components/NavigationMenu/NavigationList.tsx:42
+#: src/components/NavigationMenu/NavigationList.tsx:45
 msgid "Counterparts"
 msgstr "Counterparts"
 
@@ -56,7 +56,11 @@ msgstr "Dashboard"
 #~ msgid "English"
 #~ msgstr "English"
 
-#: src/components/NavigationMenu/NavigationList.tsx:86
+#: src/components/NavigationMenu/NavigationList.tsx:39
+#~ msgid "Expenses"
+#~ msgstr "Expenses"
+
+#: src/components/NavigationMenu/NavigationList.tsx:89
 msgid "Get Help"
 msgstr "Get Help"
 
@@ -114,11 +118,11 @@ msgstr "Invoicing"
 #~ msgid "Payable \"{0}\" has been paid"
 #~ msgstr "Payable \"{0}\" has been paid"
 
-#: src/components/NavigationMenu/NavigationList.tsx:45
+#: src/components/NavigationMenu/NavigationList.tsx:48
 msgid "Products & Services"
 msgstr "Products & Services"
 
-#: src/components/NavigationMenu/NavigationList.tsx:39
+#: src/components/NavigationMenu/NavigationList.tsx:42
 msgid "Projects"
 msgstr "Projects"
 
@@ -126,7 +130,7 @@ msgstr "Projects"
 #~ msgid "Purchases"
 #~ msgstr "Purchases"
 
-#: src/components/NavigationMenu/NavigationList.tsx:68
+#: src/components/NavigationMenu/NavigationList.tsx:71
 msgid "Roles & Approvals"
 msgstr "Roles & Approvals"
 
@@ -134,7 +138,7 @@ msgstr "Roles & Approvals"
 #~ msgid "Sales"
 #~ msgstr "Sales"
 
-#: src/components/NavigationMenu/NavigationList.tsx:60
+#: src/components/NavigationMenu/NavigationList.tsx:63
 msgid "Settings"
 msgstr "Settings"
 
@@ -142,7 +146,7 @@ msgstr "Settings"
 #~ msgid "Subtotal"
 #~ msgstr "Subtotal"
 
-#: src/components/NavigationMenu/NavigationList.tsx:71
+#: src/components/NavigationMenu/NavigationList.tsx:74
 msgid "Tags"
 msgstr "Tags"
 
@@ -150,7 +154,7 @@ msgstr "Tags"
 #~ msgid "Team"
 #~ msgstr "Team"
 
-#: src/components/NavigationMenu/NavigationList.tsx:65
+#: src/components/NavigationMenu/NavigationList.tsx:68
 msgid "Template settings"
 msgstr "Template settings"
 
@@ -165,6 +169,10 @@ msgstr "Template settings"
 #: src/components/MoniteComponents.tsx:364
 #~ msgid "Total fee"
 #~ msgstr "Total fee"
+
+#: src/components/NavigationMenu/NavigationList.tsx:39
+msgid "Transactions"
+msgstr "Transactions"
 
 #: src/components/ThemeRegistry/AppThemeProvider.tsx:91
 #~ msgid "We were unable to save your theme selection, please try again."

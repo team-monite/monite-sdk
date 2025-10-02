@@ -4276,6 +4276,7 @@ __metadata:
     "@radix-ui/react-popover": "npm:~1.1.14"
     "@radix-ui/react-radio-group": "npm:~1.3.7"
     "@radix-ui/react-select": "npm:~2.2.5"
+    "@radix-ui/react-separator": "npm:~1.1.7"
     "@radix-ui/react-slot": "npm:~1.2.3"
     "@radix-ui/react-tabs": "npm:~1.1.12"
     "@radix-ui/react-tooltip": "npm:~1.2.7"
@@ -4299,6 +4300,7 @@ __metadata:
     "@tailwindcss/postcss": "npm:~4.1.11"
     "@tanstack/react-query": "npm:~5.28.6"
     "@tanstack/react-query-devtools": "npm:~5.28.6"
+    "@tanstack/react-table": "npm:~8.21.3"
     "@tanstack/react-virtual": "npm:~3.13.6"
     "@team-monite/eslint-plugin": "workspace:~"
     "@testing-library/dom": "npm:~9.3.1"
@@ -7391,6 +7393,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/react-table@npm:~8.21.3":
+  version: 8.21.3
+  resolution: "@tanstack/react-table@npm:8.21.3"
+  dependencies:
+    "@tanstack/table-core": "npm:8.21.3"
+  peerDependencies:
+    react: ">=16.8"
+    react-dom: ">=16.8"
+  checksum: 10/a32217ebe64d24e71dea6a6742bc288dcabf389657b16805a1ab3f347d3dca8262759c45c604a1f65bd97925d5cbdfb66d1be7637100a12eb5b279bdd420962d
+  languageName: node
+  linkType: hard
+
 "@tanstack/react-virtual@npm:~3.13.6":
   version: 3.13.6
   resolution: "@tanstack/react-virtual@npm:3.13.6"
@@ -7400,6 +7414,13 @@ __metadata:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
     react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
   checksum: 10/4500088f7719a5a6241f4fcf24074a2fa8cb54d9c5c50786e909e87aee98af2ac0c1513139984c388e97e8ddb65d108390d39083b0b793fbfd343976f13447c4
+  languageName: node
+  linkType: hard
+
+"@tanstack/table-core@npm:8.21.3":
+  version: 8.21.3
+  resolution: "@tanstack/table-core@npm:8.21.3"
+  checksum: 10/aa05e5f80110f0f56d66161e950668ea6ef3e2ea4f3a2ccd5d5980b39b4feea987245b20531aee2c6743e6edd12c0361503413b63090c807f88a61b19bfd04f3
   languageName: node
   linkType: hard
 

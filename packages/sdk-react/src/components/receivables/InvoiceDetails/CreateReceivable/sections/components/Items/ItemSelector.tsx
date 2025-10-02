@@ -1,6 +1,3 @@
-import { useCallback, useMemo, useState, useEffect } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-
 import { components } from '@/api';
 import {
   CreateReceivablesProductsFormProps,
@@ -22,6 +19,8 @@ import {
   TextField,
   MenuItem,
 } from '@mui/material';
+import { useCallback, useMemo, useState, useEffect } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 
 interface ItemSelectorOptionProps {
   id: string;
@@ -396,8 +395,8 @@ export const ItemSelector = ({
               label: selectedItem.name,
             }
           : customName
-          ? { id: CUSTOM_ID, label: customName }
-          : null;
+            ? { id: CUSTOM_ID, label: customName }
+            : null;
 
         return (
           <Autocomplete
@@ -553,5 +552,4 @@ export const ItemSelector = ({
 };
 
 type CurrencyEnum = components['schemas']['CurrencyEnum'];
-type MeasureUnit =
-  components['schemas']['LineItemProductMeasureUnit'];
+type MeasureUnit = components['schemas']['LineItemProductMeasureUnit'];

@@ -1,11 +1,10 @@
-import { Controller, FieldError } from 'react-hook-form';
-import type { FieldValues, UseControllerProps } from 'react-hook-form';
-
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { Alert } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 import type { DatePickerProps } from '@mui/x-date-pickers';
 import { format as formatDate, parse as parseDate } from 'date-fns';
+import { Controller, FieldError } from 'react-hook-form';
+import type { FieldValues, UseControllerProps } from 'react-hook-form';
 
 type RHFDatePickerExtraProps = {
   /**
@@ -46,11 +45,12 @@ export const RHFDatePicker = <T extends FieldValues>({
         const isInvalid = (isTouched || !isValid) && !isErrorCustom(error);
 
         // new Date(null) generates "1970-01-01T00:00:00.000Z" and undefined is not acceptable because component becomes uncontrolled
-        const date = field.value !== null
-          ? (typeof field.value === 'string'
+        const date =
+          field.value !== null
+            ? typeof field.value === 'string'
               ? parseDate(field.value, stringFormat, new Date())
-              : new Date(field.value))
-          : null;
+              : new Date(field.value)
+            : null;
 
         return (
           <>
@@ -59,9 +59,14 @@ export const RHFDatePicker = <T extends FieldValues>({
               {...other}
               value={date} // This makes component controlled https://mui.com/material-ui/react-text-field/#uncontrolled-vs-controlled otherwise there are warnings in console
               onChange={(newValue) => {
-                if (newValue instanceof Date && !Number.isNaN(newValue.getTime())) {
+                if (
+                  newValue instanceof Date &&
+                  !Number.isNaN(newValue.getTime())
+                ) {
                   const nextValue =
-                    valueAs === 'string' ? formatDate(newValue, stringFormat) : newValue;
+                    valueAs === 'string'
+                      ? formatDate(newValue, stringFormat)
+                      : newValue;
                   field.onChange(nextValue);
                 } else {
                   field.onChange(null);

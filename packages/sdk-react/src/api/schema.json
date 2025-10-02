@@ -38807,7 +38807,7 @@
     "/receipts": {
       "get": {
         "tags": ["Receipts"],
-        "summary": "Lists all receipts from the connected entity.",
+        "summary": "Get receipts",
         "operationId": "get_receipts",
         "parameters": [
           {
@@ -38946,6 +38946,21 @@
             "required": false,
             "schema": { "type": "boolean" },
             "name": "has_transaction",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": { "type": "string", "format": "uuid" },
+            "name": "transaction_id",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "items": { "type": "string", "format": "uuid" },
+              "type": "array"
+            },
+            "name": "transaction_id__in",
             "in": "query"
           },
           {
@@ -39141,7 +39156,7 @@
       "post": {
         "tags": ["Receipts"],
         "summary": "Upload a receipt from a file",
-        "description": "Upload an incoming receipt in PDF, PNG, or JPEG format and scan its contents. The maximum file size is 20MB.",
+        "description": "Upload an incoming receipt in the PDF, PNG, or JPEG format and scan its contents. The maximum file size is 20 MB.",
         "operationId": "post_receipts_upload_from_file",
         "parameters": [
           {
@@ -39257,7 +39272,7 @@
     "/receipts/{receipt_id}": {
       "get": {
         "tags": ["Receipts"],
-        "summary": "Retrieves information about a specific receipt with the given ID.",
+        "summary": "Get a receipt by ID",
         "operationId": "get_receipts_id",
         "parameters": [
           {
@@ -39359,7 +39374,7 @@
       },
       "delete": {
         "tags": ["Receipts"],
-        "summary": "Deletes a specific receipt.",
+        "summary": "Delete a receipt",
         "operationId": "delete_receipts_id",
         "parameters": [
           {
@@ -39462,7 +39477,7 @@
       },
       "patch": {
         "tags": ["Receipts"],
-        "summary": "Updates the information about a specific receipt.",
+        "summary": "Update a receipt",
         "operationId": "patch_receipts_id",
         "parameters": [
           {
@@ -39575,7 +39590,7 @@
       "post": {
         "tags": ["Receipts"],
         "summary": "Attach a file to a receipt",
-        "description": "Attach file to receipt without existing attachment.",
+        "description": "Attach a file to a receipt without an existing attachment.",
         "operationId": "post_receipts_id_attach_file",
         "parameters": [
           {
@@ -46043,6 +46058,765 @@
         "security": [{ "HTTPBearer": [] }]
       }
     },
+    "/transactions": {
+      "get": {
+        "tags": ["Transactions"],
+        "summary": "Get transactions",
+        "operationId": "get_transactions",
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "description": "Order by",
+            "required": false,
+            "schema": {
+              "allOf": [{ "$ref": "#/components/schemas/OrderEnum" }],
+              "default": "asc"
+            },
+            "name": "order",
+            "in": "query"
+          },
+          {
+            "description": "Max is 100",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100.0,
+              "minimum": 1.0,
+              "default": 100
+            },
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "description": "A token, obtained from previous page. Prior over other filters",
+            "required": false,
+            "schema": { "type": "string" },
+            "name": "pagination_token",
+            "in": "query"
+          },
+          {
+            "description": "Allowed sort fields",
+            "required": false,
+            "schema": {
+              "allOf": [
+                { "$ref": "#/components/schemas/TransactionCursorFields" }
+              ]
+            },
+            "name": "sort",
+            "in": "query"
+          },
+          {
+            "description": "Created after this datetime (exclusive)",
+            "required": false,
+            "schema": { "type": "string", "format": "date-time" },
+            "name": "created_at__gt",
+            "in": "query"
+          },
+          {
+            "description": "Created before this datetime (exclusive)",
+            "required": false,
+            "schema": { "type": "string", "format": "date-time" },
+            "name": "created_at__lt",
+            "in": "query"
+          },
+          {
+            "description": "Updated after this datetime (exclusive)",
+            "required": false,
+            "schema": { "type": "string", "format": "date-time" },
+            "name": "updated_at__gt",
+            "in": "query"
+          },
+          {
+            "description": "Updated before this datetime (exclusive)",
+            "required": false,
+            "schema": { "type": "string", "format": "date-time" },
+            "name": "updated_at__lt",
+            "in": "query"
+          },
+          {
+            "description": "Transaction started after this datetime (exclusive)",
+            "required": false,
+            "schema": { "type": "string", "format": "date-time" },
+            "name": "started_at__gt",
+            "in": "query"
+          },
+          {
+            "description": "Transaction started before this datetime (exclusive)",
+            "required": false,
+            "schema": { "type": "string", "format": "date-time" },
+            "name": "started_at__lt",
+            "in": "query"
+          },
+          {
+            "description": "One or multiple of the transaction statuses",
+            "required": false,
+            "schema": {
+              "items": { "$ref": "#/components/schemas/TransactionStatusEnum" },
+              "type": "array"
+            },
+            "name": "status__in",
+            "in": "query"
+          },
+          {
+            "description": "One or multiple of the transaction types",
+            "required": false,
+            "schema": {
+              "items": { "$ref": "#/components/schemas/TransactionTypeEnum" },
+              "type": "array"
+            },
+            "name": "type__in",
+            "in": "query"
+          },
+          {
+            "description": "One or multiple of the entity users",
+            "required": false,
+            "schema": {
+              "items": { "type": "string", "format": "uuid" },
+              "type": "array"
+            },
+            "name": "entity_user_id__in",
+            "in": "query"
+          },
+          {
+            "description": "One or multiple of the transaction external ids",
+            "required": false,
+            "schema": { "items": { "type": "string" }, "type": "array" },
+            "name": "external_id__in",
+            "in": "query"
+          },
+          {
+            "description": "Amount greater than (exclusive)",
+            "required": false,
+            "schema": { "type": "integer" },
+            "name": "amount__gt",
+            "in": "query"
+          },
+          {
+            "description": "Amount less than (exclusive)",
+            "required": false,
+            "schema": { "type": "integer" },
+            "name": "amount__lt",
+            "in": "query"
+          },
+          {
+            "description": "One or multiple of the transaction currencies",
+            "required": false,
+            "schema": {
+              "items": { "$ref": "#/components/schemas/CurrencyEnum" },
+              "type": "array"
+            },
+            "name": "currency__in",
+            "in": "query"
+          },
+          {
+            "description": "Merchant amount greater than (exclusive)",
+            "required": false,
+            "schema": { "type": "integer" },
+            "name": "merchant_amount__gt",
+            "in": "query"
+          },
+          {
+            "description": "Merchant amount less than (exclusive)",
+            "required": false,
+            "schema": { "type": "integer" },
+            "name": "merchant_amount__lt",
+            "in": "query"
+          },
+          {
+            "description": "One or multiple of the transaction merchant currencies",
+            "required": false,
+            "schema": {
+              "items": { "$ref": "#/components/schemas/CurrencyEnum" },
+              "type": "array"
+            },
+            "name": "merchant_currency__in",
+            "in": "query"
+          },
+          {
+            "description": "Partially matched merchant name",
+            "required": false,
+            "schema": { "type": "string" },
+            "name": "merchant_name__icontains",
+            "in": "query"
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionResponseList"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      },
+      "post": {
+        "tags": ["Transactions"],
+        "summary": "Create a transaction",
+        "operationId": "post_transactions",
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/TransactionRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/TransactionResponse" }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      }
+    },
+    "/transactions/bulk": {
+      "post": {
+        "tags": ["Transactions"],
+        "summary": "Create multiple transactions",
+        "operationId": "post_transactions_bulk",
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransactionBulkRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionBulkResponse"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      }
+    },
+    "/transactions/{transaction_id}": {
+      "get": {
+        "tags": ["Transactions"],
+        "summary": "Get a transaction",
+        "operationId": "get_transactions_id",
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" },
+            "name": "transaction_id",
+            "in": "path"
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/TransactionResponse" }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      },
+      "delete": {
+        "tags": ["Transactions"],
+        "summary": "Delete a transaction",
+        "operationId": "delete_transactions_id",
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" },
+            "name": "transaction_id",
+            "in": "path"
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "204": { "description": "Successful Response" },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      },
+      "patch": {
+        "tags": ["Transactions"],
+        "summary": "Update a transaction",
+        "operationId": "patch_transactions_id",
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" },
+            "name": "transaction_id",
+            "in": "path"
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransactionUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/TransactionResponse" }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "409": {
+            "description": "Business logic error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      }
+    },
     "/vat_rates": {
       "get": {
         "tags": ["VAT rates"],
@@ -48791,6 +49565,61 @@
         "type": "object",
         "required": ["bank_account_id", "bank_id"]
       },
+      "BankAccountPaymentMethod": {
+        "properties": {
+          "details": {
+            "$ref": "#/components/schemas/BankAccountPaymentMethodDetails"
+          },
+          "type": { "type": "string", "enum": ["bank_account"] }
+        },
+        "type": "object",
+        "required": ["details", "type"]
+      },
+      "BankAccountPaymentMethodDetails": {
+        "properties": {
+          "account_holder_name": {
+            "type": "string",
+            "description": "The name of the person or business that owns this bank account.",
+            "examples": ["Bob Jones"]
+          },
+          "account_number": {
+            "type": "string",
+            "description": "The bank account number. US account numbers contain 9 to 12 digits. UK account numbers typically contain 8 digits.",
+            "examples": ["12345678"]
+          },
+          "bic": {
+            "type": "string",
+            "maxLength": 11,
+            "description": "The SWIFT/BIC code of the bank. Can be either 8 or 11 characters long.",
+            "examples": ["DEUTDEFFXXX"]
+          },
+          "currency": {
+            "allOf": [{ "$ref": "#/components/schemas/CurrencyEnum" }],
+            "description": "ISO currency code of the bank account."
+          },
+          "iban": {
+            "type": "string",
+            "maxLength": 34,
+            "description": "The IBAN of the bank account, up to 34 characters.",
+            "examples": ["DE74500700100100000900"]
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 200,
+            "description": "The name of the bank account, if available. For example, \"Primary account\" or \"Savings account\"."
+          },
+          "routing_number": {
+            "type": "string",
+            "description": "The bank's routing transit number (RTN). US routing numbers consist of 9 digits."
+          },
+          "sort_code": {
+            "type": "string",
+            "description": "The bank's sort code.",
+            "examples": ["123456"]
+          }
+        },
+        "type": "object"
+      },
       "BankAccountVerificationType": {
         "type": "string",
         "enum": ["airwallex_plaid", "micro_deposit"]
@@ -49002,6 +49831,56 @@
         },
         "type": "object"
       },
+      "CardPaymentMethod": {
+        "properties": {
+          "details": {
+            "$ref": "#/components/schemas/CardPaymentMethodDetails"
+          },
+          "type": { "type": "string", "enum": ["card"] }
+        },
+        "type": "object",
+        "required": ["details", "type"]
+      },
+      "CardPaymentMethodDetails": {
+        "properties": {
+          "brand": {
+            "type": "string",
+            "maxLength": 32,
+            "description": "The card brand name."
+          },
+          "card_type": {
+            "allOf": [{ "$ref": "#/components/schemas/CardTypeEnum" }],
+            "description": "The card type"
+          },
+          "expiry_month": {
+            "type": "integer",
+            "maximum": 12.0,
+            "minimum": 1.0,
+            "description": "The card's expiration month (1 - January, 12 - December)."
+          },
+          "expiry_year": {
+            "type": "integer",
+            "maximum": 2099.0,
+            "exclusiveMinimum": 2001.0,
+            "description": "The card's expiration year."
+          },
+          "last4": {
+            "type": "string",
+            "maxLength": 4,
+            "minLength": 4,
+            "description": "The last four digits of the card number.",
+            "examples": [1234]
+          }
+        },
+        "type": "object",
+        "required": [
+          "brand",
+          "card_type",
+          "expiry_month",
+          "expiry_year",
+          "last4"
+        ]
+      },
       "CardTheme": {
         "properties": {
           "background_color": {
@@ -49012,6 +49891,10 @@
           }
         },
         "type": "object"
+      },
+      "CardTypeEnum": {
+        "type": "string",
+        "enum": ["credit", "debit", "prepaid", "unknown"]
       },
       "ClientMessage": {
         "properties": {
@@ -65032,6 +65915,12 @@
             "description": "Currency code used in the receipt.",
             "example": "EUR"
           },
+          "description": {
+            "type": "string",
+            "maxLength": 1024,
+            "description": "Short transaction description.",
+            "example": "Payment for lunch with clients"
+          },
           "document_id": {
             "type": "string",
             "maxLength": 255,
@@ -65054,6 +65943,10 @@
             "maxLength": 128,
             "description": "Name of the merchant.",
             "example": "Tesco"
+          },
+          "partner_metadata": {
+            "type": "object",
+            "description": "Metadata for partner needs"
           },
           "total_amount": {
             "type": "integer",
@@ -65083,10 +65976,10 @@
             "format": "uuid",
             "description": "Cost center ID."
           },
-          "general_ledger_id": {
+          "ledger_account_id": {
             "type": "string",
             "format": "uuid",
-            "description": "General ledger ID."
+            "description": "Ledger account ID."
           },
           "name": {
             "type": "string",
@@ -65136,6 +66029,11 @@
             "format": "uuid",
             "description": "Created by user."
           },
+          "ledger_account_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Ledger account ID."
+          },
           "name": { "type": "string", "description": "Line item name." },
           "receipt_id": {
             "type": "string",
@@ -65160,10 +66058,10 @@
             "format": "uuid",
             "description": "Cost center ID."
           },
-          "general_ledger_id": {
+          "ledger_account_id": {
             "type": "string",
             "format": "uuid",
-            "description": "General ledger ID."
+            "description": "Ledger account ID."
           },
           "name": {
             "type": "string",
@@ -65198,6 +66096,7 @@
         "type": "object",
         "required": ["data"]
       },
+      "ReceiptOriginEnum": { "type": "string", "enum": ["upload", "email"] },
       "ReceiptPaginationResponse": {
         "properties": {
           "data": {
@@ -65247,6 +66146,12 @@
             "type": "object",
             "description": "Currency exchange details."
           },
+          "description": {
+            "type": "string",
+            "maxLength": 1024,
+            "description": "Short transaction description.",
+            "example": "Payment for lunch with clients"
+          },
           "document_id": {
             "type": "string",
             "maxLength": 255,
@@ -65283,9 +66188,19 @@
             "description": "OCR request id."
           },
           "ocr_status": { "type": "string", "description": "OCR status." },
+          "origin": {
+            "allOf": [{ "$ref": "#/components/schemas/ReceiptOriginEnum" }],
+            "description": "Specifies how this receipt was created in Monite."
+          },
           "partner_metadata": {
             "type": "object",
             "description": "Partner metadata."
+          },
+          "sender": {
+            "type": "string",
+            "format": "email",
+            "description": "The email address from which the invoice was sent to the entity.",
+            "example": "hello@example.com"
           },
           "source_of_data": {
             "allOf": [
@@ -65304,7 +66219,7 @@
           }
         },
         "type": "object",
-        "required": ["id", "created_at", "updated_at"]
+        "required": ["id", "created_at", "updated_at", "origin"]
       },
       "ReceiptUpdateSchema": {
         "properties": {
@@ -65315,6 +66230,12 @@
           "currency": {
             "allOf": [{ "$ref": "#/components/schemas/CurrencyEnum" }],
             "description": "Currency code."
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 1024,
+            "description": "Short transaction description.",
+            "example": "Payment for lunch with clients"
           },
           "document_id": {
             "type": "string",
@@ -65335,6 +66256,10 @@
             "type": "string",
             "maxLength": 128,
             "description": "Merchant name."
+          },
+          "partner_metadata": {
+            "type": "object",
+            "description": "Metadata for partner needs"
           },
           "total_amount": {
             "type": "integer",
@@ -68830,6 +69755,363 @@
         "type": "object",
         "required": ["name", "value", "amount"]
       },
+      "TransactionBulkObject": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "A unique Monite-generated ID assigned to the created transaction."
+          }
+        },
+        "type": "object"
+      },
+      "TransactionBulkRequest": {
+        "properties": {
+          "data": {
+            "items": { "$ref": "#/components/schemas/TransactionRequest" },
+            "type": "array",
+            "description": "A list of transactions to create."
+          }
+        },
+        "type": "object",
+        "required": ["data"]
+      },
+      "TransactionBulkResponse": {
+        "properties": {
+          "data": {
+            "items": { "$ref": "#/components/schemas/TransactionBulkObject" },
+            "type": "array",
+            "maxItems": 5000,
+            "minItems": 1
+          },
+          "status": {
+            "allOf": [
+              { "$ref": "#/components/schemas/TransactionBulkStatusEnum" }
+            ],
+            "description": "The overall status of the bulk creation operation."
+          }
+        },
+        "type": "object",
+        "required": ["data", "status"]
+      },
+      "TransactionBulkStatusEnum": {
+        "type": "string",
+        "enum": ["success", "partial_success", "error"]
+      },
+      "TransactionCursorFields": {
+        "type": "string",
+        "enum": [
+          "created_at",
+          "updated_at",
+          "started_at",
+          "amount",
+          "merchant_amount",
+          "merchant_name",
+          "status",
+          "type",
+          "external_id"
+        ]
+      },
+      "TransactionPaymentMethod": {
+        "oneOf": [
+          { "$ref": "#/components/schemas/CardPaymentMethod" },
+          { "$ref": "#/components/schemas/BankAccountPaymentMethod" }
+        ],
+        "discriminator": {
+          "propertyName": "type",
+          "mapping": {
+            "card": "#/components/schemas/CardPaymentMethod",
+            "bank_account": "#/components/schemas/BankAccountPaymentMethod"
+          }
+        }
+      },
+      "TransactionRequest": {
+        "properties": {
+          "amount": {
+            "type": "integer",
+            "description": "The transaction amount in [minor units](https://docs.monite.com/references/currencies#minor-units). Positive values for in-flow, negative values for out-flow."
+          },
+          "currency": {
+            "allOf": [{ "$ref": "#/components/schemas/CurrencyEnum" }],
+            "description": "ISO currency code.",
+            "examples": ["EUR"]
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 255,
+            "description": "A human-readable description of the transaction."
+          },
+          "entity_user_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of the entity user who made the transaction, if applicable."
+          },
+          "external_id": {
+            "type": "string",
+            "maxLength": 128,
+            "description": "External identifier for idempotency, if provided by the source system."
+          },
+          "merchant_amount": {
+            "type": "integer",
+            "description": "Original merchant transaction amount in minor units."
+          },
+          "merchant_currency": {
+            "allOf": [{ "$ref": "#/components/schemas/CurrencyEnum" }],
+            "description": "ISO currency code for the `merchant_amount`."
+          },
+          "merchant_location": {
+            "type": "string",
+            "maxLength": 128,
+            "description": "The merchant location.",
+            "examples": ["Berlin, Germany"]
+          },
+          "merchant_name": {
+            "type": "string",
+            "maxLength": 128,
+            "description": "The merchant name.",
+            "examples": ["Acme Inc."]
+          },
+          "partner_metadata": {
+            "additionalProperties": { "type": "string" },
+            "type": "object",
+            "description": "Extensible key-value pairs for storing additional custom information for partner needs."
+          },
+          "payment_method": {
+            "$ref": "#/components/schemas/TransactionPaymentMethod"
+          },
+          "started_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Date and time when the transaction was initiated."
+          },
+          "status": {
+            "allOf": [{ "$ref": "#/components/schemas/TransactionStatusEnum" }],
+            "description": "The current processing status of the transaction.",
+            "default": "created"
+          },
+          "type": {
+            "allOf": [{ "$ref": "#/components/schemas/TransactionTypeEnum" }],
+            "description": "The nature of the transaction."
+          }
+        },
+        "type": "object",
+        "required": [
+          "amount",
+          "currency",
+          "merchant_amount",
+          "merchant_currency",
+          "merchant_location",
+          "merchant_name",
+          "payment_method",
+          "type"
+        ]
+      },
+      "TransactionResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "A unique Monite-generated ID assigned to this transaction."
+          },
+          "amount": {
+            "type": "integer",
+            "description": "The transaction amount in [minor units](https://docs.monite.com/references/currencies#minor-units). Positive values for in-flow, negative values for out-flow."
+          },
+          "currency": {
+            "allOf": [{ "$ref": "#/components/schemas/CurrencyEnum" }],
+            "description": "ISO currency code.",
+            "examples": ["EUR"]
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 255,
+            "description": "A human-readable description of the transaction."
+          },
+          "entity_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of the entity that owns this resource."
+          },
+          "entity_user_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of the entity user who made the transaction, if applicable."
+          },
+          "external_id": {
+            "type": "string",
+            "maxLength": 128,
+            "description": "External identifier for idempotency, if provided by the source system."
+          },
+          "merchant_amount": {
+            "type": "integer",
+            "description": "Original merchant transaction amount in minor units."
+          },
+          "merchant_currency": {
+            "allOf": [{ "$ref": "#/components/schemas/CurrencyEnum" }],
+            "description": "ISO currency code for the `merchant_amount`."
+          },
+          "merchant_location": {
+            "type": "string",
+            "maxLength": 128,
+            "description": "The merchant location.",
+            "examples": ["Berlin, Germany"]
+          },
+          "merchant_name": {
+            "type": "string",
+            "maxLength": 128,
+            "description": "The merchant name.",
+            "examples": ["Acme Inc."]
+          },
+          "partner_metadata": {
+            "additionalProperties": { "type": "string" },
+            "type": "object",
+            "description": "Extensible key-value pairs for storing additional custom information for partner needs."
+          },
+          "payment_method": {
+            "$ref": "#/components/schemas/TransactionPaymentMethod"
+          },
+          "started_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Date and time when the transaction was initiated."
+          },
+          "status": {
+            "allOf": [{ "$ref": "#/components/schemas/TransactionStatusEnum" }],
+            "description": "The current processing status of the transaction.",
+            "default": "created"
+          },
+          "type": {
+            "allOf": [{ "$ref": "#/components/schemas/TransactionTypeEnum" }],
+            "description": "The nature of the transaction."
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "amount",
+          "currency",
+          "entity_id",
+          "merchant_amount",
+          "merchant_currency",
+          "merchant_location",
+          "merchant_name",
+          "payment_method",
+          "started_at",
+          "type"
+        ]
+      },
+      "TransactionResponseList": {
+        "properties": {
+          "data": {
+            "items": { "$ref": "#/components/schemas/TransactionResponse" },
+            "type": "array"
+          },
+          "next_pagination_token": {
+            "type": "string",
+            "description": "A token that can be sent in the `pagination_token` query parameter to get the next page of results, or `null` if there is no next page (i.e. you've reached the last page)."
+          },
+          "prev_pagination_token": {
+            "type": "string",
+            "description": "A token that can be sent in the `pagination_token` query parameter to get the previous page of results, or `null` if there is no previous page (i.e. you've reached the first page)."
+          }
+        },
+        "type": "object",
+        "required": ["data"],
+        "description": "A paginated list of transactions."
+      },
+      "TransactionStatusEnum": {
+        "type": "string",
+        "enum": [
+          "created",
+          "processing",
+          "succeeded",
+          "declined",
+          "refunded",
+          "failed"
+        ]
+      },
+      "TransactionTypeEnum": {
+        "type": "string",
+        "enum": [
+          "capture",
+          "refund",
+          "cash_withdrawal",
+          "fee",
+          "adjustment",
+          "reversal"
+        ]
+      },
+      "TransactionUpdateRequest": {
+        "properties": {
+          "amount": {
+            "type": "integer",
+            "description": "The transaction amount in [minor units](https://docs.monite.com/references/currencies#minor-units). Positive values for in-flow, negative values for out-flow."
+          },
+          "currency": {
+            "allOf": [{ "$ref": "#/components/schemas/CurrencyEnum" }],
+            "description": "ISO currency code.",
+            "examples": ["EUR"]
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 255,
+            "description": "A human-readable description of the transaction."
+          },
+          "entity_user_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of the entity user who made the transaction, if applicable."
+          },
+          "external_id": {
+            "type": "string",
+            "maxLength": 128,
+            "description": "External identifier for idempotency, if provided by the source system."
+          },
+          "merchant_amount": {
+            "type": "integer",
+            "description": "Original merchant transaction amount in minor units."
+          },
+          "merchant_currency": {
+            "allOf": [{ "$ref": "#/components/schemas/CurrencyEnum" }],
+            "description": "ISO currency code for the `merchant_amount`."
+          },
+          "merchant_location": {
+            "type": "string",
+            "maxLength": 128,
+            "description": "The merchant location.",
+            "examples": ["Berlin, Germany"]
+          },
+          "merchant_name": {
+            "type": "string",
+            "maxLength": 128,
+            "description": "The merchant name.",
+            "examples": ["Acme Inc."]
+          },
+          "partner_metadata": {
+            "additionalProperties": { "type": "string" },
+            "type": "object",
+            "description": "Extensible key-value pairs for storing additional custom information for partner needs."
+          },
+          "payment_method": {
+            "$ref": "#/components/schemas/TransactionPaymentMethod"
+          },
+          "started_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Date and time when the transaction was initiated."
+          },
+          "status": {
+            "allOf": [{ "$ref": "#/components/schemas/TransactionStatusEnum" }],
+            "description": "The current processing status of the transaction.",
+            "default": "created"
+          },
+          "type": {
+            "allOf": [{ "$ref": "#/components/schemas/TransactionTypeEnum" }],
+            "description": "The nature of the transaction."
+          }
+        },
+        "type": "object"
+      },
       "Unit": {
         "properties": {
           "designation": {
@@ -70724,6 +72006,7 @@
     { "name": "Secrets" },
     { "name": "Tags" },
     { "name": "Text templates" },
+    { "name": "Transactions" },
     { "name": "Users" },
     { "name": "VAT rates" },
     { "name": "VAT rates internal" },

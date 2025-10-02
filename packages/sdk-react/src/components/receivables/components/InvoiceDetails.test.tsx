@@ -3,11 +3,7 @@ import { receivableListFixture } from '@/mocks/receivables';
 import { renderWithClient, testQueryClient } from '@/utils/test-utils';
 import { i18n } from '@lingui/core';
 import { t } from '@lingui/macro';
-import {
-  fireEvent,
-  screen,
-  waitFor,
-} from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 
 jest.mock('@/core/queries/useGetReceivableById', () => ({
   useGetReceivableById: jest.fn(),
@@ -15,7 +11,6 @@ jest.mock('@/core/queries/useGetReceivableById', () => ({
 jest.mock('@/core/queries/useIsActionAllowed', () => ({
   useIsActionAllowed: jest.fn(),
 }));
-
 
 jest.mock('@/core/queries/usePermissions', () => ({
   useIsActionAllowed: jest.fn(),
@@ -30,7 +25,9 @@ jest.mock('@/core/hooks', () => ({
     },
   })),
   useCurrencies: jest.fn(() => ({
-    formatCurrencyToDisplay: jest.fn((amount, currency) => `${currency} ${amount}`),
+    formatCurrencyToDisplay: jest.fn(
+      (amount, currency) => `${currency} ${amount}`
+    ),
   })),
   useIsLargeDesktopScreen: jest.fn(() => false),
 }));
@@ -117,7 +114,11 @@ describe('InvoiceDetails', () => {
 
       expect(screen.getByTestId('not-found')).toBeInTheDocument();
       expect(screen.getByText(t(i18n)`Invoice not found`)).toBeInTheDocument();
-      expect(screen.getByText(t(i18n)`There is no invoice for the provided id: ${defaultProps.id}`)).toBeInTheDocument();
+      expect(
+        screen.getByText(
+          t(i18n)`There is no invoice for the provided id: ${defaultProps.id}`
+        )
+      ).toBeInTheDocument();
     });
 
     it('should show not found when receivable type is not invoice', () => {
@@ -134,8 +135,16 @@ describe('InvoiceDetails', () => {
       renderWithClient(<InvoiceDetails {...defaultProps} />);
 
       expect(screen.getByTestId('not-found')).toBeInTheDocument();
-      expect(screen.getByText(t(i18n)`Receivable type not supported`)).toBeInTheDocument();
-      expect(screen.getByText(t(i18n)`Receivable type quote is not supported. Only invoice is supported.`)).toBeInTheDocument();
+      expect(
+        screen.getByText(t(i18n)`Receivable type not supported`)
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText(
+          t(
+            i18n
+          )`Receivable type quote is not supported. Only invoice is supported.`
+        )
+      ).toBeInTheDocument();
     });
   });
 
@@ -167,7 +176,9 @@ describe('InvoiceDetails', () => {
       renderWithClient(<InvoiceDetails {...defaultProps} />);
 
       await waitFor(() => {
-        expect(screen.getByText(t(i18n)`for ${mockInvoice.counterpart_name}`)).toBeInTheDocument();
+        expect(
+          screen.getByText(t(i18n)`for ${mockInvoice.counterpart_name}`)
+        ).toBeInTheDocument();
       });
     });
 
@@ -181,7 +192,9 @@ describe('InvoiceDetails', () => {
       renderWithClient(<InvoiceDetails {...defaultProps} />);
 
       await waitFor(() => {
-        expect(screen.getByRole('button', { name: /close/i })).toBeInTheDocument();
+        expect(
+          screen.getByRole('button', { name: /close/i })
+        ).toBeInTheDocument();
       });
     });
 
@@ -189,7 +202,9 @@ describe('InvoiceDetails', () => {
       renderWithClient(<InvoiceDetails {...defaultProps} />);
 
       await waitFor(() => {
-        expect(screen.queryByRole('button', { name: /close/i })).not.toBeInTheDocument();
+        expect(
+          screen.queryByRole('button', { name: /close/i })
+        ).not.toBeInTheDocument();
       });
     });
   });
@@ -268,7 +283,9 @@ describe('InvoiceDetails', () => {
 
       fireEvent.click(screen.getByText('Mark as Uncollectible'));
 
-      expect(defaultProps.onMarkAsUncollectible).toHaveBeenCalledWith(mockInvoice.id);
+      expect(defaultProps.onMarkAsUncollectible).toHaveBeenCalledWith(
+        mockInvoice.id
+      );
     });
   });
 
@@ -302,4 +319,4 @@ describe('InvoiceDetails', () => {
       expect(screen.queryByText(t(i18n)`Invoice`)).not.toBeInTheDocument();
     });
   });
-}); 
+});

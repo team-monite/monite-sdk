@@ -1,9 +1,12 @@
+import type { CreateReceivablesFormBeforeValidationLineItemProps } from '../../validation';
 import { components } from '@/api';
+import { getCountries } from '@/core/utils/countries';
+import {
+  getRateValueForDisplay,
+  rateMinorToMajor,
+} from '@/core/utils/vatUtils';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
-import { getRateValueForDisplay, rateMinorToMajor } from '@/core/utils/vatUtils';
-import type { CreateReceivablesFormBeforeValidationLineItemProps } from '../../validation';
-import { getCountries } from '@/core/utils/countries';
 
 /**
  * Calculate discount from payment terms
@@ -34,7 +37,7 @@ export const getMeasureUnitName = (
   measureUnits: UnitResponse[]
 ): string | null => {
   const unit = measureUnits.find((u) => u.id === measureUnitId);
-  
+
   return unit?.name ?? null;
 };
 
@@ -52,15 +55,18 @@ export const getMeasureUnitDisplay = (
   i18n: I18n
 ): string => {
   if (measureUnits && item?.product?.measure_unit_id) {
-    const unitName = getMeasureUnitName(item.product.measure_unit_id, measureUnits);
-    
+    const unitName = getMeasureUnitName(
+      item.product.measure_unit_id,
+      measureUnits
+    );
+
     if (unitName) return unitName;
   }
-  
+
   if (item?.measure_unit?.name) {
     return item.measure_unit.name;
   }
-  
+
   return t(i18n)`item`;
 };
 
@@ -93,7 +99,7 @@ export const getTaxTerminology = (
       taxIdLabel: t(i18n)`Tax ID`,
     };
   }
-  
+
   return {
     taxLabel: t(i18n)`VAT`,
     taxIdLabel: t(i18n)`VAT ID`,
@@ -107,15 +113,15 @@ export const getCounterpartPhone = (
   counterpart?: components['schemas']['CounterpartResponse']
 ): string | undefined => {
   if (!counterpart) return undefined;
-  
+
   if ('organization' in counterpart) {
     return counterpart.organization.phone;
   }
-  
+
   if ('individual' in counterpart) {
     return counterpart.individual.phone;
   }
-  
+
   return undefined;
 };
 

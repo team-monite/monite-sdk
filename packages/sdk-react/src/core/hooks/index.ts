@@ -10,3 +10,4 @@ export * from './useMobile';
 export * from './useComponentSettings';
 export * from './useIsMounted';
 export * from './useMediaQuery';
+export * from './useDataTableState';

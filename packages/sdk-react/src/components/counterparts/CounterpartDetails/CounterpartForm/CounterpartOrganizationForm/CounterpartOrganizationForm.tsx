@@ -1,4 +1,3 @@
-import { useMoniteContext } from '@/core/context/MoniteContext';
 import { CounterpartOrganizationFields } from '../../CounterpartForm';
 import { InlineSuggestionFill } from '../InlineSuggestionFill';
 import {
@@ -24,6 +23,7 @@ import { components } from '@/api';
 import { CounterpartAddressForm } from '@/components/counterparts/CounterpartDetails/CounterpartAddressForm';
 import { CounterpartReminderToggle } from '@/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartReminderToggle';
 import { type DefaultValuesOCROrganization } from '@/components/counterparts/types';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { LanguageCodeEnum } from '@/enums/LanguageCodeEnum';
 import { useDialog } from '@/ui/Dialog';
@@ -122,7 +122,10 @@ export const CounterpartOrganizationForm = (
           : prepareCounterpartOrganization(
               organizationCounterpart?.organization,
               defaultValues,
-              componentSettings?.onboarding?.allowedCountries && componentSettings?.onboarding?.allowedCountries.length === 1 ? componentSettings?.onboarding?.allowedCountries[0] : undefined
+              componentSettings?.onboarding?.allowedCountries &&
+                componentSettings?.onboarding?.allowedCountries.length === 1
+                ? componentSettings?.onboarding?.allowedCountries[0]
+                : undefined
             ),
       }),
       [
@@ -206,7 +209,10 @@ export const CounterpartOrganizationForm = (
         : prepareCounterpartOrganization(
             organizationCounterpart?.organization,
             defaultValues,
-            componentSettings?.onboarding?.allowedCountries && componentSettings?.onboarding?.allowedCountries.length === 1 ? componentSettings?.onboarding?.allowedCountries[0] : undefined
+            componentSettings?.onboarding?.allowedCountries &&
+              componentSettings?.onboarding?.allowedCountries.length === 1
+              ? componentSettings?.onboarding?.allowedCountries[0]
+              : undefined
           ),
     });
   }, [

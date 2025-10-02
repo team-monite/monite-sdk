@@ -1,8 +1,13 @@
-import { useCallback, useEffect, useId, useMemo, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { toast } from 'react-hot-toast';
-
+import { Form, FormContent } from './EmailInvoiceDetails.form.components';
+import { PreviewEmail } from '@/components/receivables/components/PreviewEmail';
+import { useIssueReceivableById } from '@/components/receivables/hooks/useIssueReceivableById';
+import { useSendReceivableById } from '@/components/receivables/hooks/useSendReceivableById';
 import type { CounterpartOrganizationRootResponse } from '@/components/receivables/types';
+import { getDefaultContact } from '@/components/receivables/utils/contacts';
+import {
+  EmailInvoiceDetailsFormValues,
+  getEmailInvoiceDetailsSchema,
+} from '@/components/receivables/validation';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import {
@@ -11,6 +16,8 @@ import {
   useCounterpartById,
   useCounterpartContactList,
 } from '@/core/queries';
+import { useGetReceivableById } from '@/core/queries/useGetReceivableById';
+import { Dialog } from '@/ui/Dialog';
 import { CenteredContentBox } from '@/ui/box';
 import { IconWrapper } from '@/ui/iconWrapper';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -18,8 +25,6 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CloseIcon from '@mui/icons-material/Close';
-
-import { Dialog } from '@/ui/Dialog';
 import {
   Button,
   CircularProgress,
@@ -30,17 +35,9 @@ import {
   Toolbar,
   Typography,
 } from '@mui/material';
-
-import { EmailInvoiceDetailsFormValues, getEmailInvoiceDetailsSchema } from '@/components/receivables/validation';
-import {
-  Form,
-  FormContent,
-} from './EmailInvoiceDetails.form.components';
-import { getDefaultContact } from '@/components/receivables/utils/contacts';
-import { useGetReceivableById } from '@/core/queries/useGetReceivableById';
-import { useIssueReceivableById } from '@/components/receivables/hooks/useIssueReceivableById';
-import { useSendReceivableById } from '@/components/receivables/hooks/useSendReceivableById';
-import { PreviewEmail } from '@/components/receivables/components/PreviewEmail';
+import { useCallback, useEffect, useId, useMemo, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
 
 interface EmailInvoiceDetailsProps {
   invoiceId: string;
@@ -60,9 +57,11 @@ interface EmailInvoiceFormProps extends EmailInvoiceDetailsProps {
 export const EmailInvoiceDetails = (props: EmailInvoiceDetailsProps) => {
   const { i18n } = useLingui();
   const { data: me, isLoading: isLoadingUser } = useMe();
-  const { data: receivable, isLoading: isLoadingReceivable } = useGetReceivableById(props.invoiceId);
+  const { data: receivable, isLoading: isLoadingReceivable } =
+    useGetReceivableById(props.invoiceId);
   const { entityName, isLoading: isLoadingEntity } = useMyEntity();
-  const { data: contacts, isLoading: isLoadingContacts } = useCounterpartContactList(receivable?.counterpart_id);
+  const { data: contacts, isLoading: isLoadingContacts } =
+    useCounterpartContactList(receivable?.counterpart_id);
   const { data: counterpart } = useCounterpartById(receivable?.counterpart_id);
 
   const defaultContact = getDefaultContact(
@@ -126,17 +125,18 @@ export const EmailInvoiceDetailsBase = ({
   const { i18n } = useLingui();
   const { api, entityId } = useMoniteContext();
 
-  const { control, handleSubmit, getValues, trigger, reset } = useForm<EmailInvoiceDetailsFormValues>({
-    resolver: zodResolver(getEmailInvoiceDetailsSchema(i18n)),
-    defaultValues: useMemo(
-      () => ({
-        subject,
-        body,
-        to,
-      }),
-      [subject, body, to]
-    ),
-  });
+  const { control, handleSubmit, getValues, trigger, reset } =
+    useForm<EmailInvoiceDetailsFormValues>({
+      resolver: zodResolver(getEmailInvoiceDetailsSchema(i18n)),
+      defaultValues: useMemo(
+        () => ({
+          subject,
+          body,
+          to,
+        }),
+        [subject, body, to]
+      ),
+    });
 
   const { subject: emailSubject, body: emailBody } = getValues();
 
@@ -360,7 +360,13 @@ export const EmailInvoiceDetailsBase = ({
               />
             )
           )}
-          {isPreview && <PreviewEmail invoiceId={invoiceId} body={emailBody} subject={emailSubject} />}
+          {isPreview && (
+            <PreviewEmail
+              invoiceId={invoiceId}
+              body={emailBody}
+              subject={emailSubject}
+            />
+          )}
         </Form>
       </DialogContent>
     </Dialog>

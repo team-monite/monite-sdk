@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import { Button } from '@/ui/components/button';
 import {
   Command,
@@ -17,8 +15,8 @@ import {
 import { cn } from '@/ui/lib/utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-
 import { Check, ChevronsUpDown } from 'lucide-react';
+import * as React from 'react';
 
 type ComboboxOption = {
   value: string;

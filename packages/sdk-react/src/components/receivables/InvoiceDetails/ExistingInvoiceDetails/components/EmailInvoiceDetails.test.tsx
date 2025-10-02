@@ -1,13 +1,11 @@
-import { VirtuosoMockContext } from 'react-virtuoso';
-
+import { EmailInvoiceDetails } from './EmailInvoiceDetails';
 import { RootElementsProvider } from '@/core/context/RootElementsProvider';
 import { receivableListFixture } from '@/mocks';
 import { entityIds } from '@/mocks/entities';
 import { renderWithClient } from '@/utils/test-utils';
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-
-import { EmailInvoiceDetails } from './EmailInvoiceDetails';
+import { VirtuosoMockContext } from 'react-virtuoso';
 
 const mockInvoice = receivableListFixture.invoice[1];
 const mockInvoiceId = mockInvoice.id;

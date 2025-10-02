@@ -1,4 +1,6 @@
 import { cn } from '@/ui/lib/utils';
+import { t } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { XIcon } from 'lucide-react';
 import * as React from 'react';
@@ -43,52 +45,65 @@ function DialogOverlay({
   );
 }
 
-function DialogContent({
-  className,
-  children,
-  showCloseButton = true,
-  fullScreen = false,
-  container,
-  ...props
-}: React.ComponentProps<typeof DialogPrimitive.Content> & {
-  showCloseButton?: boolean;
-  fullScreen?: boolean;
-  container?: HTMLElement;
-}) {
-  return (
-    <DialogPortal container={container} data-slot="dialog-portal">
-      <DialogOverlay />
-      <DialogPrimitive.Content
-        data-slot="dialog-content"
-        className={cn(
-          'mtw:bg-background mtw:data-[state=open]:animate-in mtw:data-[state=closed]:animate-out mtw:data-[state=closed]:fade-out-0 mtw:data-[state=open]:fade-in-0 mtw:data-[state=closed]:zoom-out-95 mtw:data-[state=open]:zoom-in-95 mtw:fixed mtw:top-[50%] mtw:left-[50%] mtw:z-1300 mtw:grid mtw:w-full mtw:max-w-[calc(100%-2rem)] mtw:translate-x-[-50%] mtw:translate-y-[-50%] mtw:gap-4 mtw:rounded-lg mtw:border mtw:p-6 mtw:shadow-lg mtw:duration-200 mtw:sm:max-w-lg',
-          fullScreen &&
-            'mtw:border-none mtw:rounded-none mtw:h-screen mtw:max-w-screen mtw:sm:max-w-screen',
-          className
-        )}
-        {...props}
-        // Fix Radix UI issue with pointer events when using the Dialog component
-        // closing the dialog when used together with dialogs from other libraries
-        // https://github.com/shadcn-ui/ui/issues/1859
-        onCloseAutoFocus={(event) => {
-          event.preventDefault();
-          (container ?? document.body).style.pointerEvents = '';
-        }}
-      >
-        {children}
-        {showCloseButton && (
-          <DialogPrimitive.Close
-            data-slot="dialog-close"
-            className="mtw:ring-offset-background mtw:focus:ring-ring mtw:data-[state=open]:bg-accent mtw:data-[state=open]:text-muted-foreground mtw:absolute mtw:top-4 mtw:right-4 mtw:rounded-xs mtw:opacity-70 mtw:transition-opacity mtw:hover:opacity-100 mtw:focus:ring-2 mtw:focus:ring-offset-2 mtw:focus:outline-hidden mtw:disabled:pointer-events-none mtw:[&_svg]:pointer-events-none mtw:[&_svg]:shrink-0 mtw:[&_svg:not([class*=size-])]:size-4"
-          >
-            <XIcon />
-            <span className="mtw:sr-only">Close</span>
-          </DialogPrimitive.Close>
-        )}
-      </DialogPrimitive.Content>
-    </DialogPortal>
-  );
-}
+const DialogContent = React.forwardRef<
+  React.ElementRef<typeof DialogPrimitive.Content>,
+  React.ComponentProps<typeof DialogPrimitive.Content> & {
+    showCloseButton?: boolean;
+    fullScreen?: boolean;
+    container?: HTMLElement;
+  }
+>(
+  (
+    {
+      className,
+      children,
+      showCloseButton = true,
+      fullScreen = false,
+      container,
+      ...props
+    },
+    ref
+  ) => {
+    const { i18n } = useLingui();
+
+    return (
+      <DialogPortal data-slot="dialog-portal">
+        <DialogOverlay />
+        <DialogPrimitive.Content
+          ref={ref}
+          data-slot="dialog-content"
+          className={cn(
+            'mtw:bg-background mtw:data-[state=open]:animate-in mtw:data-[state=closed]:animate-out mtw:data-[state=closed]:fade-out-0 mtw:data-[state=open]:fade-in-0 mtw:data-[state=closed]:zoom-out-95 mtw:data-[state=open]:zoom-in-95 mtw:fixed mtw:top-[50%] mtw:left-[50%] mtw:z-1300 mtw:grid mtw:w-full mtw:max-w-[calc(100%-2rem)] mtw:translate-x-[-50%] mtw:translate-y-[-50%] mtw:gap-4 mtw:rounded-lg mtw:border mtw:p-6 mtw:shadow-lg mtw:duration-200 mtw:sm:max-w-lg',
+            fullScreen &&
+              'mtw:border-none mtw:rounded-none mtw:h-screen mtw:max-w-screen mtw:sm:max-w-screen',
+            className
+          )}
+          {...props}
+          // Fix Radix UI issue with pointer events when using the Dialog component
+          // closing the dialog when used together with dialogs from other libraries
+          // https://github.com/shadcn-ui/ui/issues/1859
+          onCloseAutoFocus={(event) => {
+            event.preventDefault();
+            (container ?? document.body).style.pointerEvents = '';
+          }}
+        >
+          {children}
+          {showCloseButton && (
+            <DialogPrimitive.Close
+              data-slot="dialog-close"
+              className="mtw:ring-offset-background mtw:focus:ring-ring mtw:data-[state=open]:bg-accent mtw:data-[state=open]:text-muted-foreground mtw:absolute mtw:top-5 mtw:right-5 mtw:rounded-xs mtw:opacity-70 mtw:transition-opacity mtw:hover:opacity-100 mtw:focus:ring-2 mtw:focus:ring-offset-2 mtw:focus:outline-hidden mtw:disabled:pointer-events-none mtw:[&_svg]:pointer-events-none mtw:[&_svg]:shrink-0 mtw:[&_svg:not([class*=size-])]:size-4"
+            >
+              <XIcon className="mtw:size-6" />
+              <span className="mtw:sr-only">{t(i18n)`Close`}</span>
+            </DialogPrimitive.Close>
+          )}
+        </DialogPrimitive.Content>
+      </DialogPortal>
+    );
+  }
+);
+
+DialogContent.displayName = DialogPrimitive.Content.displayName;
 
 function DialogHeader({ className, ...props }: React.ComponentProps<'div'>) {
   return (

@@ -27,6 +27,8 @@ import {
   TagIcon,
   ZapIcon,
   Settings2Icon,
+  DollarSignIcon,
+  StoreIcon,
 } from 'lucide-react';
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
@@ -48,6 +50,11 @@ const menuItems = [
     url: '/approval-requests',
   },
   {
+    title: 'Transactions',
+    icon: StoreIcon,
+    url: '/transactions',
+  },
+  {
     title: 'Counterparts',
     icon: Building2Icon,
     url: '/counterparts',
@@ -66,6 +73,11 @@ const menuItems = [
     title: 'Tags',
     icon: TagIcon,
     url: '/tags',
+  },
+  {
+    title: 'Financing',
+    icon: DollarSignIcon,
+    url: '/financing',
   },
   {
     title: 'Template Settings',

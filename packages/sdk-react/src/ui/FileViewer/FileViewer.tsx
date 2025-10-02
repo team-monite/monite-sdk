@@ -1,5 +1,4 @@
-import { useRef } from 'react';
-
+import { OcrFileType } from '@/core/types/filetypes';
 import { Button } from '@/ui/components/button';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -16,12 +15,12 @@ import {
 } from '@react-pdf-viewer/page-navigation';
 import { zoomPlugin } from '@react-pdf-viewer/zoom';
 import { ChevronLeft, ChevronRight, X, ZoomIn, ZoomOut } from 'lucide-react';
+import { useRef } from 'react';
+
 interface FileViewerProps {
   url: string;
   mimetype: string;
   name?: string;
-  pdfHeight?: number | string;
-  showPdfToolbar?: number;
   showCloseButton?: boolean;
   onClose?: () => void;
 }
@@ -33,7 +32,7 @@ export const FileViewer = ({
   showCloseButton,
   onClose,
 }: FileViewerProps) => {
-  if (mimetype === 'application/pdf')
+  if (mimetype === OcrFileType.PDF)
     return (
       <PdfFileViewer
         url={url}
@@ -42,13 +41,31 @@ export const FileViewer = ({
       />
     );
 
+  return <ImageFileViewer url={url} name={name || ''} />;
+};
+
+export const ImageFileViewer = ({
+  url,
+  name,
+  objectFit = 'contain',
+}: {
+  url: string;
+  name: string;
+  objectFit?: 'contain' | 'cover' | 'fill';
+}) => {
   return (
     <img
       className="Monite-ImageFileViewer"
       src={url}
+      referrerPolicy="no-referrer"
       alt={name}
       loading="lazy"
-      style={{ width: '100%', objectFit: 'contain' }}
+      decoding="async"
+      style={{
+        width: '100%',
+        height: '100%',
+        objectFit: objectFit,
+      }}
     />
   );
 };

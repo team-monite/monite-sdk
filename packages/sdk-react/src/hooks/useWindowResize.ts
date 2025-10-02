@@ -1,5 +1,5 @@
-import { useEffect, useRef } from 'react';
 import { useIsMounted } from '@/core/hooks';
+import { useEffect, useRef } from 'react';
 
 /**
  * Custom hook for window resize events
@@ -22,7 +22,7 @@ export const useWindowResize = (
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
-      
+
       timeoutRef.current = setTimeout(() => {
         if (isMountedRef.current) {
           callbackRef.current();
