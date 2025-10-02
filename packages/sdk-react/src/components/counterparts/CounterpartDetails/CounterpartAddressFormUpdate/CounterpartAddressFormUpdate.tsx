@@ -11,13 +11,24 @@ import {
   CounterpartAddressFormUpdateProps,
 } from './useCounterpartAddressFormUpdate';
 import { components } from '@/api';
+import { useRootElements } from '@/core/context/RootElementsProvider';
+import { USStatesEnum } from '@/enums/USStatesEnum';
 import { MoniteCountry } from '@/ui/Country';
 import { DialogFooter } from '@/ui/DialogFooter';
 import { DialogHeader } from '@/ui/DialogHeader/DialogHeader';
 import { LoadingPage } from '@/ui/loadingPage/LoadingPage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { DialogContent, Stack, TextField } from '@mui/material';
+import {
+  DialogContent,
+  Stack,
+  TextField,
+  Select,
+  MenuItem,
+  InputLabel,
+  FormHelperText,
+  FormControl,
+} from '@mui/material';
 import { useId } from 'react';
 import { Controller } from 'react-hook-form';
 
@@ -34,6 +45,7 @@ export const CounterpartAddressFormUpdate = (
   props: CounterpartAddressFormUpdateProps
 ) => {
   const { i18n } = useLingui();
+  const { root } = useRootElements();
   const {
     counterpart,
     methods,
@@ -82,6 +94,19 @@ export const CounterpartAddressFormUpdate = (
           })}
         >
           <Stack spacing={3}>
+            <div>
+              <MoniteCountry name="country" control={control} required />
+              <InlineSuggestionFill
+                rawData={payableCounterpartRawData?.address?.country}
+                isHidden={fieldsEqual['country']}
+                fieldOnChange={(value) =>
+                  setValue(
+                    'country',
+                    value as components['schemas']['AllowedCountries']
+                  )
+                }
+              />
+            </div>
             <Controller
               name="line1"
               control={control}
@@ -176,39 +201,69 @@ export const CounterpartAddressFormUpdate = (
             <Controller
               name="state"
               control={control}
-              render={({ field, fieldState: { error } }) => (
-                <div>
-                  <TextField
-                    id={field.name}
-                    label={t(i18n)`State / Area / Province`}
-                    variant="standard"
-                    fullWidth
-                    error={Boolean(error)}
-                    helperText={error?.message}
-                    required
-                    {...field}
-                  />
-                  <InlineSuggestionFill
-                    rawData={payableCounterpartRawData?.address?.state}
-                    isHidden={fieldsEqual[field.name]}
-                    fieldOnChange={field.onChange}
-                  />
-                </div>
-              )}
+              render={({ field, fieldState: { error } }) =>
+                watch('country') === 'US' ? (
+                  <div>
+                    <FormControl
+                      variant="standard"
+                      sx={{ marginBottom: '1rem' }}
+                      fullWidth
+                      required
+                      error={Boolean(error)}
+                    >
+                      <InputLabel id={`${field.name}-label`}>{t(
+                        i18n
+                      )`State`}</InputLabel>
+                      <Select
+                        id={field.name}
+                        labelId={`${field.name}-label`}
+                        fullWidth
+                        required
+                        error={Boolean(error)}
+                        MenuProps={{ container: root }}
+                        {...field}
+                        value={field.value ?? ''}
+                      >
+                        <MenuItem value="">
+                          <em>{t(i18n)`Select a state`}</em>
+                        </MenuItem>
+                        {Object.entries(USStatesEnum).map(([code, name]) => (
+                          <MenuItem key={code} value={code}>
+                            {name} — {code}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                      {error && (
+                        <FormHelperText>{error?.message}</FormHelperText>
+                      )}
+                    </FormControl>
+                    <InlineSuggestionFill
+                      rawData={payableCounterpartRawData?.address?.state}
+                      isHidden={fieldsEqual[field.name]}
+                      fieldOnChange={field.onChange}
+                    />
+                  </div>
+                ) : (
+                  <div>
+                    <TextField
+                      id={field.name}
+                      label={t(i18n)`State / Area / Province`}
+                      variant="standard"
+                      fullWidth
+                      error={Boolean(error)}
+                      helperText={error?.message}
+                      required
+                      {...field}
+                    />
+                    <InlineSuggestionFill
+                      rawData={payableCounterpartRawData?.address?.state}
+                      isHidden={fieldsEqual[field.name]}
+                      fieldOnChange={field.onChange}
+                    />
+                  </div>
+                )
+              }
             />
-            <div>
-              <MoniteCountry name="country" control={control} required />
-              <InlineSuggestionFill
-                rawData={payableCounterpartRawData?.address?.country}
-                isHidden={fieldsEqual['country']}
-                fieldOnChange={(value) =>
-                  setValue(
-                    'country',
-                    value as components['schemas']['AllowedCountries']
-                  )
-                }
-              />
-            </div>
           </Stack>
         </form>
       </DialogContent>

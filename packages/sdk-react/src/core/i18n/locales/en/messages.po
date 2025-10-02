@@ -674,9 +674,9 @@ msgstr "Address"
 msgid "Address “{0}” has been updated."
 msgstr "Address “{0}” has been updated."
 
-#: src/components/counterparts/CounterpartDetails/CounterpartAddressForm/CounterpartAddressForm.tsx:38
-#: src/components/counterparts/CounterpartDetails/CounterpartAddressFormUpdate/CounterpartAddressFormUpdate.tsx:92
-#: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartAddressView/CounterpartAddressView.tsx:22
+#: src/components/counterparts/CounterpartDetails/CounterpartAddressForm/CounterpartAddressForm.tsx:56
+#: src/components/counterparts/CounterpartDetails/CounterpartAddressFormUpdate/CounterpartAddressFormUpdate.tsx:117
+#: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartAddressView/CounterpartAddressView.tsx:27
 #: src/components/receivables/components/EntityProfileFormContent.tsx:269
 msgid "Address line 1"
 msgstr "Address line 1"
@@ -690,9 +690,9 @@ msgstr "Address Line 1"
 msgid "Address line 1 is required"
 msgstr "Address line 1 is required"
 
-#: src/components/counterparts/CounterpartDetails/CounterpartAddressForm/CounterpartAddressForm.tsx:55
-#: src/components/counterparts/CounterpartDetails/CounterpartAddressFormUpdate/CounterpartAddressFormUpdate.tsx:115
-#: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartAddressView/CounterpartAddressView.tsx:26
+#: src/components/counterparts/CounterpartDetails/CounterpartAddressForm/CounterpartAddressForm.tsx:73
+#: src/components/counterparts/CounterpartDetails/CounterpartAddressFormUpdate/CounterpartAddressFormUpdate.tsx:140
+#: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartAddressView/CounterpartAddressView.tsx:31
 #: src/components/receivables/components/EntityProfileFormContent.tsx:283
 msgid "Address line 2"
 msgstr "Address line 2"
@@ -2081,9 +2081,9 @@ msgstr "Christmas Island"
 msgid "Cigar Stores and Stands"
 msgstr "Cigar Stores and Stands"
 
-#: src/components/counterparts/CounterpartDetails/CounterpartAddressForm/CounterpartAddressForm.tsx:71
-#: src/components/counterparts/CounterpartDetails/CounterpartAddressFormUpdate/CounterpartAddressFormUpdate.tsx:137
-#: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartAddressView/CounterpartAddressView.tsx:30
+#: src/components/counterparts/CounterpartDetails/CounterpartAddressForm/CounterpartAddressForm.tsx:89
+#: src/components/counterparts/CounterpartDetails/CounterpartAddressFormUpdate/CounterpartAddressFormUpdate.tsx:162
+#: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartAddressView/CounterpartAddressView.tsx:35
 #: src/components/onboarding/OnboardingAddress/OnboardingAddress.tsx:64
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingAddressView/OnboardingAddressView.tsx:29
 #: src/components/onboarding/validators/validationSchemas.ts:149
@@ -2557,7 +2557,7 @@ msgstr "Counterpart VAT ID"
 msgid "Counterparts"
 msgstr "Counterparts"
 
-#: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartAddressView/CounterpartAddressView.tsx:42
+#: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartAddressView/CounterpartAddressView.tsx:47
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartBankView/CounterpartBankView.tsx:110
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartVatView/CounterpartVatView.tsx:75
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingAddressView/OnboardingAddressView.tsx:26
@@ -2604,7 +2604,7 @@ msgstr "Court Costs, Including Alimony and Child Support - Courts of Law"
 #: src/components/counterparts/CounterpartDetails/CounterpartDetails.test.tsx:593
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:452
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:470
-#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:145
+#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:144
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsDialog.tsx:38
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:441
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/OverdueReminderForm.tsx:311
@@ -3271,14 +3271,14 @@ msgstr "Department Stores"
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:1060
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/ApprovalPolicyView.tsx:210
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ExistingApprovalPolicyDetailsAdvanced/ExistingApprovalPolicyDetailsAdvanced.tsx:84
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:115
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:110
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:141
 #: src/components/products/ProductDetails/validation.ts:46
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsForm.tsx:163
 msgid "Description"
 msgstr "Description"
 
-#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/ManageMeasureUnitsForm.tsx:140
+#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/ManageMeasureUnitsForm.tsx:159
 msgid "Description (optional)"
 msgstr "Description (optional)"
 
@@ -3509,8 +3509,8 @@ msgid "Don’t wait for your client to pay"
 msgstr "Don’t wait for your client to pay"
 
 #: src/components/products/ProductDetails/components/ManageMeasureUnits/ManageMeasureUnits.tsx:28
-#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:135
-#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:196
+#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:134
+#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:195
 msgid "Done"
 msgstr "Done"
 
@@ -3685,7 +3685,7 @@ msgstr "Ecuador"
 #: src/components/counterparts/CounterpartDetails/CounterpartTestHelpers.ts:87
 #: src/components/counterparts/CounterpartDetails/CounterpartTestHelpers.ts:99
 #: src/components/counterparts/CounterpartDetails/CounterpartTestHelpers.ts:124
-#: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartAddressView/CounterpartAddressView.tsx:58
+#: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartAddressView/CounterpartAddressView.tsx:63
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartBankView/CounterpartBankView.tsx:61
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartContactView/CounterpartContactView.tsx:152
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartVatView/CounterpartVatView.tsx:54
@@ -3737,7 +3737,7 @@ msgstr "Edit {0}"
 msgid "Edit {0} profile"
 msgstr "Edit {0} profile"
 
-#: src/components/counterparts/CounterpartDetails/CounterpartAddressFormUpdate/CounterpartAddressFormUpdate.tsx:74
+#: src/components/counterparts/CounterpartDetails/CounterpartAddressFormUpdate/CounterpartAddressFormUpdate.tsx:86
 msgid "Edit address"
 msgstr "Edit address"
 
@@ -4330,7 +4330,7 @@ msgstr "Failed to delete Counterpart."
 msgid "Failed to delete product."
 msgstr "Failed to delete product."
 
-#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/ManageMeasureUnitsForm.tsx:63
+#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/ManageMeasureUnitsForm.tsx:61
 msgid "Failed to delete Unit."
 msgstr "Failed to delete Unit."
 
@@ -6142,7 +6142,7 @@ msgstr "Malta"
 msgid "Manage measure units"
 msgstr "Manage measure units"
 
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:177
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:172
 msgid "Manage measure units "
 msgstr "Manage measure units "
 
@@ -6323,7 +6323,7 @@ msgstr "Minimum number of approvals required"
 msgid "Minimum number of approvals required must be at least 1"
 msgstr "Minimum number of approvals required must be at least 1"
 
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:196
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:191
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:161
 msgid "Minimum quantity"
 msgstr "Minimum quantity"
@@ -6499,7 +6499,7 @@ msgstr "N/A"
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartIndividualView/CounterpartIndividualView.tsx:41
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:501
 #: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:50
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:105
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:100
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:137
 #: src/components/receivables/components/EntityProfileFormContent.tsx:74
 #: src/components/receivables/components/InvoiceDetailsTabDetails.tsx:35
@@ -7798,9 +7798,9 @@ msgstr "Political Organizations"
 msgid "Portugal"
 msgstr "Portugal"
 
-#: src/components/counterparts/CounterpartDetails/CounterpartAddressForm/CounterpartAddressForm.tsx:88
-#: src/components/counterparts/CounterpartDetails/CounterpartAddressFormUpdate/CounterpartAddressFormUpdate.tsx:160
-#: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartAddressView/CounterpartAddressView.tsx:34
+#: src/components/counterparts/CounterpartDetails/CounterpartAddressForm/CounterpartAddressForm.tsx:106
+#: src/components/counterparts/CounterpartDetails/CounterpartAddressFormUpdate/CounterpartAddressFormUpdate.tsx:185
+#: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartAddressView/CounterpartAddressView.tsx:39
 #: src/components/onboarding/OnboardingAddress/OnboardingAddress.tsx:83
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingAddressView/OnboardingAddressView.tsx:31
 #: src/components/onboarding/validators/validationSchemas.ts:151
@@ -7888,7 +7888,7 @@ msgstr "Previous page"
 msgid "Price"
 msgstr "Price"
 
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:210
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:205
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:165
 #: src/components/products/ProductsTable/ProductsTable.tsx:202
 msgid "Price per unit"
@@ -7931,7 +7931,7 @@ msgstr "Processing file"
 msgid "Processing..."
 msgstr "Processing..."
 
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:132
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:127
 #: src/components/products/ProductDetails/components/ProductType/ProductType.tsx:18
 #: src/components/products/ProductsTable/ProductsTable.tsx:315
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTableFilters.tsx:72
@@ -8609,7 +8609,7 @@ msgid "Saudi Riyal"
 msgstr "Saudi Riyal"
 
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:1183
-#: src/components/counterparts/CounterpartDetails/CounterpartAddressFormUpdate/CounterpartAddressFormUpdate.tsx:217
+#: src/components/counterparts/CounterpartDetails/CounterpartAddressFormUpdate/CounterpartAddressFormUpdate.tsx:272
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.tsx:256
 #: src/components/counterparts/CounterpartDetails/CounterpartContactForm/CounterpartContactForm.tsx:143
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:452
@@ -8686,7 +8686,7 @@ msgid "Script in Monite Script is required"
 msgstr "Script in Monite Script is required"
 
 #: src/components/approvalPolicies/ApprovalPoliciesTable/Filters/Filters.tsx:35
-#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/ManageMeasureUnitsForm.tsx:116
+#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/ManageMeasureUnitsForm.tsx:135
 #: src/components/receivables/components/ReceivableFilters.tsx:54
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTableFilters.tsx:43
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTableFilters.tsx:46
@@ -8732,6 +8732,11 @@ msgstr "Security Brokers/Dealers"
 #: src/components/financing/components/FinanceHowItWorks.tsx:34
 msgid "Select 'Get Paid Now':"
 msgstr "Select 'Get Paid Now':"
+
+#: src/components/counterparts/CounterpartDetails/CounterpartAddressForm/CounterpartAddressForm.tsx:143
+#: src/components/counterparts/CounterpartDetails/CounterpartAddressFormUpdate/CounterpartAddressFormUpdate.tsx:228
+msgid "Select a state"
+msgstr "Select a state"
 
 #: src/ui/Combobox.tsx:49
 msgid "Select an option"
@@ -8807,7 +8812,7 @@ msgstr "Serbia and Montenegro"
 msgid "Serbian Dinar"
 msgstr "Serbian Dinar"
 
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:136
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:131
 #: src/components/products/ProductDetails/components/ProductType/ProductType.tsx:18
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTableFilters.tsx:73
 msgid "Service"
@@ -9173,7 +9178,9 @@ msgstr "Start"
 msgid "Start of the month"
 msgstr "Start of the month"
 
-#: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartAddressView/CounterpartAddressView.tsx:38
+#: src/components/counterparts/CounterpartDetails/CounterpartAddressForm/CounterpartAddressForm.tsx:129
+#: src/components/counterparts/CounterpartDetails/CounterpartAddressFormUpdate/CounterpartAddressFormUpdate.tsx:214
+#: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartAddressView/CounterpartAddressView.tsx:43
 #: src/components/onboarding/OnboardingAddress/OnboardingAddress.tsx:73
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingAddressView/OnboardingAddressView.tsx:30
 #: src/components/onboarding/validators/validationSchemas.ts:150
@@ -9181,8 +9188,8 @@ msgstr "Start of the month"
 msgid "State"
 msgstr "State"
 
-#: src/components/counterparts/CounterpartDetails/CounterpartAddressForm/CounterpartAddressForm.tsx:105
-#: src/components/counterparts/CounterpartDetails/CounterpartAddressFormUpdate/CounterpartAddressFormUpdate.tsx:183
+#: src/components/counterparts/CounterpartDetails/CounterpartAddressForm/CounterpartAddressForm.tsx:156
+#: src/components/counterparts/CounterpartDetails/CounterpartAddressFormUpdate/CounterpartAddressFormUpdate.tsx:250
 #: src/components/receivables/components/EntityProfileFormContent.tsx:327
 msgid "State / Area / Province"
 msgstr "State / Area / Province"
@@ -10100,7 +10107,7 @@ msgstr "Turks And Caicos Islands"
 msgid "Tuvalu"
 msgstr "Tuvalu"
 
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:126
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:121
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:145
 #: src/components/products/ProductDetails/validation.ts:26
 #: src/components/products/ProductsTable/components/Filters/Filters.tsx:53
@@ -10177,8 +10184,8 @@ msgstr "Uniforms, Commercial Clothing"
 msgid "Unique Entity Number (Singapore)"
 msgstr "Unique Entity Number (Singapore)"
 
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:156
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:159
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:151
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:154
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:151
 #: src/components/products/ProductsTable/ProductsTable.tsx:193
 msgid "Unit"
@@ -10190,7 +10197,7 @@ msgid "Unit {0} was added to the list"
 msgstr "Unit {0} was added to the list"
 
 #. placeholder {0}: deletingUnit.name
-#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/ManageMeasureUnitsForm.tsx:57
+#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/ManageMeasureUnitsForm.tsx:55
 msgid "Unit {0} was deleted from the list."
 msgstr "Unit {0} was deleted from the list."
 
@@ -10199,7 +10206,7 @@ msgstr "Unit {0} was deleted from the list."
 msgid "Unit {0} was updated"
 msgstr "Unit {0} was updated"
 
-#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/ManageMeasureUnitsForm.tsx:137
+#: src/components/products/ProductDetails/components/ManageMeasureUnitsForm/ManageMeasureUnitsForm.tsx:156
 msgid "Unit label"
 msgstr "Unit label"
 
@@ -10283,7 +10290,7 @@ msgstr "Unsupported file type for {0}"
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyDetailsFormAdvanced/ApprovalPolicyDetailsFormAdvanced.tsx:288
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:1171
 #: src/components/counterparts/CounterpartDetails/CounterpartTestHelpers.ts:47
-#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:206
+#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:205
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:441
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/OverdueReminderForm.tsx:311
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:237
@@ -10325,7 +10332,7 @@ msgstr "Update contact"
 msgid "Update PDF files for paid invoices"
 msgstr "Update PDF files for paid invoices"
 
-#: src/components/counterparts/CounterpartDetails/CounterpartAddressFormUpdate/CounterpartAddressFormUpdate.tsx:224
+#: src/components/counterparts/CounterpartDetails/CounterpartAddressFormUpdate/CounterpartAddressFormUpdate.tsx:279
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.tsx:263
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:459
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:477

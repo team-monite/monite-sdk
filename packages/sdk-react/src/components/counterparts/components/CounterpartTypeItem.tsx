@@ -1,7 +1,6 @@
-import { useCallback } from 'react';
-
 import { components } from '@/api';
 import { Card, CardActionArea, CardContent, Typography } from '@mui/material';
+import { useCallback } from 'react';
 
 type Props = {
   description: string;
@@ -33,6 +32,7 @@ export const CounterpartTypeItem = ({
     >
       <CardActionArea
         sx={{
+          height: '100%',
           display: 'flex',
           alignItems: 'start',
           bgcolor: isTypeSelected
