@@ -117,7 +117,7 @@ export const CounterpartAddressForm = ({
         <Controller
           name={fieldPath('state')}
           control={control}
-          render={({ field, fieldState: { error }, formState }) =>
+          render={({ field, fieldState: { error } }) =>
             watch(fieldPath('country')) === 'US' ? (
               <FormControl
                 variant="standard"
