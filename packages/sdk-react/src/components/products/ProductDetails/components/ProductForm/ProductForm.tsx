@@ -96,7 +96,7 @@ export const ProductForm = ({
         }}
       >
         <Grid container direction="column" rowSpacing={3}>
-          <Grid item style={{ maxWidth: '100%' }}>
+          <Grid item>
             <RHFTextField
               label={t(i18n)`Name`}
               name="name"
@@ -106,7 +106,7 @@ export const ProductForm = ({
             />
           </Grid>
 
-          <Grid item style={{ maxWidth: '100%' }}>
+          <Grid item>
             <RHFTextField
               label={t(i18n)`Description`}
               name="description"
@@ -117,7 +117,7 @@ export const ProductForm = ({
             />
           </Grid>
 
-          <Grid item style={{ maxWidth: '100%' }}>
+          <Grid item>
             <RHFRadioGroup
               label={t(i18n)`Type`}
               name="type"
@@ -135,7 +135,7 @@ export const ProductForm = ({
             />
           </Grid>
 
-          <Grid item style={{ maxWidth: '100%' }}>
+          <Grid item>
             <Grid container spacing={2}>
               <Grid item xs={6}>
                 <Controller
@@ -187,7 +187,7 @@ export const ProductForm = ({
                 />
               </Grid>
 
-              <Grid item xs={6} style={{ maxWidth: '100%' }}>
+              <Grid item xs={6}>
                 <RHFTextField
                   label={t(i18n)`Minimum quantity`}
                   name="smallestAmount"
