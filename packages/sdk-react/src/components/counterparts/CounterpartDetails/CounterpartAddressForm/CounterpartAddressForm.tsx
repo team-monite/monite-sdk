@@ -126,15 +126,22 @@ export const CounterpartAddressForm = ({
                 required
                 error={Boolean(error)}
               >
-                <InputLabel id="type_of_code">{t(i18n)`State`}</InputLabel>
+                <InputLabel id={`${field.name}-label`}>{t(
+                  i18n
+                )`State`}</InputLabel>
                 <Select
                   id={field.name}
+                  labelId={`${field.name}-label`}
                   fullWidth
                   required
                   error={Boolean(error)}
                   MenuProps={{ container: root }}
                   {...field}
+                  value={field.value ?? ''}
                 >
+                  <MenuItem value="">
+                    <em>{t(i18n)`Select a state`}</em>
+                  </MenuItem>
                   {Object.entries(USStatesEnum).map(([code, name]) => (
                     <MenuItem key={code} value={code}>
                       {name} — {code}
