@@ -73,7 +73,6 @@ export const ProductForm = ({
     control,
     formState: { isDirty },
     handleSubmit,
-    reset,
   } = methods;
 
   useEffect(() => onChanged?.(isDirty), [isDirty, onChanged]);
@@ -83,10 +82,6 @@ export const ProductForm = ({
   function isManageMeasureUnits(option: string): boolean {
     return option === MANAGE_MEASURE_UNITS_ID;
   }
-
-  useEffect(() => {
-    reset(defaultValues);
-  }, [reset, defaultValues]);
 
   return (
     <FormProvider {...methods}>
@@ -203,7 +198,7 @@ export const ProductForm = ({
             </Grid>
           </Grid>
 
-          <Grid item>
+          <Grid item style={{ maxWidth: '100%' }}>
             <Grid container spacing={2}>
               <Grid item xs={6}>
                 <RHFTextField

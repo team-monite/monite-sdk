@@ -118,16 +118,15 @@ const CreateProductBase = (props: ProductDetailsCreateProps) => {
         closeSecondaryLevelDialog={() => setManageMeasureUnits(false)}
       />
       <DialogContent>
-        {manageMeasureUnits ? (
-          <ManageMeasureUnitsForm />
-        ) : (
+        <div style={{ display: manageMeasureUnits ? 'none' : 'block' }}>
           <ProductForm
             formId={productFormId}
             onSubmit={handleSubmit}
             defaultValues={defaultValues}
             onManageMeasureUnits={() => setManageMeasureUnits(true)}
           />
-        )}
+        </div>
+        {manageMeasureUnits && <ManageMeasureUnitsForm />}
       </DialogContent>
       {manageMeasureUnits ? (
         <DialogFooter

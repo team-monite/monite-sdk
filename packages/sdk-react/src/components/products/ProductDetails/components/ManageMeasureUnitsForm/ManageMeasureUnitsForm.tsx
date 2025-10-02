@@ -1,6 +1,4 @@
-import { useState, useCallback } from 'react';
-import { toast } from 'react-hot-toast';
-
+import { MeasureUnitsFormRow } from './components/MeasureUnitsFormRow';
 import { components } from '@/api';
 import { ConfirmDeleteMeasureUnitDialogue } from '@/components/products/ProductDetails/components/ConfirmDeleteMeasureUnitDialogue';
 import { useMoniteContext } from '@/core/context/MoniteContext';
@@ -22,8 +20,8 @@ import {
   Typography,
   CircularProgress,
 } from '@mui/material';
-
-import { MeasureUnitsFormRow } from './components/MeasureUnitsFormRow';
+import { useState, useCallback } from 'react';
+import { toast } from 'react-hot-toast';
 
 type UnitResponse = components['schemas']['UnitResponse'];
 
@@ -96,9 +94,10 @@ export const ManageMeasureUnitsForm = () => {
       spacing={2}
       sx={{
         height: '100%',
+        position: 'relative',
       }}
     >
-      {measureUnitsLoading || isDeleteLoading ? (
+      {measureUnitsLoading ? (
         <Box
           sx={{
             display: 'flex',
@@ -111,6 +110,26 @@ export const ManageMeasureUnitsForm = () => {
         </Box>
       ) : (
         <>
+          {/* Loading overlay during delete operation */}
+          {isDeleteLoading && (
+            <Box
+              sx={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                zIndex: 10,
+              }}
+            >
+              <CircularProgress size={40} color="secondary" />
+            </Box>
+          )}
+
           <TextField
             variant="outlined"
             placeholder={t(i18n)`Search`}
