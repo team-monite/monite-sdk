@@ -132,7 +132,7 @@ msgstr "{0, select, credit_note {Credit Note has been sent} invoice {Invoice has
 #: src/components/financing/components/FinanceFaqDetails.tsx:58
 #: src/components/financing/components/FinanceFaqDetails.tsx:62
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingAddressView/OnboardingAddressView.tsx:20
-#: src/components/receivables/components/EditCounterpartModal.tsx:431
+#: src/components/receivables/components/EditCounterpartModal.tsx:432
 #: src/components/receivables/components/InvoiceDetailsTabOverview.tsx:55
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/Billing/FullfillmentSummary.tsx:120
 msgid "{0}"
@@ -798,7 +798,7 @@ msgstr "All items in the invoice must be in this currency. Remove items that don
 #~ msgid "All items in the invoice must be in this currency. Remove items that don’t match it."
 #~ msgstr "All items in the invoice must be in this currency. Remove items that don’t match it."
 
-#: src/components/products/ProductDetails/components/ConfirmDeleteMeasureUnitDialogue/ConfirmDeleteMeasureUnitDialogue.tsx:68
+#: src/components/products/ProductDetails/components/ConfirmDeleteMeasureUnitDialogue/ConfirmDeleteMeasureUnitDialogue.tsx:70
 msgid "All items with this measure unit will get deleted, too."
 msgstr "All items with this measure unit will get deleted, too."
 
@@ -1828,7 +1828,7 @@ msgstr "Canadian QST number (Québec)"
 #: src/components/payables/PayableDetails/PayableDetailsApprovalFlow/PayableDetailsForceActionDialog.tsx:71
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:83
 #: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:68
-#: src/components/products/ProductDetails/components/ConfirmDeleteMeasureUnitDialogue/ConfirmDeleteMeasureUnitDialogue.tsx:113
+#: src/components/products/ProductDetails/components/ConfirmDeleteMeasureUnitDialogue/ConfirmDeleteMeasureUnitDialogue.tsx:116
 #: src/components/receivables/components/BankAccountDeleteModal.tsx:28
 #: src/components/receivables/components/BankAccountFormDialog.tsx:206
 #: src/components/receivables/components/EntityProfileModal.tsx:185
@@ -2329,7 +2329,7 @@ msgstr "Conditions"
 msgid "Confirm"
 msgstr "Confirm"
 
-#: src/ui/ConfirmationModal/ConfirmationModal.tsx:57
+#: src/ui/ConfirmationModal/ConfirmationModal.tsx:58
 msgid "Confirmation dialog"
 msgstr "Confirmation dialog"
 
@@ -3079,7 +3079,7 @@ msgstr "Default for Currency"
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.test.tsx:338
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.test.tsx:370
 #: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:67
-#: src/components/products/ProductDetails/components/ConfirmDeleteMeasureUnitDialogue/ConfirmDeleteMeasureUnitDialogue.tsx:112
+#: src/components/products/ProductDetails/components/ConfirmDeleteMeasureUnitDialogue/ConfirmDeleteMeasureUnitDialogue.tsx:115
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:204
 #: src/components/products/Products.test.tsx:176
 #: src/components/products/Products.test.tsx:203
@@ -3144,11 +3144,11 @@ msgstr "Delete “{0}“?"
 #~ msgid "Delete “{0}”?"
 #~ msgstr "Delete “{0}”?"
 
-#: src/components/products/ProductDetails/components/ConfirmDeleteMeasureUnitDialogue/ConfirmDeleteMeasureUnitDialogue.tsx:110
+#: src/components/products/ProductDetails/components/ConfirmDeleteMeasureUnitDialogue/ConfirmDeleteMeasureUnitDialogue.tsx:113
 msgid "Delete \"{name}\" unit and associated items?"
 msgstr "Delete \"{name}\" unit and associated items?"
 
-#: src/components/products/ProductDetails/components/ConfirmDeleteMeasureUnitDialogue/ConfirmDeleteMeasureUnitDialogue.tsx:109
+#: src/components/products/ProductDetails/components/ConfirmDeleteMeasureUnitDialogue/ConfirmDeleteMeasureUnitDialogue.tsx:112
 msgid "Delete \"{name}\" unit?"
 msgstr "Delete \"{name}\" unit?"
 
@@ -3234,7 +3234,7 @@ msgstr "Delete VAT ID “{value}“?"
 msgid "Deleted"
 msgstr "Deleted"
 
-#: src/components/products/ProductDetails/components/ConfirmDeleteMeasureUnitDialogue/ConfirmDeleteMeasureUnitDialogue.tsx:59
+#: src/components/products/ProductDetails/components/ConfirmDeleteMeasureUnitDialogue/ConfirmDeleteMeasureUnitDialogue.tsx:61
 msgid "Deleting it won't affect your items."
 msgstr "Deleting it won't affect your items."
 
@@ -3810,7 +3810,7 @@ msgstr "Edit preset"
 #~ msgid "Edit Product Close"
 #~ msgstr "Edit Product Close"
 
-#: src/components/receivables/components/EditCounterpartModal.tsx:413
+#: src/components/receivables/components/EditCounterpartModal.tsx:414
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:341
 msgid "Edit profile"
 msgstr "Edit profile"
@@ -6875,6 +6875,7 @@ msgstr "Non-FI, Stored Value Card Purchase/Load"
 msgid "Nondurable Goods (Not Elsewhere Classified)"
 msgstr "Nondurable Goods (Not Elsewhere Classified)"
 
+#: src/components/receivables/components/EditCounterpartModal.tsx:393
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:236
 #: src/components/userRoles/UserRolesTable/PermissionsCell/PermissionsCell.tsx:40
 msgid "None"
@@ -7745,7 +7746,7 @@ msgstr ""
 #~ "Please, check the details of your payment record.\n"
 #~ "You won’t be able to change or delete it after."
 
-#: src/components/products/ProductDetails/components/ConfirmDeleteMeasureUnitDialogue/ConfirmDeleteMeasureUnitDialogue.tsx:71
+#: src/components/products/ProductDetails/components/ConfirmDeleteMeasureUnitDialogue/ConfirmDeleteMeasureUnitDialogue.tsx:73
 msgid "Please, check the list of products and services that will get deleted:"
 msgstr "Please, check the list of products and services that will get deleted:"
 
@@ -8620,7 +8621,7 @@ msgstr "Saudi Riyal"
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:332
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:75
 #: src/components/receivables/components/BankAccountFormDialog.tsx:216
-#: src/components/receivables/components/EditCounterpartModal.tsx:439
+#: src/components/receivables/components/EditCounterpartModal.tsx:440
 #: src/components/receivables/components/EntityProfileModal.tsx:192
 #: src/components/receivables/components/InvoiceDetailsOverviewRecurrenceSection.tsx:123
 #: src/components/receivables/components/PaymentRecordForm.tsx:148
@@ -9700,7 +9701,7 @@ msgstr "The vendor name on the bill doesn’t exactly match the saved counterpar
 msgid "Theatrical Ticket Agencies"
 msgstr "Theatrical Ticket Agencies"
 
-#: src/components/products/ProductDetails/components/ConfirmDeleteMeasureUnitDialogue/ConfirmDeleteMeasureUnitDialogue.tsx:56
+#: src/components/products/ProductDetails/components/ConfirmDeleteMeasureUnitDialogue/ConfirmDeleteMeasureUnitDialogue.tsx:58
 msgid "There are no items created with this measure unit."
 msgstr "There are no items created with this measure unit."
 
