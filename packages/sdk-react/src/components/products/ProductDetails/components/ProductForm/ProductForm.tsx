@@ -73,7 +73,6 @@ export const ProductForm = ({
     control,
     formState: { isDirty },
     handleSubmit,
-    reset,
   } = methods;
 
   useEffect(() => onChanged?.(isDirty), [isDirty, onChanged]);
