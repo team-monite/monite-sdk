@@ -178,9 +178,7 @@ const ProductEditFormBase = (props: IProductEditFormProps) => {
           onClose={() => setCancelEditModalOpened(false)}
           onBack={props.onCanceled}
         />
-        {manageMeasureUnits ? (
-          <ManageMeasureUnitsForm />
-        ) : (
+        <div style={{ display: manageMeasureUnits ? 'none' : 'block' }}>
           <ProductForm
             formId={productFormId}
             onSubmit={handleSubmit}
@@ -188,7 +186,8 @@ const ProductEditFormBase = (props: IProductEditFormProps) => {
             onChanged={setIsFormDirty}
             onManageMeasureUnits={() => setManageMeasureUnits(true)}
           />
-        )}
+        </div>
+        {manageMeasureUnits && <ManageMeasureUnitsForm />}
       </DialogContent>
       {manageMeasureUnits ? (
         <DialogFooter
