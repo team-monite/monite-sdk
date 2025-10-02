@@ -50,9 +50,9 @@ const menuItems = [
     url: '/approval-requests',
   },
   {
-    title: 'Expenses',
+    title: 'Transactions',
     icon: StoreIcon,
-    url: '/expenses',
+    url: '/transactions',
   },
   {
     title: 'Counterparts',

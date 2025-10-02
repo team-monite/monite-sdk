@@ -6,7 +6,7 @@ export { CounterpartsPage } from './CounterpartsPage';
 export { ProductsPage } from './ProductsPage';
 export { RolesApprovalsPage } from './RolesApprovalsPage';
 export { TagsPage } from './TagsPage';
-export { ExpensesPage } from './ExpensesPage';
+export { TransactionsPage } from './TransactionsPage';
 export { TemplateSettingsPage } from './TemplateSettingsPage';
 export { OnboardingPage } from './OnboardingPage';
 export { IntegrationsPage } from './IntegrationsPage';

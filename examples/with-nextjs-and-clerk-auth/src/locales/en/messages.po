@@ -57,8 +57,8 @@ msgstr "Dashboard"
 #~ msgstr "English"
 
 #: src/components/NavigationMenu/NavigationList.tsx:39
-msgid "Expenses"
-msgstr "Expenses"
+#~ msgid "Expenses"
+#~ msgstr "Expenses"
 
 #: src/components/NavigationMenu/NavigationList.tsx:89
 msgid "Get Help"
@@ -169,6 +169,10 @@ msgstr "Template settings"
 #: src/components/MoniteComponents.tsx:364
 #~ msgid "Total fee"
 #~ msgstr "Total fee"
+
+#: src/components/NavigationMenu/NavigationList.tsx:39
+msgid "Transactions"
+msgstr "Transactions"
 
 #: src/components/ThemeRegistry/AppThemeProvider.tsx:91
 #~ msgid "We were unable to save your theme selection, please try again."
