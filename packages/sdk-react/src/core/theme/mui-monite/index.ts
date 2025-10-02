@@ -1132,6 +1132,9 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
       styleOverrides: {
         root: {
           fontSize: '12px',
+          maxWidth: '100%',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
         },
       },
     },

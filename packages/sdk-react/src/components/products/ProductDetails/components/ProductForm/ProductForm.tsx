@@ -84,10 +84,6 @@ export const ProductForm = ({
     return option === MANAGE_MEASURE_UNITS_ID;
   }
 
-  useEffect(() => {
-    reset(defaultValues);
-  }, [reset, defaultValues]);
-
   return (
     <FormProvider {...methods}>
       <form
@@ -100,7 +96,7 @@ export const ProductForm = ({
         }}
       >
         <Grid container direction="column" rowSpacing={3}>
-          <Grid item>
+          <Grid item style={{ maxWidth: '100%' }}>
             <RHFTextField
               label={t(i18n)`Name`}
               name="name"
@@ -110,7 +106,7 @@ export const ProductForm = ({
             />
           </Grid>
 
-          <Grid item>
+          <Grid item style={{ maxWidth: '100%' }}>
             <RHFTextField
               label={t(i18n)`Description`}
               name="description"
@@ -121,7 +117,7 @@ export const ProductForm = ({
             />
           </Grid>
 
-          <Grid item>
+          <Grid item style={{ maxWidth: '100%' }}>
             <RHFRadioGroup
               label={t(i18n)`Type`}
               name="type"
@@ -139,7 +135,7 @@ export const ProductForm = ({
             />
           </Grid>
 
-          <Grid item>
+          <Grid item style={{ maxWidth: '100%' }}>
             <Grid container spacing={2}>
               <Grid item xs={6}>
                 <Controller
@@ -191,7 +187,7 @@ export const ProductForm = ({
                 />
               </Grid>
 
-              <Grid item xs={6}>
+              <Grid item xs={6} style={{ maxWidth: '100%' }}>
                 <RHFTextField
                   label={t(i18n)`Minimum quantity`}
                   name="smallestAmount"
@@ -203,7 +199,7 @@ export const ProductForm = ({
             </Grid>
           </Grid>
 
-          <Grid item>
+          <Grid item style={{ maxWidth: '100%' }}>
             <Grid container spacing={2}>
               <Grid item xs={6}>
                 <RHFTextField
