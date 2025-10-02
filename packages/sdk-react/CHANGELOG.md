@@ -1,5 +1,13 @@
 # @monite/sdk-react
 
+## 4.6.7
+
+### Patch Changes
+
+- 4551fc5: Allow clearing customers shipping address on invoice creation
+- e38de5e: Optimize counterpart form by showing states as a dropdown
+- 4f85542: Fix product form issues (overflow, form clearing when creating measuring units)
+
 ## 4.6.6
 
 ### Patch Changes
