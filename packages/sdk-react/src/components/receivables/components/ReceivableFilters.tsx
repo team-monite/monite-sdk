@@ -4,15 +4,20 @@ import { getCommonStatusLabel } from '@/components/receivables/utils';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { type ReadableReceivablesStatus } from '@/enums/ReadableReceivablesStatusEnum';
+import { DatePicker } from '@/ui/DatePicker';
 import { FilterContainer } from '@/ui/Filters/FilterContainer';
-import { SearchField } from '@/ui/SearchField';
+import { Input } from '@/ui/components/input';
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectItem,
+  SelectContent,
+} from '@/ui/components/select';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { CalendarToday } from '@mui/icons-material';
-import { FormControl as MuiFormControl, MenuItem, Select } from '@mui/material';
-import { DatePicker } from '@mui/x-date-pickers';
-
 import { formatISO } from 'date-fns';
+import { SearchIcon } from 'lucide-react';
 
 export type ReceivableFilter<T extends keyof ReceivableFilterType> =
   | {
@@ -46,133 +51,139 @@ export const ReceivableFilters = <T extends keyof ReceivableFilterType>({
     (filter) => filter.field === 'status'
   )?.options;
 
+  const dueDateValue = filters.find(
+    (filter) => filter.field === 'due_date__lte'
+  )?.value;
+
   return (
     <FilterContainer
       className={className}
       searchField={
-        <SearchField
-          placeholder={t(i18n)`Search`}
-          onChange={(search) => {
-            onChange(
-              'document_id__contains' as T,
-              (search ?? undefined) as ReceivableFilterType[T]
-            );
-          }}
-        />
+        <div className="mtw:relative">
+          <SearchIcon className="mtw:absolute mtw:left-2 mtw:top-1/2 mtw:-translate-y-1/2 mtw:size-4 mtw:text-muted-foreground" />
+          <Input
+            placeholder={t(i18n)`Search`}
+            className="mtw:w-[400px] mtw:pl-8"
+            onChange={(event) => {
+              onChange(
+                'document_id__contains' as T,
+                (event.target.value || undefined) as ReceivableFilterType[T]
+              );
+            }}
+          />
+        </div>
       }
     >
       {statusFilterOptions &&
         statusFilterOptions.length > 1 &&
         filters.some((filter) => filter.field === 'status') && (
-          <MuiFormControl
-            fullWidth
-            className="Monite-ReceivableStatusFilter Monite-FilterControl"
-            variant="standard"
-          >
-            <Select<ReadableReceivablesStatus>
-              labelId="status"
-              label={t(i18n)`Status`}
-              defaultValue={undefined}
-              MenuProps={{ container: root }}
-              displayEmpty
-              onChange={(event) => {
-                onChange(
-                  'status' as T,
-                  (event.target.value || undefined) as ReceivableFilterType[T]
-                );
-              }}
-            >
-              <MenuItem value={undefined}>{t(i18n)`All statuses`}</MenuItem>
-
-              {statusFilterOptions.map((status) => (
-                <MenuItem key={status} value={status}>
-                  {getCommonStatusLabel(i18n, status)}
-                </MenuItem>
-              ))}
-            </Select>
-          </MuiFormControl>
-        )}
-
-      {filters.some((filter) => filter.field === 'counterpart_id') && (
-        <MuiFormControl
-          variant="standard"
-          fullWidth
-          className="Monite-ReceivableCounterpartFilter Monite-FilterControl"
-        >
           <Select
-            labelId="counterpart_id"
-            label={t(i18n)`Customer`}
             defaultValue={undefined}
-            MenuProps={{ container: root }}
-            displayEmpty
-            onChange={(event) => {
+            onValueChange={(value) => {
               onChange(
-                'counterpart_id' as T,
-                (event.target.value || undefined) as ReceivableFilterType[T]
+                'status' as T,
+                (value || undefined) as ReceivableFilterType[T]
               );
             }}
           >
-            <MenuItem value={undefined}>{t(i18n)`All customers`}</MenuItem>
+            <SelectTrigger className="mtw:w-[160px]">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value={undefined as any}>{t(
+                i18n
+              )`All statuses`}</SelectItem>
 
-            {counterpartsToSelect(counterparts?.data ?? [])
-              .sort((a, b) => a.label.localeCompare(b.label))
-              .map(({ value, label }) => (
-                <MenuItem key={value} value={value}>
-                  {label}
-                </MenuItem>
+              {statusFilterOptions.map((status) => (
+                <SelectItem key={status} value={status}>
+                  {getCommonStatusLabel(i18n, status)}
+                </SelectItem>
               ))}
+            </SelectContent>
           </Select>
-        </MuiFormControl>
+        )}
+
+      {filters.some((filter) => filter.field === 'counterpart_id') && (
+        <Select
+          defaultValue={undefined}
+          onValueChange={(value) => {
+            onChange(
+              'counterpart_id' as T,
+              (value || undefined) as ReceivableFilterType[T]
+            );
+          }}
+        >
+          <SelectTrigger className="mtw:w-[160px]">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value={undefined as any}>{t(
+              i18n
+            )`All customers`}</SelectItem>
+
+            {counterpartsToSelect(counterparts?.data ?? []).map(
+              ({ value, label }) => (
+                <SelectItem key={value} value={value}>
+                  {label}
+                </SelectItem>
+              )
+            )}
+          </SelectContent>
+        </Select>
+        // <MuiFormControl
+        //   variant="standard"
+        //   fullWidth
+        //   className="Monite-ReceivableCounterpartFilter Monite-FilterControl"
+        // >
+        //   <Select
+        //     labelId="counterpart_id"
+        //     label={t(i18n)`Customer`}
+        //     defaultValue={undefined}
+        //     MenuProps={{ container: root }}
+        //     displayEmpty
+        //     onChange={(event) => {
+        //       onChange(
+        //         'counterpart_id' as T,
+        //         (event.target.value || undefined) as ReceivableFilterType[T]
+        //       );
+        //     }}
+        //   >
+        //     <MenuItem value={undefined}>{t(i18n)`All customers`}</MenuItem>
+
+        //     {counterpartsToSelect(counterparts?.data ?? [])
+        //       .sort((a, b) => a.label.localeCompare(b.label))
+        //       .map(({ value, label }) => (
+        //         <MenuItem key={value} value={value}>
+        //           {label}
+        //         </MenuItem>
+        //       ))}
+        //   </Select>
+        // </MuiFormControl>
       )}
 
       {filters.some((filter) => filter.field === 'due_date__lte') && (
-        <DatePicker<Date>
-          className="Monite-ReceivableDueDateFilter Monite-FilterControl Monite-DateFilterControl"
-          views={['year', 'month', 'day']}
-          slots={{
-            openPickerIcon: CalendarToday,
+        <DatePicker
+          className="mtw:w-[160px]"
+          selected={dueDateValue ? new Date(dueDateValue) : undefined}
+          label={t(i18n)`Due date`}
+          calendarProps={{
+            endMonth: new Date(new Date().getFullYear() + 10, 11, 31),
           }}
-          onChange={(value, error) => {
-            if (error.validationError) return;
-            if (value === null || value === undefined)
-              return void onChange('due_date__lte' as T, undefined);
-
-            onChange(
-              'due_date__lte' as T,
-              formatISO(new Date(value), {
-                representation: 'date',
-              }) as ReceivableFilterType[T]
-            );
+          showClearButton
+          onClear={() => {
+            onChange('due_date__lte' as T, undefined);
           }}
-          slotProps={{
-            textField: {
-              variant: 'standard',
-              placeholder: 'Due date',
-              InputProps: {
-                sx: {
-                  '&::placeholder': {
-                    opacity: 1,
-                    color: 'text.primary',
-                  },
-                  '& input::placeholder': {
-                    opacity: 1,
-                    color: 'text.primary',
-                  },
-                },
-              },
-            },
-            popper: {
-              container: root,
-            },
-            dialog: {
-              container: root,
-            },
-            actionBar: {
-              actions: ['clear', 'today'],
-            },
-            openPickerIcon: {
-              fontSize: 'small',
-            },
+          onSelect={(value: Date | undefined) => {
+            if (value === null || value === undefined) {
+              onChange('due_date__lte' as T, undefined);
+            } else {
+              onChange(
+                'due_date__lte' as T,
+                formatISO(new Date(value), {
+                  representation: 'date',
+                }) as ReceivableFilterType[T]
+              );
+            }
           }}
         />
       )}

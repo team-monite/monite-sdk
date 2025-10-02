@@ -1,60 +1,30 @@
-import { ReactNode } from 'react';
-
 import { classNames } from '@/utils/css-utils';
-import { Stack, SxProps } from '@mui/material';
-
-import { Theme } from 'mui-styles';
+import { ReactNode } from 'react';
 
 interface FilterContainerProps {
   className?: string;
   searchField?: ReactNode;
   children: ReactNode;
-  sx?: SxProps<Theme>;
 }
 
 export const FilterContainer = ({
   className,
   searchField,
   children,
-  sx,
 }: FilterContainerProps) => {
   return (
-    <Stack
-      direction="row"
-      justifyContent="space-between"
-      alignItems="center"
-      className={classNames('Monite-Filters', className)}
-      sx={Object.assign(
-        {
-          '& > *': {
-            flexBasis: 'fit-content',
-            flexGrow: 1,
-          },
-          '& > .Monite-SearchField': {
-            maxWidth: '400px',
-            width: '100%',
-          },
-        },
-        sx || {}
+    <div
+      className={classNames(
+        'Monite-Filters mtw:flex mtw:flex-row mtw:justify-between mtw:items-center',
+        className
       )}
     >
-      {searchField}
-      <Stack
-        gap={1}
-        direction="row"
-        justifyContent="flex-end"
-        alignItems="center"
-        className="Monite-Filters-Group"
-        sx={{
-          ml: 2,
-          '& .Monite-FilterControl': {
-            maxWidth: '160px',
-            width: '100%',
-          },
-        }}
-      >
+      <div className="mtw:flex-1 mtw:[&_.Monite-SearchField]:max-w-[400px] mtw:[&_.Monite-SearchField]:w-full">
+        {searchField}
+      </div>
+      <div className="Monite-Filters-Group mtw:flex mtw:flex-row mtw:gap-1 mtw:justify-end mtw:items-center mtw:ml-2 [&_.Monite-FilterControl]:mtw:max-w-[160px] [&_.Monite-FilterControl]:mtw:w-full">
         {children}
-      </Stack>
-    </Stack>
+      </div>
+    </div>
   );
 };

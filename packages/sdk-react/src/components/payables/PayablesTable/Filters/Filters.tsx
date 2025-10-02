@@ -1,3 +1,10 @@
+import { getRowToStatusTextMap } from '../../consts';
+import {
+  FILTER_TYPE_DUE_DATE,
+  FILTER_TYPE_SEARCH,
+  FILTER_TYPE_STATUS,
+} from '../consts';
+import { FilterTypes, FilterValue } from '../types';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { PayableStateEnum } from '@/enums/PayableStateEnum';
 import { FilterContainer } from '@/ui/Filters/FilterContainer';
@@ -6,16 +13,7 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { FormControl, MenuItem, Select, SxProps } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
-
 import { Theme } from 'mui-styles';
-
-import { getRowToStatusTextMap } from '../../consts';
-import {
-  FILTER_TYPE_DUE_DATE,
-  FILTER_TYPE_SEARCH,
-  FILTER_TYPE_STATUS,
-} from '../consts';
-import { FilterTypes, FilterValue } from '../types';
 
 interface PayablesTableFiltersProps {
   onChangeFilter: (field: keyof FilterTypes, value: FilterValue) => void;
@@ -30,11 +28,6 @@ export const Filters = ({ onChangeFilter, sx }: PayablesTableFiltersProps) => {
   return (
     <FilterContainer
       className={className}
-      sx={{
-        borderTopLeftRadius: '12px',
-        borderTopRightRadius: '12px',
-        ...sx,
-      }}
       searchField={
         <SearchField
           placeholder={t(i18n)`Search by number or vendor`}
