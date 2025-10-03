@@ -30,6 +30,7 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'react-hot-toast';
+import { useCreateReceivablePaymentLink } from '../hooks/useCreateReceivablePaymentLink';
 
 type InvoiceDetailsActionsProps = {
   invoice: components['schemas']['InvoiceResponsePayload'];
@@ -72,8 +73,10 @@ export const InvoiceDetailsActions = ({
 
   const { refetch: downloadPdf, isLoading: isDownloadingPdf } =
     useGetReceivablePDFById(invoice.id, false);
+  
+  const { createPaymentLink } = useCreateReceivablePaymentLink();
 
-  const { mutate: issueInvoice, isPending: isIssuingInvoice } =
+  const { mutateAsync: issueInvoice, isPending: isIssuingInvoice } =
     useIssueReceivableById(invoice.id);
   const { mutate: duplicateInvoice } = useDuplicateInvoice(actions.onDuplicate);
 
@@ -86,6 +89,11 @@ export const InvoiceDetailsActions = ({
   const isRecurring = invoice.status === 'recurring';
   const allowRecordPayment = isIssued || isOverdue || isPartiallyPaid;
   const hideSendAndPdfButtons = allowRecordPayment && isMobileScreen;
+  
+  const handleIssueInvoice = async () => {
+    await issueInvoice();
+    await createPaymentLink(invoice?.id);
+  }
 
   const handleDuplicateInvoice = () => {
     duplicateInvoice({
@@ -180,7 +188,7 @@ export const InvoiceDetailsActions = ({
                 variant="outline"
                 size="sm"
                 disabled={isIssuingInvoice || isUpdateAllowedLoading}
-                onClick={() => handleButtonClick(issueInvoice)}
+                onClick={() => handleButtonClick(handleIssueInvoice)}
               >
                 <FileCheck /> {t(i18n)`Issue`}
               </Button>
@@ -265,7 +273,7 @@ export const InvoiceDetailsActions = ({
               <>
                 <DropdownMenuItem
                   disabled={isIssuingInvoice || isUpdateAllowedLoading}
-                  onClick={() => handleButtonClick(issueInvoice)}
+                  onClick={() => handleButtonClick(handleIssueInvoice)}
                 >
                   {t(i18n)`Issue`}
                 </DropdownMenuItem>

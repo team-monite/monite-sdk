@@ -99,7 +99,7 @@ const InvoiceDetailsBase = ({
     };
   }, [onDuplicate, onMarkAsUncollectible, onCloseInvoiceDetails]);
 
-  const isRecurringInvoice = invoice?.status === 'recurring';
+  const isRecurringInvoice = recurrence && invoice?.status === 'recurring';
 
   // TODO: This is a workaround until we replace all MUI with shadcn
   // If this is not done, then shadcn's overlay overrides MUI's overlay
@@ -169,11 +169,11 @@ const InvoiceDetailsBase = ({
         <SheetHeader className="mtw:pl-8 mtw:gap-2 mtw:flex-row">
           <div className="mtw:flex mtw:items-center mtw:gap-2 mtw:flex-1">
             <SheetTitle className="mtw:text-xl mtw:font-semibold mtw:leading-6">
-              {recurrence && isRecurringInvoice
+              {isRecurringInvoice
                 ? t(i18n)`Recurring invoice`
                 : t(i18n)`Invoice`}
             </SheetTitle>
-            {recurrence && isRecurringInvoice ? (
+            {isRecurringInvoice ? (
               <InvoiceRecurrenceStatusChip status={recurrence?.status} />
             ) : (
               <InvoiceStatusChip status={invoice?.status} />
@@ -214,7 +214,7 @@ const InvoiceDetailsBase = ({
               <TabsList className="mtw:w-full">
                 <TabsTrigger value="overview">{t(i18n)`Overview`}</TabsTrigger>
                 <TabsTrigger value="details">{t(i18n)`Details`}</TabsTrigger>
-                {recurrence ? (
+                {isRecurringInvoice ? (
                   <TabsTrigger value="scheduled-invoices">
                     {t(i18n)`Scheduled invoices`}
                   </TabsTrigger>
@@ -241,7 +241,7 @@ const InvoiceDetailsBase = ({
               >
                 <InvoiceDetailsTabDetails invoice={invoice} />
               </TabsContent>
-              {recurrence ? (
+              {isRecurringInvoice ? (
                 <TabsContent
                   value="scheduled-invoices"
                   className="mtw:flex mtw:flex-col mtw:gap-8"
@@ -249,7 +249,10 @@ const InvoiceDetailsBase = ({
                   <InvoiceDetailsTabScheduledInvoices
                     invoice={invoice}
                     recurrence={recurrence}
-                    openInvoiceDetails={openInvoiceDetails}
+                    openInvoiceDetails={(invoiceId) => {
+                      openInvoiceDetails?.(invoiceId);
+                      setSelectedTab(Tab.Overview);
+                    }}
                   />
                 </TabsContent>
               ) : (
