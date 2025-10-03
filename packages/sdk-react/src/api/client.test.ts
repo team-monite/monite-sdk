@@ -13,7 +13,6 @@ describe('moniteEntityIdPathsRegExp', () => {
     expect(isMoniteEntityIdPath('/settings')).toBe(false);
     expect(isMoniteEntityIdPath('/files')).toBe(false);
     expect(isMoniteEntityIdPath('/mailbox_domains')).toBe(false);
-    expect(isMoniteEntityIdPath('/payable_purchase_orders')).toBe(false);
     expect(isMoniteEntityIdPath('/frontend/bank_account_masks')).toBe(false);
     expect(isMoniteEntityIdPath('/frontend/document_type_descriptions')).toBe(
       false
@@ -28,6 +27,9 @@ describe('moniteEntityIdPathsRegExp', () => {
   });
 
   test('should match paths that are in the list of paths that require', () => {
+    expect(isMoniteEntityIdPath('/payable_purchase_orders')).toBe(true);
+    expect(isMoniteEntityIdPath('/payable_purchase_orders/123')).toBe(true);
+    expect(isMoniteEntityIdPath('/payable_purchase_orders/123/send')).toBe(true);
     expect(isMoniteEntityIdPath('/foo')).toBe(true);
     expect(isMoniteEntityIdPath('/bar')).toBe(true);
     expect(isMoniteEntityIdPath('/foo/bar')).toBe(true);

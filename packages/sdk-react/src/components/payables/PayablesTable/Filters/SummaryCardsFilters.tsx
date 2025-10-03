@@ -6,6 +6,7 @@ import { DEFAULT_CARDS_ORDER } from '@/components/payables/PayablesTable/consts'
 import { useDragScroll } from '@/components/payables/PayablesTable/hooks/useDragScroll';
 import { FilterValue } from '@/components/userRoles/types';
 import { useMoniteContext } from '@/core/context/MoniteContext';
+import { fromMinorUnits } from '@/core/utils/currency';
 import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -87,8 +88,9 @@ const SummaryCard = ({
       ];
 
   const formatAmount = (amount: number, currency: string) => {
-    const dividedAmount = amount / 100;
-    return dividedAmount.toLocaleString(undefined, {
+    const amountInMajorUnits = fromMinorUnits(amount);
+
+    return amountInMajorUnits.toLocaleString(undefined, {
       minimumFractionDigits: 2,
       style: 'currency',
       currency: currency,

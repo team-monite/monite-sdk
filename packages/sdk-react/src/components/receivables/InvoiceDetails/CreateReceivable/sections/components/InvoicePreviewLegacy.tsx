@@ -16,7 +16,7 @@ import {
 import { useGetEntityBankAccountById } from '@/components/receivables/hooks';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
-import { rateMinorToMajor } from '@/core/utils/vatUtils';
+import { rateMinorToMajor, ratePercentageToDecimal } from '@/core/utils/vatUtils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { isValid } from 'date-fns';
@@ -262,7 +262,7 @@ export const InvoicePreviewLegacy = ({
                         {item.product?.price &&
                           formatCurrencyToDisplay(
                             isInclusivePricing
-                              ? price / (1 + taxRate / 100)
+                              ? price / (1 + ratePercentageToDecimal(taxRate))
                               : price,
                             item.product.price.currency,
                             false

@@ -3,17 +3,18 @@ import { FieldError } from 'react-hook-form';
 
 import { components } from '@/api';
 import { useRootElements } from '@/core/context/RootElementsProvider';
-import { formatVatRateForDisplay } from '@/core/utils/vatUtils';
+import { formatVatRateForDisplay, vatRatePercentageToBasisPoints } from '@/core/utils/vatUtils';
 import { MenuItem, Select, SelectChangeEvent } from '@mui/material';
 
 interface VatRateFieldProps {
   availableVatRates?: VatRateItemType[];
   currentTaxRateValue?: number;
+  currentVatRateValue?: number;
   isNonVatSupported: boolean;
   highestVatRate?: VatRateItemType;
   value?: string | null;
   error?: boolean;
-  fieldError?: FieldError | any;
+  fieldError?: FieldError;
   disabled?: boolean;
   onChange: (
     newVatRateId: string | null,
@@ -32,6 +33,7 @@ export const VatRateField = ({
   value,
   isNonVatSupported,
   currentTaxRateValue,
+  currentVatRateValue, // Add current VAT rate value for reverse lookup
   highestVatRate,
   error,
   disabled = false,
@@ -43,7 +45,17 @@ export const VatRateField = ({
   const [hasInitialized, setHasInitialized] = useState(false);
 
   useEffect(() => {
-    if (hasInitialized || !onInitializeDefaults) {
+    if (!onInitializeDefaults || hasInitialized) {
+      return;
+    }
+    
+    const hasExistingValues = 
+      (value && value !== '') || 
+      (currentVatRateValue !== null && currentVatRateValue !== undefined) ||
+      (currentTaxRateValue !== null && currentTaxRateValue !== undefined);
+    
+    if (hasExistingValues) {
+      setHasInitialized(true);
       return;
     }
 
@@ -55,7 +67,6 @@ export const VatRateField = ({
       // For VAT-supported regions, always set the highest VAT rate as default
       defaultVatId = highestVatRate.id;
       defaultVatValue = highestVatRate.value;
-      defaultTaxRate = null;
     } else if (isNonVatSupported) {
       // For non-VAT regions, set VAT rate to null and use tax_rate_value (default to 0%)
       defaultVatId = null;
@@ -74,7 +85,34 @@ export const VatRateField = ({
     highestVatRate,
     onInitializeDefaults,
     value,
+    currentVatRateValue,
     currentTaxRateValue,
+  ]);
+
+  useEffect(() => {
+    if (
+      !isNonVatSupported &&
+      !value &&
+      availableVatRates?.length &&
+      hasInitialized &&
+      typeof currentVatRateValue === 'number'
+    ) {
+      const currentVatRateInBasisPoints = vatRatePercentageToBasisPoints(currentVatRateValue);
+      const matchingVatRate = availableVatRates.find(rate => 
+        rate.value === currentVatRateInBasisPoints
+      );
+
+      if (matchingVatRate) {
+        onChange(matchingVatRate.id, matchingVatRate.value);
+      }
+    }
+  }, [
+    isNonVatSupported,
+    value,
+    availableVatRates,
+    hasInitialized,
+    currentVatRateValue,
+    onChange,
   ]);
 
   // If we're in a non-VAT region, we don't need to show the VAT rate selector

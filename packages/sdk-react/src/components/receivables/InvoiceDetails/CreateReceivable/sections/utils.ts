@@ -1,8 +1,33 @@
+import { type CreateReceivablesFormBeforeValidationLineItemProps } from '../validation';
+import type { CurrencyEnum, LineItemPath, SanitizableLineItem } from './types';
 import { rateMinorToMajor, rateMajorToMinor } from '@/core/utils/currencies';
 import { generateUniqueId } from '@/utils/uuid';
 
-import { type CreateReceivablesFormBeforeValidationLineItemProps } from '../validation';
-import type { CurrencyEnum, LineItemPath, SanitizableLineItem } from './types';
+type ExtendedLineItem = SanitizableLineItem & {
+  name?: string;
+  price?: number;
+  currency?: CurrencyEnum;
+  unit?: string;
+  product_id?: string;
+  quantity?: number;
+  vat_rate_value?: number;
+  tax_rate_value?: number;
+  measure_unit?: {
+    name: string;
+    id: null;
+  };
+  product?: {
+    name?: string;
+    description?: string;
+    price?: {
+      currency?: CurrencyEnum;
+      value?: number;
+    };
+    measure_unit_id?: string;
+    measure_unit_name?: string;
+    type?: string;
+  };
+};
 
 const extractFromObject = (
   obj: Record<string, unknown>,
@@ -255,33 +280,99 @@ export const parseLocaleNumericString = (
  * Formats the data consistently and handles type conversions
  */
 export const sanitizeLineItems = (
-  items: ReadonlyArray<SanitizableLineItem> | undefined
+  items: ReadonlyArray<SanitizableLineItem> | undefined,
+  options?: { treatFlatPricesAsMajorUnits?: boolean }
 ): CreateReceivablesFormBeforeValidationLineItemProps[] => {
   if (!items || !Array.isArray(items)) return [];
 
-  return items
-    .filter((item) => Boolean(item?.product?.name))
-    .map((item) => ({
-      ...item,
-      id: item.product_id || generateUniqueId(),
-      quantity: item.quantity ?? 1,
-      product: {
-        ...item.product,
-        type: item.product?.type as 'product' | 'service',
+  const treatFlatPricesAsMajorUnits = Boolean(
+    options?.treatFlatPricesAsMajorUnits
+  );
+
+  const result = items
+    .map((item) => {
+      const extItem = item as ExtendedLineItem;
+      const productNameRaw = extItem.product?.name;
+      const flatNameRaw = extItem.name;
+      const name =
+        (productNameRaw && productNameRaw.trim() !== ''
+          ? productNameRaw
+          : flatNameRaw) || '';
+      if (!name || name.trim() === '') return null;
+
+      const flatPriceRaw = extItem.price;
+      const flatPriceValue =
+        typeof flatPriceRaw === 'number'
+          ? treatFlatPricesAsMajorUnits
+            ? flatPriceRaw
+            : rateMajorToMinor(flatPriceRaw)
+          : undefined;
+
+      const flatCurrency = extItem.currency;
+      const flatUnit = extItem.unit;
+      const vatRateValue = extItem.vat_rate_value ?? extItem.tax_rate_value;
+
+      const nestedPriceVal = extItem.product?.price?.value;
+      const productType = extItem.product?.type;
+      const product = {
+        ...extItem.product,
+        name,
+        type: (productType === 'product' || productType === 'service'
+          ? productType
+          : 'product') as 'product' | 'service',
         price: {
-          ...(item.product?.price || {}),
-          value: item.product?.price?.value ?? 0,
-          currency: (item.product?.price?.currency || 'USD') as CurrencyEnum,
+          ...(extItem.product?.price || {}),
+          value:
+            typeof nestedPriceVal === 'number' && nestedPriceVal > 0
+              ? nestedPriceVal
+              : (flatPriceValue ?? 0),
+          currency: (extItem.product?.price?.currency ||
+            flatCurrency ||
+            'USD') as CurrencyEnum,
         },
-        measure_unit_id: item.product?.measure_unit_id || '',
-      },
-      ...(item.measure_unit?.name
-        ? {
-            measure_unit: {
-              name: item.measure_unit.name,
-              id: null,
-            },
+        measure_unit_id: extItem.product?.measure_unit_id || flatUnit || '',
+      };
+
+      const result: CreateReceivablesFormBeforeValidationLineItemProps = {
+        id: extItem.product_id || extItem.id || generateUniqueId(),
+        product,
+        quantity: extItem.quantity ?? 1,
+        ...(typeof extItem.vat_rate_value === 'number'
+          ? {
+              vat_rate_value:
+                extItem.vat_rate_value <= 100
+                  ? rateMajorToMinor(extItem.vat_rate_value)
+                  : extItem.vat_rate_value,
+            }
+          : {}),
+        ...(typeof extItem.tax_rate_value === 'number'
+          ? { tax_rate_value: extItem.tax_rate_value }
+          : {}),
+        ...(extItem.vat_rate_id ? { vat_rate_id: extItem.vat_rate_id } : {}),
+        ...(extItem.product_id ? { product_id: extItem.product_id } : {}),
+      };
+
+      if (
+        result.vat_rate_value === undefined &&
+        result.tax_rate_value === undefined &&
+        typeof vatRateValue === 'number'
+      ) {
+        result.vat_rate_value = vatRateValue;
+      }
+
+      if (extItem.measure_unit?.name && !extItem.product?.measure_unit_id) {
+        (
+          result as CreateReceivablesFormBeforeValidationLineItemProps & {
+            measure_unit?: { name: string; id: null };
           }
-        : {}),
-    }));
+        ).measure_unit = { name: extItem.measure_unit.name, id: null };
+      }
+
+      return result;
+    })
+    .filter((x): x is CreateReceivablesFormBeforeValidationLineItemProps =>
+      Boolean(x)
+    );
+
+  return result;
 };

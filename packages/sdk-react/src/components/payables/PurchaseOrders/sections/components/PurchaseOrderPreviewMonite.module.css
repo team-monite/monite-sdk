@@ -1,0 +1,10 @@
+.mainInfoSectionOverride {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+}
+
+.purchaseOrderPreview .infoColumn {
+  width: 100%;
+  min-width: 0;
+  flex: 1;
+}

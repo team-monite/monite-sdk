@@ -1,6 +1,3 @@
-import { useCallback, useMemo, useState, useEffect } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-
 import { components } from '@/api';
 import {
   CreateReceivablesProductsFormProps,
@@ -22,6 +19,8 @@ import {
   TextField,
   MenuItem,
 } from '@mui/material';
+import { useCallback, useMemo, useState, useEffect } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 
 interface ItemSelectorOptionProps {
   id: string;
@@ -45,6 +44,7 @@ type ItemSelectorProps = {
   index: number;
   measureUnits?: { data: MeasureUnit[] };
   marginLeft?: string | number;
+  catalogEnabled?: boolean;
   onCreateItem: () => void;
   onChange: (item: ItemSelectorOptionProps, isCatalogItem?: boolean) => void;
 };
@@ -92,6 +92,7 @@ export const ItemSelector = ({
   defaultCurrency,
   measureUnits,
   marginLeft = '4px', //to avoid box-shadow from being cut by container
+  catalogEnabled = true,
   onCreateItem,
   onChange,
 }: ItemSelectorProps) => {
@@ -137,7 +138,7 @@ export const ItemSelector = ({
             },
           };
         },
-        enabled: !!currency,
+        enabled: !!currency && catalogEnabled,
       }
     );
 
@@ -363,6 +364,34 @@ export const ItemSelector = ({
     []
   );
 
+  if (!catalogEnabled) {
+    return (
+      <TextField
+        label={``}
+        placeholder={t(i18n)`Line item`}
+        required
+        error={error}
+        className="Item-Selector"
+        sx={{ width: '100%', marginLeft }}
+        disabled={disabled}
+        value={customName}
+        onFocus={disabled ? undefined : handleFocus}
+        onBlur={disabled ? undefined : handleBlur}
+        onChange={(e) => {
+          if (disabled) return;
+
+          setCustomName(e.target.value);
+          const val = e.target.value;
+          if (val.trim()) {
+            onChange({ id: CUSTOM_ID, label: val }, false);
+          } else {
+            onChange({ id: '', label: '' }, false);
+          }
+        }}
+      />
+    );
+  }
+
   return (
     <Controller
       name={`items.${index}`}
@@ -396,8 +425,8 @@ export const ItemSelector = ({
               label: selectedItem.name,
             }
           : customName
-          ? { id: CUSTOM_ID, label: customName }
-          : null;
+            ? { id: CUSTOM_ID, label: customName }
+            : null;
 
         return (
           <Autocomplete
@@ -529,7 +558,12 @@ export const ItemSelector = ({
                   ...params.InputProps,
                   onFocus: handleFocus,
                   onBlur: handleBlur,
-                  startAdornment: isLoading && <CircularProgress size={20} />,
+                  startAdornment:
+                    isLoading && catalogEnabled ? (
+                      <CircularProgress size={20} />
+                    ) : (
+                      params.InputProps.startAdornment
+                    ),
                   endAdornment: (
                     <div
                       style={{
@@ -553,5 +587,4 @@ export const ItemSelector = ({
 };
 
 type CurrencyEnum = components['schemas']['CurrencyEnum'];
-type MeasureUnit =
-  components['schemas']['LineItemProductMeasureUnit'];
+type MeasureUnit = components['schemas']['LineItemProductMeasureUnit'];

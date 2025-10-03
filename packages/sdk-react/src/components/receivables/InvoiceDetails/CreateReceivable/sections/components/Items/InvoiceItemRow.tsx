@@ -1,17 +1,18 @@
-import { memo } from 'react';
-import { Control, FieldErrors } from 'react-hook-form';
-
-import { components } from '@/api';
-import { CreateReceivablesFormBeforeValidationProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
-import DeleteIcon from '@mui/icons-material/DeleteForever';
-import { TableCell, TableRow, IconButton, FormControl } from '@mui/material';
-
 import type { LineItemPath } from '../../types';
 import { ItemSelector, ProductItem } from './ItemSelector';
 import { PriceField } from './PriceField';
 import { QuantityField } from './QuantityField';
 import { TaxRateField } from './TaxRateField';
 import { VatRateField } from './VatRateField';
+import { components } from '@/api';
+import {
+  CreateReceivablesFormBeforeValidationProps,
+  CreateReceivablesFormBeforeValidationLineItemProps,
+} from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
+import DeleteIcon from '@mui/icons-material/DeleteForever';
+import { TableCell, TableRow, IconButton, FormControl } from '@mui/material';
+import { memo } from 'react';
+import { Control, FieldErrors } from 'react-hook-form';
 
 interface InvoiceItemRowProps {
   field: { id: string };
@@ -21,6 +22,7 @@ interface InvoiceItemRowProps {
   actualCurrency?: CurrencyEnum;
   defaultCurrency?: CurrencyEnum;
   measureUnitsData?: MeasureUnitListResponseType;
+  catalogEnabled?: boolean;
   isNonVatSupported: boolean;
   vatRates?: VatRateItemType[];
   highestVatRate?: VatRateItemType;
@@ -54,6 +56,7 @@ const InvoiceItemRowComponent = ({
   isNonVatSupported,
   vatRates,
   highestVatRate,
+  catalogEnabled = true,
   tableRowClassName,
   onRequestLineItemValue,
   onLineItemValueChange,
@@ -63,14 +66,24 @@ const InvoiceItemRowComponent = ({
   onRemoveItem,
   onRequestLineItemValidation,
 }: InvoiceItemRowProps) => {
-  const itemNameError = Boolean(errors.line_items?.[index]?.product?.name);
-  const quantityError = Boolean(errors.line_items?.[index]?.quantity);
-  const priceError = Boolean(errors.line_items?.[index]?.product?.price?.value);
+  const lineItemError = errors.line_items?.[index] as
+    | FieldErrors<CreateReceivablesFormBeforeValidationLineItemProps>
+    | undefined;
+  const itemNameError = Boolean(
+    lineItemError?.product?.name || lineItemError?.name
+  );
+  const quantityError = Boolean(lineItemError?.quantity);
+  const priceError = Boolean(
+    lineItemError?.product?.price?.value ||
+    lineItemError?.price?.value ||
+    lineItemError?.price
+  );
   const taxOrVatError = isNonVatSupported
-    ? Boolean(errors.line_items?.[index]?.tax_rate_value)
-    : Boolean(errors.line_items?.[index]?.vat_rate_id);
+    ? Boolean(lineItemError?.tax_rate_value)
+    : Boolean(lineItemError?.vat_rate_id || lineItemError?.vat_rate_value);
   const measureUnitFieldError =
-    errors.line_items?.[index]?.product?.measure_unit_id;
+    lineItemError?.product?.measure_unit_id ??
+    lineItemError?.measure_unit_id;
 
   const handleVatRateDefaults = (
     defaultVatId: string | null,
@@ -131,6 +144,7 @@ const InvoiceItemRowComponent = ({
           actualCurrency={actualCurrency}
           defaultCurrency={defaultCurrency}
           measureUnits={measureUnitsData}
+          catalogEnabled={catalogEnabled}
         />
       </TableCell>
 
@@ -212,12 +226,17 @@ const InvoiceItemRowComponent = ({
                 onLineItemManuallyChanged();
               }}
               availableVatRates={vatRates ?? []}
-              error={Boolean(errors.line_items?.[index]?.vat_rate_id)}
-              fieldError={errors.line_items?.[index]?.vat_rate_id}
+              error={taxOrVatError}
+              fieldError={
+                lineItemError?.vat_rate_id || lineItemError?.vat_rate_value
+              }
               isNonVatSupported={isNonVatSupported}
               highestVatRate={highestVatRate}
               currentTaxRateValue={
                 onRequestLineItemValue('tax_rate_value') as number | undefined
+              }
+              currentVatRateValue={
+                onRequestLineItemValue('vat_rate_value') as number | undefined
               }
               onInitializeDefaults={handleVatRateDefaults}
               onModified={onLineItemManuallyChanged}

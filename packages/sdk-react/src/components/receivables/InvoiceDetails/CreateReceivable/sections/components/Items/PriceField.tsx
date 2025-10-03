@@ -10,10 +10,7 @@ import { useCurrencies } from '@/core/hooks';
 import { useLingui } from '@lingui/react';
 import { InputAdornment, TextField } from '@mui/material';
 
-import {
-  formatMinorToMajorCurrency,
-  parseMajorToMinorCurrency,
-} from '../../utils';
+import { parseLocaleNumericString } from '../../utils';
 
 interface PriceFieldProps {
   value?: number;
@@ -44,18 +41,11 @@ export const PriceField = ({
     });
   }, [locale]);
 
-  const { decimalSeparator, groupSeparator } = useMemo(() => {
-    const parts = new Intl.NumberFormat(locale).formatToParts(12345.67);
-
-    return {
-      decimalSeparator:
-        parts.find((part) => part.type === 'decimal')?.value || '.',
-      groupSeparator: parts.find((part) => part.type === 'group')?.value || '',
-    };
-  }, [locale]);
+  const normalizeMajorValue = (val?: number): number =>
+    typeof val === 'number' && !Number.isNaN(val) ? val : 0;
 
   const [inputValue, setInputValue] = useState<string>(
-    formatMinorToMajorCurrency(value, numberFormatter)
+    numberFormatter.format(normalizeMajorValue(value))
   );
   const [isFocused, setIsFocused] = useState(false);
 
@@ -64,7 +54,7 @@ export const PriceField = ({
     // and the prop-derived value actually differs from the current input value.
     // This prevents resetting the input (and cursor position) while the user is actively typing.
     if (!isFocused) {
-      const majorValue = formatMinorToMajorCurrency(value, numberFormatter);
+      const majorValue = numberFormatter.format(normalizeMajorValue(value));
 
       if (majorValue !== inputValue) {
         setInputValue(majorValue);
@@ -90,20 +80,20 @@ export const PriceField = ({
     const currentVal = e.target.value.trim();
 
     if (currentVal === '') {
-      setInputValue(formatMinorToMajorCurrency(0, numberFormatter));
+      setInputValue(numberFormatter.format(0));
       onChange(0);
 
       return;
     }
 
-    const minorValue = parseMajorToMinorCurrency(
-      currentVal,
-      decimalSeparator,
-      groupSeparator
-    );
+    const majorValue = parseLocaleNumericString(currentVal, locale);
 
-    setInputValue(formatMinorToMajorCurrency(minorValue, numberFormatter));
-    onChange(minorValue);
+    if (typeof value === 'number' && value === majorValue) {
+      return;
+    }
+
+    setInputValue(numberFormatter.format(majorValue));
+    onChange(majorValue);
   };
 
   return (
