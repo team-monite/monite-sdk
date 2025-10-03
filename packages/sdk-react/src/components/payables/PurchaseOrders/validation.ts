@@ -105,11 +105,13 @@ const getBasePurchaseOrderSchema = (i18n: I18n, isNonVatSupported: boolean) =>
     expiry_date: z.preprocess(
       (val) => {
         if (!val) return undefined;
-        if (val instanceof Date) return val;
 
-        const date = new Date(val as string);
+        const date = val instanceof Date ? val : new Date(val as string);
+        if (isNaN(date.getTime())) return undefined;
 
-        return isNaN(date.getTime()) ? undefined : date;
+        date.setUTCHours(0, 0, 0, 0);
+
+        return date;
       },
       z
         .date({
@@ -120,14 +122,9 @@ const getBasePurchaseOrderSchema = (i18n: I18n, isNonVatSupported: boolean) =>
             if (!date) return false;
 
             const today = new Date();
+            today.setUTCHours(0, 0, 0, 0);
 
-            today.setHours(0, 0, 0, 0);
-
-            const dateOnly = new Date(date);
-
-            dateOnly.setHours(0, 0, 0, 0);
-
-            return dateOnly >= today;
+            return date >= today;
           },
           {
             message: t(i18n)`Expiry date must be today or in the future`,

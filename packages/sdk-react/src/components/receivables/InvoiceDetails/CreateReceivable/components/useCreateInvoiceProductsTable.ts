@@ -94,7 +94,7 @@ export const useCreateInvoiceProductsTable = ({
   }, [lineItems, isNonVatSupported, isInclusivePricing]);
 
   const subtotalPrice = useMemo(() => {
-    const priceMajor = lineItems.reduce((acc, field, index) => {
+    const priceMajor = lineItems.reduce((acc, field) => {
       const { price, quantity } = getPriceAndQuantity(field);
       const vatRate = ratePercentageToDecimal(
         getRateValueForDisplay(

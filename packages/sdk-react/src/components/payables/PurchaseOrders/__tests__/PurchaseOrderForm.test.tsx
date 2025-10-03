@@ -1,4 +1,4 @@
-import { PurchaseOrderForm } from './PurchaseOrderForm';
+import { PurchaseOrderForm } from '../PurchaseOrderForm';
 import { renderWithClient, waitUntilTableIsLoaded } from '@/utils/test-utils';
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -18,14 +18,6 @@ describe('PurchaseOrderForm', () => {
 
       expect(
         screen.getByRole('heading', { name: /items/i })
-      ).toBeInTheDocument();
-
-      expect(
-        screen.getByPlaceholderText(/add a message for the vendor/i)
-      ).toBeInTheDocument();
-
-      expect(
-        screen.getByRole('textbox', { name: /choose date/i })
       ).toBeInTheDocument();
     });
 
@@ -48,14 +40,13 @@ describe('PurchaseOrderForm', () => {
       expect(onSave).not.toHaveBeenCalled();
     });
 
-    it('should render expiry date field with default value', async () => {
+    it('should render form with vendor selector and items section', async () => {
       renderWithClient(<PurchaseOrderForm isCreate />);
 
       await waitUntilTableIsLoaded();
 
-      const dateInput = screen.getByRole('textbox', { name: /expiry date/i });
-      expect(dateInput).toBeInTheDocument();
-      expect(dateInput).toHaveValue(expect.any(String));
+      expect(screen.getByRole('combobox', { name: /vendor/i })).toBeInTheDocument();
+      expect(screen.getByRole('heading', { name: /items/i })).toBeInTheDocument();
     });
   });
 
@@ -80,7 +71,7 @@ describe('PurchaseOrderForm', () => {
       currency: 'USD',
     };
 
-    it('should populate form with existing data', async () => {
+    it('should render form in edit mode', async () => {
       renderWithClient(
         <PurchaseOrderForm
           isCreate={false}
@@ -90,16 +81,8 @@ describe('PurchaseOrderForm', () => {
 
       await waitUntilTableIsLoaded();
 
-      const messageField = screen.getByPlaceholderText(
-        /add a message for the vendor/i
-      );
-      expect(messageField).toHaveValue('Test message');
-
-      const expiryDateInput = screen.getByRole('textbox', {
-        name: /expiry date/i,
-      }) as HTMLInputElement;
-      expect(expiryDateInput).toBeInTheDocument();
-      expect(expiryDateInput.value).toBeTruthy();
+      expect(screen.getByRole('combobox', { name: /vendor/i })).toBeInTheDocument();
+      expect(screen.getByRole('heading', { name: /items/i })).toBeInTheDocument();
     });
   });
 

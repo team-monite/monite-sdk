@@ -12,10 +12,16 @@ import {
 } from '@/core/queries';
 import { MoniteCard } from '@/ui/Card/Card';
 import { Skeleton } from '@/ui/components/skeleton';
-import { TabBar, TabBarContent, TabBarList, TabBarTrigger } from '@/ui/components/tab-bar';
+import {
+  TabBar,
+  TabBarContent,
+  TabBarList,
+  TabBarTrigger,
+} from '@/ui/components/tab-bar';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { useState } from 'react';
+import { addDays } from 'date-fns';
+import { useState, useMemo } from 'react';
 
 interface OverviewProps {
   purchaseOrder: components['schemas']['PurchaseOrderResponseSchema'];
@@ -36,19 +42,28 @@ export const Overview = ({ purchaseOrder }: OverviewProps) => {
     (address) => address.id === counterpart?.default_billing_address_id
   );
 
-  const createdAt = purchaseOrder.created_at
-    ? new Date(purchaseOrder.created_at)
-    : null;
-  const issuedAt = purchaseOrder.issued_at
-    ? new Date(purchaseOrder.issued_at)
-    : null;
-  const expiryDate =
-    purchaseOrder.valid_for_days && (issuedAt || createdAt)
-      ? new Date(
-          (issuedAt ?? createdAt)!.getTime() +
-            purchaseOrder.valid_for_days * 24 * 60 * 60 * 1000
-        )
-      : null;
+  const createdAt = useMemo(
+    () =>
+      purchaseOrder.created_at ? new Date(purchaseOrder.created_at) : null,
+    [purchaseOrder.created_at]
+  );
+
+  const issuedAt = useMemo(
+    () => (purchaseOrder.issued_at ? new Date(purchaseOrder.issued_at) : null),
+    [purchaseOrder.issued_at]
+  );
+
+  const expiryDate = useMemo(() => {
+    if (!purchaseOrder.valid_for_days) return null;
+
+    const baseDate = issuedAt ?? createdAt;
+    if (!baseDate) return null;
+
+    const normalizedBase = new Date(baseDate);
+    normalizedBase.setUTCHours(0, 0, 0, 0);
+
+    return addDays(normalizedBase, purchaseOrder.valid_for_days);
+  }, [purchaseOrder.valid_for_days, issuedAt, createdAt]);
 
   const { subtotalMinor, totalTaxMinor, totalAmountMinor } =
     calculatePurchaseOrderTotals(purchaseOrder);
@@ -88,7 +103,7 @@ export const Overview = ({ purchaseOrder }: OverviewProps) => {
                   value: isCounterpartLoading ? (
                     <Skeleton className="mtw:h-4 mtw:w-[150px]" />
                   ) : counterpart ? (
-                    getCounterpartName(counterpart) ?? '—'
+                    (getCounterpartName(counterpart) ?? '—')
                   ) : (
                     '—'
                   ),

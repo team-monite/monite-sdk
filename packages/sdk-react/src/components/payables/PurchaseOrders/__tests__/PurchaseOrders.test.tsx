@@ -1,6 +1,6 @@
-import { PurchaseOrderStatusChip } from './PurchaseOrderStatusChip';
-import { PurchaseOrdersTable } from './PurchaseOrdersTable';
-import { PURCHASE_ORDER_MEASURE_UNITS } from './types';
+import { PurchaseOrderStatusChip } from '../PurchaseOrderStatusChip';
+import { PurchaseOrdersTable } from '../PurchaseOrdersTable';
+import { PURCHASE_ORDER_MEASURE_UNITS } from '../types';
 import { rateMajorToMinor } from '@/core/utils/currencies';
 import {
   vatRateBasisPointsToPercentage,

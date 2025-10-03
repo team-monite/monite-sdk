@@ -56,6 +56,7 @@ import {
   Grid,
 } from '@mui/material';
 import { calculateExpiryDate, calculateValidForDays } from './utils/calculations';
+import { addDays } from 'date-fns';
 import { Settings } from 'lucide-react';
 import { useEffect, useId, useMemo, useState, useCallback } from 'react';
 import { useForm, FormProvider, type Resolver } from 'react-hook-form';
@@ -190,12 +191,23 @@ const CreatePurchaseOrderBase = ({
             };
           }) || [];
 
+      let expiryDate: Date | undefined;
+      
+      if (existingPurchaseOrder.valid_for_days) {
+        const baseDate = existingPurchaseOrder.issued_at || existingPurchaseOrder.created_at;
+        
+        if (baseDate) {
+          const base = new Date(baseDate);
+          
+          base.setUTCHours(0, 0, 0, 0);
+          expiryDate = addDays(base, existingPurchaseOrder.valid_for_days);
+        }
+      }
+
       return {
         counterpart_id: existingPurchaseOrder.counterpart_id || '',
         line_items: lineItems,
-        expiry_date: existingPurchaseOrder.valid_for_days
-          ? calculateExpiryDate(existingPurchaseOrder.valid_for_days)
-          : calculateExpiryDate(PURCHASE_ORDER_CONSTANTS.DEFAULT_VALID_FOR_DAYS),
+        expiry_date: expiryDate || calculateExpiryDate(PURCHASE_ORDER_CONSTANTS.DEFAULT_VALID_FOR_DAYS),
         message: existingPurchaseOrder.message || '',
         currency:
           (existingPurchaseOrder.currency as components['schemas']['CurrencyEnum']) ||
@@ -456,7 +468,7 @@ const CreatePurchaseOrderBase = ({
   }, []);
 
   const lineItems = watch('line_items');
-  const validForDays = watch('valid_for_days');
+  const expiryDate = watch('expiry_date');
   const message = watch('message');
   const [removeItemsWarning, setRemoveItemsWarning] = useState(false);
 
@@ -709,7 +721,7 @@ const CreatePurchaseOrderBase = ({
       <div className="mtw:w-1/2 mtw:bg-[linear-gradient(180deg,_#F6F6F6_0%,_#E4E4FF_100%)] mtw:h-screen mtw:overflow-auto">
         <PurchaseOrderPreview
           purchaseOrderData={{
-            valid_for_days: validForDays,
+            expiry_date: expiryDate,
             line_items: lineItems || [],
             message,
           }}

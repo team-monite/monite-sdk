@@ -1,5 +1,5 @@
 import { components } from '@/api';
-import { addDays, differenceInDays } from 'date-fns';
+import { addDays, differenceInCalendarDays } from 'date-fns';
 import { rateBasisPointsToDecimal } from '@/core/utils/vatUtils';
 
 export interface PurchaseOrderCalculations {
@@ -54,15 +54,31 @@ export function calculateLineItemTotal(
 
 /**
  * Calculates expiry date based on valid_for_days
+ * Normalizes today to UTC midnight to ensure consistent calculation across timezones
+ * Also normalizes result to handle DST transitions correctly
  */
 export function calculateExpiryDate(validForDays: number): Date {
-  return addDays(new Date(), validForDays);
+  const today = new Date();
+  today.setUTCHours(0, 0, 0, 0);
+
+  const result = addDays(today, validForDays);
+
+  result.setUTCHours(0, 0, 0, 0);
+
+  return result;
 }
 
 /**
  * Calculates valid_for_days from expiry date
+ * Normalizes both dates to UTC midnight to ensure consistent calculation regardless of time of day or timezone
+ * Uses differenceInCalendarDays to count calendar days (not 24-hour periods) to handle DST correctly
  */
 export function calculateValidForDays(expiryDate: Date): number {
   const today = new Date();
-  return differenceInDays(expiryDate, today);
+  today.setUTCHours(0, 0, 0, 0);
+
+  const expiry = new Date(expiryDate);
+  expiry.setUTCHours(0, 0, 0, 0);
+
+  return differenceInCalendarDays(expiry, today);
 }
