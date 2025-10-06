@@ -93,6 +93,7 @@ export interface PayableDetailsFormProps extends MonitePayableDetailsInfoProps {
   /** @see {@link CustomerTypes} */
   customerTypes?: CustomerTypes;
   enableGLCodes?: boolean;
+  hideAddDiscountButton?: boolean;
 }
 
 /**
@@ -131,6 +132,7 @@ export interface PayableDetailsFormProps extends MonitePayableDetailsInfoProps {
  * @param {components['schemas']['LineItemResponse'][]} [lineItems] - Array of line items associated with the payable.
  * @param {Record<string, boolean> | undefined} [ocrRequiredFields] - Array of required fields that should be provided by OCR.
  * @param {string} payableDetailsFormId - Unique identifier for the form.
+ * @param {boolean} [hideAddDiscountButton] - If true, hides the "Add Discount" button in the totals section.
  *
  * @returns {JSX.Element} The PayableDetailsForm component.
  */
@@ -156,6 +158,7 @@ const PayableDetailsFormBase = forwardRef<
       payableDetailsFormId,
       customerTypes,
       enableGLCodes,
+      hideAddDiscountButton,
       ...inProps
     },
     ref
@@ -630,19 +633,20 @@ const PayableDetailsFormBase = forwardRef<
                               justifyContent="flex-end"
                               display="flex"
                             >
-                              {currentDiscount === null && (
-                                <Button
-                                  startIcon={<AddIcon />}
-                                  size="small"
-                                  sx={{ pl: 1.25, pr: 2, py: 0 }}
-                                  onClick={() => {
-                                    const setValue = methods.setValue;
-                                    setValue('discount', 0);
-                                  }}
-                                >
-                                  {t(i18n)`Add Discount`}
-                                </Button>
-                              )}
+                              {currentDiscount === null &&
+                                !hideAddDiscountButton && (
+                                  <Button
+                                    startIcon={<AddIcon />}
+                                    size="small"
+                                    sx={{ pl: 1.25, pr: 2, py: 0 }}
+                                    onClick={() => {
+                                      const setValue = methods.setValue;
+                                      setValue('discount', 0);
+                                    }}
+                                  >
+                                    {t(i18n)`Add Discount`}
+                                  </Button>
+                                )}
                               {totals.subtotal && currentCurrency
                                 ? formatCurrencyToDisplay(
                                     formatToMinorUnits(
