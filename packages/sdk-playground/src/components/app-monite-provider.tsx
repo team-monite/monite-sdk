@@ -1,8 +1,7 @@
-import { type ComponentProps, type ReactNode, useMemo } from 'react';
-
 import { fetchToken } from '@/services/fetch-token';
 import { getLoginEnvData } from '@/services/login-env-data';
 import { MoniteProvider } from '@monite/sdk-react';
+import { type ComponentProps, type ReactNode, useMemo } from 'react';
 
 type AppMoniteProvider = {
   children: ReactNode;
@@ -33,6 +32,21 @@ const AppMoniteProvider = ({ children }: AppMoniteProvider) => {
       componentSettings={{
         receivables: {
           enableEntityBankAccount: true,
+        },
+        payables: {
+          // TODO: remove after testing. Just for testing purposes
+          displayColumns: [
+            'document_id',
+            // 'counterpart_id',
+            'created_at',
+            // 'issued_at',
+            'due_date',
+            'status',
+            'amount',
+            // 'amount_to_pay',
+            'amount_paid',
+            'pay',
+          ],
         },
       }}
     >
