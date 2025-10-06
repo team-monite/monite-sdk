@@ -27,6 +27,7 @@ export interface PayablesDetailsProps extends UsePayableDetailsProps {
   customerTypes?: CustomerTypes;
   enableGLCodes?: boolean;
   hideAddDiscountButton?: boolean;
+  hideAddBankAccountButton?: boolean;
   onClose?: () => void;
 }
 
@@ -42,6 +43,7 @@ const PayableDetailsBase = ({
   customerTypes,
   enableGLCodes,
   hideAddDiscountButton,
+  hideAddBankAccountButton,
   onClose,
   onSaved,
   onCanceled,
@@ -241,6 +243,10 @@ const PayableDetailsBase = ({
                   hideAddDiscountButton={
                     hideAddDiscountButton ??
                     componentSettings?.payables?.hideAddDiscountButton
+                  }
+                  hideAddBankAccountButton={
+                    hideAddBankAccountButton ??
+                    componentSettings?.payables?.hideAddBankAccountButton
                   }
                 />
               ) : (

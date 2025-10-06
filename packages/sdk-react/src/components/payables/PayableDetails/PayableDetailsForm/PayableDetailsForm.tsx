@@ -94,6 +94,7 @@ export interface PayableDetailsFormProps extends MonitePayableDetailsInfoProps {
   customerTypes?: CustomerTypes;
   enableGLCodes?: boolean;
   hideAddDiscountButton?: boolean;
+  hideAddBankAccountButton?: boolean;
 }
 
 /**
@@ -159,6 +160,7 @@ const PayableDetailsFormBase = forwardRef<
       customerTypes,
       enableGLCodes,
       hideAddDiscountButton,
+      hideAddBankAccountButton,
       ...inProps
     },
     ref
@@ -485,19 +487,23 @@ const PayableDetailsFormBase = forwardRef<
                                   .length === 0
                               }
                             >
-                              <Button
-                                variant="text"
-                                startIcon={<AddIcon />}
-                                fullWidth
-                                sx={{
-                                  justifyContent: 'flex-start',
-                                  px: 2,
-                                  py: 1,
-                                }}
-                                onClick={() => setIsEditCounterpartOpened(true)}
-                              >
-                                {t(i18n)`Add new bank account`}
-                              </Button>
+                              {!hideAddBankAccountButton && (
+                                <Button
+                                  variant="text"
+                                  startIcon={<AddIcon />}
+                                  fullWidth
+                                  sx={{
+                                    justifyContent: 'flex-start',
+                                    px: 2,
+                                    py: 1,
+                                  }}
+                                  onClick={() =>
+                                    setIsEditCounterpartOpened(true)
+                                  }
+                                >
+                                  {t(i18n)`Add new bank account`}
+                                </Button>
+                              )}
                               {counterpartBankAccountQuery?.data?.data.map(
                                 (bankAccount) => (
                                   <MenuItem
