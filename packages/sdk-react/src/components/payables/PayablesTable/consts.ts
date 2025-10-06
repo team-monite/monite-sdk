@@ -33,3 +33,17 @@ export const DEFAULT_CARDS_ORDER: ExtendedPayableStateEnum[] = [
 
 export const DEFAULT_REQUIRED_COLUMNS: [FieldValueTypes, ...FieldValueTypes[]] =
   ['document_id'];
+
+export const DEFAULT_DISPLAY_COLUMNS: [FieldValueTypes, ...FieldValueTypes[]] =
+  [
+    'document_id',
+    'counterpart_id',
+    'created_at',
+    'issued_at',
+    'due_date',
+    'status',
+    'amount',
+    'amount_to_pay',
+    'amount_paid',
+    'pay',
+  ];
