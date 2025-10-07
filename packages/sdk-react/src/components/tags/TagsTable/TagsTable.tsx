@@ -227,6 +227,9 @@ const TagsTableBase = ({
           pagination: () => (
             <TablePagination
               pageSizeOptions={componentSettings.tags.pageSizeOptions}
+              paginationLayout={componentSettings.tags.paginationLayout}
+              navigationPosition={componentSettings.tags.navigationPosition}
+              pageSizePosition={componentSettings.tags.pageSizePosition}
               prevPage={tags?.prev_pagination_token}
               nextPage={tags?.next_pagination_token}
               paginationModel={{

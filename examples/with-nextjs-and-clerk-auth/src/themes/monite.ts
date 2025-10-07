@@ -1,3 +1,11 @@
+import '@monite/sdk-react';
+import type {
+  MoniteApprovalRequestStatusChipProps,
+  MoniteInvoiceStatusChipProps,
+  PaginationLayout,
+  PaginationPosition,
+} from '@monite/sdk-react';
+import type { CSSObject } from '@mui/material/styles';
 import type { Components } from '@mui/material/styles/components.js';
 import type {
   Palette,
@@ -251,9 +259,39 @@ const typographyLight = Object.assign({}, defaultMoniteTypography, {
 
 const filterControlWidth = '160px';
 
-const defaultMoniteComponents: Components<Omit<Theme, 'components'>> & {
-  MoniteApprovalRequestStatusChip?: any;
-  MoniteInvoiceStatusChip?: any;
+const defaultMoniteComponents: Components & {
+  MoniteApprovalRequestStatusChip?: {
+    defaultProps?: Partial<MoniteApprovalRequestStatusChipProps>;
+    styleOverrides?: {
+      root?: CSSObject;
+    };
+    variants?: Array<{
+      props: Partial<MoniteApprovalRequestStatusChipProps>;
+      style: CSSObject;
+    }>;
+  };
+  MoniteInvoiceStatusChip?: {
+    defaultProps?: Partial<MoniteInvoiceStatusChipProps>;
+    styleOverrides?: {
+      root?: CSSObject;
+    };
+    variants?: Array<{
+      props: Partial<MoniteInvoiceStatusChipProps>;
+      style: CSSObject;
+    }>;
+  };
+  MoniteTablePagination?: {
+    defaultProps?: {
+      paginationLayout?: PaginationLayout;
+      navigationPosition?: PaginationPosition;
+      pageSizePosition?: PaginationPosition;
+      pageSizeOptions?: number[];
+    };
+    styleOverrides?: {
+      root?: CSSObject;
+      pageSizeSelect?: CSSObject;
+    };
+  };
 } = {
   MuiAlert: {
     styleOverrides: {
@@ -1107,6 +1145,11 @@ const defaultMoniteComponents: Components<Omit<Theme, 'components'>> & {
         style: statusColors.black,
       },
     ],
+  },
+  MoniteTablePagination: {
+    defaultProps: {
+      paginationLayout: 'default',
+    },
   },
 };
 

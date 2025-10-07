@@ -284,6 +284,9 @@ const ProductsTableBase = ({
           pagination: () => (
             <TablePagination
               pageSizeOptions={componentSettings.products.pageSizeOptions}
+              paginationLayout={componentSettings.products.paginationLayout}
+              navigationPosition={componentSettings.products.navigationPosition}
+              pageSizePosition={componentSettings.products.pageSizePosition}
               prevPage={products?.prev_pagination_token}
               nextPage={products?.next_pagination_token}
               paginationModel={{

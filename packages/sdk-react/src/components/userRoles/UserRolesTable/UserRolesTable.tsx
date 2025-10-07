@@ -242,6 +242,9 @@ const UserRolesTableBase = ({
           pagination: () => (
             <TablePagination
               pageSizeOptions={componentSettings.userRoles.pageSizeOptions}
+              paginationLayout={componentSettings.userRoles.paginationLayout}
+              navigationPosition={componentSettings.userRoles.navigationPosition}
+              pageSizePosition={componentSettings.userRoles.pageSizePosition}
               prevPage={roles?.prev_pagination_token}
               nextPage={roles?.next_pagination_token}
               paginationModel={{

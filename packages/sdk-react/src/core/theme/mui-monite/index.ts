@@ -1181,6 +1181,14 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
         },
       },
     },
+    MoniteTablePagination: {
+      defaultProps: {
+        paginationLayout: 'default',
+      },
+      styleOverrides: {
+        root: {},
+      },
+    },
     MoniteApprovalRequestStatusChip: {
       defaultProps: {
         icon: moniteTheme.components.approvalRequestStatusChip.icon,

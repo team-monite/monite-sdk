@@ -276,6 +276,9 @@ const QuotesTableBase = ({
           pagination: () => (
             <TablePagination
               pageSizeOptions={componentSettings.receivables.pageSizeOptions}
+              paginationLayout={componentSettings.receivables.paginationLayout}
+              navigationPosition={componentSettings.receivables.navigationPosition}
+              pageSizePosition={componentSettings.receivables.pageSizePosition}
               nextPage={quotes?.next_pagination_token}
               prevPage={quotes?.prev_pagination_token}
               paginationModel={{

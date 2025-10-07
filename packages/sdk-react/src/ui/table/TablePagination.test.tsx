@@ -128,4 +128,149 @@ describe('TablePagination', () => {
       })
     ).not.toBeInTheDocument();
   });
+
+  describe('Layout customization', () => {
+    it('renders with default layout', () => {
+      const { container } = renderWithClient(
+        <TablePagination
+          pageSizeOptions={[10, 20, 50]}
+          nextPage="next"
+          prevPage="previous"
+          paginationModel={{
+            pageSize: 10,
+            page: 'current',
+          }}
+          onPaginationModelChange={() => {}}
+        />
+      );
+
+      const grid = container.querySelector('.MuiGrid-root > .MuiGrid-item');
+      expect(grid).toHaveStyle({ justifyContent: 'space-between' });
+    });
+
+    it('renders with reversed layout', () => {
+      const { container } = renderWithClient(
+        <TablePagination
+          paginationLayout="reversed"
+          pageSizeOptions={[10, 20, 50]}
+          nextPage="next"
+          prevPage="previous"
+          paginationModel={{
+            pageSize: 10,
+            page: 'current',
+          }}
+          onPaginationModelChange={() => {}}
+        />
+      );
+
+      const grid = container.querySelector('.MuiGrid-root > .MuiGrid-item');
+      expect(grid).toHaveStyle({
+        justifyContent: 'space-between',
+        flexDirection: 'row-reverse',
+      });
+    });
+
+    it('renders with centered layout', () => {
+      const { container } = renderWithClient(
+        <TablePagination
+          paginationLayout="centered"
+          pageSizeOptions={[10, 20, 50]}
+          nextPage="next"
+          prevPage="previous"
+          paginationModel={{
+            pageSize: 10,
+            page: 'current',
+          }}
+          onPaginationModelChange={() => {}}
+        />
+      );
+
+      const grid = container.querySelector('.MuiGrid-root > .MuiGrid-item');
+      expect(grid).toHaveStyle({ justifyContent: 'center' });
+    });
+
+    it('centers navigation when no page size selector is shown', () => {
+      const { container } = renderWithClient(
+        <TablePagination
+          paginationLayout="reversed" // Should be ignored
+          nextPage="next"
+          prevPage="previous"
+          paginationModel={{
+            pageSize: 10,
+            page: 'current',
+          }}
+          onPaginationModelChange={() => {}}
+        />
+      );
+
+      const grid = container.querySelector('.MuiGrid-root > .MuiGrid-item');
+      expect(grid).toHaveStyle({ justifyContent: 'center' });
+    });
+
+    it('renders custom layout with navigation right and pageSize left', () => {
+      const { container } = renderWithClient(
+        <TablePagination
+          paginationLayout="custom"
+          navigationPosition="right"
+          pageSizePosition="left"
+          pageSizeOptions={[10, 20, 50]}
+          nextPage="next"
+          prevPage="previous"
+          paginationModel={{
+            pageSize: 10,
+            page: 'current',
+          }}
+          onPaginationModelChange={() => {}}
+        />
+      );
+
+      const grid = container.querySelector('.MuiGrid-root > .MuiGrid-item');
+      expect(grid).toHaveStyle({
+        justifyContent: 'space-between',
+        flexDirection: 'row-reverse',
+      });
+    });
+
+    it('renders custom layout with both centered', () => {
+      const { container } = renderWithClient(
+        <TablePagination
+          paginationLayout="custom"
+          navigationPosition="center"
+          pageSizePosition="center"
+          pageSizeOptions={[10, 20, 50]}
+          nextPage="next"
+          prevPage="previous"
+          paginationModel={{
+            pageSize: 10,
+            page: 'current',
+          }}
+          onPaginationModelChange={() => {}}
+        />
+      );
+
+      const grid = container.querySelector('.MuiGrid-root > .MuiGrid-item');
+      expect(grid).toHaveStyle({ justifyContent: 'center' });
+    });
+
+    it('renders custom layout with both on left', () => {
+      const { container } = renderWithClient(
+        <TablePagination
+          paginationLayout="custom"
+          navigationPosition="left"
+          pageSizePosition="left"
+          pageSizeOptions={[10, 20, 50]}
+          nextPage="next"
+          prevPage="previous"
+          paginationModel={{
+            pageSize: 10,
+            page: 'current',
+          }}
+          onPaginationModelChange={() => {}}
+        />
+      );
+
+      const grid = container.querySelector('.MuiGrid-root > .MuiGrid-item');
+      expect(grid).toHaveStyle({ justifyContent: 'flex-start' });
+    });
+  });
 });
