@@ -21,10 +21,6 @@ import type { MoniteIconWrapperProps } from '@/ui/iconWrapper';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 
-import {
-  defaultAvailableCountries,
-  defaultAvailableCurrencies,
-} from '../utils';
 import type {
   PaginationLayout,
   PaginationPosition,
