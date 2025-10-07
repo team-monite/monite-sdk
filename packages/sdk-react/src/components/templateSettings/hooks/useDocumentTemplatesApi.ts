@@ -1,13 +1,15 @@
-import { useMemo } from 'react';
-import { toast } from 'react-hot-toast';
-
+import { SelectableDocumentType } from '../types';
 import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { useMemo } from 'react';
+import { toast } from 'react-hot-toast';
 
-export const useDocumentTemplatesApi = () => {
+export const useDocumentTemplatesApi = (
+  documentType?: SelectableDocumentType
+) => {
   const { api, queryClient, componentSettings } = useMoniteContext();
   const { i18n } = useLingui();
   const { data: documentTemplates, isLoading } =
@@ -19,10 +21,21 @@ export const useDocumentTemplatesApi = () => {
     );
 
   const [invoiceTemplates, defaultInvoiceTemplate] = useMemo(() => {
-    let filtered: components['schemas']['TemplateReceivableResponse'][] = [];
-    filtered =
+    const documentTypeMap: Record<
+      SelectableDocumentType | 'default',
+      TemplateDocumentType[]
+    > = {
+      purchase_order: ['purchase_order'],
+      receivable: ['invoice', 'receivable'],
+      default: ['invoice', 'receivable'],
+    };
+
+    const allowedTypes =
+      documentTypeMap[documentType ?? 'default'] ?? documentTypeMap.default;
+
+    let filtered: TemplateDocument[] =
       documentTemplates?.data?.filter((template) =>
-        ['invoice', 'receivable'].includes(template.document_type)
+        allowedTypes.includes(template.document_type)
       ) || [];
 
     if (
@@ -41,6 +54,7 @@ export const useDocumentTemplatesApi = () => {
   }, [
     documentTemplates,
     componentSettings?.templateSettings?.availableTemplateIds,
+    documentType,
   ]);
 
   const updateMutation =
@@ -83,3 +97,8 @@ export const useDocumentTemplatesApi = () => {
     setDefaultTemplate,
   };
 };
+
+type TemplateDocumentType =
+  | components['schemas']['DocumentTypeEnum']
+  | 'invoice';
+type TemplateDocument = components['schemas']['TemplateReceivableResponse'];

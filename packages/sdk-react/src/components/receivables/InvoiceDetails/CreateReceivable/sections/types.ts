@@ -1,7 +1,6 @@
+import { type CreateReceivablesFormBeforeValidationLineItemProps } from '../validation';
 import { components } from '@/api';
 import { DeepKeys } from '@/core/types/utils';
-
-import { type CreateReceivablesFormBeforeValidationLineItemProps } from '../validation';
 
 /**
  * Type-safe path for accessing line item properties in validation errors
@@ -12,9 +11,13 @@ export type LineItemPath =
 /**
  * Type-safe path for full form line item field paths
  */
-export type FormLineItemPath = `line_items.${number}` | `line_items.${number}.${LineItemPath}`;
+export type FormLineItemPath =
+  | `line_items.${number}`
+  | `line_items.${number}.${LineItemPath}`;
 
 export type CurrencyEnum = components['schemas']['CurrencyEnum'];
+type MeasureUnit = components['schemas']['LineItemProductMeasureUnit'];
+type MeasureUnitId = MeasureUnit['id'];
 
 /**
  * Sanitizable line item type for invoice creation
@@ -22,8 +25,15 @@ export type CurrencyEnum = components['schemas']['CurrencyEnum'];
  */
 export type SanitizableLineItem = Omit<
   Partial<CreateReceivablesFormBeforeValidationLineItemProps>,
-  'product'
+  'product' | 'price'
 > & {
+  /**
+   * Optional flat fields accepted by sanitization helpers
+   * When provided, they will be normalized into product.price and related fields
+   */
+  price?: number;
+  currency?: CurrencyEnum;
+  unit?: MeasureUnitId;
   product?: Omit<
     Partial<CreateReceivablesFormBeforeValidationLineItemProps['product']>,
     'type'

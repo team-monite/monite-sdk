@@ -1,24 +1,25 @@
-import { useState, useEffect } from 'react';
-
+import { useDocumentTemplatesApi } from '../hooks';
+import { TemplateName } from '../types';
+import { SelectableDocumentType } from '../types';
+import { formatTemplateName } from '../utils';
+import { LogoSelection } from './LogoSelection';
+import { TemplatesSelection } from './TemplatesSelection';
 import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Divider, CircularProgress } from '@mui/material';
+import { useState, useEffect } from 'react';
 
-import { useDocumentTemplatesApi } from '../hooks';
-import { TemplateName } from '../types';
-import { formatTemplateName } from '../utils';
-import { LogoSelection } from './LogoSelection';
-import { TemplatesSelection } from './TemplatesSelection';
-
-type DocumentTemplate = components['schemas']['TemplateReceivableResponse'];
-
-type Props = {
+type LayoutAndLogoProps = {
   shouldApplyDialogStyles?: boolean;
+  documentType?: SelectableDocumentType;
 };
 
-export const LayoutAndLogo = ({ shouldApplyDialogStyles }: Props) => {
+export const LayoutAndLogo = ({
+  shouldApplyDialogStyles,
+  documentType,
+}: LayoutAndLogoProps) => {
   const { i18n } = useLingui();
   const { componentSettings } = useMoniteContext();
   const {
@@ -26,7 +27,7 @@ export const LayoutAndLogo = ({ shouldApplyDialogStyles }: Props) => {
     defaultInvoiceTemplate,
     isLoading,
     setDefaultTemplate,
-  } = useDocumentTemplatesApi();
+  } = useDocumentTemplatesApi(documentType);
   const [selectedTemplate, setSelectedTemplate] = useState<DocumentTemplate>();
 
   useEffect(() => {
@@ -87,3 +88,5 @@ export const LayoutAndLogo = ({ shouldApplyDialogStyles }: Props) => {
     </div>
   );
 };
+
+type DocumentTemplate = components['schemas']['TemplateReceivableResponse'];

@@ -148,3 +148,9 @@ Object.defineProperty(window, 'matchMedia', {
     dispatchEvent: jest.fn(),
   })),
 });
+
+global.ResizeObserver = class ResizeObserver {
+  observe = jest.fn();
+  unobserve = jest.fn();
+  disconnect = jest.fn();
+};

@@ -10,7 +10,7 @@ export const useLocalStorageFields = <T>(
   componentPrefix: string,
   key: string,
   initialValue: T
-): [T, (value: T) => void, boolean, (checked: boolean) => void] => {
+): [T, (value: T | ((prev: T) => T)) => void, boolean, (checked: boolean) => void] => {
   const [storedValue, setStoredValue] = useState<T>(initialValue);
   const [isRemembered, setIsRemembered] = useState(false);
 
@@ -34,7 +34,7 @@ export const useLocalStorageFields = <T>(
     }
   }, [prefixedKey, rememberKey, initialValue]);
 
-  const setValue = (value: T) => {
+  const setValue = (value: T | ((prev: T) => T)) => {
     try {
       const valueToStore =
         value instanceof Function ? value(storedValue) : value;

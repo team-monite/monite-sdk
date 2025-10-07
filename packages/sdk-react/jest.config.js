@@ -30,9 +30,11 @@ const config = useSwcConfig
           },
         },
       ],
+      '^.+\\.css$': '<rootDir>/jest-css-transform.js',
     }
   : {
       '^.+\\.(t|j)sx?$': ['ts-jest'],
+      '^.+\\.css$': '<rootDir>/jest-css-transform.js',
     };
 
 module.exports = {
