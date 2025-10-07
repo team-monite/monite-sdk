@@ -1,5 +1,11 @@
 # @monite/sdk-drop-in
 
+## 2.5.8
+
+### Patch Changes
+
+- 874bd8c: Tables pagination customization
+
 ## 2.5.7
 
 ### Patch Changes

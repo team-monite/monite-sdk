@@ -1,5 +1,13 @@
 # @monite/sdk-react
 
+## 4.6.8
+
+### Patch Changes
+
+- 03fc51a: Add displayColumns setting for payables that allows to customize which columns to show on the Payables Table
+- 874bd8c: Tables pagination customization
+- f846567: Add settings and props to customize the Payable edit view: hide the discount button, hide the "add bank account" option on the counterpart bank account input
+
 ## 4.6.7
 
 ### Patch Changes
