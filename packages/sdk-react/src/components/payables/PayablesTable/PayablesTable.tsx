@@ -659,6 +659,9 @@ const PayablesTableBase = ({
           pagination: () => (
             <TablePagination
               pageSizeOptions={componentSettings.payables.pageSizeOptions}
+              paginationLayout={componentSettings.payables.paginationLayout}
+              navigationPosition={componentSettings.payables.navigationPosition}
+              pageSizePosition={componentSettings.payables.pageSizePosition}
               nextPage={payables?.next_pagination_token}
               prevPage={payables?.prev_pagination_token}
               paginationModel={{

@@ -4,6 +4,8 @@ import { useRootElements } from '@/core/context/RootElementsProvider';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
+
+import './TablePagination.theme';
 import {
   Box,
   Grid,
@@ -16,10 +18,13 @@ import {
 } from '@mui/material';
 import { styled, useThemeProps } from '@mui/material/styles';
 
+import { getLayoutStyles } from './getLayoutStyles';
+import type { PaginationLayout, PaginationPosition } from './TablePagination.types';
+
 const componentName = 'MoniteTablePagination' as const;
 const DEFAULT_PAGE_SIZE = 10 as const;
 
-type PaginationModel<T> = {
+export type PaginationModel<T> = {
   pageSize: number;
   page: T | null;
 };
@@ -37,17 +42,41 @@ interface MoniteTablePaginationRootSlotProps {
   pageSizeOptions?: number[];
 }
 
-export interface MoniteTablePaginationProps
-  extends MoniteTablePaginationSlotProps,
-    MoniteTablePaginationRootSlotProps {}
+interface MoniteTablePaginationLayoutProps {
+  /**
+   * Controls the layout of pagination controls.
+   * - 'default': Navigation arrows on left, page size selector on right
+   * - 'reversed': Page size selector on left, navigation arrows on right
+   * - 'centered': Both controls centered
+   * - 'custom': Use navigationPosition and pageSizePosition for fine-grained control
+   * @default 'default'
+   */
+  paginationLayout?: PaginationLayout;
+  /**
+   * Position of the navigation arrows (Previous/Next buttons).
+   * Only used when paginationLayout is 'custom'. Ignored for other layouts.
+   * @default 'left'
+   */
+  navigationPosition?: PaginationPosition;
+  /**
+   * Position of the page size selector.
+   * Only used when paginationLayout is 'custom'. Ignored for other layouts.
+   * @default 'right'
+   */
+  pageSizePosition?: PaginationPosition;
+}
 
-interface TablePaginationProps<T> extends MoniteTablePaginationProps {
+export type MoniteTablePaginationProps = MoniteTablePaginationSlotProps &
+  MoniteTablePaginationRootSlotProps &
+  MoniteTablePaginationLayoutProps;
+
+type TablePaginationProps<T> = MoniteTablePaginationProps & {
   paginationModel: PaginationModel<T> | { page: T };
   onPaginationModelChange: (paginationModel: PaginationModel<T>) => void;
   nextPage: T | undefined;
   prevPage: T | undefined;
   className?: string;
-}
+};
 
 /**
  * Provides a pagination component for tables.
@@ -56,6 +85,9 @@ interface TablePaginationProps<T> extends MoniteTablePaginationProps {
  * @param nextPage The next page number. If undefined, the next page button will be disabled.
  * @param prevPage The previous page number. If undefined, the previous page button will be disabled.
  * @param pageSizeOptions The page size options. If not provided, will be used from theme or hidden if only one option is available.
+ * @param paginationLayout Controls the layout of pagination controls. Options: 'default' (nav left, selector right), 'reversed' (selector left, nav right), 'centered' (both centered), 'custom' (use individual position props).
+ * @param navigationPosition Position of navigation arrows. Only used when paginationLayout is 'custom', ignored otherwise.
+ * @param pageSizePosition Position of page size selector. Only used when paginationLayout is 'custom', ignored otherwise.
  */
 export const TablePagination = <T,>({
   onPaginationModelChange,
@@ -64,12 +96,27 @@ export const TablePagination = <T,>({
   prevPage,
   pageSizeOptions: inSizeOptionsProp,
   slotProps: inSlotProps,
+  paginationLayout: inPaginationLayout,
+  navigationPosition: inNavigationPosition,
+  pageSizePosition: inPageSizePosition,
   className,
 }: TablePaginationProps<T>) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
-  const { pageSizeOptions, slotProps } = useThemeProps({
-    props: { pageSizeOptions: inSizeOptionsProp, slotProps: inSlotProps },
+  const {
+    pageSizeOptions,
+    slotProps,
+    paginationLayout = 'default',
+    navigationPosition = 'left',
+    pageSizePosition = 'right',
+  } = useThemeProps({
+    props: {
+      pageSizeOptions: inSizeOptionsProp,
+      slotProps: inSlotProps,
+      paginationLayout: inPaginationLayout,
+      navigationPosition: inNavigationPosition,
+      pageSizePosition: inPageSizePosition,
+    },
     name: componentName,
   });
 
@@ -80,13 +127,22 @@ export const TablePagination = <T,>({
 
   const hasPageSizeSelect = pageSizeOptions && pageSizeOptions.length > 1;
 
+  const layoutStyles = getLayoutStyles({
+    layout: paginationLayout,
+    navigationPosition,
+    pageSizePosition,
+    hasPageSizeSelect: !!hasPageSizeSelect,
+  });
+
   return (
     <RootGrid container mx={2} boxSizing="border-box" className={className}>
       <Grid
         xs={12}
         item
         display="flex"
-        justifyContent={hasPageSizeSelect ? 'space-between' : 'center'}
+        justifyContent={layoutStyles.justifyContent}
+        flexDirection={layoutStyles.flexDirection}
+        gap={layoutStyles.gap}
         pt={0.5}
         pb={1}
         alignItems="center"
@@ -145,7 +201,7 @@ export const TablePagination = <T,>({
                 onChange={(event) =>
                   void onPaginationModelChange({
                     page: null,
-                    pageSize: parseInt(event.target.value, DEFAULT_PAGE_SIZE),
+                    pageSize: parseInt(event.target.value, 10),
                   })
                 }
               >

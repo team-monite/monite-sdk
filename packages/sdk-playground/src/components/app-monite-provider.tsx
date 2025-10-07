@@ -31,6 +31,7 @@ const AppMoniteProvider = ({ children }: AppMoniteProvider) => {
       locale={{}}
       componentSettings={{
         receivables: {
+          paginationLayout: 'reversed',
           enableEntityBankAccount: true,
         },
         payables: {

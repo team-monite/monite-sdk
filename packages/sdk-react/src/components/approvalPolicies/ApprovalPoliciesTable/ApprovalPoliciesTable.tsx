@@ -291,6 +291,9 @@ const ApprovalPoliciesTableBase = ({
               pageSizeOptions={
                 componentSettings.approvalPolicies.pageSizeOptions
               }
+              paginationLayout={componentSettings.approvalPolicies.paginationLayout}
+              navigationPosition={componentSettings.approvalPolicies.navigationPosition}
+              pageSizePosition={componentSettings.approvalPolicies.pageSizePosition}
               nextPage={approvalPolicies?.next_pagination_token}
               prevPage={approvalPolicies?.prev_pagination_token}
               paginationModel={{

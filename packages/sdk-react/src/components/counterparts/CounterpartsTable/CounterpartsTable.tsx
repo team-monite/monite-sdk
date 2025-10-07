@@ -292,6 +292,9 @@ const CounterpartsTableBase = ({
           pagination: () => (
             <TablePagination
               pageSizeOptions={componentSettings.counterparts.pageSizeOptions}
+              paginationLayout={componentSettings.counterparts.paginationLayout}
+              navigationPosition={componentSettings.counterparts.navigationPosition}
+              pageSizePosition={componentSettings.counterparts.pageSizePosition}
               prevPage={counterparts?.prev_pagination_token}
               nextPage={counterparts?.next_pagination_token}
               paginationModel={{

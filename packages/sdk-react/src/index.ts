@@ -1,3 +1,5 @@
+import './ui/table/TablePagination.theme';
+
 export * from './components';
 
 export {
@@ -19,4 +21,20 @@ export {
   type CreateMoniteAPIClientResult,
   type CreateMoniteAPIClientOptions,
 } from '@/api/client';
-export type { ComponentSettings, PayActionHandlers } from './core/componentSettings';
+export type {
+  ComponentSettings,
+  PayActionHandlers,
+} from './core/componentSettings';
+export type {
+  MoniteApprovalRequestStatusChipProps,
+  MoniteInvoiceStatusChipProps,
+  MonitePayableStatusChipProps,
+  MoniteCounterpartStatusChipProps,
+  MoniteApprovalStatusChipProps,
+  MoniteInvoiceRecurrenceStatusChipProps,
+  MoniteInvoiceRecurrenceIterationStatusChipProps,
+} from './core/theme/types';
+export type {
+  PaginationLayout,
+  PaginationPosition,
+} from './ui/table/TablePagination.types';

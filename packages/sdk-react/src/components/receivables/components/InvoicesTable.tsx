@@ -488,6 +488,9 @@ const InvoicesTableBase = ({
           pagination: () => (
             <TablePagination
               pageSizeOptions={componentSettings.receivables.pageSizeOptions}
+              paginationLayout={componentSettings.receivables.paginationLayout}
+              navigationPosition={componentSettings.receivables.navigationPosition}
+              pageSizePosition={componentSettings.receivables.pageSizePosition}
               nextPage={invoices?.next_pagination_token}
               prevPage={invoices?.prev_pagination_token}
               paginationModel={{

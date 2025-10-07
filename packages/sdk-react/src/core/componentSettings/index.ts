@@ -21,7 +21,22 @@ import type { MoniteIconWrapperProps } from '@/ui/iconWrapper';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 
-interface ReceivableSettings extends MoniteReceivablesTableProps {
+import type {
+  PaginationLayout,
+  PaginationPosition,
+} from '@/ui/table/TablePagination.types';
+
+interface TablePaginationSettings {
+  /** Controls the layout of pagination controls */
+  paginationLayout?: PaginationLayout;
+  /** Position of navigation arrows when paginationLayout is 'custom' */
+  navigationPosition?: PaginationPosition;
+  /** Position of page size selector when paginationLayout is 'custom' */
+  pageSizePosition?: PaginationPosition;
+}
+
+interface ReceivableSettings
+  extends MoniteReceivablesTableProps, TablePaginationSettings {
   pageSizeOptions: number[];
   /** Callback to be called when an invoice is updated */
   onUpdate?: (
@@ -240,7 +255,8 @@ export type PayActionHandlers = {
 
 interface PayableSettings
   extends MonitePayableTableProps,
-    MonitePayableDetailsInfoProps {
+    MonitePayableDetailsInfoProps,
+    TablePaginationSettings {
   pageSizeOptions: number[];
   enableGLCodes?: boolean;
   hideAddDiscountButton?: boolean;
@@ -287,30 +303,29 @@ export interface ComponentSettings {
   };
   approvalPolicies: {
     pageSizeOptions: number[];
-  };
+  } & TablePaginationSettings;
   approvalRequests: {
     pageSizeOptions: number[];
-  };
+  } & TablePaginationSettings;
   counterparts: {
     pageSizeOptions: number[];
-
     /**
      * @see {@link CustomerTypes}
      * @param customerTypes - Array of customer types, defaults to ['customer', 'vendor']
      */
     customerTypes?: CustomerTypes;
-  };
+  } & TablePaginationSettings;
   payables: Partial<PayableSettings>;
   products: {
     pageSizeOptions: number[];
-  };
+  } & TablePaginationSettings;
   receivables: Partial<ReceivableSettings>;
   tags: {
     pageSizeOptions: number[];
-  };
+  } & TablePaginationSettings;
   userRoles: {
     pageSizeOptions: number[];
-  };
+  } & TablePaginationSettings;
   onboarding: Partial<OnboardingSettings>;
   financing: Partial<FinancingSettings>;
   templateSettings: Partial<TemplateSettings>;
@@ -334,16 +349,25 @@ export const getDefaultComponentSettings = (
     pageSizeOptions:
       componentSettings?.approvalPolicies?.pageSizeOptions ||
       defaultPageSizeOptions,
+    paginationLayout: componentSettings?.approvalPolicies?.paginationLayout,
+    navigationPosition: componentSettings?.approvalPolicies?.navigationPosition,
+    pageSizePosition: componentSettings?.approvalPolicies?.pageSizePosition,
   },
   approvalRequests: {
     pageSizeOptions:
       componentSettings?.approvalRequests?.pageSizeOptions ||
       defaultPageSizeOptions,
+    paginationLayout: componentSettings?.approvalRequests?.paginationLayout,
+    navigationPosition: componentSettings?.approvalRequests?.navigationPosition,
+    pageSizePosition: componentSettings?.approvalRequests?.pageSizePosition,
   },
   counterparts: {
     pageSizeOptions:
       componentSettings?.counterparts?.pageSizeOptions ||
       defaultPageSizeOptions,
+    paginationLayout: componentSettings?.counterparts?.paginationLayout,
+    navigationPosition: componentSettings?.counterparts?.navigationPosition,
+    pageSizePosition: componentSettings?.counterparts?.pageSizePosition,
     customerTypes: componentSettings?.counterparts?.customerTypes || [
       'customer',
       'vendor',
@@ -352,6 +376,9 @@ export const getDefaultComponentSettings = (
   payables: {
     pageSizeOptions:
       componentSettings?.payables?.pageSizeOptions || defaultPageSizeOptions,
+    paginationLayout: componentSettings?.payables?.paginationLayout,
+    navigationPosition: componentSettings?.payables?.navigationPosition,
+    pageSizePosition: componentSettings?.payables?.pageSizePosition,
     isShowingSummaryCards:
       componentSettings?.payables?.isShowingSummaryCards ?? true,
     fieldOrder:
@@ -385,10 +412,16 @@ export const getDefaultComponentSettings = (
   products: {
     pageSizeOptions:
       componentSettings?.products?.pageSizeOptions || defaultPageSizeOptions,
+    paginationLayout: componentSettings?.products?.paginationLayout,
+    navigationPosition: componentSettings?.products?.navigationPosition,
+    pageSizePosition: componentSettings?.products?.pageSizePosition,
   },
   receivables: {
     pageSizeOptions:
       componentSettings?.receivables?.pageSizeOptions || defaultPageSizeOptions,
+    paginationLayout: componentSettings?.receivables?.paginationLayout,
+    navigationPosition: componentSettings?.receivables?.navigationPosition,
+    pageSizePosition: componentSettings?.receivables?.pageSizePosition,
     tab: componentSettings?.receivables?.tab || 0,
     tabs: componentSettings?.receivables?.tabs || [
       {
@@ -424,10 +457,16 @@ export const getDefaultComponentSettings = (
   tags: {
     pageSizeOptions:
       componentSettings?.tags?.pageSizeOptions || defaultPageSizeOptions,
+    paginationLayout: componentSettings?.tags?.paginationLayout,
+    navigationPosition: componentSettings?.tags?.navigationPosition,
+    pageSizePosition: componentSettings?.tags?.pageSizePosition,
   },
   userRoles: {
     pageSizeOptions:
       componentSettings?.userRoles?.pageSizeOptions || defaultPageSizeOptions,
+    paginationLayout: componentSettings?.userRoles?.paginationLayout,
+    navigationPosition: componentSettings?.userRoles?.navigationPosition,
+    pageSizePosition: componentSettings?.userRoles?.pageSizePosition,
   },
   onboarding: {
     footerLogoUrl: componentSettings?.onboarding?.footerLogoUrl,
