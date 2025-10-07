@@ -644,7 +644,7 @@ msgstr "Add VAT ID"
 #~ msgid "Add your entity's tax registration number to issue invoice"
 #~ msgstr "Add your entity's tax registration number to issue invoice"
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:678
+#: src/components/payables/PayablesTable/PayablesTable.tsx:681
 msgid "Add your first bill"
 msgstr "Add your first bill"
 
@@ -1020,7 +1020,7 @@ msgid "Approval policies"
 msgstr "Approval policies"
 
 #: src/components/approvalPolicies/ApprovalPolicies.tsx:67
-#: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.tsx:315
+#: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.tsx:318
 #: src/components/rolesApprovals/RolesApprovalsTable.tsx:73
 msgid "Approval Policies"
 msgstr "Approval Policies"
@@ -1057,7 +1057,7 @@ msgstr "Approval request"
 #~ msgstr "Approval Request"
 
 #: src/components/approvalRequests/ApprovalRequests.tsx:79
-#: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:342
+#: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:345
 msgid "Approval Requests"
 msgstr "Approval Requests"
 
@@ -2489,9 +2489,9 @@ msgstr "Counseling Services"
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:186
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:159
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:242
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:315
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:320
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:322
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:318
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:323
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:325
 #: src/components/payables/PayableDetails/PayableDetailsForm/validation.ts:75
 #: src/components/userRoles/consts.ts:29
 msgid "Counterpart"
@@ -2599,7 +2599,7 @@ msgstr "Court Costs, Including Alimony and Child Support - Courts of Law"
 #: src/components/approvalPolicies/ApprovalPolicies.test.tsx:70
 #: src/components/approvalPolicies/ApprovalPolicies.tsx:80
 #: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.tsx:243
-#: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.tsx:316
+#: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.tsx:319
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyDetailsFormAdvanced/ApprovalPolicyDetailsFormAdvanced.tsx:288
 #: src/components/counterparts/CounterpartDetails/CounterpartDetails.test.tsx:593
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:452
@@ -2661,7 +2661,7 @@ msgstr "Create counterpart"
 #~ msgstr "Create Counterpart – Company"
 
 #: src/components/receivables/components/CreditNotesTable.tsx:210
-#: src/components/receivables/components/CreditNotesTable.tsx:280
+#: src/components/receivables/components/CreditNotesTable.tsx:283
 msgid "Create Credit Note"
 msgstr "Create Credit Note"
 
@@ -2681,7 +2681,7 @@ msgid "Create invoice"
 msgstr "Create invoice"
 
 #: src/components/receivables/components/InvoicesTable.test.tsx:128
-#: src/components/receivables/components/InvoicesTable.tsx:513
+#: src/components/receivables/components/InvoicesTable.tsx:516
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:89
 #: src/components/receivables/Receivables.test.tsx:34
 #: src/components/receivables/Receivables.test.tsx:75
@@ -2693,13 +2693,13 @@ msgstr "Create Invoice"
 #: src/components/approvalPolicies/RolesAndPolicies.tsx:210
 #: src/components/counterparts/Counterparts.tsx:113
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:241
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:321
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:324
 #: src/components/products/Products.tsx:114
-#: src/components/products/ProductsTable/ProductsTable.tsx:314
+#: src/components/products/ProductsTable/ProductsTable.tsx:317
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:314
 #: src/components/tags/Tags.tsx:71
 #: src/components/userRoles/UserRolesTable/UserRolesTable.tsx:196
-#: src/components/userRoles/UserRolesTable/UserRolesTable.tsx:267
+#: src/components/userRoles/UserRolesTable/UserRolesTable.tsx:270
 msgid "Create new"
 msgstr "Create new"
 
@@ -2742,7 +2742,7 @@ msgstr "Create new product or service"
 #: src/components/tags/Tags.test.tsx:41
 #: src/components/tags/Tags.test.tsx:65
 #: src/components/tags/TagsTable/TagsTable.tsx:187
-#: src/components/tags/TagsTable/TagsTable.tsx:252
+#: src/components/tags/TagsTable/TagsTable.tsx:255
 #: src/ui/TagsAutocomplete/TagsAutocomplete.tsx:129
 msgid "Create new tag"
 msgstr "Create new tag"
@@ -2757,7 +2757,7 @@ msgid "Create product or service"
 msgstr "Create product or service"
 
 #: src/components/receivables/components/QuotesTable.tsx:232
-#: src/components/receivables/components/QuotesTable.tsx:300
+#: src/components/receivables/components/QuotesTable.tsx:303
 msgid "Create Quote"
 msgstr "Create Quote"
 
@@ -2777,7 +2777,7 @@ msgstr "Create user role"
 msgid "Create your first counterpart."
 msgstr "Create your first counterpart."
 
-#: src/components/products/ProductsTable/ProductsTable.tsx:320
+#: src/components/products/ProductsTable/ProductsTable.tsx:323
 msgid "Create your first product or service"
 msgstr "Create your first product or service"
 
@@ -2835,11 +2835,11 @@ msgstr "Credit applied on {0}"
 msgid "Credit note"
 msgstr "Credit note"
 
-#: src/core/componentSettings/index.ts:396
+#: src/core/componentSettings/index.ts:429
 msgid "Credit notes"
 msgstr "Credit notes"
 
-#: src/components/receivables/components/CreditNotesTable.tsx:279
+#: src/components/receivables/components/CreditNotesTable.tsx:282
 msgid "Credit Notes"
 msgstr "Credit Notes"
 
@@ -5319,15 +5319,15 @@ msgstr "Invalid URL. Please ensure it starts with 'http://' or 'https://'."
 #: src/components/financing/components/FinancedInvoicesTable.tsx:309
 #: src/components/receivables/components/CreditNotesTable.tsx:211
 #: src/components/receivables/components/CreditNotesTable.tsx:213
-#: src/components/receivables/components/CreditNotesTable.tsx:281
+#: src/components/receivables/components/CreditNotesTable.tsx:284
 #: src/components/receivables/components/InvoiceDetails.test.tsx:158
 #: src/components/receivables/components/InvoiceDetails.test.tsx:302
 #: src/components/receivables/components/InvoiceDetails.tsx:174
-#: src/components/receivables/components/InvoicesTable.tsx:514
+#: src/components/receivables/components/InvoicesTable.tsx:517
 #: src/components/receivables/components/QuotesTable.tsx:233
 #: src/components/receivables/components/QuotesTable.tsx:235
-#: src/components/receivables/components/QuotesTable.tsx:301
-#: src/components/receivables/components/QuotesTable.tsx:303
+#: src/components/receivables/components/QuotesTable.tsx:304
+#: src/components/receivables/components/QuotesTable.tsx:306
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewLegacy.tsx:77
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewMonite.tsx:92
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:370
@@ -5453,8 +5453,8 @@ msgstr "Invoice was marked as uncollectible."
 msgid "Invoice will be issued with items in the selected currency"
 msgstr "Invoice will be issued with items in the selected currency"
 
-#: src/components/receivables/components/InvoicesTable.tsx:512
-#: src/core/componentSettings/index.ts:388
+#: src/components/receivables/components/InvoicesTable.tsx:515
+#: src/core/componentSettings/index.ts:421
 msgid "Invoices"
 msgstr "Invoices"
 
@@ -6648,8 +6648,8 @@ msgstr "Next order number must be more than the last issued"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:96
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.test.tsx:100
-#: src/ui/table/TablePagination.tsx:114
-#: src/ui/table/TablePagination.tsx:127
+#: src/ui/table/TablePagination.tsx:170
+#: src/ui/table/TablePagination.tsx:183
 msgid "Next page"
 msgstr "Next page"
 
@@ -6702,11 +6702,11 @@ msgstr "No Approval Policies"
 msgid "No Approval Requests"
 msgstr "No Approval Requests"
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:679
+#: src/components/payables/PayablesTable/PayablesTable.tsx:682
 msgid "No bills found"
 msgstr "No bills found"
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:676
+#: src/components/payables/PayablesTable/PayablesTable.tsx:679
 msgid "No bills yet"
 msgstr "No bills yet"
 
@@ -6793,11 +6793,11 @@ msgstr "No payments have been received for this invoice."
 msgid "no policy"
 msgstr "no policy"
 
-#: src/components/products/ProductsTable/ProductsTable.tsx:308
+#: src/components/products/ProductsTable/ProductsTable.tsx:311
 msgid "No product or service found"
 msgstr "No product or service found"
 
-#: src/components/products/ProductsTable/ProductsTable.tsx:316
+#: src/components/products/ProductsTable/ProductsTable.tsx:319
 msgid "No products or services yet"
 msgstr "No products or services yet"
 
@@ -7231,7 +7231,7 @@ msgstr "Pay in the first {0} days"
 msgid "Pay out the financed sum:"
 msgstr "Pay out the financed sum:"
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:693
+#: src/components/payables/PayablesTable/PayablesTable.tsx:696
 #: src/components/userRoles/consts.ts:38
 msgid "Payable"
 msgstr "Payable"
@@ -7873,8 +7873,8 @@ msgstr "Preview email"
 msgid "Preview of {0}"
 msgstr "Preview of {0}"
 
-#: src/ui/table/TablePagination.tsx:97
-#: src/ui/table/TablePagination.tsx:110
+#: src/ui/table/TablePagination.tsx:153
+#: src/ui/table/TablePagination.tsx:166
 msgid "Previous page"
 msgstr "Previous page"
 
@@ -7933,7 +7933,7 @@ msgstr "Processing..."
 
 #: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:127
 #: src/components/products/ProductDetails/components/ProductType/ProductType.tsx:18
-#: src/components/products/ProductsTable/ProductsTable.tsx:315
+#: src/components/products/ProductsTable/ProductsTable.tsx:318
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTableFilters.tsx:72
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewLegacy.tsx:214
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewMonite.tsx:279
@@ -7991,7 +7991,7 @@ msgstr "Products & Services"
 #~ msgid "Products delete confirmation"
 #~ msgstr "Products delete confirmation"
 
-#: src/components/products/ProductsTable/ProductsTable.tsx:313
+#: src/components/products/ProductsTable/ProductsTable.tsx:316
 msgid "products or services"
 msgstr "products or services"
 
@@ -8101,8 +8101,8 @@ msgstr "Quit without saving"
 msgid "Quote"
 msgstr "Quote"
 
-#: src/components/receivables/components/QuotesTable.tsx:299
-#: src/core/componentSettings/index.ts:392
+#: src/components/receivables/components/QuotesTable.tsx:302
+#: src/core/componentSettings/index.ts:425
 msgid "Quotes"
 msgstr "Quotes"
 
@@ -8410,7 +8410,7 @@ msgstr "Required"
 #~ msgid "Required for USD and GBP currencies"
 #~ msgstr "Required for USD and GBP currencies"
 
-#: src/ui/table/TablePagination.tsx:133
+#: src/ui/table/TablePagination.tsx:189
 msgid "Results per page"
 msgstr "Results per page"
 
@@ -8429,7 +8429,7 @@ msgstr "Review terms and sign"
 
 #: src/components/userRoles/consts.ts:47
 #: src/components/userRoles/UserRolesTable/UserRolesTable.tsx:197
-#: src/components/userRoles/UserRolesTable/UserRolesTable.tsx:268
+#: src/components/userRoles/UserRolesTable/UserRolesTable.tsx:271
 msgid "Role"
 msgstr "Role"
 
@@ -8456,7 +8456,7 @@ msgstr "Role Name"
 msgid "Role not found"
 msgstr "Role not found"
 
-#: src/components/userRoles/UserRolesTable/UserRolesTable.tsx:266
+#: src/components/userRoles/UserRolesTable/UserRolesTable.tsx:269
 msgid "Roles"
 msgstr "Roles"
 
@@ -8512,7 +8512,7 @@ msgstr "Routing number must be 9 digits"
 msgid "Row"
 msgstr "Row"
 
-#: src/ui/table/TablePagination.tsx:139
+#: src/ui/table/TablePagination.tsx:195
 msgid "Rows per page"
 msgstr "Rows per page"
 
@@ -9351,7 +9351,7 @@ msgstr "Syrian Arab Republic"
 #: src/components/payables/PayableDetails/PayableDetailsForm/validation.ts:68
 #: src/components/tags/TagsTable/TagsTable.tsx:188
 #: src/components/tags/TagsTable/TagsTable.tsx:190
-#: src/components/tags/TagsTable/TagsTable.tsx:253
+#: src/components/tags/TagsTable/TagsTable.tsx:256
 #: src/components/userRoles/consts.ts:48
 msgid "Tag"
 msgstr "Tag"
@@ -9378,7 +9378,7 @@ msgstr "Tag “{0}” was updated”"
 #: src/components/payables/PayableDetails/PayableDetailsForm/validation.ts:91
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:407
 #: src/components/tags/Tags.tsx:59
-#: src/components/tags/TagsTable/TagsTable.tsx:251
+#: src/components/tags/TagsTable/TagsTable.tsx:254
 msgid "Tags"
 msgstr "Tags"
 
@@ -10055,7 +10055,7 @@ msgstr "Truck StopIteration"
 msgid "Truck/Utility Trailer Rentals"
 msgstr "Truck/Utility Trailer Rentals"
 
-#: src/components/products/ProductsTable/ProductsTable.tsx:309
+#: src/components/products/ProductsTable/ProductsTable.tsx:312
 msgid "Try adjusting your search or filter criteria"
 msgstr "Try adjusting your search or filter criteria"
 
@@ -11003,7 +11003,7 @@ msgstr "You don’t have any approval policies yet."
 msgid "You don’t have any approval requests yet."
 msgstr "You don’t have any approval requests yet."
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:677
+#: src/components/payables/PayablesTable/PayablesTable.tsx:680
 msgid "You don’t have any bills yet"
 msgstr "You don’t have any bills yet"
 
@@ -11019,7 +11019,7 @@ msgstr "You don’t have any credit notes yet."
 msgid "You don’t have any invoices yet."
 msgstr "You don’t have any invoices yet."
 
-#: src/components/products/ProductsTable/ProductsTable.tsx:317
+#: src/components/products/ProductsTable/ProductsTable.tsx:320
 msgid "You don’t have any products or services yet"
 msgstr "You don’t have any products or services yet"
 
