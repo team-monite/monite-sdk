@@ -35,8 +35,23 @@ const AppMoniteProvider = ({ children }: AppMoniteProvider) => {
           enableEntityBankAccount: true,
         },
         payables: {
+          // TODO: remove after testing. Just for testing purposes
           hideAddDiscountButton: true,
+          // TODO: remove after testing. Just for testing purposes
           hideAddBankAccountButton: true,
+          // TODO: remove after testing. Just for testing purposes
+          displayColumns: [
+            'document_id',
+            // 'counterpart_id',
+            'created_at',
+            // 'issued_at',
+            'due_date',
+            'status',
+            'amount',
+            // 'amount_to_pay',
+            'amount_paid',
+            'pay',
+          ],
         },
       }}
     >

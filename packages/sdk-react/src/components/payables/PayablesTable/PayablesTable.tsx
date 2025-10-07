@@ -119,6 +119,8 @@ export interface PayableGridSortModel {
  * const componentSettings = {
  *   payables: {
  *     fieldOrder: ['document_id', 'counterpart_id', 'created_at', 'issued_at', 'due_date', 'status', 'amount', 'pay'],
+ *     requiredColumns: ['document_id', 'status', 'amount', 'pay'],
+ *     displayColumns: ['document_id', 'counterpart_id', 'status', 'amount', 'pay'],
  *     summaryCardFilters: {
  *       'Overdue Invoices': {
  *         status__in: ['waiting_to_be_paid'],
@@ -154,6 +156,7 @@ const PayablesTableBase = ({
     isShowingSummaryCards,
     fieldOrder,
     requiredColumns,
+    displayColumns,
     summaryCardFilters,
   } = usePayableTableThemeProps(inProps);
 
@@ -533,7 +536,15 @@ const PayablesTableBase = ({
   ]);
 
   const columns = useMemo<GridColDef[]>(() => {
-    return columnsConfig.sort((a, b) => {
+    // Filter columns based on displayColumns prop
+    const filteredColumns = displayColumns
+      ? columnsConfig.filter((column) =>
+          displayColumns.includes(column.field as any)
+        )
+      : columnsConfig;
+
+    // Sort columns based on calculatedFieldOrder prop
+    return filteredColumns.sort((a, b) => {
       const aIndex = calculatedFieldOrder.indexOf(a.field);
       const bIndex = calculatedFieldOrder.indexOf(b.field);
 
@@ -541,7 +552,7 @@ const PayablesTableBase = ({
 
       return aIndex - bIndex;
     });
-  }, [columnsConfig, calculatedFieldOrder]);
+  }, [columnsConfig, calculatedFieldOrder, displayColumns]);
 
   const gridApiRef = useAutosizeGridColumns(
     payables?.data,
@@ -720,5 +731,7 @@ const usePayableTableThemeProps = (
       componentSettings?.payables?.summaryCardFilters,
     requiredColumns:
       inProps?.requiredColumns ?? componentSettings?.payables?.requiredColumns,
+    displayColumns:
+      inProps?.displayColumns ?? componentSettings?.payables?.displayColumns,
   };
 };

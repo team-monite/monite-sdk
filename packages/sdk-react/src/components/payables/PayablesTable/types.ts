@@ -1,12 +1,11 @@
-import { components } from '@/api';
-import { API } from '@/api/client';
-
 import {
   FILTER_TYPE_SUMMARY_CARD,
   FILTER_TYPE_DUE_DATE,
   FILTER_TYPE_SEARCH,
   FILTER_TYPE_STATUS,
 } from './consts';
+import { components } from '@/api';
+import { API } from '@/api/client';
 
 export type Sort = {
   sort: components['schemas']['PayableCursorFields'];
@@ -46,6 +45,7 @@ export interface MonitePayableTableProps {
   fieldOrder?: [FieldValueTypes, ...FieldValueTypes[]];
   summaryCardFilters?: Record<string, PayablesTabFilter | null>;
   requiredColumns?: [FieldValueTypes, ...FieldValueTypes[]];
+  displayColumns?: [FieldValueTypes, ...FieldValueTypes[]];
 }
 
 export type PayablesTabFilter = NonNullable<
