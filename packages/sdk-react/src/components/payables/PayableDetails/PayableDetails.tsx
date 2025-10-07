@@ -1,5 +1,7 @@
-import { useId, useState } from 'react';
-
+import { OptionalFields } from '../types';
+import { PayableDetailsForceActionDialog } from './PayableDetailsApprovalFlow/PayableDetailsForceActionDialog';
+import { PayableDetailsForm } from './PayableDetailsForm';
+import { usePayableDetails, UsePayableDetailsProps } from './usePayableDetails';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { CustomerTypes } from '@/components/counterparts/types';
 import { PayableDetailsAttachFile } from '@/components/payables/PayableDetails/PayableDetailsAttachFile';
@@ -9,25 +11,23 @@ import { PayableDetailsNoAttachedFile } from '@/components/payables/PayableDetai
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
-import { AccessRestriction } from '@/ui/accessRestriction';
 import { FileViewer } from '@/ui/FileViewer';
+import { AccessRestriction } from '@/ui/accessRestriction';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
 import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Alert, Backdrop, Box, DialogContent, Grid } from '@mui/material';
-
-import { OptionalFields } from '../types';
-import { PayableDetailsForceActionDialog } from './PayableDetailsApprovalFlow/PayableDetailsForceActionDialog';
-import { PayableDetailsForm } from './PayableDetailsForm';
-import { usePayableDetails, UsePayableDetailsProps } from './usePayableDetails';
+import { useId, useState } from 'react';
 
 export interface PayablesDetailsProps extends UsePayableDetailsProps {
   optionalFields?: OptionalFields;
   /** @see {@link CustomerTypes} */
   customerTypes?: CustomerTypes;
   enableGLCodes?: boolean;
+  hideAddDiscountButton?: boolean;
+  hideAddBankAccountButton?: boolean;
   onClose?: () => void;
 }
 
@@ -42,6 +42,8 @@ const PayableDetailsBase = ({
   optionalFields,
   customerTypes,
   enableGLCodes,
+  hideAddDiscountButton,
+  hideAddBankAccountButton,
   onClose,
   onSaved,
   onCanceled,
@@ -238,6 +240,14 @@ const PayableDetailsBase = ({
                     componentSettings?.counterparts?.customerTypes
                   }
                   enableGLCodes={enableGLCodes}
+                  hideAddDiscountButton={
+                    hideAddDiscountButton ??
+                    componentSettings?.payables?.hideAddDiscountButton
+                  }
+                  hideAddBankAccountButton={
+                    hideAddBankAccountButton ??
+                    componentSettings?.payables?.hideAddBankAccountButton
+                  }
                 />
               ) : (
                 payable && (

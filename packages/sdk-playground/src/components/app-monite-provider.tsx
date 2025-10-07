@@ -35,6 +35,10 @@ const AppMoniteProvider = ({ children }: AppMoniteProvider) => {
         },
         payables: {
           // TODO: remove after testing. Just for testing purposes
+          hideAddDiscountButton: true,
+          // TODO: remove after testing. Just for testing purposes
+          hideAddBankAccountButton: true,
+          // TODO: remove after testing. Just for testing purposes
           displayColumns: [
             'document_id',
             // 'counterpart_id',

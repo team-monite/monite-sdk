@@ -244,6 +244,8 @@ interface PayableSettings
     MonitePayableDetailsInfoProps {
   pageSizeOptions: number[];
   enableGLCodes?: boolean;
+  hideAddDiscountButton?: boolean;
+  hideAddBankAccountButton?: boolean;
   onSaved?: (id: string) => void;
   onCanceled?: (id: string) => void;
   onSubmitted?: (id: string) => void;
@@ -373,6 +375,12 @@ export const getDefaultComponentSettings = (
     },
     isTagsDisabled: componentSettings?.payables?.isTagsDisabled,
     enableGLCodes: componentSettings?.payables?.enableGLCodes ?? false,
+    /** Whether to hide the "Add Discount" button in the totals section **/
+    hideAddDiscountButton:
+      componentSettings?.payables?.hideAddDiscountButton ?? false,
+    /** Whether to hide the "Add new bank account" button in the counterpart bank account select **/
+    hideAddBankAccountButton:
+      componentSettings?.payables?.hideAddBankAccountButton ?? false,
     onSaved: componentSettings?.payables?.onSaved,
     onCanceled: componentSettings?.payables?.onCanceled,
     onSubmitted: componentSettings?.payables?.onSubmitted,
