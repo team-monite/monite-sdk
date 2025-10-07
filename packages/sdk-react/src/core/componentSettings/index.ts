@@ -358,11 +358,17 @@ export const getDefaultComponentSettings = (
     fieldOrder:
       componentSettings?.payables?.fieldOrder || defaultPayableFieldOrder,
     summaryCardFilters: componentSettings?.payables?.summaryCardFilters,
+    /**
+     * Specifies which columns are required in the table. Meaning that the user can't remove them from the table.
+     * If not provided, defaults to ['document_id'].
+     * @example ['document_id', 'counterpart_id', 'status', 'amount', 'pay']
+     */
     requiredColumns:
       componentSettings?.payables?.requiredColumns || defaultRequiredColumns,
     /**
      * Specifies which columns to display in the table.
-     * If not provided, all available columns will be displayed by default.
+     * Takes precedence over requiredColumns, meaning that columns not in displayColumns will be removed from the table even if they are required.
+     * If not provided, defaults to all available columns.
      * @example ['document_id', 'counterpart_id', 'status', 'amount', 'pay']
      */
     displayColumns:
