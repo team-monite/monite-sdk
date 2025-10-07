@@ -1,3 +1,7 @@
+import {
+  defaultAvailableCountries,
+  defaultAvailableCurrencies,
+} from '../utils';
 import { components } from '@/api';
 import { CustomerTypes } from '@/components/counterparts/types';
 import { FINANCING_LABEL } from '@/components/financing/consts';
@@ -36,8 +40,7 @@ interface TablePaginationSettings {
 }
 
 interface ReceivableSettings
-  extends MoniteReceivablesTableProps,
-    TablePaginationSettings {
+  extends MoniteReceivablesTableProps, TablePaginationSettings {
   pageSizeOptions: number[];
   /** Callback to be called when an invoice is updated */
   onUpdate?: (
@@ -211,13 +214,13 @@ export interface TemplateSettings {
 
 /**
  * Action handlers for custom payment flows in payable operations.
- * 
+ *
  * These handlers provide fine-grained control over payment workflows, allowing customers to:
  * - Integrate external payment providers
  * - Implement custom approval processes or multi-step authentication
  * - Add specialized banking solutions or enterprise payment workflows
  * - Control UI feedback and data refresh timing after payment completion
- * 
+ *
  * @example Custom payment provider integration:
  * ```typescript
  * const onPay = (id: string, _data?: unknown, actions?: PayActionHandlers) => {
@@ -235,19 +238,19 @@ export interface TemplateSettings {
  * ```
  */
 export type PayActionHandlers = {
-  /** 
+  /**
    * Call when a custom payment flow has been successfully initiated/completed.
-   * This triggers SDK's built-in state management: refreshes payable data, 
+   * This triggers SDK's built-in state management: refreshes payable data,
    * payment records, and optionally displays success feedback to the user.
-   * 
+   *
    * @param options.showToast - Whether to display a success toast notification
    */
   resolve: (options?: { showToast?: boolean }) => void;
-  /** 
+  /**
    * Call when a custom payment flow failed or was cancelled by the user.
    * This triggers SDK's built-in state management: refreshes payable data,
    * payment records, and optionally displays error feedback to the user.
-   * 
+   *
    * @param error - Optional error details from the failed payment attempt
    * @param options.showToast - Whether to display an error toast notification
    */
@@ -260,6 +263,8 @@ interface PayableSettings
     TablePaginationSettings {
   pageSizeOptions: number[];
   enableGLCodes?: boolean;
+  hideAddDiscountButton?: boolean;
+  hideAddBankAccountButton?: boolean;
   onSaved?: (id: string) => void;
   onCanceled?: (id: string) => void;
   onSubmitted?: (id: string) => void;
@@ -269,14 +274,14 @@ interface PayableSettings
   onDeleted?: (id: string) => void;
   /**
    * Called when the user clicks Pay button on a payable.
-   * 
+   *
    * **Legacy Usage (Backward Compatible):**
    * ```typescript
    * onPay: (id: string) => {
    *   console.log('Payment initiated for:', id);
    * }
    * ```
-   * 
+   *
    * **Enhanced Usage (Custom Payment Flow):**
    * ```typescript
    * onPay: (id: string, _data?: unknown, actions?: PayActionHandlers) => {
@@ -286,11 +291,11 @@ interface PayableSettings
    *     .catch(err => actions?.reject(err, { showToast: true }));
    * }
    * ```
-   * 
+   *
    * @param id - The payable ID being paid
    * @param _data - Reserved for future use (currently undefined)
    * @param actions - Optional handlers for custom payment flows. When provided,
-   *                  enables custom payment integration. Call actions.resolve() 
+   *                  enables custom payment integration. Call actions.resolve()
    *                  on success or actions.reject() on failure to update SDK state.
    */
   onPay?: (id: string, _data?: unknown, actions?: PayActionHandlers) => void;
@@ -393,6 +398,12 @@ export const getDefaultComponentSettings = (
     },
     isTagsDisabled: componentSettings?.payables?.isTagsDisabled,
     enableGLCodes: componentSettings?.payables?.enableGLCodes ?? false,
+    /** Whether to hide the "Add Discount" button in the totals section **/
+    hideAddDiscountButton:
+      componentSettings?.payables?.hideAddDiscountButton ?? false,
+    /** Whether to hide the "Add new bank account" button in the counterpart bank account select **/
+    hideAddBankAccountButton:
+      componentSettings?.payables?.hideAddBankAccountButton ?? false,
     onSaved: componentSettings?.payables?.onSaved,
     onCanceled: componentSettings?.payables?.onCanceled,
     onSubmitted: componentSettings?.payables?.onSubmitted,

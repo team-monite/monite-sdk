@@ -1,8 +1,7 @@
-import { type ComponentProps, type ReactNode, useMemo } from 'react';
-
 import { fetchToken } from '@/services/fetch-token';
 import { getLoginEnvData } from '@/services/login-env-data';
 import { MoniteProvider } from '@monite/sdk-react';
+import { type ComponentProps, type ReactNode, useMemo } from 'react';
 
 type AppMoniteProvider = {
   children: ReactNode;
@@ -34,6 +33,10 @@ const AppMoniteProvider = ({ children }: AppMoniteProvider) => {
         receivables: {
           paginationLayout: 'reversed',
           enableEntityBankAccount: true,
+        },
+        payables: {
+          hideAddDiscountButton: true,
+          hideAddBankAccountButton: true,
         },
       }}
     >
