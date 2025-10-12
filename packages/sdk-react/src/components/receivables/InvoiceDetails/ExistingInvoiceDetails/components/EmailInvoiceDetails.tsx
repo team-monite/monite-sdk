@@ -187,7 +187,7 @@ export const EmailInvoiceDetailsBase = ({
           toast.error(
             t(
               i18n
-            )`No active payment methods available. The email will be sent without a payment link`
+            )`You haven’t onboarded for any payment method. Invoice is issued without a payment link.`
           );
         } else {
           await issue(undefined);
