@@ -1,5 +1,3 @@
-import { forwardRef } from 'react';
-
 import { components } from '@/api';
 import {
   getRowToStatusTextMap,
@@ -9,12 +7,13 @@ import { useLingui } from '@lingui/react';
 import { Circle } from '@mui/icons-material';
 import { Chip, ChipProps } from '@mui/material';
 import { lighten, styled, useTheme, useThemeProps } from '@mui/material/styles';
+import { forwardRef } from 'react';
 
 export interface MonitePayableStatusChipProps {
   /** The status of the payable. */
   status: components['schemas']['PayableStateEnum'];
-  /** Display status icon? */
-  icon?: boolean;
+  /** Display status icon? Set to false for dot, true for full icon, null to hide completely */
+  icon?: boolean | null;
   /** The variant of the Chip. */
   variant?: ChipProps['variant'];
   /** The size of the Chip. */
@@ -52,7 +51,7 @@ export const PayableStatusChip = forwardRef<
         },
       }}
       icon={
-        icon && Icon ? (
+        icon === null ? undefined : icon && Icon ? (
           <Icon fontSize="small" />
         ) : (
           <Circle sx={{ fontSize: '10px !important' }} />

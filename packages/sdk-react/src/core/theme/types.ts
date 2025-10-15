@@ -127,8 +127,8 @@ interface BaseChipProps {
 }
 
 interface BaseStatusChipProps extends BaseChipProps {
-  /** Display status icon? */
-  icon?: boolean;
+  /** Display status icon? Set to false for dot, true for full icon, null to hide completely */
+  icon?: boolean | null;
 }
 
 export type MoniteCounterpartType = 'customer' | 'vendor';

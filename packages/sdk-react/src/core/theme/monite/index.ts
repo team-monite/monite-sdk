@@ -78,7 +78,10 @@ export const getTheme = (theme: ThemeConfig) => {
         variant: theme.components?.invoiceStatusChip?.variant || 'filled',
       },
       payableStatusChip: {
-        icon: theme.components?.payableStatusChip?.icon || false,
+        icon:
+          theme.components?.payableStatusChip?.icon !== undefined
+            ? theme.components?.payableStatusChip?.icon
+            : false,
         size: theme.components?.payableStatusChip?.size || 'small',
         variant: theme.components?.payableStatusChip?.variant || 'filled',
       },
