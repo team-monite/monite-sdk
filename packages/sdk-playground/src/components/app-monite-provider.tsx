@@ -33,6 +33,9 @@ const AppMoniteProvider = ({ children }: AppMoniteProvider) => {
         components: {
           payableStatusChip: {
             icon: null,
+            colors: {
+              draft: '#3bf67c',
+            },
           },
         },
       }}
