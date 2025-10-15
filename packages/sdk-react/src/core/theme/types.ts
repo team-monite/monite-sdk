@@ -26,6 +26,8 @@ export type ThemeConfig = {
     background?: string;
 
     text?: string;
+
+    rowBorder?: string;
   };
 
   typography?: {
