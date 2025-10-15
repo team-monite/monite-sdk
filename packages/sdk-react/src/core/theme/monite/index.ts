@@ -21,6 +21,8 @@ export const getTheme = (theme: ThemeConfig) => {
       background: theme.colors?.background || '#FFFFFF',
 
       text: theme.colors?.text || '#292929',
+
+      rowBorder: theme.colors?.rowBorder || '#F0F2F4',
     },
 
     typography: {

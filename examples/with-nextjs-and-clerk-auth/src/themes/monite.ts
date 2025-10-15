@@ -870,7 +870,6 @@ const defaultMoniteComponents: Components & {
         borderTopRightRadius: 0,
         borderBottomLeftRadius: '6px',
         borderBottomRightRadius: '6px',
-        '--DataGrid-rowBorderColor': 'divider',
         '& .MuiDataGrid-withBorderColor': {
           borderColor: 'divider',
         },
