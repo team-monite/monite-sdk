@@ -1278,6 +1278,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
         icon: moniteTheme.components.payableStatusChip.icon,
         size: moniteTheme.components.payableStatusChip.size,
         variant: moniteTheme.components.payableStatusChip.variant,
+        colors: moniteTheme.components.payableStatusChip.colors,
       },
       styleOverrides: {
         root: {

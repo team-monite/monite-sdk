@@ -153,6 +153,8 @@ export interface MoniteInvoiceRecurrenceIterationStatusChipProps
 export interface MonitePayableStatusChipProps extends BaseStatusChipProps {
   /** The status of the payable. */
   status: components['schemas']['PayableStateEnum'];
+  /** Custom colors for each payable status */
+  colors?: Partial<Record<components['schemas']['PayableStateEnum'], string>>;
 }
 
 export interface MoniteCounterpartStatusChipProps extends BaseChipProps {

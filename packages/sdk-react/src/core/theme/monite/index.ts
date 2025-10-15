@@ -84,6 +84,7 @@ export const getTheme = (theme: ThemeConfig) => {
             : false,
         size: theme.components?.payableStatusChip?.size || 'small',
         variant: theme.components?.payableStatusChip?.variant || 'filled',
+        colors: theme.components?.payableStatusChip?.colors,
       },
       approvalRequestStatusChip: {
         icon: theme.components?.approvalRequestStatusChip?.icon || false,

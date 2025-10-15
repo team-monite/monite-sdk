@@ -18,6 +18,8 @@ export interface MonitePayableStatusChipProps {
   variant?: ChipProps['variant'];
   /** The size of the Chip. */
   size?: ChipProps['size'];
+  /** Custom colors for each payable status */
+  colors?: Partial<Record<components['schemas']['PayableStateEnum'], string>>;
 }
 
 /**
@@ -27,7 +29,7 @@ export const PayableStatusChip = forwardRef<
   HTMLDivElement,
   MonitePayableStatusChipProps
 >((inProps, ref) => {
-  const { status, icon, size } = useThemeProps({
+  const { status, icon, size, colors } = useThemeProps({
     props: inProps,
     name: 'MonitePayableStatusChip',
   });
@@ -36,7 +38,8 @@ export const PayableStatusChip = forwardRef<
   const theme = useTheme();
 
   const Icon = PAYABLE_STATUS_TO_MUI_ICON_MAP[status];
-  const statusColor = theme.palette.status[status] ?? theme.palette.grey[300];
+  const statusColor =
+    colors?.[status] ?? theme.palette.status[status] ?? theme.palette.grey[300];
 
   return (
     <StyledChip
