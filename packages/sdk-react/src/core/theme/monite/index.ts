@@ -119,6 +119,7 @@ export const getTheme = (theme: ThemeConfig) => {
         size: theme.components?.approvalStatusChip?.size || 'small',
         variant: theme.components?.approvalStatusChip?.variant || 'filled',
       },
+      styles: theme.components?.styles,
     },
   };
 };

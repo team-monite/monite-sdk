@@ -65,7 +65,7 @@ export const CreatePayableMenu = ({
   };
 
   return (
-    <>
+    <div className="Monite-Payables">
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button variant="default" size="lg" disabled={!isCreateAllowed}>
@@ -75,7 +75,7 @@ export const CreatePayableMenu = ({
         </PopoverTrigger>
         <PopoverContent
           align="end"
-          className="mtw:w-auto mtw:min-w-[550px] mtw:border-none"
+          className="Monite-Payables mtw:w-auto mtw:min-w-[550px] mtw:border-none"
         >
           <div
             className="mtw:p-4 mtw:w-[550px]"
@@ -148,8 +148,8 @@ export const CreatePayableMenu = ({
         {t(i18n)`Add new bill`}
       </Button>
       <Menu {...menuProps} sx={{ '& > .MuiPaper-root': { width: 550 } }}>
-        
+
       </Menu>*/}
-    </>
+    </div>
   );
 };

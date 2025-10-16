@@ -2,6 +2,7 @@
 @import 'tw-animate-css' source('../../../src/') prefix(mtw);
 
 @import './tailwind/typography.css';
+@import './tailwind/payables-buttons.css';
 
 @import '@react-pdf-viewer/core/lib/styles/index.css';
 @import '@react-pdf-viewer/page-navigation/lib/styles/index.css';

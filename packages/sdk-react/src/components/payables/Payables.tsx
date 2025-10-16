@@ -11,6 +11,7 @@ import { useFileInput } from '@/core/hooks';
 import { useComponentSettings } from '@/core/hooks/useComponentSettings';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
+import { generatePayablesButtonCssVars } from '@/core/theme/utils/buttonStyleHelpers';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { Dialog } from '@/ui/Dialog';
 import { PageHeader } from '@/ui/PageHeader';
@@ -18,7 +19,7 @@ import { AccessRestriction } from '@/ui/accessRestriction';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { CircularProgress } from '@mui/material';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { toast } from 'react-hot-toast';
 
 export type PayablesProps = {
@@ -65,7 +66,7 @@ const PayablesBase = ({
   onPayUS,
 }: PayablesProps) => {
   const { i18n } = useLingui();
-  const { api, queryClient } = useMoniteContext();
+  const { api, queryClient, theme } = useMoniteContext();
   const { componentSettings } = useComponentSettings();
 
   const {
@@ -164,8 +165,16 @@ const PayablesBase = ({
   const finalEnableGLCodes =
     enableGLCodes ?? componentSettings?.payables?.enableGLCodes ?? false;
 
+  const buttonCssVars = useMemo(
+    () =>
+      generatePayablesButtonCssVars(
+        theme.components?.styles?.payables?.button
+      ),
+    [theme.components?.styles?.payables?.button]
+  );
+
   return (
-    <>
+    <div className="Monite-Payables" style={buttonCssVars as React.CSSProperties}>
       <PageHeader
         className={className + '-Header'}
         title={
@@ -251,6 +260,6 @@ const PayablesBase = ({
           onSaved={handleSaved}
         />
       </Dialog>
-    </>
+    </div>
   );
 };

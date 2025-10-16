@@ -47,12 +47,15 @@ export const TagsModal = ({
         <TagsAutocomplete value={updatedValue} onChange={handleTagsChange} />
       </DialogContent>
       <DialogActions>
-        <Button variant="text" color="inherit" onClick={onClose}>{t(
-          i18n
-        )`Cancel`}</Button>
-        <Button variant="contained" onClick={onUpdate}>{t(
-          i18n
-        )`Update`}</Button>
+        <Button
+          variant="text"
+          color="inherit"
+          onClick={onClose}
+        >{t(i18n)`Cancel`}</Button>
+        <Button
+          variant="contained"
+          onClick={onUpdate}
+        >{t(i18n)`Update`}</Button>
       </DialogActions>
     </Dialog>
   );

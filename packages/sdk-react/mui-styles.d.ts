@@ -13,7 +13,6 @@ import {
   ComponentsVariants,
   Theme as MuiTheme,
   Palette,
-  PaletteOptions,
 } from '@mui/material/styles';
 
 type Theme = Omit<MuiTheme, 'components'> & {
@@ -25,12 +24,148 @@ type Theme = Omit<MuiTheme, 'components'> & {
 };
 
 declare module '@mui/material/styles' {
+  /**
+   * Augment PaletteColor to include numeric shade keys and foreground used by Monite
+   */
+  interface PaletteColor {
+    '10'?: string;
+    '20'?: string;
+    '25'?: string;
+    '30'?: string;
+    '40'?: string;
+    '50'?: string;
+    '55'?: string;
+    '60'?: string;
+    '65'?: string;
+    '75'?: string;
+    '80'?: string;
+    '85'?: string;
+    '90'?: string;
+    '95'?: string;
+    '100'?: string;
+    foreground?: {
+      main: string;
+    };
+  }
+
   interface Palette {
+    neutral: {
+      main: string;
+      '10': string;
+      '30': string;
+      '50': string;
+      '70': string;
+      '80': string;
+      '90': string;
+      '95': string;
+    };
+    primary: {
+      main: string;
+      '10': string;
+      '20': string;
+      '30': string;
+      '40': string;
+      '50': string;
+      '55': string;
+      '60': string;
+      '65': string;
+      '80': string;
+      '85': string;
+      '90': string;
+      '95': string;
+      foreground: {
+        main: string;
+      };
+    };
+    success: {
+      main: string;
+      '10': string;
+      '30': string;
+      '50': string;
+      '60': string;
+      '80': string;
+      '90': string;
+      '95': string;
+    };
+    warning: {
+      main: string;
+      '10': string;
+      '30': string;
+      '50': string;
+      '60': string;
+      '80': string;
+      '90': string;
+      '95': string;
+    };
+    error: {
+      main: string;
+      '10': string;
+      '25': string;
+      '50': string;
+      '75': string;
+      '100': string;
+    };
     status: {
       [key: string]: string;
     };
   }
   interface PaletteOptions {
+    neutral?: {
+      main?: string;
+      '10'?: string;
+      '30'?: string;
+      '50'?: string;
+      '70'?: string;
+      '80'?: string;
+      '90'?: string;
+      '95'?: string;
+    };
+    primary?: {
+      main?: string;
+      '10'?: string;
+      '20'?: string;
+      '30'?: string;
+      '40'?: string;
+      '50'?: string;
+      '55'?: string;
+      '60'?: string;
+      '65'?: string;
+      '80'?: string;
+      '85'?: string;
+      '90'?: string;
+      '95'?: string;
+      foreground?: {
+        main?: string;
+      };
+    };
+    success?: {
+      main?: string;
+      '10'?: string;
+      '30'?: string;
+      '50'?: string;
+      '60'?: string;
+      '80'?: string;
+      '90'?: string;
+      '95'?: string;
+    };
+    warning?: {
+      main?: string;
+      '10'?: string;
+      '30'?: string;
+      '50'?: string;
+      '60'?: string;
+      '80'?: string;
+      '90'?: string;
+      '95'?: string;
+    };
+    error?: {
+      main?: string;
+      '10'?: string;
+      '25'?: string;
+      '50'?: string;
+      '75'?: string;
+      '100'?: string;
+    };
     status?: {
       [key: string]: string;
     };
@@ -74,6 +209,12 @@ declare module '@mui/material/styles' {
     MoniteInvoiceRecurrenceIterationStatusChip?: ComponentType<'MoniteInvoiceRecurrenceIterationStatusChip'>;
     MoniteCounterpartStatusChip?: ComponentType<'MoniteCounterpartStatusChip'>;
     MoniteApprovalStatusChip?: ComponentType<'MoniteApprovalStatusChip'>;
+    /**
+     * Custom styles container for Tailwind button customization.
+     * This property is not processed by MUI's createTheme but is preserved
+     * for use in getTailwindTheme() to generate CSS variables.
+     */
+    styles?: import('@/core/theme/types').ThemeConfig['components']['styles'];
   }
 }
 
