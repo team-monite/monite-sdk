@@ -576,11 +576,11 @@ msgstr "Add contact person"
 msgid "Add discount"
 msgstr "Add discount"
 
-#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:653
+#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:654
 msgid "Add Discount"
 msgstr "Add Discount"
 
-#: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:204
+#: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:205
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:305
 msgid "Add item"
 msgstr "Add item"
@@ -1514,11 +1514,11 @@ msgstr "Bicycle Shops"
 msgid "Bill"
 msgstr "Bill"
 
-#: src/components/payables/Payables.tsx:229
+#: src/components/payables/Payables.tsx:238
 msgid "Bill #{payableId} has been deleted"
 msgstr "Bill #{payableId} has been deleted"
 
-#: src/components/payables/Payables.tsx:173
+#: src/components/payables/Payables.tsx:182
 msgid "Bill Pay"
 msgstr "Bill Pay"
 
@@ -1848,14 +1848,14 @@ msgstr "Canadian QST number (Québec)"
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:228
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.test.tsx:24
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.tsx:77
-#: src/components/tags/TagFormModal/TagFormModal.tsx:282
+#: src/components/tags/TagFormModal/TagFormModal.tsx:285
 #: src/components/templateSettings/components/DiscardChangesModal.tsx:46
 #: src/components/userRoles/consts.ts:77
 #: src/components/userRoles/UserRoleDetails/UserRoleDeleteDialog/UserRoleDeleteDialog.tsx:73
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:146
 #: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:202
 #: src/ui/DialogFooter/DialogFooter.tsx:158
-#: src/ui/tagsModal/tagsModal.tsx:50
+#: src/ui/tagsModal/tagsModal.tsx:54
 msgid "Cancel"
 msgstr "Cancel"
 
@@ -1966,7 +1966,7 @@ msgstr "Carpet/Upholstery Cleaning"
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartIndividualView/CounterpartIndividualView.tsx:45
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView/CounterpartOrganizationView.tsx:79
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:174
-#: src/components/tags/TagFormModal/TagFormModal.tsx:226
+#: src/components/tags/TagFormModal/TagFormModal.tsx:229
 #: src/components/tags/TagsTable/TagsTable.tsx:141
 msgid "Category"
 msgstr "Category"
@@ -2611,7 +2611,7 @@ msgstr "Court Costs, Including Alimony and Child Support - Courts of Law"
 #: src/components/tags/TagFormModal/TagFormModal.test.tsx:27
 #: src/components/tags/TagFormModal/TagFormModal.test.tsx:97
 #: src/components/tags/TagFormModal/TagFormModal.test.tsx:130
-#: src/components/tags/TagFormModal/TagFormModal.tsx:290
+#: src/components/tags/TagFormModal/TagFormModal.tsx:293
 #: src/components/userRoles/consts.ts:70
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:122
 #: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:178
@@ -2736,8 +2736,8 @@ msgstr "Create new item"
 msgid "Create new product or service"
 msgstr "Create new product or service"
 
-#: src/components/tags/TagFormModal/TagFormModal.tsx:177
 #: src/components/tags/TagFormModal/TagFormModal.tsx:180
+#: src/components/tags/TagFormModal/TagFormModal.tsx:183
 #: src/components/tags/Tags.test.tsx:17
 #: src/components/tags/Tags.test.tsx:41
 #: src/components/tags/Tags.test.tsx:65
@@ -3096,7 +3096,7 @@ msgstr "Default for Currency"
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.test.tsx:51
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.test.tsx:84
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.tsx:76
-#: src/components/tags/TagFormModal/TagFormModal.tsx:278
+#: src/components/tags/TagFormModal/TagFormModal.tsx:281
 #: src/components/tags/TagsTable/TagsTable.test.tsx:304
 #: src/components/tags/TagsTable/TagsTable.test.tsx:380
 #: src/components/tags/TagsTable/TagsTable.test.tsx:411
@@ -3379,7 +3379,7 @@ msgstr "Director"
 msgid "discount"
 msgstr "discount"
 
-#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:670
+#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:671
 #: src/components/payables/PayableDetails/PayableDetailsForm/validation.ts:96
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:574
 msgid "Discount"
@@ -3840,8 +3840,8 @@ msgstr "Edit settings"
 #~ msgstr "Edit tag"
 
 #. placeholder {0}: tag.name
-#: src/components/tags/TagFormModal/TagFormModal.tsx:177
 #: src/components/tags/TagFormModal/TagFormModal.tsx:180
+#: src/components/tags/TagFormModal/TagFormModal.tsx:183
 msgid "Edit tag ”{0}”"
 msgstr "Edit tag ”{0}”"
 
@@ -5804,7 +5804,7 @@ msgstr "Keyword should be at least 2 characters long"
 msgid "Keyword should be at most 25 characters long"
 msgstr "Keyword should be at most 25 characters long"
 
-#: src/components/tags/TagFormModal/TagFormModal.tsx:255
+#: src/components/tags/TagFormModal/TagFormModal.tsx:258
 #: src/components/tags/TagsTable/TagsTable.tsx:150
 msgid "Keywords"
 msgstr "Keywords"
@@ -6506,7 +6506,7 @@ msgstr "N/A"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:121
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsForm.tsx:143
 #: src/components/receivables/validation.ts:146
-#: src/components/tags/TagFormModal/TagFormModal.tsx:212
+#: src/components/tags/TagFormModal/TagFormModal.tsx:215
 #: src/components/tags/TagsTable/TagsTable.tsx:135
 #: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:296
 #: src/components/userRoles/UserRolesTable/UserRolesTable.tsx:151
@@ -6925,7 +6925,7 @@ msgstr "Not available"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewMonite.tsx:123
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewMonite.tsx:192
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewMonite.tsx:255
-#: src/components/tags/TagFormModal/TagFormModal.tsx:233
+#: src/components/tags/TagFormModal/TagFormModal.tsx:236
 msgid "Not set"
 msgstr "Not set"
 
@@ -7314,7 +7314,7 @@ msgid "Payable “{0}” has been updated"
 msgstr "Payable “{0}” has been updated"
 
 #. placeholder {0}: file.name
-#: src/components/payables/Payables.tsx:139
+#: src/components/payables/Payables.tsx:140
 msgid "Payable {0} uploaded successfully"
 msgstr "Payable {0} uploaded successfully"
 
@@ -8630,7 +8630,7 @@ msgstr "Saudi Riyal"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/PaymentTerms/PaymentTermsDialog.tsx:38
 #: src/components/tags/TagFormModal/TagFormModal.test.tsx:169
 #: src/components/tags/TagFormModal/TagFormModal.test.tsx:238
-#: src/components/tags/TagFormModal/TagFormModal.tsx:290
+#: src/components/tags/TagFormModal/TagFormModal.tsx:293
 #: src/components/tags/TagsTable/TagsTable.test.tsx:283
 #: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:249
 msgid "Save"
@@ -9948,7 +9948,7 @@ msgstr "Tonga"
 msgid "Tongan Paʻanga"
 msgstr "Tongan Paʻanga"
 
-#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:732
+#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:733
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:362
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:598
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/InvoicePreviewLegacy.tsx:339
@@ -10294,7 +10294,7 @@ msgstr "Unsupported file type for {0}"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:441
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/OverdueReminderForm.tsx:311
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:237
-#: src/ui/tagsModal/tagsModal.tsx:53
+#: src/ui/tagsModal/tagsModal.tsx:58
 msgid "Update"
 msgstr "Update"
 
@@ -10373,12 +10373,12 @@ msgid "Upload payable file"
 msgstr "Upload payable file"
 
 #: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:131
-#: src/components/payables/Payables.tsx:198
+#: src/components/payables/Payables.tsx:207
 msgid "Upload payable files"
 msgstr "Upload payable files"
 
 #. placeholder {0}: file.name
-#: src/components/payables/Payables.tsx:138
+#: src/components/payables/Payables.tsx:139
 msgid "Uploading {0}"
 msgstr "Uploading {0}"
 
@@ -10619,7 +10619,7 @@ msgstr "VAT is a required field"
 #~ msgid "VAT mode"
 #~ msgstr "VAT mode"
 
-#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:717
+#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:718
 msgid "VAT total"
 msgstr "VAT total"
 
