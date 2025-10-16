@@ -1,5 +1,3 @@
-import { forwardRef } from 'react';
-
 import { components } from '@/api';
 import {
   getRowToStatusTextMap,
@@ -9,16 +7,19 @@ import { useLingui } from '@lingui/react';
 import { Circle } from '@mui/icons-material';
 import { Chip, ChipProps } from '@mui/material';
 import { lighten, styled, useTheme, useThemeProps } from '@mui/material/styles';
+import { forwardRef } from 'react';
 
 export interface MonitePayableStatusChipProps {
   /** The status of the payable. */
   status: components['schemas']['PayableStateEnum'];
-  /** Display status icon? */
-  icon?: boolean;
+  /** Display status icon? Set to false for dot, true for full icon, null to hide completely */
+  icon?: boolean | null;
   /** The variant of the Chip. */
   variant?: ChipProps['variant'];
   /** The size of the Chip. */
   size?: ChipProps['size'];
+  /** Custom colors for each payable status */
+  colors?: Partial<Record<components['schemas']['PayableStateEnum'], string>>;
 }
 
 /**
@@ -28,7 +29,7 @@ export const PayableStatusChip = forwardRef<
   HTMLDivElement,
   MonitePayableStatusChipProps
 >((inProps, ref) => {
-  const { status, icon, size } = useThemeProps({
+  const { status, icon, size, colors } = useThemeProps({
     props: inProps,
     name: 'MonitePayableStatusChip',
   });
@@ -37,7 +38,8 @@ export const PayableStatusChip = forwardRef<
   const theme = useTheme();
 
   const Icon = PAYABLE_STATUS_TO_MUI_ICON_MAP[status];
-  const statusColor = theme.palette.status[status] ?? theme.palette.grey[300];
+  const statusColor =
+    colors?.[status] ?? theme.palette.status[status] ?? theme.palette.grey[300];
 
   return (
     <StyledChip
@@ -52,7 +54,7 @@ export const PayableStatusChip = forwardRef<
         },
       }}
       icon={
-        icon && Icon ? (
+        icon === null ? undefined : icon && Icon ? (
           <Icon fontSize="small" />
         ) : (
           <Circle sx={{ fontSize: '10px !important' }} />

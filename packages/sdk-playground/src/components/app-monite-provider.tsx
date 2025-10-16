@@ -29,6 +29,16 @@ const AppMoniteProvider = ({ children }: AppMoniteProvider) => {
     <MoniteProvider
       monite={monite}
       locale={{}}
+      theme={{
+        components: {
+          payableStatusChip: {
+            icon: null,
+            colors: {
+              draft: '#3bf67c',
+            },
+          },
+        },
+      }}
       componentSettings={{
         receivables: {
           paginationLayout: 'reversed',
