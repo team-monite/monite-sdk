@@ -5,7 +5,7 @@ module.exports = {
     'lingui/no-unlocalized-strings': [
       'warn',
       {
-        ignore: ['Mui', 'Monite'],
+        ignore: ['Mui', 'Monite', 'Component'],
         ignoreFunction: [
           'Error',
           'console.log',
@@ -48,6 +48,7 @@ module.exports = {
           'borderBottom',
           'boxShadow',
           'transform',
+          'displayName',
         ],
       },
     ],

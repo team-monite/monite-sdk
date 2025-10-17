@@ -642,6 +642,7 @@ const PayableDetailsFormBase = forwardRef<
                               {currentDiscount === null &&
                                 !hideAddDiscountButton && (
                                   <Button
+                                    variant="text"
                                     startIcon={<AddIcon />}
                                     size="small"
                                     sx={{ pl: 1.25, pr: 2, py: 0 }}

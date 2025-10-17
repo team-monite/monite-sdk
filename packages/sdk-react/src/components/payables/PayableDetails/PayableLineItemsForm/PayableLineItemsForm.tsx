@@ -190,13 +190,14 @@ export const PayableLineItemsForm = ({ enableGLCodes }: PayableLineItemsFormProp
       ))}
       <Grid item xs={12} gap={2}>
         <Button
+          variant="text"
           startIcon={<AddIcon />}
           onClick={() =>
-            append({ 
-              id: '', 
-              name: '', 
-              quantity: 1, 
-              price: 0, 
+            append({
+              id: '',
+              name: '',
+              quantity: 1,
+              price: 0,
               tax: 19,
             })
           }

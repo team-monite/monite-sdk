@@ -11,13 +11,13 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          'mtw:bg-primary mtw:text-primary-foreground mtw:shadow-xs mtw:hover:bg-primary/90',
+          'mtw:bg-primary mtw:text-primary-foreground mtw:shadow-xs mtw:hover:brightness-110 mtw:active:brightness-95',
         destructive:
-          'mtw:bg-destructive mtw:text-white mtw:shadow-xs mtw:hover:bg-destructive/90 mtw:focus-visible:ring-destructive/20 mtw:dark:focus-visible:ring-destructive/40 mtw:dark:bg-destructive/60',
+          'mtw:bg-destructive mtw:text-white mtw:shadow-xs mtw:hover:brightness-110 mtw:active:brightness-95 mtw:focus-visible:ring-destructive/20 mtw:dark:focus-visible:ring-destructive/40 mtw:dark:bg-destructive/60',
         outline:
           'mtw:border mtw:bg-background mtw:shadow-xs mtw:hover:bg-accent mtw:hover:text-accent-foreground mtw:dark:bg-input/30 mtw:dark:border-input mtw:dark:hover:bg-input/50',
         secondary:
-          'mtw:bg-secondary mtw:text-secondary-foreground mtw:shadow-xs mtw:hover:bg-secondary/80',
+          'mtw:bg-secondary mtw:text-secondary-foreground mtw:shadow-xs mtw:hover:brightness-105 mtw:active:brightness-95',
         ghost:
           'mtw:hover:bg-accent mtw:hover:text-accent-foreground mtw:dark:hover:bg-accent/50',
         link: 'mtw:text-primary mtw:underline-offset-4 mtw:hover:underline',
@@ -44,10 +44,12 @@ const Button = React.forwardRef<
     }
 >(({ className, variant, size, asChild = false, ...props }, ref) => {
   const Comp = asChild ? Slot : 'button';
+  const effectiveVariant = variant || 'default';
 
   return (
     <Comp
       data-slot="button"
+      data-variant={effectiveVariant}
       className={cn(buttonVariants({ variant, size, className }))}
       ref={ref}
       {...props}

@@ -12,6 +12,10 @@ import { getErrorColors } from '@/core/theme/mui-monite/colors/error';
 import { getSuccessColors } from '@/core/theme/mui-monite/colors/success';
 import { getWarningColors } from '@/core/theme/mui-monite/colors/warning';
 import { MonitePalette, ThemeConfig } from '@/core/theme/types';
+import {
+  getButtonStyles,
+  getButtonStateStyles,
+} from '@/core/theme/utils/buttonStyleHelpers';
 import { Components } from '@mui/material/styles';
 import type {
   Palette,
@@ -81,6 +85,7 @@ function renderColors<T extends { [key: string]: any }>(
 
 export const getTheme = (theme: ThemeConfig): ThemeOptions => {
   const moniteTheme = getMoniteTheme(theme);
+  const buttonStyles = moniteTheme.components.styles?.payables?.button;
 
   const statusBackgroundColors = {
     draft: '#000',
@@ -681,6 +686,53 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
           '&.Monite-withShadow, &.Monite-withShadow:hover': {
             boxShadow: '0px 1px 1px 0px rgba(0, 0, 0, 0.1)',
           },
+
+          '.Monite-Payables &.MuiButton-contained:not(.MuiButton-colorError)': {
+            ...getButtonStyles(buttonStyles?.primary),
+            '&:hover': getButtonStateStyles('hover', buttonStyles?.primary),
+            '&:active': getButtonStateStyles('active', buttonStyles?.primary),
+            '&:focus': getButtonStateStyles('focus', buttonStyles?.primary),
+            '&:disabled': getButtonStateStyles(
+              'disabled',
+              buttonStyles?.primary
+            ),
+          },
+
+          '.Monite-Payables &.MuiButton-outlined:not(.MuiButton-colorError)': {
+            ...getButtonStyles(buttonStyles?.secondary),
+            '&:hover': getButtonStateStyles('hover', buttonStyles?.secondary),
+            '&:active': getButtonStateStyles('active', buttonStyles?.secondary),
+            '&:focus': getButtonStateStyles('focus', buttonStyles?.secondary),
+            '&:disabled': getButtonStateStyles(
+              'disabled',
+              buttonStyles?.secondary
+            ),
+          },
+
+          '.Monite-Payables &.MuiButton-text:not(.MuiButton-colorError)': {
+            ...getButtonStyles(buttonStyles?.tertiary),
+            '&:hover': getButtonStateStyles('hover', buttonStyles?.tertiary),
+            '&:active': getButtonStateStyles('active', buttonStyles?.tertiary),
+            '&:focus': getButtonStateStyles('focus', buttonStyles?.tertiary),
+            '&:disabled': getButtonStateStyles(
+              'disabled',
+              buttonStyles?.tertiary
+            ),
+          },
+
+          '.Monite-Payables &.MuiButton-contained.MuiButton-colorError': {
+            ...getButtonStyles(buttonStyles?.destructive),
+            '&:hover': getButtonStateStyles('hover', buttonStyles?.destructive),
+            '&:active': getButtonStateStyles(
+              'active',
+              buttonStyles?.destructive
+            ),
+            '&:focus': getButtonStateStyles('focus', buttonStyles?.destructive),
+            '&:disabled': getButtonStateStyles(
+              'disabled',
+              buttonStyles?.destructive
+            ),
+          },
         },
         containedPrimary: {
           padding: '.75em 1.25em',
@@ -1096,6 +1148,12 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
           backgroundImage: 'none',
         },
       },
+      defaultProps: {
+        classes: {
+          container: 'Monite-Payables',
+          paper: 'Monite-Payables',
+        },
+      },
     },
     MuiDialogActions: {
       styleOverrides: {
@@ -1336,7 +1394,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
 
   const components = renderColors(defaultMoniteComponents, palette);
 
-  return {
+  const result: ThemeOptions = {
     spacing: moniteTheme.spacing,
     palette: {
       ...palette,
@@ -1348,4 +1406,8 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
     typography,
     components,
   };
+
+  return Object.assign(result, {
+    customStyles: moniteTheme.components?.styles,
+  });
 };

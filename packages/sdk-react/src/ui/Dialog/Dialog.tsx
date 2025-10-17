@@ -1,6 +1,8 @@
 import { MoniteDialogProps } from './DialogProps.types';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { useRootElements } from '@/core/context/RootElementsProvider';
+import { useMoniteContext } from '@/core/context/MoniteContext';
+import { generatePayablesButtonCssVars } from '@/core/theme/utils/buttonStyleHelpers';
 import { css } from '@emotion/react';
 import { Fade, Dialog as MuiDialog, Slide } from '@mui/material';
 import { SlideProps } from '@mui/material';
@@ -11,6 +13,7 @@ import {
   ReactElement,
   Ref,
   useContext,
+  useMemo,
 } from 'react';
 
 const Transition = forwardRef(function Transition(
@@ -52,7 +55,16 @@ export const Dialog = forwardRef<HTMLDivElement, MoniteDialogProps>(
   (props, ref) => {
     const { alignDialog, onClosed, ...otherProps } = props;
     const { root } = useRootElements();
+    const { theme } = useMoniteContext();
     const parentDialog = useDialog();
+
+    const buttonCssVars = useMemo(
+      () =>
+        generatePayablesButtonCssVars(
+          theme.components?.styles?.payables?.button
+        ),
+      [theme.components?.styles?.payables?.button]
+    );
 
     const handleClose = (
       event: { stopPropagation?: () => void },
@@ -90,11 +102,20 @@ export const Dialog = forwardRef<HTMLDivElement, MoniteDialogProps>(
           classes={{
             container: [
               ScopedCssBaselineContainerClassName,
+              'Monite-Payables',
               alignDialog && `MuiDialog-container__align-${alignDialog}`,
             ]
               .filter(Boolean)
               .join(' '),
-            paper: alignDialog && `MuiDialog-paper__align-${alignDialog}`,
+            paper: [
+              'Monite-Payables',
+              alignDialog && `MuiDialog-paper__align-${alignDialog}`,
+            ]
+              .filter(Boolean)
+              .join(' '),
+          }}
+          sx={{
+            '& .MuiDialogContent-root, & .MuiDialogActions-root, & .MuiDialogTitle-root': buttonCssVars,
           }}
           slotProps={
             props.fullScreen

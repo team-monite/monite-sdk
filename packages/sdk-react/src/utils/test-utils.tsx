@@ -2,7 +2,7 @@ import { createAPIClient } from '@/api/client';
 import { getDefaultComponentSettings } from '@/core/componentSettings';
 import { getLocaleWithDefaults } from '@/core/context/I18nLoader';
 import { MoniteAPIProvider } from '@/core/context/MoniteAPIProvider';
-import { MoniteContext, MoniteTheme } from '@/core/context/MoniteContext';
+import { MoniteContext } from '@/core/context/MoniteContext';
 import { MoniteI18nProvider } from '@/core/context/MoniteI18nProvider';
 import {
   MoniteProviderProps,
@@ -112,7 +112,7 @@ export const Provider = ({
         queryClient: client,
         theme: createThemeWithDefaults(
           moniteProviderProps?.theme
-        ) as MoniteTheme,
+        ),
         componentSettings: getDefaultComponentSettings(
           i18n,
           moniteProviderProps?.componentSettings

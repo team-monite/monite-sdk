@@ -1,4 +1,5 @@
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
+import { MoniteTheme } from '@/core/context/MoniteContext';
 import { getTheme } from '@/core/theme/mui-monite';
 import { ThemeConfig } from '@/core/theme/types';
 import {
@@ -11,10 +12,11 @@ import {
 /**
  * Create a theme with the default component's `defaultProps`
  */
-export const createThemeWithDefaults = (theme: ThemeConfig = {}) => {
+export const createThemeWithDefaults = (theme: ThemeConfig = {}): MoniteTheme => {
   const themeOptions = getTheme(theme);
+  const customStyles = 'customStyles' in themeOptions ? themeOptions.customStyles : undefined;
 
-  return createTheme(
+  const muiTheme = createTheme(
     themeOptions,
     {
       components: {},
@@ -53,6 +55,15 @@ export const createThemeWithDefaults = (theme: ThemeConfig = {}) => {
       },
     } satisfies ThemeOptions
   );
+
+  // Add custom styles back to the theme in components.styles
+  // This way MUI won't try to process it, but it will be available on the theme object
+  return Object.assign(muiTheme, {
+    components: {
+      ...muiTheme.components,
+      styles: customStyles,
+    },
+  }) as MoniteTheme;
 };
 
 /**

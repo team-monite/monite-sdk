@@ -171,7 +171,10 @@ const TagFormModalBase = ({
   return (
     <>
       <Sheet open={open} onOpenChange={onClose}>
-        <SheetContent container={root} className="mtw:w-[600px]">
+        <SheetContent
+          container={root}
+          className="Monite-Payables mtw:w-[600px]"
+        >
           <SheetHeader>
             <SheetTitle>
               {tag ? t(i18n)`Edit tag ”${tag.name}”` : t(i18n)`Create new tag`}

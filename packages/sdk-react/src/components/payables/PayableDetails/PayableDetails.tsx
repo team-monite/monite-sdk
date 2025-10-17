@@ -11,6 +11,7 @@ import { PayableDetailsNoAttachedFile } from '@/components/payables/PayableDetai
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
+import { generatePayablesButtonCssVars } from '@/core/theme/utils/buttonStyleHelpers';
 import { FileViewer } from '@/ui/FileViewer';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { LoadingPage } from '@/ui/loadingPage';
@@ -19,7 +20,7 @@ import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Alert, Backdrop, Box, DialogContent, Grid } from '@mui/material';
-import { useId, useState } from 'react';
+import { useId, useMemo, useState } from 'react';
 
 export interface PayablesDetailsProps extends UsePayableDetailsProps {
   optionalFields?: OptionalFields;
@@ -106,7 +107,15 @@ const PayableDetailsBase = ({
     await forceRejectInvoice();
   };
   const { i18n } = useLingui();
-  const { componentSettings } = useMoniteContext();
+  const { componentSettings, theme } = useMoniteContext();
+
+  const buttonCssVars = useMemo(
+    () =>
+      generatePayablesButtonCssVars(
+        theme.components?.styles?.payables?.button
+      ),
+    [theme.components?.styles?.payables?.button]
+  );
 
   const { data: isUpdateAllowed, isLoading: isUpdateAllowedLoading } =
     useIsActionAllowed({
@@ -145,7 +154,8 @@ const PayableDetailsBase = ({
   return (
     <>
       <Box
-        className={classNames(ScopedCssBaselineContainerClassName, className)}
+        className={classNames(ScopedCssBaselineContainerClassName, className, 'Monite-Payables')}
+        style={buttonCssVars as React.CSSProperties}
         sx={{
           width: '100%',
           height: '100%',
