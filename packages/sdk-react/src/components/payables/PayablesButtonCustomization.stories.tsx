@@ -80,10 +80,7 @@ const ButtonShowcase = () => (
           <p css={css`font-size: 12px; color: #6b7280; margin-bottom: 8px;`}>
             Primary
           </p>
-          <MuiButton
-            variant="contained"
-            className="Monite-Payables-PrimaryButton"
-          >
+          <MuiButton variant="contained">
             Save Changes
           </MuiButton>
         </div>
@@ -91,10 +88,7 @@ const ButtonShowcase = () => (
           <p css={css`font-size: 12px; color: #6b7280; margin-bottom: 8px;`}>
             Secondary
           </p>
-          <MuiButton
-            variant="outlined"
-            className="Monite-Payables-SecondaryButton"
-          >
+          <MuiButton variant="outlined">
             Cancel
           </MuiButton>
         </div>
@@ -102,7 +96,7 @@ const ButtonShowcase = () => (
           <p css={css`font-size: 12px; color: #6b7280; margin-bottom: 8px;`}>
             Tertiary
           </p>
-          <MuiButton variant="text" className="Monite-Payables-TertiaryButton">
+          <MuiButton variant="text">
             Reopen
           </MuiButton>
         </div>
@@ -110,11 +104,7 @@ const ButtonShowcase = () => (
           <p css={css`font-size: 12px; color: #6b7280; margin-bottom: 8px;`}>
             Destructive
           </p>
-          <MuiButton
-            variant="text"
-            color="error"
-            className="Monite-Payables-DestructiveButton"
-          >
+          <MuiButton variant="contained" color="error">
             Delete
           </MuiButton>
         </div>

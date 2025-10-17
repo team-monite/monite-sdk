@@ -733,53 +733,6 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
               buttonStyles?.destructive
             ),
           },
-
-          '&.Monite-Payables-PrimaryButton': {
-            ...getButtonStyles(buttonStyles?.primary),
-            '&:hover': getButtonStateStyles('hover', buttonStyles?.primary),
-            '&:active': getButtonStateStyles('active', buttonStyles?.primary),
-            '&:focus': getButtonStateStyles('focus', buttonStyles?.primary),
-            '&:disabled': getButtonStateStyles(
-              'disabled',
-              buttonStyles?.primary
-            ),
-          },
-
-          '&.Monite-Payables-SecondaryButton': {
-            ...getButtonStyles(buttonStyles?.secondary),
-            '&:hover': getButtonStateStyles('hover', buttonStyles?.secondary),
-            '&:active': getButtonStateStyles('active', buttonStyles?.secondary),
-            '&:focus': getButtonStateStyles('focus', buttonStyles?.secondary),
-            '&:disabled': getButtonStateStyles(
-              'disabled',
-              buttonStyles?.secondary
-            ),
-          },
-
-          '&.Monite-Payables-TertiaryButton': {
-            ...getButtonStyles(buttonStyles?.tertiary),
-            '&:hover': getButtonStateStyles('hover', buttonStyles?.tertiary),
-            '&:active': getButtonStateStyles('active', buttonStyles?.tertiary),
-            '&:focus': getButtonStateStyles('focus', buttonStyles?.tertiary),
-            '&:disabled': getButtonStateStyles(
-              'disabled',
-              buttonStyles?.tertiary
-            ),
-          },
-
-          '&.Monite-Payables-DestructiveButton': {
-            ...getButtonStyles(buttonStyles?.destructive),
-            '&:hover': getButtonStateStyles('hover', buttonStyles?.destructive),
-            '&:active': getButtonStateStyles(
-              'active',
-              buttonStyles?.destructive
-            ),
-            '&:focus': getButtonStateStyles('focus', buttonStyles?.destructive),
-            '&:disabled': getButtonStateStyles(
-              'disabled',
-              buttonStyles?.destructive
-            ),
-          },
         },
         containedPrimary: {
           padding: '.75em 1.25em',
