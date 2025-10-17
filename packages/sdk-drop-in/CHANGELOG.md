@@ -1,5 +1,12 @@
 # @monite/sdk-drop-in
 
+## 2.5.9
+
+### Patch Changes
+
+- 89794bf: Payables buttons customization
+- 8ddd333: Added rowBorder color option for theme customization
+
 ## 2.5.8
 
 ### Patch Changes
