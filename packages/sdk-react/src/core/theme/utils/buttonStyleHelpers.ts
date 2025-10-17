@@ -298,7 +298,6 @@ export function generatePayablesButtonCssVars(buttonStyles?: {
 
     const prefix = `--mtw-btn-payables-${variant}`;
 
-    // Base styles
     if (config.background) {
       cssVars[`${prefix}-bg`] = config.background;
     }
@@ -330,7 +329,6 @@ export function generatePayablesButtonCssVars(buttonStyles?: {
       cssVars[`${prefix}-transition-timing`] = config.transitionTimingFunction;
     }
 
-    // State styles (hover, active, focus, disabled)
     const states: Array<'hover' | 'active' | 'focus' | 'disabled'> = [
       'hover',
       'active',

@@ -687,6 +687,53 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
             boxShadow: '0px 1px 1px 0px rgba(0, 0, 0, 0.1)',
           },
 
+          '.Monite-Payables &.MuiButton-contained:not(.MuiButton-colorError)': {
+            ...getButtonStyles(buttonStyles?.primary),
+            '&:hover': getButtonStateStyles('hover', buttonStyles?.primary),
+            '&:active': getButtonStateStyles('active', buttonStyles?.primary),
+            '&:focus': getButtonStateStyles('focus', buttonStyles?.primary),
+            '&:disabled': getButtonStateStyles(
+              'disabled',
+              buttonStyles?.primary
+            ),
+          },
+
+          '.Monite-Payables &.MuiButton-outlined:not(.MuiButton-colorError)': {
+            ...getButtonStyles(buttonStyles?.secondary),
+            '&:hover': getButtonStateStyles('hover', buttonStyles?.secondary),
+            '&:active': getButtonStateStyles('active', buttonStyles?.secondary),
+            '&:focus': getButtonStateStyles('focus', buttonStyles?.secondary),
+            '&:disabled': getButtonStateStyles(
+              'disabled',
+              buttonStyles?.secondary
+            ),
+          },
+
+          '.Monite-Payables &.MuiButton-text:not(.MuiButton-colorError)': {
+            ...getButtonStyles(buttonStyles?.tertiary),
+            '&:hover': getButtonStateStyles('hover', buttonStyles?.tertiary),
+            '&:active': getButtonStateStyles('active', buttonStyles?.tertiary),
+            '&:focus': getButtonStateStyles('focus', buttonStyles?.tertiary),
+            '&:disabled': getButtonStateStyles(
+              'disabled',
+              buttonStyles?.tertiary
+            ),
+          },
+
+          '.Monite-Payables &.MuiButton-colorError': {
+            ...getButtonStyles(buttonStyles?.destructive),
+            '&:hover': getButtonStateStyles('hover', buttonStyles?.destructive),
+            '&:active': getButtonStateStyles(
+              'active',
+              buttonStyles?.destructive
+            ),
+            '&:focus': getButtonStateStyles('focus', buttonStyles?.destructive),
+            '&:disabled': getButtonStateStyles(
+              'disabled',
+              buttonStyles?.destructive
+            ),
+          },
+
           '&.Monite-Payables-PrimaryButton': {
             ...getButtonStyles(buttonStyles?.primary),
             '&:hover': getButtonStateStyles('hover', buttonStyles?.primary),
@@ -817,6 +864,14 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
     MuiPopper: {
       defaultProps: {
         disablePortal: true,
+      },
+    },
+    MuiDialog: {
+      defaultProps: {
+        classes: {
+          container: 'Monite-Payables',
+          paper: 'Monite-Payables',
+        },
       },
     },
     MuiAvatar: {

@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`tailwindTheme CSS Variable Generators generateThemeCssVars snapshot: complete CSS output with all button variants 1`] = `
+"--mtw-font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+--mtw-color-primary-10: #00009a;
+--mtw-color-primary-20: #0000a9;
+--mtw-color-primary-30: #0003cd;
+--mtw-color-primary-40: #0020e4;
+--mtw-color-primary-50: #3737FF;
+--mtw-color-primary-55: #5245fc;
+--mtw-color-primary-60: #8988fc;
+--mtw-color-primary-65: #a8a7f9;
+--mtw-color-primary-80: #d9d9f2;
+--mtw-color-primary-85: #e7e7ef;
+--mtw-color-primary-90: #ededf5;
+--mtw-color-primary-95: #f3f3f3;
+--mtw-color-primary-foreground: #ffffff;
+--mtw-color-neutral-10: #080808;
+--mtw-color-neutral-30: #313131;
+--mtw-color-neutral-50: #707070;
+--mtw-color-neutral-70: #909090;
+--mtw-color-neutral-80: #dedede;
+--mtw-color-neutral-90: #f2f2f2;
+--mtw-color-neutral-95: #fafafa;
+--mtw-color-danger-10: #D42623;
+--mtw-color-danger-25: #DF5C5A;
+--mtw-color-danger-50: #EA9391;
+--mtw-color-danger-75: #F4C9C8;
+--mtw-color-danger-100: #FCF1F1;
+--mtw-color-success-10: #12705f;
+--mtw-color-success-30: #0dac8e;
+--mtw-color-success-50: #1fbca0;
+--mtw-color-success-60: #4dd6bd;
+--mtw-color-success-80: #ace5da;
+--mtw-color-success-90: #ccf0e9;
+--mtw-color-success-95: #eefbf9;
+--mtw-color-warning-10: #996600;
+--mtw-color-warning-30: #cc8000;
+--mtw-color-warning-50: #ff9900;
+--mtw-color-warning-60: #ffb333;
+--mtw-color-warning-80: #ffd999;
+--mtw-color-warning-90: #ffe6cc;
+--mtw-color-warning-95: #fff3ee;
+;
+--mtw-btn-payables-primary-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+--mtw-btn-payables-primary-color: #ffffff;
+--mtw-btn-payables-primary-radius: 12px;
+--mtw-btn-payables-primary-weight: 600;
+--mtw-btn-payables-primary-shadow: 0 4px 6px rgba(102, 126, 234, 0.3);
+--mtw-btn-payables-primary-hover-bg: linear-gradient(135deg, #5568d3 0%, #65408b 100%);
+--mtw-btn-payables-primary-hover-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+--mtw-btn-payables-secondary-bg: #ffffff;
+--mtw-btn-payables-secondary-color: #667eea;
+--mtw-btn-payables-secondary-border: 2px solid #667eea;
+--mtw-btn-payables-secondary-radius: 8px;
+--mtw-btn-payables-secondary-hover-bg: #f5f7ff;"
+`;

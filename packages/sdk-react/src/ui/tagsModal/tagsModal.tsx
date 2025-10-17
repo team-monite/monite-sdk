@@ -1,10 +1,10 @@
 import { components } from '@/api';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { TagsAutocomplete } from '@/ui/TagsAutocomplete';
+import { Dialog } from '@/ui/Dialog';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
-  Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
@@ -49,7 +49,6 @@ export const TagsModal = ({
       <DialogActions>
         <Button
           variant="text"
-          color="inherit"
           onClick={onClose}
         >{t(i18n)`Cancel`}</Button>
         <Button

@@ -1,0 +1,76 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`buttonStyleHelpers generatePayablesButtonCssVars generates CSS variables for all button states 1`] = `
+{
+  "--mtw-btn-payables-primary-active-bg": "#4557bd",
+  "--mtw-btn-payables-primary-active-shadow": "0 1px 2px rgba(0,0,0,0.1)",
+  "--mtw-btn-payables-primary-bg": "#667eea",
+  "--mtw-btn-payables-primary-border": "none",
+  "--mtw-btn-payables-primary-color": "#ffffff",
+  "--mtw-btn-payables-primary-disabled-bg": "#e5e7eb",
+  "--mtw-btn-payables-primary-disabled-color": "#9ca3af",
+  "--mtw-btn-payables-primary-disabled-shadow": "none",
+  "--mtw-btn-payables-primary-focus-shadow": "0 0 0 3px rgba(102, 126, 234, 0.4)",
+  "--mtw-btn-payables-primary-hover-bg": "#5568d3",
+  "--mtw-btn-payables-primary-hover-shadow": "0 4px 8px rgba(0,0,0,0.15)",
+  "--mtw-btn-payables-primary-radius": "8px",
+  "--mtw-btn-payables-primary-shadow": "0 2px 4px rgba(0,0,0,0.1)",
+  "--mtw-btn-payables-primary-weight": "600",
+}
+`;
+
+exports[`buttonStyleHelpers generatePayablesButtonCssVars generates CSS variables for all variants 1`] = `
+{
+  "--mtw-btn-payables-destructive-bg": "#ef4444",
+  "--mtw-btn-payables-destructive-color": "#ffffff",
+  "--mtw-btn-payables-destructive-hover-bg": "#dc2626",
+  "--mtw-btn-payables-primary-bg": "#667eea",
+  "--mtw-btn-payables-primary-color": "#ffffff",
+  "--mtw-btn-payables-primary-hover-bg": "#5568d3",
+  "--mtw-btn-payables-secondary-bg": "transparent",
+  "--mtw-btn-payables-secondary-border": "1px solid #667eea",
+  "--mtw-btn-payables-secondary-color": "#667eea",
+  "--mtw-btn-payables-secondary-hover-bg": "rgba(102, 126, 234, 0.1)",
+  "--mtw-btn-payables-tertiary-bg": "transparent",
+  "--mtw-btn-payables-tertiary-color": "#6b7280",
+  "--mtw-btn-payables-tertiary-hover-bg": "#f3f4f6",
+}
+`;
+
+exports[`buttonStyleHelpers generatePayablesButtonCssVars generates CSS variables for primary variant 1`] = `
+{
+  "--mtw-btn-payables-primary-bg": "#667eea",
+  "--mtw-btn-payables-primary-border": "1px solid #667eea",
+  "--mtw-btn-payables-primary-color": "#ffffff",
+  "--mtw-btn-payables-primary-radius": "8px",
+  "--mtw-btn-payables-primary-shadow": "0 2px 4px rgba(0,0,0,0.1)",
+  "--mtw-btn-payables-primary-transition-duration": "200ms",
+  "--mtw-btn-payables-primary-transition-property": "all",
+  "--mtw-btn-payables-primary-weight": "600",
+}
+`;
+
+exports[`buttonStyleHelpers generatePayablesButtonCssVars generates CSS variables with custom transition properties 1`] = `
+{
+  "--mtw-btn-payables-primary-bg": "#667eea",
+  "--mtw-btn-payables-primary-transition-duration": "300ms",
+  "--mtw-btn-payables-primary-transition-property": "background, box-shadow",
+  "--mtw-btn-payables-primary-transition-timing": "cubic-bezier(0.4, 0, 0.2, 1)",
+}
+`;
+
+exports[`buttonStyleHelpers generatePayablesButtonCssVars generates CSS variables with gradient backgrounds 1`] = `
+{
+  "--mtw-btn-payables-primary-bg": "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+  "--mtw-btn-payables-primary-color": "#ffffff",
+  "--mtw-btn-payables-primary-hover-bg": "linear-gradient(135deg, #5568d3 0%, #65408b 100%)",
+}
+`;
+
+exports[`buttonStyleHelpers generatePayablesButtonCssVars handles partial variant configs 1`] = `
+{
+  "--mtw-btn-payables-primary-bg": "#667eea",
+  "--mtw-btn-payables-primary-color": "#ffffff",
+  "--mtw-btn-payables-tertiary-color": "#6b7280",
+}
+`;

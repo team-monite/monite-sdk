@@ -7,9 +7,10 @@ import { css } from '@emotion/react';
 import { MemoryRouter } from 'react-router-dom';
 import { Button } from '@/ui/components/button';
 import { Button as MuiButton } from '@mui/material';
+import { useEffect } from 'react';
 
 const meta: Meta<typeof Payables> = {
-  title: 'Payables/Button Customization',
+  title: 'Payables/Payables — Button Customization',
   component: Payables,
 };
 
@@ -167,24 +168,37 @@ const ButtonShowcase = () => (
   </div>
 );
 
-const renderWithRouter: Story['render'] = (args) => (
-  <div
-    css={css`
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-      padding: 20px;
-      background: #f9fafb;
-    `}
-  >
-    <div className="Monite-Payables">
-      <ButtonShowcase />
+const PayablesWithBodyClass = (args: any) => {
+  useEffect(() => {
+    document.body.classList.add('Monite-Payables');
+    return () => {
+      document.body.classList.remove('Monite-Payables');
+    };
+  }, []);
+
+  return (
+    <div
+      css={css`
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        padding: 20px;
+        background: #f9fafb;
+      `}
+    >
+      <div className="Monite-Payables">
+        <ButtonShowcase />
+      </div>
+      <MemoryRouter>
+        <Payables {...args} />
+      </MemoryRouter>
     </div>
-    <MemoryRouter>
-      <Payables {...args} />
-    </MemoryRouter>
-  </div>
+  );
+};
+
+const renderWithRouter: Story['render'] = (args) => (
+  <PayablesWithBodyClass {...args} />
 );
 
 export const DefaultStyles: Story = {

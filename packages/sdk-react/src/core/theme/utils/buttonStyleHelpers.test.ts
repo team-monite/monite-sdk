@@ -8,6 +8,7 @@ import {
   applyTypographyStyles,
   applyShadowStyles,
   applyTransitionStyles,
+  generatePayablesButtonCssVars,
   CSSInJSStyles,
 } from './buttonStyleHelpers';
 import { ButtonStyleConfig } from '../types';
@@ -813,6 +814,141 @@ describe('buttonStyleHelpers', () => {
         background: '#f3f4f6',
         backgroundImage: 'none',
       });
+    });
+  });
+
+  describe('generatePayablesButtonCssVars', () => {
+    test('returns empty object for undefined config', () => {
+      expect(generatePayablesButtonCssVars(undefined)).toEqual({});
+    });
+
+    test('returns empty object for empty config', () => {
+      expect(generatePayablesButtonCssVars({})).toEqual({});
+    });
+
+    test('generates CSS variables for primary variant', () => {
+      const config = {
+        primary: {
+          background: '#667eea',
+          color: '#ffffff',
+          border: '1px solid #667eea',
+          borderRadius: 8,
+          fontWeight: 600,
+          boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+          transitionProperty: 'all',
+          transitionDuration: '200ms',
+        },
+      };
+
+      expect(generatePayablesButtonCssVars(config)).toMatchSnapshot();
+    });
+
+    test('generates CSS variables for all variants', () => {
+      const config = {
+        primary: {
+          background: '#667eea',
+          color: '#ffffff',
+          hover: {
+            background: '#5568d3',
+          },
+        },
+        secondary: {
+          background: 'transparent',
+          color: '#667eea',
+          border: '1px solid #667eea',
+          hover: {
+            background: 'rgba(102, 126, 234, 0.1)',
+          },
+        },
+        tertiary: {
+          background: 'transparent',
+          color: '#6b7280',
+          hover: {
+            background: '#f3f4f6',
+          },
+        },
+        destructive: {
+          background: '#ef4444',
+          color: '#ffffff',
+          hover: {
+            background: '#dc2626',
+          },
+        },
+      };
+
+      expect(generatePayablesButtonCssVars(config)).toMatchSnapshot();
+    });
+
+    test('generates CSS variables with gradient backgrounds', () => {
+      const config = {
+        primary: {
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          color: '#ffffff',
+          hover: {
+            background: 'linear-gradient(135deg, #5568d3 0%, #65408b 100%)',
+          },
+        },
+      };
+
+      expect(generatePayablesButtonCssVars(config)).toMatchSnapshot();
+    });
+
+    test('generates CSS variables for all button states', () => {
+      const config = {
+        primary: {
+          background: '#667eea',
+          color: '#ffffff',
+          border: 'none',
+          borderRadius: 8,
+          fontWeight: 600,
+          boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+          hover: {
+            background: '#5568d3',
+            boxShadow: '0 4px 8px rgba(0,0,0,0.15)',
+          },
+          active: {
+            background: '#4557bd',
+            boxShadow: '0 1px 2px rgba(0,0,0,0.1)',
+          },
+          focus: {
+            boxShadow: '0 0 0 3px rgba(102, 126, 234, 0.4)',
+          },
+          disabled: {
+            background: '#e5e7eb',
+            color: '#9ca3af',
+            boxShadow: 'none',
+          },
+        },
+      };
+
+      expect(generatePayablesButtonCssVars(config)).toMatchSnapshot();
+    });
+
+    test('generates CSS variables with custom transition properties', () => {
+      const config = {
+        primary: {
+          background: '#667eea',
+          transitionProperty: 'background, box-shadow',
+          transitionDuration: '300ms',
+          transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
+        },
+      };
+
+      expect(generatePayablesButtonCssVars(config)).toMatchSnapshot();
+    });
+
+    test('handles partial variant configs', () => {
+      const config = {
+        primary: {
+          background: '#667eea',
+          color: '#ffffff',
+        },
+        tertiary: {
+          color: '#6b7280',
+        },
+      };
+
+      expect(generatePayablesButtonCssVars(config)).toMatchSnapshot();
     });
   });
 });

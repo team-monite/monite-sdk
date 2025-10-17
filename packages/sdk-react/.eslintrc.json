@@ -102,12 +102,6 @@
       "rules": {
         "lingui/no-unlocalized-strings": "off"
       }
-    },
-    {
-      "files": ["src/utils/test-utils.tsx"],
-      "rules": {
-        "lingui/no-unlocalized-strings": "off"
-      }
     }
   ]
 }
