@@ -1855,7 +1855,7 @@ msgstr "Canadian QST number (Québec)"
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:146
 #: src/components/userRoles/UserRoleDetails/UserRoleEditDialog/UserRoleEditDialog.tsx:202
 #: src/ui/DialogFooter/DialogFooter.tsx:158
-#: src/ui/tagsModal/tagsModal.tsx:54
+#: src/ui/tagsModal/tagsModal.tsx:53
 msgid "Cancel"
 msgstr "Cancel"
 
@@ -3618,7 +3618,7 @@ msgstr "Due Date"
 msgid "Due date is required"
 msgstr "Due date is required"
 
-#: src/components/payables/PayableDetails/PayableDetails.tsx:224
+#: src/components/payables/PayableDetails/PayableDetails.tsx:234
 msgid "Due to an error, the OCR failed to read the data from the document. Please input the data manually."
 msgstr "Due to an error, the OCR failed to read the data from the document. Please input the data manually."
 
@@ -7318,7 +7318,7 @@ msgstr "Payable “{0}” has been updated"
 msgid "Payable {0} uploaded successfully"
 msgstr "Payable {0} uploaded successfully"
 
-#: src/components/payables/PayableDetails/PayableDetails.tsx:138
+#: src/components/payables/PayableDetails/PayableDetails.tsx:147
 msgid "Payable not found"
 msgstr "Payable not found"
 
@@ -9738,7 +9738,7 @@ msgstr "There is no invoice for the provided id: {0}"
 msgid "There is no invoice for the provided id: {invoiceId}"
 msgstr "There is no invoice for the provided id: {invoiceId}"
 
-#: src/components/payables/PayableDetails/PayableDetails.tsx:139
+#: src/components/payables/PayableDetails/PayableDetails.tsx:148
 msgid "There is no payable by provided id: {id}"
 msgstr "There is no payable by provided id: {id}"
 
@@ -10294,7 +10294,7 @@ msgstr "Unsupported file type for {0}"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:441
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/OverdueReminderForm.tsx:311
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:237
-#: src/ui/tagsModal/tagsModal.tsx:58
+#: src/ui/tagsModal/tagsModal.tsx:57
 msgid "Update"
 msgstr "Update"
 
