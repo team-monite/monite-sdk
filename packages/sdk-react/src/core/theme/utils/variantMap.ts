@@ -3,8 +3,11 @@
  *
  * This map ensures consistency between:
  * - MUI button variants (contained, outlined, text)
- * - Tailwind button variants (default, outline, ghost)
+ * - Tailwind button variants (default, outline, ghost, destructive)
  * - CSS variable prefixes (primary, secondary, tertiary, destructive)
+ *
+ * Note: Destructive buttons in MUI use variant="contained" with color="error".
+ * The MUI theme selector targets: `.MuiButton-contained.MuiButton-colorError`
  *
  * @example
  * ```typescript
@@ -32,7 +35,7 @@ export const BUTTON_VARIANT_MAP = {
     cssPrefix: 'tertiary',
   },
   destructive: {
-    mui: 'colorError',
+    mui: 'contained',
     tailwind: 'destructive',
     cssPrefix: 'destructive',
   },
@@ -46,7 +49,7 @@ export type ButtonVariantKey = keyof typeof BUTTON_VARIANT_MAP;
 /**
  * Get the MUI variant name for a semantic button variant
  * @param key - Semantic variant key (primary, secondary, tertiary, destructive)
- * @returns MUI variant name (contained, outlined, text, colorError)
+ * @returns MUI variant name (contained, outlined, text)
  */
 export const getMuiVariant = (key: ButtonVariantKey): string =>
   BUTTON_VARIANT_MAP[key].mui;

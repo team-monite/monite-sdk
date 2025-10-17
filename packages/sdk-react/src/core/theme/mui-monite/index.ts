@@ -720,7 +720,7 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
             ),
           },
 
-          '.Monite-Payables &.MuiButton-colorError': {
+          '.Monite-Payables &.MuiButton-contained.MuiButton-colorError': {
             ...getButtonStyles(buttonStyles?.destructive),
             '&:hover': getButtonStateStyles('hover', buttonStyles?.destructive),
             '&:active': getButtonStateStyles(
@@ -864,14 +864,6 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
     MuiPopper: {
       defaultProps: {
         disablePortal: true,
-      },
-    },
-    MuiDialog: {
-      defaultProps: {
-        classes: {
-          container: 'Monite-Payables',
-          paper: 'Monite-Payables',
-        },
       },
     },
     MuiAvatar: {
@@ -1201,6 +1193,12 @@ export const getTheme = (theme: ThemeConfig): ThemeOptions => {
       styleOverrides: {
         root: {
           backgroundImage: 'none',
+        },
+      },
+      defaultProps: {
+        classes: {
+          container: 'Monite-Payables',
+          paper: 'Monite-Payables',
         },
       },
     },
