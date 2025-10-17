@@ -1,5 +1,13 @@
 # @monite/sdk-react
 
+## 4.6.9
+
+### Patch Changes
+
+- 54d346c: Add theme customization of payableStatusChip for hiding the dot and setting custom colors for the statuses
+- 89794bf: Payables buttons customization
+- 8ddd333: Added rowBorder color option for theme customization
+
 ## 4.6.8
 
 ### Patch Changes
